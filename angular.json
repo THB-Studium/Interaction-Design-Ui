@@ -9,9 +9,7 @@
       "projectType": "application",
       "prefix": "app",
       "schematics": {
-        "@schematics/angular:component": {
-          "styleext": "scss"
-        }
+        
       },
       "architect": {
         "build": {
@@ -28,6 +26,7 @@
               "src/assets"
             ],
             "styles": [
+              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "src/styles.scss",
               "src/assets/scss/argon.scss"
             ],
@@ -70,7 +69,7 @@
                 },
                 "fonts": true
               },
-             "outputHashing": "all",
+             "outputHashing": "all"
            }
           }
         },
@@ -87,7 +86,7 @@
               "browserTarget": "argon-dashboard-angular:build:development"
             }
           },
-          "defaultConfiguration": "production",
+          "defaultConfiguration": "production"
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
@@ -103,7 +102,8 @@
             "tsConfig": "src/tsconfig.spec.json",
             "karmaConfig": "src/karma.conf.js",
             "styles": [
-              "src/styles.css"
+              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
+              "src/styles.scss"
             ],
             "scripts": [],
             "assets": [
@@ -156,9 +156,7 @@
   },
   "defaultProject": "argon-dashboard-angular",
   "schematics": {
-    "@schematics/angular:component": {
-      "styleext": "scss"
-    }
+    
   },
   "cli": {
     "analytics": false
