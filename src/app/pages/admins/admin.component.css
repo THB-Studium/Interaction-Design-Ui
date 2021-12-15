@@ -1,0 +1,44 @@
+table {
+  width: 100%;
+}
+
+.mat-form-field {
+  font-size: 14px;
+  width: 100%;
+}
+
+td,
+th {
+  width: 40%;
+}
+
+th {
+  font-weight: 600;
+}
+
+td em {
+  cursor: pointer;
+}
+
+/*##################################### Display Screen settings ###################################*/
+@media only screen and (min-width: 1200px) {
+}
+
+@media only screen and (min-width: 960px) and (max-width: 1092px) {
+}
+
+@media only screen and (max-width: 992px) {
+  td,
+  th {
+    width: 25%;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+}
+
+@media only screen and (max-width: 568px) {
+}
+
+@media only screen and (max-width: 468px) {
+}

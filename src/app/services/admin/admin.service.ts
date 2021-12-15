@@ -1,0 +1,46 @@
+import { Injectable } from "@angular/core";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { Observable } from "rxjs";
+
+import { Server } from "../../variables/server";
+import { Admin } from "src/app/models/Admin";
+
+@Injectable({
+  providedIn: "root",
+})
+export class AdminService {
+  // API for admins
+  readonly ADMIN_URL: string = `${Server.API_URL}/admins`;
+  headers = new HttpHeaders().set("Content-Type", "application/json");
+
+  constructor(private http: HttpClient) {}
+
+  // GET ONE
+  getOneAdmin(id: string): Observable<Admin> {
+    const admintoberead_url = `${this.ADMIN_URL}/${id}`;
+    return this.http.get<Admin>(admintoberead_url);
+  }
+
+  // GET ALL
+  getAllAdmins(): Observable<Admin[]> {
+    return this.http.get<Admin[]>(this.ADMIN_URL);
+  }
+
+  // POST
+  addAdmin(admin: Admin): Observable<Admin> {
+    return this.http.post<Admin>(this.ADMIN_URL, admin);
+  }
+
+  // PUT
+  updateAdmin(admin: Admin): Observable<Admin> {
+    return this.http.put<Admin>(this.ADMIN_URL, admin, {
+      headers: this.headers,
+    });
+  }
+
+  // DELETE
+  deleteAdmin(id: string): Observable<any> {
+    const admintobedeleted_url = `${this.ADMIN_URL}/${id}`;
+    return this.http.delete<any>(admintobedeleted_url);
+  }
+}

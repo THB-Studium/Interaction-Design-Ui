@@ -1,0 +1,28 @@
+<form [formGroup]="adminForm" class="form-row">
+    <!-- Name -->
+    <mat-form-field class="col-md-12" appearance="standard">
+        <mat-label>Name</mat-label>
+        <input matInput formControlName="name" placeholder="Vorname Name" required>
+        <mat-error *ngIf="adminForm.get('name').invalid">
+            Name is <strong>required</strong>
+        </mat-error>
+    </mat-form-field>
+
+    <!-- Email -->
+    <mat-form-field class="col-md-12" appearance="standard">
+        <mat-label>Email</mat-label>
+        <input type="email" matInput formControlName="email" required>
+        <mat-error *ngIf="adminForm.get('email').invalid">
+            Please enter a valid email address
+        </mat-error>
+    </mat-form-field>
+
+    <!-- Password -->
+    <mat-form-field class="col-md-12" appearance="standard" [hidden] = "hidePwdInput">
+        <mat-label>Passwort</mat-label>
+        <input type="password" matInput formControlName="pwd" required>
+        <mat-error *ngIf="adminForm.get('pwd').invalid">
+            The password must contains a least 8 characters.
+        </mat-error>
+    </mat-form-field>
+</form>
