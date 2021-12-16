@@ -6,9 +6,10 @@ import {
   EventEmitter,
 } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
-import { Admin } from "src/app/models/Admin";
 
 import { SharedDataService } from "src/app/services/sharedData/shared-data.service";
+
+import { Admin } from "src/app/models/Admin";
 
 @Component({
   selector: "app-admin-form",
@@ -16,27 +17,37 @@ import { SharedDataService } from "src/app/services/sharedData/shared-data.servi
   styleUrls: ["./admin-form.component.css"],
 })
 export class AdminFormComponent implements OnInit, AfterViewInit {
-  //
+  // Defines notifyAdminFormValid. Notify the parent when the form is valid
   @Output() notifyAdminFormValid = new EventEmitter<boolean>(false);
-  // Admin form declaration.
+  // Defines AdminForm
   adminForm = new FormGroup({
     // name
     name: new FormControl("", [Validators.required]),
     // email
     email: new FormControl("", [Validators.required, Validators.email]),
     // password
-    pwd: new FormControl("", [Validators.required, Validators.minLength(8)])
+    pwd: new FormControl("", [Validators.required, Validators.minLength(8)]),
+    // pwdRepeat
+    pwdRepeat: new FormControl("", [
+      Validators.required,
+      Validators.minLength(8),
+    ]),
   });
-  // Contains complet current admin information.
+
+  // Defines currentAdmin. Contains complet current admin information.
   currentAdmin: Admin;
-  // Contains the id of the current admin. Helpfull to handle an edit process.
+  // Defines currentAdminId. Contains the id of the current admin. Helpfull to handle an edit process.
   currentAdminId: string = "";
-  // Contains the password of the current admin. Helpfull to handle an edit process.
+  // Defines currentAdminPwd. Contains the password of the current admin. Helpfull to handle an edit process.
   currentAdminPwd: string = "";
-  // Flags to know if it is an add / edit process.
+  // Defines isAdd. Flags to know if it is an add / edit process.
   isAdd: boolean = true;
-  // hide - display the pasword input
+  // Defines hidePwdInput. Will hide/display the pasword input respectively for edit or add process.
   hidePwdInput: boolean = false;
+  // Defines hide. By default we hide the password input field.
+  hidePwd = true;
+  // Defines hideConfirmPwd
+  hideConfirmPwd = true;
 
   constructor(private sharedDataService: SharedDataService) {}
 
@@ -50,7 +61,7 @@ export class AdminFormComponent implements OnInit, AfterViewInit {
 
   // Calls on onload. This will help to know if we want to edit an admin or add a new one.
   // The method need the shareDataService as well, to populate those information.
-  initAdminForm() {
+  private initAdminForm() {
     this.isAdd = this.sharedDataService.isAddAdmin;
 
     if (!this.isAdd) {
@@ -61,7 +72,8 @@ export class AdminFormComponent implements OnInit, AfterViewInit {
             name: value.name,
             email: value.email,
             // remove the pwd for security reason
-            pwd: ""
+            pwd: "",
+            pwdRepeat: "",
           });
           // save id and pwd
           this.currentAdminId = value.id;
@@ -78,7 +90,7 @@ export class AdminFormComponent implements OnInit, AfterViewInit {
     }
   }
 
-  // Always get the value from the form to update the current admin information when any input value changed
+  // Always get the value from the form and update the current admin information when any input value changed
   private onFormValuesChanged(): void {
     this.adminForm.valueChanges.subscribe(() => {
       if (this.isAdd) {
@@ -86,17 +98,18 @@ export class AdminFormComponent implements OnInit, AfterViewInit {
           id: null,
           name: this.adminForm.value.name,
           email: this.adminForm.value.email,
-          kennwort: this.adminForm.value.pwd
+          kennwort: this.adminForm.value.pwd,
         };
       } else {
         this.currentAdmin = {
           id: this.currentAdminId,
           name: this.adminForm.value.name,
           email: this.adminForm.value.email,
-          kennwort: this.currentAdminPwd
+          kennwort: this.currentAdminPwd,
         };
       }
 
+      // First check what process is be done to know how and when to notify others components.
       if (
         (!this.isAdd &&
           this.adminForm.get("name").valid &&
@@ -104,7 +117,9 @@ export class AdminFormComponent implements OnInit, AfterViewInit {
         (this.isAdd &&
           this.adminForm.get("name").valid &&
           this.adminForm.get("email").valid &&
-          this.adminForm.get("pwd").valid)
+          this.adminForm.get("pwd").valid &&
+          this.adminForm.get("pwd").value ===
+            this.adminForm.get("pwdRepeat").value)
       ) {
         this.sharedDataService.changeCurrentAdmin(this.currentAdmin);
         // notify the parent that the form is valid

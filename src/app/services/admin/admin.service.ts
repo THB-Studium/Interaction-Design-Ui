@@ -11,7 +11,7 @@ import { Admin } from "src/app/models/Admin";
 export class AdminService {
   // API for admins
   readonly ADMIN_URL: string = `${Server.API_URL}/admins`;
-  headers = new HttpHeaders().set("Content-Type", "application/json");
+  headers = new HttpHeaders({ "Content-Type": "application/json" });
 
   constructor(private httpClient: HttpClient) {}
 

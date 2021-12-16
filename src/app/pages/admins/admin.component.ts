@@ -1,4 +1,5 @@
 import { Component, OnInit, AfterViewInit, ViewChild } from "@angular/core";
+import { OnCommit } from "src/app/interfaces/onCommit";
 
 import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
@@ -15,21 +16,28 @@ import { Admin } from "src/app/models/Admin";
   templateUrl: "./admin.component.html",
   styleUrls: ["./admin.component.css"],
 })
-export class AdminComponent implements OnInit, AfterViewInit {
-
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
+export class AdminComponent implements OnInit, AfterViewInit, OnCommit {
+  // Defines paginator
+  @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
+  // Defines sort
+  @ViewChild(MatSort, { static: false }) sort: MatSort;
+  // Defines displayedColumns
   displayedColumns: string[] = ["email", "name", "action"];
+  // Defines dataSource
   dataSource: MatTableDataSource<Admin>;
+  // Defines adminList
   adminList: Admin[] = [];
-  total = 0;
+  // Defines toolTipDuration
   toolTipDuration = 300;
+  // Defines errors
   errors = {
     errorMessage: "",
   };
+  // Defines currentAdmin
   currentAdmin: Admin;
+  // Defines valid. The value is true if the form is valid.
   valid: boolean = false;
-
+  // Defines dialogConfig
   dialogConfig = new MatDialogConfig();
 
   constructor(
@@ -38,12 +46,20 @@ export class AdminComponent implements OnInit, AfterViewInit {
     private dialog: MatDialog,
     private toastrService: ToastrService
   ) {
-    this.configDialog();
-    this.dataSource = new MatTableDataSource([]);
+    this.dialogConfiguration();
   }
 
   ngOnInit(): void {
-    this.getAdminsList();
+    // Datasource initialization. This is needed to set paginator and items size
+    this.dataSource = new MatTableDataSource([
+      { id: "", name: "Die List ist leer", email: "", kennwort: "" },
+    ]);
+    // define the list of admins
+    this.adminList = this.dataSource.data;
+    // read registered administrator from the api
+    this.getAdminsList().then((admins) => {
+      this.setDataSource(admins);
+    });
   }
 
   ngAfterViewInit() {
@@ -51,7 +67,7 @@ export class AdminComponent implements OnInit, AfterViewInit {
     this.dataSource.sort = this.sort;
   }
 
-  // Calls for input filtering. Display the entered value if found, otherwise we notify that the input could not be found.
+  // Filters that get and display the entered value if found.
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -61,8 +77,17 @@ export class AdminComponent implements OnInit, AfterViewInit {
     }
   }
 
+  // Sorts the by name ascending
+  sortByName(adminList: Admin[]): void {
+    adminList.sort((x, y) => {
+      if (x.name > y.name) return 1;
+      if (x.name < y.name) return -1;
+      return 0;
+    });
+  }
+
   // Dialog configurations
-  configDialog() {
+  dialogConfiguration() {
     this.dialogConfig.disableClose = true;
     this.dialogConfig.autoFocus = true;
   }
@@ -72,26 +97,27 @@ export class AdminComponent implements OnInit, AfterViewInit {
     this.valid = isValid;
   }
 
-  // Gets all already registered administrators.
-  private getAdminsList(): void {
-    this.adminList = [];
-    this.adminService.getAllAdmins().subscribe({
-      next: (admins) => {
-        this.dataSource = new MatTableDataSource(admins);
-        this.adminList = admins;
-        this.total = admins.length;
-      },
-      error: (error) => this.handleError(error)
+  // Gets all already registered administrators as promise
+  private getAdminsList(): Promise<Admin[]> {
+    return new Promise((resolve) => {
+      this.adminService.getAllAdmins().subscribe({
+        next: (admins: Admin[]) => resolve(admins),
+        error: (error) => {
+          this.handleError(error);
+          this.toastrService.error(
+            "Die Liste konnte nicht gelesen werden.",
+            "Fehler"
+          );
+        },
+      });
     });
   }
 
-  // Calls to read the value of the current admin from the sharedataservice
-  private readCurrentAdminFromTheService(): void {
-    this.sharedDataService.currentAdmin
-      .subscribe((value) => {
-        this.currentAdmin = value;
-      })
-      .unsubscribe();
+  // Populates rows into the table
+  private setDataSource(admins: Admin[]): void {
+    this.adminList = admins;
+    this.sortByName(this.adminList);
+    this.dataSource.data = this.adminList;
   }
 
   // Dialog to add new admin
@@ -105,7 +131,9 @@ export class AdminComponent implements OnInit, AfterViewInit {
       email: "",
       kennwort: "",
     };
+    // set the value of the admin into the service
     this.sharedDataService.changeCurrentAdmin(this.currentAdmin);
+    // Open the add admin dialog
     this.dialog.open(dialogForm, this.dialogConfig);
   }
 
@@ -115,26 +143,89 @@ export class AdminComponent implements OnInit, AfterViewInit {
     this.sharedDataService.isAddAdmin = false;
     // update current admin information
     this.currentAdmin = row;
+    // set the value of the admin into the service
     this.sharedDataService.changeCurrentAdmin(this.currentAdmin);
+    // Open the edit admin dialog
     this.dialog.open(dialogForm, this.dialogConfig);
   }
 
-  // Calls to add new admin to the list of administrator.
-  // The new added admin will be able to log-in and administrate the complete page.
-  saveAdmin(): void {
+  // Get the current value of the admin from the sharedataservice.
+  getCurrentAdminFromShareDataService(): void {
+    this.sharedDataService.currentAdmin
+      .subscribe((value) => {
+        this.currentAdmin = value;
+      })
+      .unsubscribe();
+  }
+
+  // Gets the process to be executed (add/update) and execute it.
+  commitChanges() {
+    // save information
+    if (this.sharedDataService.isAddAdmin) {
+      this.beforeSave();
+    } else {
+      this.beforeUpdate();
+    }
+  }
+
+  beforeSave(): void {
+    this.getCurrentAdminFromShareDataService();
+    // save
+    this.getAdminsList().then((admins: Admin[]) => {
+      const exists = admins.find((x) => x.email === this.currentAdmin.email);
+      if (exists) {
+        this.toastrService.info(
+          "Bereits registrierte E-Mail",
+          "Benutzer vorhanden"
+        );
+      } else {
+        this.saveAdmin();
+      }
+    });
+  }
+
+  beforeUpdate(): void {
+    // Need to be from the service because the information could be edited and the change is saved by the shareDataService
+    this.getCurrentAdminFromShareDataService();
+
+    this.getAdminsList().then((admins: Admin[]) => {
+      const exists = admins.find(
+        (x) =>
+          x.email === this.currentAdmin.email && x.id !== this.currentAdmin.id
+      );
+      if (exists) {
+        this.toastrService.info(
+          "Bereits registrierte E-Mail",
+          "Benutzer vorhanden"
+        );
+      } else {
+        this.updateAdmin();
+      }
+    });
+  }
+
+  // Saves the form as administrator. Be sure that the information not already exists before save information.
+  private saveAdmin(): void {
     this.adminService.addAdmin(this.currentAdmin).subscribe({
       next: (res: Admin) => {
+        // set the current local admin
+        this.currentAdmin = res;
         // Add the new added item to the current list and update the table
         this.adminList.push(res);
-        this.dataSource.connect().next(this.adminList);
-        // Update the amount
-        this.total = this.adminList.length;
-        // Update current admin
-        this.currentAdmin = res;
+        this.sortByName(this.adminList);
+        this.dataSource.data = this.adminList;
       },
-      error: (err) => this.handleError(err),
+      error: (err) => {
+        this.handleError(err);
+        this.toastrService.error(
+          `${this.currentAdmin.email} konnte nicht hinzugefuegt werden.`,
+          "Fehler"
+        );
+      },
       complete: () => {
-        this.toastrService.success(`${this.currentAdmin.email} wurde erfolgreich hinzugefuegt.`);
+        this.toastrService.success(
+          `${this.currentAdmin.email} wurde erfolgreich hinzugefuegt.`
+        );
       },
     });
   }
@@ -143,33 +234,29 @@ export class AdminComponent implements OnInit, AfterViewInit {
   private updateAdmin(): void {
     this.adminService.updateAdmin(this.currentAdmin).subscribe({
       next: (res: Admin) => {
-        // The table need to be updated. we search and update the item into the the list
-        const itemIndex = this.adminList.findIndex(x => x.id === res.id);
+        // set the local current admin value
+        this.currentAdmin = res;
+        // The view need to be updated. Get the index of the updated item from the list and update the values as well.
+        const itemIndex = this.adminList.findIndex((x) => x.id === res.id);
         this.adminList[itemIndex].email = res.email;
         this.adminList[itemIndex].name = res.name;
         // Update the view
-        this.dataSource.connect().next(this.adminList);
-        this.currentAdmin = res;
-        this.toastrService.success(`${this.currentAdmin.email} wurde erfolgreich geaendert.`);
+        this.sortByName(this.adminList);
+        this.dataSource.data = this.adminList;
       },
-      error: (err) => this.handleError(err),
+      error: (err) => {
+        this.handleError(err);
+        this.toastrService.error(
+          `${this.currentAdmin.email} konnte nicht aktualisiert werden.`,
+          "Fehler"
+        );
+      },
       complete: () => {
-        console.log("Update success");
+        this.toastrService.success(
+          `${this.currentAdmin.email} wurde erfolgreich aktualisiert.`
+        );
       },
     });
-  }
-
-  // Calls to save change. Handle add and edit process.
-  applyChange() {
-    // Get and save the current value of the before applying the changes
-    this.readCurrentAdminFromTheService();
-    // save information
-    if (this.sharedDataService.isAddAdmin) {
-      this.saveAdmin();
-    } else {
-      this.updateAdmin();
-    }
-    this.dataSource._updateChangeSubscription();
   }
 
   // Dialog for deletion process
@@ -178,22 +265,33 @@ export class AdminComponent implements OnInit, AfterViewInit {
     this.dialog.open(dialogForm, this.dialogConfig);
   }
 
-  // Delete the selected admin.
+  // Delete the current selected admin.
   deleteAdmin(): void {
     this.adminService.deleteAdmin(this.currentAdmin.id).subscribe({
       next: (response: string) => {
-        if (response) {// if the value is not empty
+        if (response) {
+          // if the value is not empty
           // Get and remove the item from the list
-          const itemIndex = this.adminList.findIndex(x => x.id === this.currentAdmin.id);
+          const itemIndex = this.adminList.findIndex(
+            (x) => x.id === this.currentAdmin.id
+          );
           this.adminList.splice(itemIndex, 1);
           // Update the view
-          this.dataSource.connect().next(this.adminList);
+          this.dataSource.data = this.adminList;
         }
       },
-      error: (err) => this.handleError(err),
+      error: (err) => {
+        this.handleError(err);
+        this.toastrService.error(
+          `${this.currentAdmin.email} konnte nicht entfernt werden.`,
+          "Fehler"
+        );
+      },
       complete: () => {
-        this.toastrService.success(`${this.currentAdmin.email} wurde erfolgreich entfernt.`);
-      }
+        this.toastrService.success(
+          `${this.currentAdmin.email} wurde erfolgreich entfernt.`
+        );
+      },
     });
   }
 
@@ -202,10 +300,10 @@ export class AdminComponent implements OnInit, AfterViewInit {
     if (error?.message) {
       this.errors.errorMessage = error?.message;
     }
-    console.error(error);
   }
 
-  resetFlag() {
+  // Sets the status of the form to not valid
+  resetFormStatus() {
     this.valid = false;
   }
 }

@@ -24,7 +24,8 @@ import { ComponentsModule } from './components/components.module';
     RouterModule,
     AppRoutingModule,
     ToastrModule.forRoot({
-    
+      positionClass: 'toast-bottom-right',
+      preventDuplicates: true
     })
   ],
   declarations: [
