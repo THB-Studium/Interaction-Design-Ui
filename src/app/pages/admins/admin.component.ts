@@ -166,6 +166,8 @@ export class AdminComponent implements OnInit, AfterViewInit, OnCommit {
     } else {
       this.beforeUpdate();
     }
+    // reset the status of the form to false
+    this.resetFormStatus();
   }
 
   beforeSave(): void {

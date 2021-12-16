@@ -20,25 +20,22 @@ td em {
   cursor: pointer;
 }
 
+/* Border */
+.filter
+  ::ng-deep
+  .mat-form-field-appearance-standard
+  .mat-form-field-underline {
+  background-color: rgba(255, 255, 255, 255) !important;
+}
+
+.filter ::ng-deep .mat-form-field-ripple {
+  background-color: rgba(255, 255, 255, 255);
+}
+
 /*##################################### Display Screen settings ###################################*/
-@media only screen and (min-width: 1200px) {
-}
-
-@media only screen and (min-width: 960px) and (max-width: 1092px) {
-}
-
 @media only screen and (max-width: 992px) {
   td,
   th {
     width: 25%;
   }
-}
-
-@media only screen and (max-width: 768px) {
-}
-
-@media only screen and (max-width: 568px) {
-}
-
-@media only screen and (max-width: 468px) {
 }

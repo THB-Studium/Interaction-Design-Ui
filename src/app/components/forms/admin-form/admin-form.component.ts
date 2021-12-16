@@ -93,18 +93,19 @@ export class AdminFormComponent implements OnInit, AfterViewInit {
   // Always get the value from the form and update the current admin information when any input value changed
   private onFormValuesChanged(): void {
     this.adminForm.valueChanges.subscribe(() => {
+      const name = this.transformName(this.adminForm.value.name);
       if (this.isAdd) {
         this.currentAdmin = {
           id: null,
-          name: this.adminForm.value.name,
-          email: this.adminForm.value.email,
+          name: name,
+          email: this.adminForm.value.email.trim(),
           kennwort: this.adminForm.value.pwd,
         };
       } else {
         this.currentAdmin = {
           id: this.currentAdminId,
-          name: this.adminForm.value.name,
-          email: this.adminForm.value.email,
+          name: name,
+          email: this.adminForm.value.email.trim(),
           kennwort: this.currentAdminPwd,
         };
       }
@@ -129,5 +130,15 @@ export class AdminFormComponent implements OnInit, AfterViewInit {
         this.notifyAdminFormValid.emit(false);
       }
     });
+  }
+
+  // Transforms the first character of the lastname and firstname too upper
+  private transformName(name: string): string {
+    const parts: string[] = name.split(" ");
+    let result = "";
+    parts.forEach((part) => {
+      result += `${part.charAt(0).toUpperCase() + part.slice(1)}` + " ";
+    });
+    return result.trim();
   }
 }
