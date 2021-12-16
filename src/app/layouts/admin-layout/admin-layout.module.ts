@@ -31,7 +31,6 @@ import { AdminLayoutRoutes } from "./admin-layout.routing";
 import { DashboardComponent } from "../../pages/dashboard/dashboard.component";
 import { AdminComponent } from "../../pages/admins/admin.component";
 import { UserProfileComponent } from "../../pages/user-profile/user-profile.component";
-//import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   imports: [

@@ -5,12 +5,11 @@ import { MatSort } from "@angular/material/sort";
 import { MatTableDataSource } from "@angular/material/table";
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 
-
+import { ToastrService } from "ngx-toastr";
 import { AdminService } from "src/app/services/admin/admin.service";
 import { SharedDataService } from "src/app/services/sharedData/shared-data.service";
 
 import { Admin } from "src/app/models/Admin";
-
 @Component({
   selector: "app-admin",
   templateUrl: "./admin.component.html",
@@ -36,7 +35,8 @@ export class AdminComponent implements OnInit, AfterViewInit {
   constructor(
     private adminService: AdminService,
     private sharedDataService: SharedDataService,
-    public dialog: MatDialog
+    private dialog: MatDialog,
+    private toastrService: ToastrService
   ) {
     this.configDialog();
     this.dataSource = new MatTableDataSource([]);
@@ -72,7 +72,7 @@ export class AdminComponent implements OnInit, AfterViewInit {
     this.valid = isValid;
   }
 
-  // Calls this method to read all already registered administrators.
+  // Gets all already registered administrators.
   private getAdminsList(): void {
     this.adminList = [];
     this.adminService.getAllAdmins().subscribe({
@@ -81,10 +81,7 @@ export class AdminComponent implements OnInit, AfterViewInit {
         this.adminList = admins;
         this.total = admins.length;
       },
-      error: (err) => this.handleError(err),
-      complete: () => {
-        console.log("Completed!");
-      },
+      error: (error) => this.handleError(error)
     });
   }
 
@@ -126,23 +123,34 @@ export class AdminComponent implements OnInit, AfterViewInit {
   // The new added admin will be able to log-in and administrate the complete page.
   saveAdmin(): void {
     this.adminService.addAdmin(this.currentAdmin).subscribe({
-      next: (response) => {
-        this.dataSource.data.push(response);
-        this.adminList.push(response);
+      next: (res: Admin) => {
+        // Add the new added item to the current list and update the table
+        this.adminList.push(res);
+        this.dataSource.connect().next(this.adminList);
+        // Update the amount
         this.total = this.adminList.length;
+        // Update current admin
+        this.currentAdmin = res;
       },
       error: (err) => this.handleError(err),
       complete: () => {
-        console.log("New Admin added");
+        this.toastrService.success(`${this.currentAdmin.email} wurde erfolgreich hinzugefuegt.`);
       },
     });
   }
 
-  // Calls to update any admin. This will change the admin information
+  // Saves the value of the to be updated admin.
   private updateAdmin(): void {
     this.adminService.updateAdmin(this.currentAdmin).subscribe({
-      next: (response) => {
-        console.log("Update" + response);
+      next: (res: Admin) => {
+        // The table need to be updated. we search and update the item into the the list
+        const itemIndex = this.adminList.findIndex(x => x.id === res.id);
+        this.adminList[itemIndex].email = res.email;
+        this.adminList[itemIndex].name = res.name;
+        // Update the view
+        this.dataSource.connect().next(this.adminList);
+        this.currentAdmin = res;
+        this.toastrService.success(`${this.currentAdmin.email} wurde erfolgreich geaendert.`);
       },
       error: (err) => this.handleError(err),
       complete: () => {
@@ -170,26 +178,31 @@ export class AdminComponent implements OnInit, AfterViewInit {
     this.dialog.open(dialogForm, this.dialogConfig);
   }
 
-  // Calls to delete any admin. The admin will be removed from the list of administrator into the DB.
+  // Delete the selected admin.
   deleteAdmin(): void {
     this.adminService.deleteAdmin(this.currentAdmin.id).subscribe({
-      next: (response) => {
-        console.log("Successful deleted");
-        console.log(response);
+      next: (response: string) => {
+        if (response) {// if the value is not empty
+          // Get and remove the item from the list
+          const itemIndex = this.adminList.findIndex(x => x.id === this.currentAdmin.id);
+          this.adminList.splice(itemIndex, 1);
+          // Update the view
+          this.dataSource.connect().next(this.adminList);
+        }
       },
       error: (err) => this.handleError(err),
       complete: () => {
-        console.log("Successful deleted");
+        this.toastrService.success(`${this.currentAdmin.email} wurde erfolgreich entfernt.`);
       }
     });
   }
 
   // On error
-  private handleError(err: any) {
-    if (err?.error?.message) {
-      this.errors.errorMessage = err?.error?.message;
+  private handleError(error: any) {
+    if (error?.message) {
+      this.errors.errorMessage = error?.message;
     }
-    console.error(err);
+    console.error(error);
   }
 
   resetFlag() {

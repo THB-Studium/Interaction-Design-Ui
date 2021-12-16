@@ -13,34 +13,36 @@ export class AdminService {
   readonly ADMIN_URL: string = `${Server.API_URL}/admins`;
   headers = new HttpHeaders().set("Content-Type", "application/json");
 
-  constructor(private http: HttpClient) {}
+  constructor(private httpClient: HttpClient) {}
 
   // GET ONE
   getOneAdmin(id: string): Observable<Admin> {
     const admintoberead_url = `${this.ADMIN_URL}/${id}`;
-    return this.http.get<Admin>(admintoberead_url);
+    return this.httpClient.get<Admin>(admintoberead_url);
   }
 
   // GET ALL
   getAllAdmins(): Observable<Admin[]> {
-    return this.http.get<Admin[]>(this.ADMIN_URL);
+    return this.httpClient.get<Admin[]>(this.ADMIN_URL);
   }
 
   // POST
   addAdmin(admin: Admin): Observable<Admin> {
-    return this.http.post<Admin>(this.ADMIN_URL, admin);
+    return this.httpClient.post<Admin>(this.ADMIN_URL, admin);
   }
 
   // PUT
   updateAdmin(admin: Admin): Observable<Admin> {
-    return this.http.put<Admin>(this.ADMIN_URL, admin, {
+    return this.httpClient.put<Admin>(this.ADMIN_URL, admin, {
       headers: this.headers,
     });
   }
 
   // DELETE
-  deleteAdmin(id: string): Observable<any> {
+  deleteAdmin(id: string) {
     const admintobedeleted_url = `${this.ADMIN_URL}/${id}`;
-    return this.http.delete<any>(admintobedeleted_url);
+    return this.httpClient.delete(admintobedeleted_url, {
+      responseType: "text",
+    });
   }
 }
