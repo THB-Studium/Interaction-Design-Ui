@@ -37,13 +37,13 @@
                     <!-- Email Column -->
                     <ng-container matColumnDef="email">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header scope="col">EMAIL</th>
-                        <td mat-cell *matCellDef="let row"> {{row.email}} </td>
+                        <td mat-cell *matCellDef="let row"> {{row?.email}} </td>
                     </ng-container>
 
                     <!-- Name Column -->
                     <ng-container matColumnDef="name">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header scope="col">NAME</th>
-                        <td mat-cell *matCellDef="let row"> {{row.name}} </td>
+                        <td mat-cell *matCellDef="let row"> {{row?.name}} </td>
                     </ng-container>
 
                     <!-- Action Column -->
