@@ -132,7 +132,7 @@ export class AdminFormComponent implements OnInit, AfterViewInit {
     });
   }
 
-  // Transforms the first character of the lastname and firstname too upper
+  // Transforms the first character of the lastname and firstname to upper
   private transformName(name: string): string {
     const parts: string[] = name.split(" ");
     let result = "";
