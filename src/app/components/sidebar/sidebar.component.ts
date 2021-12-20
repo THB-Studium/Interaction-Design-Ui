@@ -27,6 +27,12 @@ export const ROUTES: RouteInfo[] = [
     class: "",
   },
   {
+    path: "/travelers",
+    title: "Reisende",
+    icon: "fas fa-users text-primary",
+    class: "",
+  },
+  {
     path: "/user-profile",
     title: "User profile",
     icon: "ni-single-02 text-yellow",

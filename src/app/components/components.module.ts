@@ -19,11 +19,14 @@ import { MatTableModule } from "@angular/material/table";
 import { MatPaginatorModule } from "@angular/material/paginator";
 import { MatSortModule } from "@angular/material/sort";
 import { MatDialogModule } from "@angular/material/dialog";
+import { MatDatepickerModule } from "@angular/material/datepicker";
+import { MatNativeDateModule } from "@angular/material/core";
 
 import { SidebarComponent } from "./sidebar/sidebar.component";
 import { NavbarComponent } from "./navbar/navbar.component";
 import { FooterComponent } from "./footer/footer.component";
 import { AdminFormComponent } from "./forms/admin-form/admin-form.component";
+import { TravelerFormComponent } from './forms/traveler-form/traveler-form.component';
 
 @NgModule({
   imports: [
@@ -47,19 +50,23 @@ import { AdminFormComponent } from "./forms/admin-form/admin-form.component";
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
-    MatDialogModule
+    MatDialogModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
   declarations: [
     FooterComponent,
     NavbarComponent,
     SidebarComponent,
     AdminFormComponent,
+    TravelerFormComponent,
   ],
   exports: [
     FooterComponent, 
     NavbarComponent, 
     SidebarComponent,
-    AdminFormComponent
+    AdminFormComponent,
+    TravelerFormComponent,
   ]
 })
 export class ComponentsModule {}

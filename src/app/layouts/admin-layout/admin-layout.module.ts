@@ -22,6 +22,8 @@ import { MatTableModule } from "@angular/material/table";
 import { MatPaginatorModule } from "@angular/material/paginator";
 import { MatSortModule } from "@angular/material/sort";
 import { MatDialogModule } from "@angular/material/dialog";
+import { MatDatepickerModule } from "@angular/material/datepicker";
+import { MatNativeDateModule } from "@angular/material/core";
 
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { ComponentsModule } from "src/app/components/components.module";
@@ -30,7 +32,8 @@ import { AdminLayoutRoutes } from "./admin-layout.routing";
 
 import { DashboardComponent } from "../../pages/dashboard/dashboard.component";
 import { AdminComponent } from "../../pages/admins/admin.component";
-import { BookingComponent } from '../../pages/booking/booking.component';
+import { BookingComponent } from "../../pages/booking/booking.component";
+import { TravelerComponent } from "../../pages/traveler/traveler.component";
 import { UserProfileComponent } from "../../pages/user-profile/user-profile.component";
 
 @NgModule({
@@ -58,13 +61,16 @@ import { UserProfileComponent } from "../../pages/user-profile/user-profile.comp
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
-    MatDialogModule
+    MatDialogModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
   ],
   declarations: [
-    DashboardComponent, 
-    AdminComponent, 
+    DashboardComponent,
+    AdminComponent,
     BookingComponent,
-    UserProfileComponent
-  ]
+    TravelerComponent,
+    UserProfileComponent,
+  ],
 })
 export class AdminLayoutModule {}

@@ -62,7 +62,7 @@ export class AdminFormComponent implements OnInit, AfterViewInit {
   // Calls on onload. This will help to know if we want to edit an admin or add a new one.
   // The method need the shareDataService as well, to populate those information.
   private initAdminForm() {
-    this.isAdd = this.sharedDataService.isAddAdmin;
+    this.isAdd = this.sharedDataService.isAddBtnClicked;
 
     if (!this.isAdd) {
       // Get and display existing information. Some need to be saved (the id and password).
@@ -132,7 +132,7 @@ export class AdminFormComponent implements OnInit, AfterViewInit {
     });
   }
 
-  // Transforms the first character of the lastname and firstname too upper
+  // Transforms the first character of the lastname and firstname to upper
   private transformName(name: string): string {
     const parts: string[] = name.split(" ");
     let result = "";

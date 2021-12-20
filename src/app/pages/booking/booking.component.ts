@@ -1,5 +1,5 @@
 import { Component, OnInit, AfterViewInit, ViewChild } from "@angular/core";
-import { OnCommit } from "src/app/interfaces/onCommit";
+import { OnCommit } from "src/app/interfaces/OnCommit";
 
 import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
