@@ -1,5 +1,4 @@
 import { Component, OnInit, AfterViewInit, ViewChild } from "@angular/core";
-import { OnCommit } from "src/app/interfaces/onCommit";
 
 import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
@@ -11,14 +10,14 @@ import { TravelerService } from "src/app/services/traveler/traveler.service";
 import { SharedDataService } from "src/app/services/sharedData/shared-data.service";
 
 import { Traveler } from "src/app/models/Traveler";
+import { Calendar } from "src/app/variables/calendar";
 
 @Component({
-  selector: 'app-traveler',
-  templateUrl: './traveler.component.html',
-  styleUrls: ['./traveler.component.css']
+  selector: "app-traveler",
+  templateUrl: "./traveler.component.html",
+  styleUrls: ["./traveler.component.css"],
 })
-export class TravelerComponent implements OnInit, AfterViewInit, OnCommit {
-
+export class TravelerComponent implements OnInit, AfterViewInit {
   // Defines paginator
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
   // Defines sort
@@ -27,13 +26,10 @@ export class TravelerComponent implements OnInit, AfterViewInit, OnCommit {
   displayedColumns: string[] = [
     "name",
     "email",
-    "birthday",
     "university",
     "study",
-    "adress",
-    "phone",
-    "workfor",
-    "participated"
+    "participated",
+    "action",
   ];
   // Defines dataSource
   dataSource: MatTableDataSource<Traveler>;
@@ -68,14 +64,14 @@ export class TravelerComponent implements OnInit, AfterViewInit, OnCommit {
         id: "",
         name: "",
         vorname: "",
-        adress: "",
+        adresse: "",
         arbeitBei: "",
         email: "",
-        geburtsdatum: "",
+        geburtsdatum: null,
         hochschule: "",
         schonTeilgenommen: false,
         studiengang: "",
-        telefonnummer: 0
+        telefonnummer: 0,
       },
     ]);
 
@@ -92,10 +88,6 @@ export class TravelerComponent implements OnInit, AfterViewInit, OnCommit {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
-
-  beforeSave(): void {}
-
-  beforeUpdate(): void {}
 
   // Filters that get and display the entered value if found.
   applyFilter(event: Event) {
@@ -150,10 +142,44 @@ export class TravelerComponent implements OnInit, AfterViewInit, OnCommit {
     this.valid = isValid;
   }
 
+  // Get the current value of the traveler from the sharedataservice.
+  getCurrentTravelerFromSharedDataService(): void {
+    this.sharedDataService.currentTraveler
+      .subscribe((value) => {
+        this.currentTraveler = value;
+      })
+      .unsubscribe();
+  }
+
+  // Gets object of type date and return a string
+  convertDateToString(date: string) {
+    if (date != null && date.includes("T")) {
+      const dob = date?.split("T")[0];
+      const day = parseInt(dob.split("-")[2]);
+      const month = parseInt(dob.split("-")[1]);
+      const year = parseInt(dob.split("-")[0]);
+      return `${day} ${Calendar.months[month - 1]} ${year}`;
+    }
+    return "";
+  }
+
+  commitChanges() {
+    // First read and save the current information from the data service
+    this.getCurrentTravelerFromSharedDataService();
+    // save information
+    if (this.sharedDataService.isAddBtnClicked) {
+      this.saveTraveler();
+    } else {
+      this.updateTraveler();
+    }
+    // reset the status of the form to false
+    this.resetFormStatus();
+  }
+
   // Dialog to add new traveler
   addTravelerDialog(dialogForm: any) {
     // Notify the sharedataservice that it is an add
-    this.sharedDataService.isAddTraveler = true;
+    this.sharedDataService.isAddBtnClicked = true;
     // clear the traveler information
     this.currentTraveler = {
       id: "",
@@ -161,12 +187,12 @@ export class TravelerComponent implements OnInit, AfterViewInit, OnCommit {
       vorname: "",
       studiengang: "",
       telefonnummer: 0,
-      adress: "",
+      adresse: "",
       arbeitBei: "",
       email: "",
-      geburtsdatum: "",
+      geburtsdatum: null,
       hochschule: "",
-      schonTeilgenommen: false
+      schonTeilgenommen: false,
     };
     // set the value of the traveler into the service
     this.sharedDataService.changeCurrentTraveler(this.currentTraveler);
@@ -174,8 +200,126 @@ export class TravelerComponent implements OnInit, AfterViewInit, OnCommit {
     this.dialog.open(dialogForm, this.dialogConfig);
   }
 
-   // On error
-   private handleError(error: any) {
+  // Saves the form as new traveler.
+  private saveTraveler(): void {
+    this.travelerService.addOne(this.currentTraveler).subscribe({
+      next: (res: Traveler) => {
+        // set the current local traveler
+        this.currentTraveler = res;
+        // Add the new added item to the current list and update the table
+        this.travelerList.push(res);
+        this.sortByFirstname(this.travelerList);
+        this.dataSource.data = this.travelerList;
+      },
+      error: (err) => {
+        this.handleError(err);
+        this.toastrService.error(
+          `${this.currentTraveler.email} konnte nicht hinzugefuegt werden.`,
+          "Fehler"
+        );
+      },
+      complete: () => {
+        this.toastrService.success(
+          `${this.currentTraveler.email} wurde erfolgreich hinzugefuegt.`
+        );
+      },
+    });
+  }
+
+  // Dialog to edit an Traveler
+  editTravelerDialog(row: Traveler, dialogForm: any) {
+    // Notify the sharedataservice that it is an add
+    this.sharedDataService.isAddBtnClicked = false;
+    // update current Traveler information
+    this.currentTraveler = row;
+    // set the value of the Traveler into the service
+    this.sharedDataService.changeCurrentTraveler(this.currentTraveler);
+    // Open the edit Traveler dialog
+    this.dialog.open(dialogForm, this.dialogConfig);
+  }
+
+  // Saves the value of the to be updated Traveler.
+  private updateTraveler(): void {
+    this.travelerService.updateOne(this.currentTraveler).subscribe({
+      next: (res: Traveler) => {
+        // set the local current Traveler value
+        this.currentTraveler = res;
+        // The view need to be updated. Get the index of the updated item from the list and update the values as well.
+        const itemIndex = this.travelerList.findIndex((x) => x.id === res.id);
+        this.travelerList[itemIndex].vorname = res.vorname;
+        this.travelerList[itemIndex].name = res.name;
+        this.travelerList[itemIndex].adresse = res.adresse;
+        this.travelerList[itemIndex].arbeitBei = res.arbeitBei;
+        this.travelerList[itemIndex].email = res.email;
+        this.travelerList[itemIndex].geburtsdatum = res.geburtsdatum;
+        this.travelerList[itemIndex].hochschule = res.hochschule;
+        this.travelerList[itemIndex].studiengang = res.studiengang;
+        this.travelerList[itemIndex].telefonnummer = res.telefonnummer;
+        this.travelerList[itemIndex].schonTeilgenommen = res.schonTeilgenommen;
+
+        // Update the view
+        this.sortByFirstname(this.travelerList);
+        this.dataSource.data = this.travelerList;
+      },
+      error: (err) => {
+        this.handleError(err);
+        this.toastrService.error(
+          `${this.currentTraveler.email} konnte nicht aktualisiert werden.`,
+          "Fehler"
+        );
+      },
+      complete: () => {
+        this.toastrService.success(
+          `${this.currentTraveler.email} wurde erfolgreich aktualisiert.`
+        );
+      },
+    });
+  }
+
+  // delete dialog
+  deleteTravelerDialog(row: Traveler, dialogForm: any) {
+    this.currentTraveler = row;
+    this.dialog.open(dialogForm, this.dialogConfig);
+  }
+
+  // Delete the current selected Traveler.
+  deleteTraveler(): void {
+    this.travelerService.deleteOne(this.currentTraveler.id).subscribe({
+      next: (response: string) => {
+        if (response) {
+          // if the value is not empty
+          // Get and remove the item from the list
+          const itemIndex = this.travelerList.findIndex(
+            (x) => x.id === this.currentTraveler.id
+          );
+          this.travelerList.splice(itemIndex, 1);
+          // Update the view
+          this.dataSource.data = this.travelerList;
+        }
+      },
+      error: (err) => {
+        this.handleError(err);
+        this.toastrService.error(
+          `${this.currentTraveler.email} konnte nicht entfernt werden.`,
+          "Fehler"
+        );
+      },
+      complete: () => {
+        this.toastrService.success(
+          `${this.currentTraveler.email} wurde erfolgreich entfernt.`
+        );
+      },
+    });
+  }
+
+  dialogDetails(row: Traveler, dialogForm: any) {
+    this.currentTraveler = row;
+    // Open the details dialog
+    this.dialog.open(dialogForm, this.dialogConfig);
+  }
+
+  // On error
+  private handleError(error: any) {
     if (error?.message) {
       this.errors.errorMessage = error?.message;
     }
@@ -185,5 +329,4 @@ export class TravelerComponent implements OnInit, AfterViewInit, OnCommit {
   resetFormStatus() {
     this.valid = false;
   }
-
 }

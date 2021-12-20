@@ -26,8 +26,6 @@ export class SharedDataService {
   private adminSource = new BehaviorSubject<Admin>(this.admin);
   // Contains all information of the admin that has been selected/edited.
   public currentAdmin = this.adminSource.asObservable();
-  // Flags that give information about the method that is currently done. Change it to false if the user want to edit.
-  public isAddAdmin: boolean = true;
 
   changeCurrentAdmin(admin: Admin) {
     this.adminSource.next(admin);
@@ -41,17 +39,16 @@ export class SharedDataService {
     vorname: "",
     studiengang: "",
     telefonnummer: 0,
-    adress: "",
+    adresse: "",
     arbeitBei: "",
     email: "",
-    geburtsdatum: "",
+    geburtsdatum: new Date(),
     hochschule: "",
     schonTeilgenommen: false,
   };
 
   private travelerSource = new BehaviorSubject<Traveler>(this.traveler);
   public currentTraveler = this.travelerSource.asObservable();
-  public isAddTraveler: boolean = true;
 
   changeCurrentTraveler(traveler: Traveler) {
     this.travelerSource.next(traveler);

@@ -1,16 +1,16 @@
 export class Calendar {
   public static readonly months = [
-    "Januar",
-    "Februar",
-    "M&auml;rz",
-    "April",
+    "Jan.",
+    "Feb.",
+    "März",
+    "Apr.",
     "Mai",
     "Juni",
     "Juli",
-    "August",
-    "September",
-    "Oktober",
-    "November",
-    "Dezember",
+    "Aug.",
+    "Sep.",
+    "Okt.",
+    "Nov.",
+    "Dez.",
   ];
 }

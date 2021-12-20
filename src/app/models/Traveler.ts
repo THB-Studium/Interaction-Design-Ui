@@ -4,10 +4,10 @@ export class Traveler {
     public vorname: string;
     public studiengang: string;
     public telefonnummer: number;
-    public adress: string;
+    public adresse: string;
     public arbeitBei: string;
     public email: string;
-    public geburtsdatum: string;
+    public geburtsdatum: Date;
     public hochschule: string;
     public schonTeilgenommen: boolean;
 }

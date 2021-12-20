@@ -1,5 +1,5 @@
 import { Component, OnInit, AfterViewInit, ViewChild } from "@angular/core";
-import { OnCommit } from "src/app/interfaces/onCommit";
+import { OnCommit } from "src/app/interfaces/OnCommit";
 
 import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
@@ -123,7 +123,7 @@ export class AdminComponent implements OnInit, AfterViewInit, OnCommit {
   // Dialog to add new admin
   addAdminDialog(dialogForm: any) {
     // Notify the sharedataservice that it is an add
-    this.sharedDataService.isAddAdmin = true;
+    this.sharedDataService.isAddBtnClicked = true;
     // clear the admin information
     this.currentAdmin = {
       id: "",
@@ -140,7 +140,7 @@ export class AdminComponent implements OnInit, AfterViewInit, OnCommit {
   // Dialog to edit an admin
   editAdminDialog(row: Admin, dialogForm: any) {
     // Notify the sharedataservice that it is an add
-    this.sharedDataService.isAddAdmin = false;
+    this.sharedDataService.isAddBtnClicked = false;
     // update current admin information
     this.currentAdmin = row;
     // set the value of the admin into the service
@@ -161,7 +161,7 @@ export class AdminComponent implements OnInit, AfterViewInit, OnCommit {
   // Gets the process to be executed (add/update) and execute it.
   commitChanges() {
     // save information
-    if (this.sharedDataService.isAddAdmin) {
+    if (this.sharedDataService.isAddBtnClicked) {
       this.beforeSave();
     } else {
       this.beforeUpdate();

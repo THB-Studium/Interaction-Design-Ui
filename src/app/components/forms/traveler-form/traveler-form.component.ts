@@ -65,17 +65,15 @@ export class TravelerFormComponent implements OnInit, AfterViewInit {
   // Defines isAdd. Flags to know if it is an add / edit process.
   isAnAdd: boolean = true;
   // selection
-  readonly answerArray = ["Ja", "Nein"];
+  readonly chooseArray = ["Ja", "Nein"];
   // Defines error
   errors = {
     dateOfBirth: "",
   };
-  // Defines dob (date of birth)
-  dob: string;
   // Defines isDobValid
   isDobValid = false;
 
-  constructor(private sharedDataService: SharedDataService) {}
+  constructor(private sharedDataService: SharedDataService) { }
 
   ngOnInit(): void {
     this.initTravelerForm();
@@ -92,36 +90,51 @@ export class TravelerFormComponent implements OnInit, AfterViewInit {
     this.isAnAdd = this.sharedDataService.isAddBtnClicked;
     // If it is not an add
     if (!this.isAnAdd) {
+      // Since every the dob is valid
+      this.isDobValid = true;
       // the form has to ne initialized as well
-      this.sharedDataService.currentTraveler
-        .subscribe((traveler) => {
-          const day = parseInt(traveler.geburtsdatum.split("/")[0]);
-          const month = parseInt(traveler.geburtsdatum.split("/")[1]);
-          const year = parseInt(traveler.geburtsdatum.split("/")[3]);
-          // adress
-          const street = traveler.adress.split(",")[0];
-          const postal = traveler.adress.split(",")[1].split(" ")[0];
-          const city = traveler.adress.split(",")[1].split(" ")[1];
-
-          this.travelerForm.setValue({
-            lastname: traveler.name,
-            firstname: traveler.vorname,
-            birthday: new Date(year, month, day),
-            email: traveler.email,
-            street: street,
-            postal: postal,
-            city: city,
-            mobile: traveler.telefonnummer,
-            university: traveler.hochschule,
-            faculty: traveler.studiengang,
-            participated: traveler.schonTeilgenommen,
-            workfor: traveler.arbeitBei,
-          });
+      this.sharedDataService.currentTraveler.subscribe((traveler) => {
+          // set the value of the current traveler
+          this.currentTraveler = traveler;
+          this.setTravelerForm(traveler);
           // save the current id
           this.currentTravelerId = traveler.id;
-        })
-        .unsubscribe(); // unsubscribe directly to avoid recursion
+        }).unsubscribe(); // unsubscribe directly to avoid recursion
     }
+  }
+
+  private setTravelerForm(traveler: Traveler) {
+    // set date to be display
+    const day = parseInt(traveler.geburtsdatum.toString().split("T")[0].split("-")[2]);
+    const month = parseInt(traveler.geburtsdatum.toString().split("T")[0].split("-")[1]);
+    const year = parseInt(traveler.geburtsdatum.toString().split("T")[0].split("-")[0]);
+    // adress
+    let street = "";
+    let postal = "";
+    let city = "";
+    if (traveler.adresse && traveler.adresse.split(",").length >= 1) {
+      street = traveler.adresse.split(",")[0];
+      if (traveler.adresse.split(",").length > 1) {
+        postal = traveler.adresse.split(",")[1].split(" ")[1];
+        if (traveler.adresse.split(",")[1].split(" ").length >= 3) {
+          city = traveler.adresse.split(",")[1].split(" ")[2];
+        }
+      }
+    }
+    this.travelerForm.setValue({
+      lastname: traveler.name,
+      firstname: traveler.vorname,
+      birthday: new Date(year, month-1, day).toISOString(),
+      email: traveler.email,
+      street: street,
+      postal: postal,
+      city: city,
+      mobile: `0${traveler.telefonnummer}`, // Since number has been saved without the 0 before (int)
+      university: traveler.hochschule,
+      faculty: traveler.studiengang,
+      participated: traveler.schonTeilgenommen ? this.chooseArray[0] : this.chooseArray[1],
+      workfor: traveler.arbeitBei,
+    });
   }
 
   // Clear notification on click on input date.
@@ -142,10 +155,7 @@ export class TravelerFormComponent implements OnInit, AfterViewInit {
 
   // Checks whether the selected date of birth is valid or not
   onDateSelected(selectedDate) {
-    const dob = new Date(selectedDate.target.value);
-    const day = dob.getDate();
-    const month = dob.getMonth() + 1; // Since the method returns from 0 - 11
-    const year = dob.getFullYear();
+    const dob = selectedDate.target.value;
 
     /** The 3 following variables are timestamp type */
     const today = new Date().getTime();
@@ -155,7 +165,6 @@ export class TravelerFormComponent implements OnInit, AfterViewInit {
     const minDate = Date.UTC(2003, 1, 1);
 
     // Check whether the selected date is valid or not
-    //const resultOfComparaison = this.compareDate(dob.getTime(), minDate
     if (
       dob.getTime() > today ||
       (dob.getTime() < today && dob.getTime() > minDate) ||
@@ -175,9 +184,7 @@ export class TravelerFormComponent implements OnInit, AfterViewInit {
     } else {
       // set dob to valid
       this.isDobValid = true;
-      // Set the value of dob. To be saved later.
-      this.dob = `${day}/${month}/${year}`;
-      this.travelerForm.get("birthday").setValue(new Date(year, month, day));
+      // check whether the form is valid or not
       this.isFormValid();
     }
   }
@@ -190,22 +197,23 @@ export class TravelerFormComponent implements OnInit, AfterViewInit {
         id = this.currentTravelerId;
       }
 
+      const dob = new Date(this.travelerForm.value.birthday);
       this.currentTraveler = {
         id: id,
-        vorname: this.transformName(this.travelerForm.value.lastname),
-        name: this.transformName(this.travelerForm.value.firstname),
-        geburtsdatum: this.dob,
+        vorname: this.firstCharacterToUpper(this.travelerForm.value.firstname),
+        name: this.firstCharacterToUpper(this.travelerForm.value.lastname),
+        // Since the module datepicker returns the date as string. We add 1 day to current selected date of birth
+        geburtsdatum: new Date(dob.setDate(dob.getDate() + 1)),
         email: this.travelerForm.value.email,
-        adress: `${this.travelerForm.value.street}, ${this.travelerForm.value.postal} ${this.travelerForm.value.city}`,
-        telefonnummer: this.travelerForm.value.mobile,
-        hochschule: this.travelerForm.value.university,
-        studiengang: this.travelerForm.value.faculty,
-        schonTeilgenommen: this.travelerForm.value.participated,
-        arbeitBei: this.travelerForm.value.workfor,
+        adresse: `${this.firstCharacterToUpper(this.travelerForm.value.street)}, ${this.travelerForm.value.postal} ${this.firstCharacterToUpper(this.travelerForm.value.city)}`,
+        telefonnummer: parseInt(this.travelerForm.value.mobile),
+        hochschule: this.firstCharacterToUpper(this.travelerForm.value.university),
+        studiengang: this.firstCharacterToUpper(this.travelerForm.value.faculty),
+        schonTeilgenommen: this.travelerForm.value.participated === this.chooseArray[0],
+        arbeitBei: this.firstCharacterToUpper(this.travelerForm.value.workfor),
       };
-
+      // check whether the form is valid or not
       this.isFormValid();
-      console.log(this.currentTraveler);
     });
   }
 
@@ -233,9 +241,12 @@ export class TravelerFormComponent implements OnInit, AfterViewInit {
     }
   }
 
-  // Transforms the first character of the lastname and firstname to upper
-  private transformName(name: string): string {
-    name = name.trim().toString();
-    return name.charAt(0).toUpperCase() + name.slice(1);
+  // Transforms the first character of the string to upper
+  private firstCharacterToUpper(value: string): string {
+    if (value) {
+      value = value.trim().toString();
+      return value.charAt(0).toUpperCase() + value.slice(1);
+    }
+    return "";
   }
 }

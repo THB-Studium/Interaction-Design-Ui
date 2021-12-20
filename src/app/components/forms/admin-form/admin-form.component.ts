@@ -62,7 +62,7 @@ export class AdminFormComponent implements OnInit, AfterViewInit {
   // Calls on onload. This will help to know if we want to edit an admin or add a new one.
   // The method need the shareDataService as well, to populate those information.
   private initAdminForm() {
-    this.isAdd = this.sharedDataService.isAddAdmin;
+    this.isAdd = this.sharedDataService.isAddBtnClicked;
 
     if (!this.isAdd) {
       // Get and display existing information. Some need to be saved (the id and password).
