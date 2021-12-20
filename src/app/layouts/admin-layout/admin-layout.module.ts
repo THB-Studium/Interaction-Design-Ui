@@ -63,7 +63,7 @@ import { UserProfileComponent } from "../../pages/user-profile/user-profile.comp
     MatSortModule,
     MatDialogModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
   ],
   declarations: [
     DashboardComponent,

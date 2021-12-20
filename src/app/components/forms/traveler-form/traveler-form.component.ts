@@ -73,7 +73,7 @@ export class TravelerFormComponent implements OnInit, AfterViewInit {
   // Defines isDobValid
   isDobValid = false;
 
-  constructor(private sharedDataService: SharedDataService) { }
+  constructor(private sharedDataService: SharedDataService) {}
 
   ngOnInit(): void {
     this.initTravelerForm();
@@ -93,21 +93,29 @@ export class TravelerFormComponent implements OnInit, AfterViewInit {
       // Since every the dob is valid
       this.isDobValid = true;
       // the form has to ne initialized as well
-      this.sharedDataService.currentTraveler.subscribe((traveler) => {
+      this.sharedDataService.currentTraveler
+        .subscribe((traveler) => {
           // set the value of the current traveler
           this.currentTraveler = traveler;
           this.setTravelerForm(traveler);
           // save the current id
           this.currentTravelerId = traveler.id;
-        }).unsubscribe(); // unsubscribe directly to avoid recursion
+        })
+        .unsubscribe(); // unsubscribe directly to avoid recursion
     }
   }
 
   private setTravelerForm(traveler: Traveler) {
     // set date to be display
-    const day = parseInt(traveler.geburtsdatum.toString().split("T")[0].split("-")[2]);
-    const month = parseInt(traveler.geburtsdatum.toString().split("T")[0].split("-")[1]);
-    const year = parseInt(traveler.geburtsdatum.toString().split("T")[0].split("-")[0]);
+    const day = parseInt(
+      traveler.geburtsdatum.toString().split("T")[0].split("-")[2]
+    );
+    const month = parseInt(
+      traveler.geburtsdatum.toString().split("T")[0].split("-")[1]
+    );
+    const year = parseInt(
+      traveler.geburtsdatum.toString().split("T")[0].split("-")[0]
+    );
     // adress
     let street = "";
     let postal = "";
@@ -124,7 +132,7 @@ export class TravelerFormComponent implements OnInit, AfterViewInit {
     this.travelerForm.setValue({
       lastname: traveler.name,
       firstname: traveler.vorname,
-      birthday: new Date(year, month-1, day).toISOString(),
+      birthday: new Date(year, month - 1, day).toISOString(),
       email: traveler.email,
       street: street,
       postal: postal,
@@ -132,7 +140,9 @@ export class TravelerFormComponent implements OnInit, AfterViewInit {
       mobile: `0${traveler.telefonnummer}`, // Since number has been saved without the 0 before (int)
       university: traveler.hochschule,
       faculty: traveler.studiengang,
-      participated: traveler.schonTeilgenommen ? this.chooseArray[0] : this.chooseArray[1],
+      participated: traveler.schonTeilgenommen
+        ? this.chooseArray[0]
+        : this.chooseArray[1],
       workfor: traveler.arbeitBei,
     });
   }
@@ -205,11 +215,20 @@ export class TravelerFormComponent implements OnInit, AfterViewInit {
         // Since the module datepicker returns the date as string. We add 1 day to current selected date of birth
         geburtsdatum: new Date(dob.setDate(dob.getDate() + 1)),
         email: this.travelerForm.value.email,
-        adresse: `${this.firstCharacterToUpper(this.travelerForm.value.street)}, ${this.travelerForm.value.postal} ${this.firstCharacterToUpper(this.travelerForm.value.city)}`,
+        adresse: `${this.firstCharacterToUpper(
+          this.travelerForm.value.street
+        )}, ${this.travelerForm.value.postal} ${this.firstCharacterToUpper(
+          this.travelerForm.value.city
+        )}`,
         telefonnummer: parseInt(this.travelerForm.value.mobile),
-        hochschule: this.firstCharacterToUpper(this.travelerForm.value.university),
-        studiengang: this.firstCharacterToUpper(this.travelerForm.value.faculty),
-        schonTeilgenommen: this.travelerForm.value.participated === this.chooseArray[0],
+        hochschule: this.firstCharacterToUpper(
+          this.travelerForm.value.university
+        ),
+        studiengang: this.firstCharacterToUpper(
+          this.travelerForm.value.faculty
+        ),
+        schonTeilgenommen:
+          this.travelerForm.value.participated === this.chooseArray[0],
         arbeitBei: this.firstCharacterToUpper(this.travelerForm.value.workfor),
       };
       // check whether the form is valid or not

@@ -81,8 +81,8 @@
         <!-- Street -->
         <mat-form-field class="col-md-12" appearance="standard">
             <mat-label>Straße und Hausenummer</mat-label>
-            <input matInput formControlName="street" placeholder="StrasseName Hnr." (click)="notifyOnDateOfBirthInvalid()"
-                required>
+            <input matInput formControlName="street" placeholder="StrasseName Hnr."
+                (click)="notifyOnDateOfBirthInvalid()" required>
             <mat-error *ngIf="travelerForm.get('street').errors && travelerForm.get('street').hasError('required')">
                 Die Eingabe ist <strong>erforderlich</strong>.
             </mat-error>
