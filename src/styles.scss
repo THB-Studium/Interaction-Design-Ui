@@ -1,9 +1,45 @@
 @import "@angular/material/prebuilt-themes/indigo-pink.css";
 @import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 
-html, body { height: 100%; background-color: #ffffff !important; background: #ffffff !important;}
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+  height: 100%;
+  background-color: #ffffff !important;
+  background: #ffffff !important;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
 
 .bg-default {
-    background-color: #ffffff !important;
+  background-color: #ffffff !important;
+}
+
+.header-body i,
+.header-body em {
+  font-size: 3rem;
+}
+
+.table-responsive {
+  min-height: 60vh;
+}
+
+/*##################################### Display Screen settings ###################################*/
+@media only screen and (min-width: 1200px) {
+}
+
+@media only screen and (min-width: 960px) and (max-width: 1092px) {
+}
+
+@media only screen and (max-width: 992px) {
+}
+
+@media only screen and (max-width: 768px) {
+}
+
+@media only screen and (max-width: 568px) {
+}
+
+@media only screen and (max-width: 468px) {
 }

@@ -1,30 +1,37 @@
-import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';import { RouterModule } from '@angular/router';
-import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgModule } from "@angular/core";
+import { HttpClientModule } from "@angular/common/http";
+import { RouterModule } from "@angular/router";
+import { CommonModule } from "@angular/common";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 
-import { ClipboardModule } from 'ngx-clipboard';
+import { ClipboardModule } from "ngx-clipboard";
 
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatStepperModule } from '@angular/material/stepper';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatCardModule } from '@angular/material/card';
-import { MatDividerModule } from '@angular/material/divider';
-import { MatBadgeModule } from '@angular/material/badge';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatTableModule } from '@angular/material/table';
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatInputModule } from "@angular/material/input";
+import { MatSelectModule } from "@angular/material/select";
+import { MatButtonModule } from "@angular/material/button";
+import { MatIconModule } from "@angular/material/icon";
+import { MatMenuModule } from "@angular/material/menu";
+import { MatStepperModule } from "@angular/material/stepper";
+import { MatCheckboxModule } from "@angular/material/checkbox";
+import { MatCardModule } from "@angular/material/card";
+import { MatDividerModule } from "@angular/material/divider";
+import { MatBadgeModule } from "@angular/material/badge";
+import { MatTooltipModule } from "@angular/material/tooltip";
+import { MatTableModule } from "@angular/material/table";
+import { MatPaginatorModule } from "@angular/material/paginator";
+import { MatSortModule } from "@angular/material/sort";
+import { MatDialogModule } from "@angular/material/dialog";
 
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
+import { ComponentsModule } from "src/app/components/components.module";
 
-import { AdminLayoutRoutes } from './admin-layout.routing';
-import { DashboardComponent } from '../../pages/dashboard/dashboard.component';
-import { UserProfileComponent } from '../../pages/user-profile/user-profile.component';
-//import { ToastrModule } from 'ngx-toastr';
+import { AdminLayoutRoutes } from "./admin-layout.routing";
+
+import { DashboardComponent } from "../../pages/dashboard/dashboard.component";
+import { AdminComponent } from "../../pages/admins/admin.component";
+import { BookingComponent } from '../../pages/booking/booking.component';
+import { UserProfileComponent } from "../../pages/user-profile/user-profile.component";
 
 @NgModule({
   imports: [
@@ -34,6 +41,7 @@ import { UserProfileComponent } from '../../pages/user-profile/user-profile.comp
     ReactiveFormsModule,
     HttpClientModule,
     NgbModule,
+    ComponentsModule,
     ClipboardModule,
     MatFormFieldModule,
     MatInputModule,
@@ -47,12 +55,16 @@ import { UserProfileComponent } from '../../pages/user-profile/user-profile.comp
     MatDividerModule,
     MatBadgeModule,
     MatTooltipModule,
-    MatTableModule
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatDialogModule
   ],
   declarations: [
-    DashboardComponent,
+    DashboardComponent, 
+    AdminComponent, 
+    BookingComponent,
     UserProfileComponent
   ]
 })
-
 export class AdminLayoutModule {}
