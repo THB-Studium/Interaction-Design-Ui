@@ -4,8 +4,8 @@
 import { Injectable } from "@angular/core";
 import { BehaviorSubject } from "rxjs";
 
-import { Admin } from "src/app/models/Admin";
-import { Traveler } from "src/app/models/Traveler";
+import { Admin } from "src/app/models/admin";
+import { Traveler } from "src/app/models/traveler";
 
 @Injectable({
   providedIn: "root",

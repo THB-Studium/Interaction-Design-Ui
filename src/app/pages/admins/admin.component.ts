@@ -10,7 +10,7 @@ import { ToastrService } from "ngx-toastr";
 import { AdminService } from "src/app/services/admin/admin.service";
 import { SharedDataService } from "src/app/services/sharedData/shared-data.service";
 
-import { Admin } from "src/app/models/Admin";
+import { Admin } from "src/app/models/admin";
 @Component({
   selector: "app-admin",
   templateUrl: "./admin.component.html",

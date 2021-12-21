@@ -9,7 +9,7 @@ import { FormControl, FormGroup, Validators } from "@angular/forms";
 
 import { SharedDataService } from "src/app/services/sharedData/shared-data.service";
 
-import { Traveler } from "src/app/models/Traveler";
+import { Traveler } from "src/app/models/traveler";
 import { Pattern } from "src/app/variables/pattern";
 
 @Component({
