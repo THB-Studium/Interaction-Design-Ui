@@ -9,7 +9,7 @@ import { FormControl, FormGroup, Validators } from "@angular/forms";
 
 import { SharedDataService } from "src/app/services/sharedData/shared-data.service";
 
-import { Admin } from "src/app/models/Admin";
+import { Admin } from "src/app/models/admin";
 
 @Component({
   selector: "app-admin-form",

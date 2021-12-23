@@ -1,4 +1,4 @@
-import { Traveler } from "./Traveler";
+import { Traveler } from "./traveler";
 
 export class Booking {
     public id: string;

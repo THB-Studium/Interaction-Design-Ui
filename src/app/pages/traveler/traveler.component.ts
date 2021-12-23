@@ -9,7 +9,7 @@ import { ToastrService } from "ngx-toastr";
 import { TravelerService } from "src/app/services/traveler/traveler.service";
 import { SharedDataService } from "src/app/services/sharedData/shared-data.service";
 
-import { Traveler } from "src/app/models/Traveler";
+import { Traveler } from "src/app/models/traveler";
 import { Calendar } from "src/app/variables/calendar";
 
 @Component({

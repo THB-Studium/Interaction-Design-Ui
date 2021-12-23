@@ -10,7 +10,7 @@ import { ToastrService } from "ngx-toastr";
 import { BookingService } from "src/app/services/booking/booking.service";
 import { SharedDataService } from "src/app/services/sharedData/shared-data.service";
 
-import { Booking } from "src/app/models/Booking";
+import { Booking } from "src/app/models/booking";
 
 @Component({
   selector: "app-booking",

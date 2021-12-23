@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Observable } from "rxjs";
 
 import { Server } from 'src/app/variables/server';
-import { Traveler } from 'src/app/models/Traveler';
+import { Traveler } from 'src/app/models/traveler';
 
 @Injectable({
   providedIn: 'root'
