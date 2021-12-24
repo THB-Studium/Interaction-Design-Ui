@@ -5,6 +5,7 @@ import { Injectable } from "@angular/core";
 import { BehaviorSubject } from "rxjs";
 
 import { Admin } from "src/app/models/admin";
+import { CountryInformation } from "src/app/models/countryInformation";
 import { Traveler } from "src/app/models/traveler";
 
 @Injectable({
@@ -32,7 +33,7 @@ export class SharedDataService {
   }
   //#endregion admin
 
-  //#region Traveler
+  //#region traveler
   private traveler: Traveler = {
     id: "",
     name: "",
@@ -53,5 +54,21 @@ export class SharedDataService {
   changeCurrentTraveler(traveler: Traveler) {
     this.travelerSource.next(traveler);
   }
-  //#endregion
+  //#endregion traveler
+
+  //#region country information
+  private countryInformation: CountryInformation = {
+    id: "",
+    titel: "",
+    description: "",
+    landId: ""
+  }
+
+  private countryInformationSource = new BehaviorSubject<CountryInformation>(this.countryInformation);
+  public currentCountryInfo = this.countryInformationSource.asObservable();
+
+  changeCurrentCountryInfo(countryInfo: CountryInformation) {
+    this.countryInformationSource.next(countryInfo);
+  }
+  //#endreegion country information
 }

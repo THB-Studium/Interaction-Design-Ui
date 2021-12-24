@@ -21,17 +21,24 @@ import { MatSortModule } from "@angular/material/sort";
 import { MatDialogModule } from "@angular/material/dialog";
 import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatNativeDateModule } from "@angular/material/core";
+import { MatChipsModule } from '@angular/material/chips';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatGridListModule } from '@angular/material/grid-list';
 
 import { SidebarComponent } from "./sidebar/sidebar.component";
 import { NavbarComponent } from "./navbar/navbar.component";
 import { FooterComponent } from "./footer/footer.component";
 import { AdminFormComponent } from "./forms/admin-form/admin-form.component";
 import { TravelerFormComponent } from './forms/traveler-form/traveler-form.component';
+import { CountryFormComponent } from './forms/country-form/country-form.component';
+import { HighlightFormComponent } from './forms/highlight-form/highlight-form.component';
+import { AccommodationFormComponent } from './forms/accommodation-form/accommodation-form.component';
+import { CountryInformationFormComponent } from './forms/country-information-form/country-information-form.component';
 
 @NgModule({
   imports: [
-    CommonModule, 
-    RouterModule, 
+    CommonModule,
+    RouterModule,
     NgbModule,
     FormsModule,
     ReactiveFormsModule,
@@ -52,7 +59,10 @@ import { TravelerFormComponent } from './forms/traveler-form/traveler-form.compo
     MatSortModule,
     MatDialogModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MatChipsModule,
+    MatAutocompleteModule,
+    MatGridListModule
   ],
   declarations: [
     FooterComponent,
@@ -60,13 +70,18 @@ import { TravelerFormComponent } from './forms/traveler-form/traveler-form.compo
     SidebarComponent,
     AdminFormComponent,
     TravelerFormComponent,
+    CountryFormComponent,
+    HighlightFormComponent,
+    AccommodationFormComponent,
+    CountryInformationFormComponent,
   ],
   exports: [
-    FooterComponent, 
-    NavbarComponent, 
+    FooterComponent,
+    NavbarComponent,
     SidebarComponent,
     AdminFormComponent,
     TravelerFormComponent,
+    CountryFormComponent
   ]
 })
-export class ComponentsModule {}
+export class ComponentsModule { }

@@ -24,6 +24,8 @@ import { MatSortModule } from "@angular/material/sort";
 import { MatDialogModule } from "@angular/material/dialog";
 import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatNativeDateModule } from "@angular/material/core";
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatGridListModule } from '@angular/material/grid-list';
 
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { ComponentsModule } from "src/app/components/components.module";
@@ -34,6 +36,9 @@ import { DashboardComponent } from "../../pages/dashboard/dashboard.component";
 import { AdminComponent } from "../../pages/admins/admin.component";
 import { BookingComponent } from "../../pages/booking/booking.component";
 import { TravelerComponent } from "../../pages/traveler/traveler.component";
+import { CountriesListComponent } from "src/app/pages/country/countries-list/countries-list.component";
+import { AddCountryComponent } from "src/app/pages/country/add-country/add-country.component";
+import { EditCountryComponent } from "src/app/pages/country/edit-country/edit-country.component";
 import { UserProfileComponent } from "../../pages/user-profile/user-profile.component";
 
 @NgModule({
@@ -64,13 +69,18 @@ import { UserProfileComponent } from "../../pages/user-profile/user-profile.comp
     MatDialogModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    MatAutocompleteModule,
+    MatGridListModule
   ],
   declarations: [
     DashboardComponent,
     AdminComponent,
     BookingComponent,
     TravelerComponent,
+    CountriesListComponent,
+    AddCountryComponent,
+    EditCountryComponent,
     UserProfileComponent,
   ],
 })
-export class AdminLayoutModule {}
+export class AdminLayoutModule { }
