@@ -5,15 +5,15 @@ import {
   Output,
   EventEmitter,
   ElementRef,
-  ViewChild
+  ViewChild,
 } from "@angular/core";
-import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import { COMMA, ENTER } from "@angular/cdk/keycodes";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
-import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { Observable } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
-import { Router } from '@angular/router';
-import { MatChipInputEvent } from '@angular/material/chips';
+import { MatAutocompleteSelectedEvent } from "@angular/material/autocomplete";
+import { Observable } from "rxjs";
+import { map, startWith } from "rxjs/operators";
+import { Router } from "@angular/router";
+import { MatChipInputEvent } from "@angular/material/chips";
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 
 import { SharedDataService } from "src/app/services/sharedData/shared-data.service";
@@ -28,20 +28,20 @@ import { Accommodation } from "src/app/models/accommodation";
 import { CountryInformation } from "src/app/models/countryInformation";
 
 @Component({
-  selector: 'app-country-form',
-  templateUrl: './country-form.component.html',
-  styleUrls: ['./country-form.component.css']
+  selector: "app-country-form",
+  templateUrl: "./country-form.component.html",
+  styleUrls: ["./country-form.component.css"],
 })
 export class CountryFormComponent implements OnInit, AfterViewInit {
-
   // Defines notifyFormIsValid. Notify the parent when the form is valid
   @Output() notifyFormIsValid = new EventEmitter<boolean>(false);
   // Defines highlightInput
-  @ViewChild('highlightInput') highlightInput: ElementRef<HTMLInputElement>;
+  @ViewChild("highlightInput") highlightInput: ElementRef<HTMLInputElement>;
   // Defines accommodationInput
-  @ViewChild('accommodationInput') accommodationInput: ElementRef<HTMLInputElement>;
+  @ViewChild("accommodationInput")
+  accommodationInput: ElementRef<HTMLInputElement>;
   // Defines cuntryInfoInput
-  @ViewChild('countryInfoInput') countryInfoInput: ElementRef<HTMLInputElement>;
+  @ViewChild("countryInfoInput") countryInfoInput: ElementRef<HTMLInputElement>;
 
   // Defines country
   countryForm = new FormGroup({
@@ -109,25 +109,38 @@ export class CountryFormComponent implements OnInit, AfterViewInit {
     private highlightService: HighlightService,
     private accommadationService: AccommodationService,
     private countryInfoService: CountryInformationService,
-    private dialog: MatDialog,
+    private dialog: MatDialog
   ) {
-
     this.dialogConfiguration();
 
-    this.filteredHighlights = this.countryForm.get("highlights").valueChanges.pipe(
-      startWith(null),
-      map((highlight: string | null) => (highlight ? this._filter(highlight) : this.allHighlights.slice())),
-    );
+    this.filteredHighlights = this.countryForm
+      .get("highlights")
+      .valueChanges.pipe(
+        startWith(null),
+        map((highlight: string | null) =>
+          highlight ? this._filter(highlight) : this.allHighlights.slice()
+        )
+      );
 
-    this.filteredAccommodations = this.countryForm.get('accommodations').valueChanges.pipe(
-      startWith(null),
-      map((accommodation: string | null) => (accommodation ? this._filterAccommodation(accommodation) : this.allAccommodations.slice())),
-    );
+    this.filteredAccommodations = this.countryForm
+      .get("accommodations")
+      .valueChanges.pipe(
+        startWith(null),
+        map((accommodation: string | null) =>
+          accommodation
+            ? this._filterAccommodation(accommodation)
+            : this.allAccommodations.slice()
+        )
+      );
 
-    this.filteredCountriesInfo = this.countryForm.get('countryinfo').valueChanges.pipe(
-      startWith(null),
-      map((info: string | null) => (info ? this._filterCountryInfo(info) : this.allCountriesInfo.slice())),
-    );
+    this.filteredCountriesInfo = this.countryForm
+      .get("countryinfo")
+      .valueChanges.pipe(
+        startWith(null),
+        map((info: string | null) =>
+          info ? this._filterCountryInfo(info) : this.allCountriesInfo.slice()
+        )
+      );
   }
 
   ngOnInit(): void {
@@ -152,7 +165,7 @@ export class CountryFormComponent implements OnInit, AfterViewInit {
   private getAllHighlights() {
     this.highlightService.getAll().subscribe({
       next: (highlights) => {
-        highlights.forEach(highlight => {
+        highlights.forEach((highlight) => {
           this.allHighlights.push(highlight.name);
         });
         // save as object list
@@ -160,42 +173,46 @@ export class CountryFormComponent implements OnInit, AfterViewInit {
       },
       error: () => {
         this.toastrService.error(
-          'Die Highlights konnten nicht geladen werden.',
+          "Die Highlights konnten nicht geladen werden.",
           "Fehler"
         );
-      }
+      },
     });
   }
 
   private getAllAccommodations() {
     this.accommadationService.getAll().subscribe({
       next: (accommodations) => {
-        accommodations.forEach(accommodation => { this.allAccommodations.push(accommodation.name); });
+        accommodations.forEach((accommodation) => {
+          this.allAccommodations.push(accommodation.name);
+        });
         // save the as object
         this.allAccommodationsObjects = accommodations;
       },
       error: () => {
         this.toastrService.error(
-          'Die Unterkünfte konnten nicht geladen werden.',
+          "Die Unterkünfte konnten nicht geladen werden.",
           "Fehler"
         );
-      }
+      },
     });
   }
 
   private getAllcountriesInfo() {
     this.countryInfoService.getAll().subscribe({
       next: (values) => {
-        values.forEach(value => { this.allCountriesInfo.push(value.titel); });
+        values.forEach((value) => {
+          this.allCountriesInfo.push(value.titel);
+        });
         // save the list
         this.allCountriesInfosObjects = values;
       },
       error: () => {
         this.toastrService.error(
-          'Die Länder Informationen konnten nicht geladen werden.',
+          "Die Länder Informationen konnten nicht geladen werden.",
           "Fehler"
         );
-      }
+      },
     });
   }
 
@@ -218,18 +235,20 @@ export class CountryFormComponent implements OnInit, AfterViewInit {
           },
           error: () => {
             this.toastrService.error(
-              'Das Highlight konnte nicht gespeichert werden.',
+              "Das Highlight konnte nicht gespeichert werden.",
               "Fehler"
             );
           },
           complete: () => {
             this.toastrService.success(
-              'Das Highlight wurde erfolgreich gespeichert.'
+              "Das Highlight wurde erfolgreich gespeichert."
             );
-          }
+          },
         });
-      }
+      },
     });
+    // set the flag to false
+    this.isValid = false;
   }
 
   addAccommodationDialog(dialogForm: any) {
@@ -247,18 +266,20 @@ export class CountryFormComponent implements OnInit, AfterViewInit {
           },
           error: () => {
             this.toastrService.error(
-              'Die Unterkunft konnte nicht gespeichert werden.',
+              "Die Unterkunft konnte nicht gespeichert werden.",
               "Fehler"
             );
           },
           complete: () => {
             this.toastrService.success(
-              'Die Unterkunft wurde erfolgreich gespeichert.'
+              "Die Unterkunft wurde erfolgreich gespeichert."
             );
-          }
+          },
         });
-      }
+      },
     });
+    // set the flag to false
+    this.isValid = false;
   }
 
   addCountryInfoDialog(dialogForm: any) {
@@ -278,18 +299,20 @@ export class CountryFormComponent implements OnInit, AfterViewInit {
           },
           error: () => {
             this.toastrService.error(
-              'Die Information konnte nicht gespeichert werden.',
+              "Die Information konnte nicht gespeichert werden.",
               "Fehler"
             );
           },
           complete: () => {
             this.toastrService.success(
-              'Die Information wurde erfolgreich gespeichert.'
+              "Die Information wurde erfolgreich gespeichert."
             );
-          }
+          },
         });
-      }
+      },
     });
+    // set the flag to false
+    this.isValid = false;
   }
 
   private onFormValuesChanged(): void {
@@ -302,8 +325,10 @@ export class CountryFormComponent implements OnInit, AfterViewInit {
 
         // Find Highlight to be saved
         let selectedHighlights = [];
-        this.highligthsArray.forEach(value => {
-          const index = this.allHighlightsObjects.findIndex(x => x.name.toLowerCase() === value.toLowerCase());
+        this.highligthsArray.forEach((value) => {
+          const index = this.allHighlightsObjects.findIndex(
+            (x) => x.name.toLowerCase() === value.toLowerCase()
+          );
           if (index > -1) {
             selectedHighlights.push(this.allHighlightsObjects[index]);
           }
@@ -311,8 +336,10 @@ export class CountryFormComponent implements OnInit, AfterViewInit {
 
         // Find accommodations to be saved
         let selectedAccommodations = [];
-        this.accommodationsArray.forEach(value => {
-          const index = this.allAccommodationsObjects.findIndex(x => x.name.toLowerCase() === value.toLowerCase());
+        this.accommodationsArray.forEach((value) => {
+          const index = this.allAccommodationsObjects.findIndex(
+            (x) => x.name.toLowerCase() === value.toLowerCase()
+          );
           if (index > -1) {
             selectedAccommodations.push(this.allAccommodationsObjects[index]);
           }
@@ -320,8 +347,10 @@ export class CountryFormComponent implements OnInit, AfterViewInit {
 
         // Find countries info to bbe saved
         let selectedCountriesInfo = [];
-        this.countriesInfoArray.forEach(value => {
-          const index = this.allCountriesInfosObjects.findIndex(x => x.titel.toLowerCase() === value.toLowerCase());
+        this.countriesInfoArray.forEach((value) => {
+          const index = this.allCountriesInfosObjects.findIndex(
+            (x) => x.titel.toLowerCase() === value.toLowerCase()
+          );
           if (index > -1) {
             selectedCountriesInfo.push(this.allCountriesInfosObjects[index]);
           }
@@ -333,31 +362,31 @@ export class CountryFormComponent implements OnInit, AfterViewInit {
           flughafen: Array.from(this.airportsArray),
           highlights: selectedHighlights,
           unterkunft: selectedAccommodations,
-          infosLands: selectedCountriesInfo
+          infosLands: selectedCountriesInfo,
         };
 
-        console.log(this.currentCountry)
+        console.log(this.currentCountry);
         // check whether the form is valid or not
         //this.isFormValid();
-      }
+      },
     });
   }
 
   private isFormValid(): void {
-    if (this.countryForm.get("title").valid &&
-      this.countryForm.get("description").valid) {
-
+    if (
+      this.countryForm.get("title").valid &&
+      this.countryForm.get("description").valid
+    ) {
       // notify the parent
       this.notifyFormIsValid.emit(true);
-    }
-    else {
+    } else {
       this.notifyFormIsValid.emit(false);
     }
   }
 
   // Navigates to country view
   navigateToCountriesList() {
-    this.router.navigateByUrl('/countries');
+    this.router.navigateByUrl("/countries");
   }
 
   // Adds new selected airport into the list of airports
@@ -376,7 +405,7 @@ export class CountryFormComponent implements OnInit, AfterViewInit {
   //#region Highlights
   // Adds new selected highlight into the list of Highlights
   addHighlight(event: MatChipInputEvent): void {
-    const value = (event.value || '').trim();
+    const value = (event.value || "").trim();
     // Add our highlight
     if (value) {
       this.highligthsArray.push(value);
@@ -397,20 +426,22 @@ export class CountryFormComponent implements OnInit, AfterViewInit {
   // autocompilation
   selected(event: MatAutocompleteSelectedEvent): void {
     this.highligthsArray.push(event.option.viewValue);
-    this.highlightInput.nativeElement.value = '';
+    this.highlightInput.nativeElement.value = "";
     this.countryForm.get("highlights").setValue(null);
   }
 
   // Values filter
   private _filter(value: string): string[] {
     const filterValue = value.toLowerCase();
-    return this.allHighlights.filter(highlight => highlight.toLowerCase().includes(filterValue));
+    return this.allHighlights.filter((highlight) =>
+      highlight.toLowerCase().includes(filterValue)
+    );
   }
   //#endregion Highlights
 
   //#region Accommodation
   addAccommodation(event: MatChipInputEvent): void {
-    const value = (event.value || '').trim();
+    const value = (event.value || "").trim();
     // Add our accommodation
     if (value) {
       this.accommodationsArray.push(value);
@@ -431,20 +462,22 @@ export class CountryFormComponent implements OnInit, AfterViewInit {
   // autocompilation
   selectedAccommodation(event: MatAutocompleteSelectedEvent): void {
     this.accommodationsArray.push(event.option.viewValue);
-    this.accommodationInput.nativeElement.value = '';
+    this.accommodationInput.nativeElement.value = "";
     this.countryForm.get("accommodations").setValue(null);
   }
 
   // Values filter
   private _filterAccommodation(value: string): string[] {
     const filterValue = value.toLowerCase();
-    return this.allAccommodations.filter(val => val.toLowerCase().includes(filterValue));
+    return this.allAccommodations.filter((val) =>
+      val.toLowerCase().includes(filterValue)
+    );
   }
   //#endregion accommodation
 
   //#region countryInfo
   addCountryInfo(event: MatChipInputEvent): void {
-    const value = (event.value || '').trim();
+    const value = (event.value || "").trim();
     // Add our countryInfo
     if (value) {
       this.countriesInfoArray.push(value);
@@ -465,14 +498,16 @@ export class CountryFormComponent implements OnInit, AfterViewInit {
   // autocompilation
   selectedCountryInfo(event: MatAutocompleteSelectedEvent): void {
     this.countriesInfoArray.push(event.option.viewValue);
-    this.countryInfoInput.nativeElement.value = '';
+    this.countryInfoInput.nativeElement.value = "";
     this.countryForm.get("countryinfo").setValue(null);
   }
 
   // Values filter
   private _filterCountryInfo(value: string): string[] {
     const filterValue = value.toLowerCase();
-    return this.allCountriesInfo.filter(val => val.toLowerCase().includes(filterValue));
+    return this.allCountriesInfo.filter((val) =>
+      val.toLowerCase().includes(filterValue)
+    );
   }
   //#endregion countryInfo
 

@@ -13,12 +13,11 @@ import { SharedDataService } from "src/app/services/sharedData/shared-data.servi
 import { Country } from "src/app/models/country";
 
 @Component({
-  selector: 'app-countries-list',
-  templateUrl: './countries-list.component.html',
-  styleUrls: ['./countries-list.component.css']
+  selector: "app-countries-list",
+  templateUrl: "./countries-list.component.html",
+  styleUrls: ["./countries-list.component.css"],
 })
 export class CountriesListComponent implements OnInit, AfterViewInit {
-
   // Defines paginator
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
   // Defines sort
@@ -30,7 +29,7 @@ export class CountriesListComponent implements OnInit, AfterViewInit {
     "airports",
     "highlights",
     "accommodation",
-    "action"
+    "action",
   ];
   // Defines dataSource
   dataSource: MatTableDataSource<Country>;
@@ -108,7 +107,7 @@ export class CountriesListComponent implements OnInit, AfterViewInit {
           `Die Länder konnten nicht geladen werden.`,
           "Fehler"
         );
-      }
+      },
     });
   }
 
@@ -120,7 +119,6 @@ export class CountriesListComponent implements OnInit, AfterViewInit {
   }
 
   navigateToAddView() {
-    this.router.navigate(['add'], { relativeTo: this.route });
+    this.router.navigate(["add"], { relativeTo: this.route });
   }
-
 }

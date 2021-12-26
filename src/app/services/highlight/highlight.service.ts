@@ -1,19 +1,19 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Observable } from "rxjs";
 
-import { Server } from 'src/app/variables/server';
-import { Highlight } from 'src/app/models/highlight';
+import { Server } from "src/app/variables/server";
+import { Highlight } from "src/app/models/highlight";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class HighlightService {
   // API for country highlights
   readonly HIGHLIGHT_URL: string = `${Server.API_URL}/highlights`;
   headers = new HttpHeaders({ "Content-Type": "application/json" });
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient) {}
 
   // GET ONE
   getOne(id: string): Observable<Highlight> {
@@ -27,8 +27,25 @@ export class HighlightService {
   }
 
   // POST
-  addOne(highlight: Highlight): Observable<Highlight> {
-    return this.httpClient.post<Highlight>(this.HIGHLIGHT_URL, highlight);
+  addOne(highlight: Highlight): Observable<any> {
+    const formData = new FormData();
+    const _highlight = {
+      id: highlight.id,
+      name: highlight.name,
+      description: highlight.description,
+      landId: highlight.landId
+    };
+    
+    formData.append("bild", highlight.bild);
+
+    formData.append(
+      "highlight",
+      new Blob([JSON.stringify(_highlight)], {
+        type: "application/json",
+      }), ""
+    );
+
+    return this.httpClient.post<FormData>(this.HIGHLIGHT_URL, formData);
   }
 
   // PUT

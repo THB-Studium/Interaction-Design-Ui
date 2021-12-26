@@ -28,7 +28,20 @@ export class AccommodationService {
 
   // POST
   addOne(accommodation: Accommodation): Observable<Accommodation> {
-    return this.httpClient.post<Accommodation>(this.ACCOMMODATIONS_URL, accommodation);
+    const formData = new FormData();
+    const a = {
+      id: accommodation.id,
+      name: accommodation.name,
+      beschreibung: accommodation.beschreibung,
+      link: accommodation.link,
+      adresse: accommodation.adresse,
+      landId: accommodation.landId
+    };
+
+    formData.append("unterkunft", new Blob([JSON.stringify(a)], {type : 'application/json'}))
+
+    formData.append("files", accommodation.bilder);
+    return this.httpClient.post<Accommodation>(this.ACCOMMODATIONS_URL, formData);
   }
 
   // PUT

@@ -79,7 +79,7 @@ export class SharedDataService {
     id: '',
     name: '',
     description: '',
-    bild: '',
+    bild: [],
     landId: ''
   };
   private highlightSource = new BehaviorSubject<Highlight>(this.highlight);

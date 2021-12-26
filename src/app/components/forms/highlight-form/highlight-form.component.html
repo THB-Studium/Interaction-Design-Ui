@@ -29,13 +29,9 @@
       <mat-form-field class="col-md-12">
         <mat-toolbar class="mb-1">
           <input matInput [value]="selectedFileName.length ? selectedFileName : 'Bilder auswählen'"
-                 formControlName="img" required/>
+            formControlName="img" required />
         </mat-toolbar>
-        <input type="file"
-               id="fileInput"
-               name="fileInput"
-               accept="image/*"
-               (change)="selectFile($event)" />
+        <input type="file" id="fileInput" name="fileInput" accept="image/*" (change)="selectFile($event)" />
         <mat-error *ngIf="highlightForm.get('img').invalid">
           Die Eingabe ist <strong>erforderlich</strong>.
         </mat-error>
