@@ -26,6 +26,9 @@ import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatNativeDateModule } from "@angular/material/core";
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatListModule } from '@angular/material/list';
 
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { ComponentsModule } from "src/app/components/components.module";
@@ -70,7 +73,10 @@ import { UserProfileComponent } from "../../pages/user-profile/user-profile.comp
     MatDatepickerModule,
     MatNativeDateModule,
     MatAutocompleteModule,
-    MatGridListModule
+    MatGridListModule,
+    MatToolbarModule,
+    MatProgressBarModule,
+    MatListModule
   ],
   declarations: [
     DashboardComponent,

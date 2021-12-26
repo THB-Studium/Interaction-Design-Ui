@@ -3,9 +3,11 @@
  */
 import { Injectable } from "@angular/core";
 import { BehaviorSubject } from "rxjs";
+import { Accommodation } from "src/app/models/accommodation";
 
 import { Admin } from "src/app/models/admin";
 import { CountryInformation } from "src/app/models/countryInformation";
+import { Highlight } from "src/app/models/highlight";
 import { Traveler } from "src/app/models/traveler";
 
 @Injectable({
@@ -70,5 +72,40 @@ export class SharedDataService {
   changeCurrentCountryInfo(countryInfo: CountryInformation) {
     this.countryInformationSource.next(countryInfo);
   }
-  //#endreegion country information
+  //#endregion country information
+
+  //#region highlight
+  private highlight: Highlight = {
+    id: '',
+    name: '',
+    description: '',
+    bild: '',
+    landId: ''
+  };
+  private highlightSource = new BehaviorSubject<Highlight>(this.highlight);
+  public currentHighlight = this.highlightSource.asObservable();
+
+  changeCurrentHighlight(highlight: Highlight) {
+    this.highlightSource.next(highlight);
+  }
+  //#endregion highlight
+
+  //#region accommodation
+  private accommodation: Accommodation = {
+    id: '',
+    name: '',
+    adresse: '',
+    link: '',
+    beschreibung: '',
+    bilder: [],
+    landId: ''
+  }
+
+  private accommodationSource = new BehaviorSubject<Accommodation>(this.accommodation);
+  public currentAccommodation = this.accommodationSource.asObservable();
+
+  changeCurrentAccommodation(accommodation: Accommodation) {
+    this.accommodationSource.next(accommodation);
+  }
+  //#endregion accommodation
 }

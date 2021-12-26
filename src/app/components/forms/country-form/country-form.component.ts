@@ -100,7 +100,7 @@ export class CountryFormComponent implements OnInit, AfterViewInit {
   // Defines dialogConfig
   dialogConfig = new MatDialogConfig();
   //
-  isValidCountryInfoForm = false;
+  isValid = false;
 
   constructor(
     private router: Router,
@@ -111,6 +111,7 @@ export class CountryFormComponent implements OnInit, AfterViewInit {
     private countryInfoService: CountryInformationService,
     private dialog: MatDialog,
   ) {
+
     this.dialogConfiguration();
 
     this.filteredHighlights = this.countryForm.get("highlights").valueChanges.pipe(
@@ -198,13 +199,71 @@ export class CountryFormComponent implements OnInit, AfterViewInit {
     });
   }
 
+  isModalFormValid(value: boolean) {
+    this.isValid = value;
+  }
+
   addHighlightDialog(dialogForm: any) {
     this.sharedDataService.isAddBtnClicked = true;
     this.dialog.open(dialogForm, this.dialogConfig);
   }
 
-  isCountryInfoFormValid(value: boolean) {
-    this.isValidCountryInfoForm = value;
+  saveNewHighlight() {
+    this.sharedDataService.currentHighlight.subscribe({
+      next: (highlight) => {
+        this.highlightService.addOne(highlight).subscribe({
+          next: (savedHighlight) => {
+            this.allHighlightsObjects.push(savedHighlight);
+            this.highligthsArray.push(savedHighlight.name);
+          },
+          error: () => {
+            this.toastrService.error(
+              'Das Highlight konnte nicht gespeichert werden.',
+              "Fehler"
+            );
+          },
+          complete: () => {
+            this.toastrService.success(
+              'Das Highlight wurde erfolgreich gespeichert.'
+            );
+          }
+        });
+      }
+    });
+  }
+
+  addAccommodationDialog(dialogForm: any) {
+    this.sharedDataService.isAddBtnClicked = true;
+    this.dialog.open(dialogForm, this.dialogConfig);
+  }
+
+  saveNewAccommodation() {
+    this.sharedDataService.currentAccommodation.subscribe({
+      next: (accommodation) => {
+        this.accommadationService.addOne(accommodation).subscribe({
+          next: (savedAccommodation) => {
+            this.allAccommodationsObjects.push(savedAccommodation);
+            this.accommodationsArray.push(savedAccommodation.name);
+          },
+          error: () => {
+            this.toastrService.error(
+              'Die Unterkunft konnte nicht gespeichert werden.',
+              "Fehler"
+            );
+          },
+          complete: () => {
+            this.toastrService.success(
+              'Die Unterkunft wurde erfolgreich gespeichert.'
+            );
+          }
+        });
+      }
+    });
+  }
+
+  addCountryInfoDialog(dialogForm: any) {
+    this.sharedDataService.isAddBtnClicked = true;
+    this.dialog.open(dialogForm, this.dialogConfig);
   }
 
   saveNewCountryInfo() {
@@ -233,16 +292,6 @@ export class CountryFormComponent implements OnInit, AfterViewInit {
     });
   }
 
-  addAccommodationDialog(dialogForm: any) {
-    this.sharedDataService.isAddBtnClicked = true;
-    this.dialog.open(dialogForm, this.dialogConfig);
-  }
-
-  addCountryInfoDialog(dialogForm: any) {
-    this.sharedDataService.isAddBtnClicked = true;
-    this.dialog.open(dialogForm, this.dialogConfig);
-  }
-
   private onFormValuesChanged(): void {
     this.countryForm.valueChanges.subscribe({
       next: () => {
@@ -254,7 +303,7 @@ export class CountryFormComponent implements OnInit, AfterViewInit {
         // Find Highlight to be saved
         let selectedHighlights = [];
         this.highligthsArray.forEach(value => {
-          const index = this.allHighlightsObjects.findIndex(x => x.name.toLocaleLowerCase() === value.toLocaleLowerCase());
+          const index = this.allHighlightsObjects.findIndex(x => x.name.toLowerCase() === value.toLowerCase());
           if (index > -1) {
             selectedHighlights.push(this.allHighlightsObjects[index]);
           }
@@ -263,7 +312,7 @@ export class CountryFormComponent implements OnInit, AfterViewInit {
         // Find accommodations to be saved
         let selectedAccommodations = [];
         this.accommodationsArray.forEach(value => {
-          const index = this.allAccommodationsObjects.findIndex(x => x.name.toLocaleLowerCase() === value.toLocaleLowerCase());
+          const index = this.allAccommodationsObjects.findIndex(x => x.name.toLowerCase() === value.toLowerCase());
           if (index > -1) {
             selectedAccommodations.push(this.allAccommodationsObjects[index]);
           }
@@ -272,7 +321,7 @@ export class CountryFormComponent implements OnInit, AfterViewInit {
         // Find countries info to bbe saved
         let selectedCountriesInfo = [];
         this.countriesInfoArray.forEach(value => {
-          const index = this.allCountriesInfosObjects.findIndex(x => x.titel.toLocaleLowerCase() === value.toLocaleLowerCase());
+          const index = this.allCountriesInfosObjects.findIndex(x => x.titel.toLowerCase() === value.toLowerCase());
           if (index > -1) {
             selectedCountriesInfo.push(this.allCountriesInfosObjects[index]);
           }

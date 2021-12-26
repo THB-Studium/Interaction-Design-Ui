@@ -170,11 +170,11 @@
   <h1 mat-dialog-title>Neues Highlight hinzufügen</h1>
   <mat-divider></mat-divider>
   <div mat-dialog-content>
-    <app-highlight-form></app-highlight-form>
+    <app-highlight-form (notifyFormIsValid)="isModalFormValid($event)"></app-highlight-form>
   </div>
   <mat-divider></mat-divider>
   <div mat-dialog-actions>
-    <button mat-raised-button color="primary" mat-dialog-close [disabled]="true">
+    <button mat-raised-button color="primary" mat-dialog-close [disabled]="!isValid" (click)="saveNewHighlight()">
       Speichern
     </button>
     <button mat-raised-button color="accent" mat-dialog-close>
@@ -188,11 +188,11 @@
   <h1 mat-dialog-title>Neue Unterfunkt hinzufügen</h1>
   <mat-divider></mat-divider>
   <div mat-dialog-content>
-    <app-accommodation-form></app-accommodation-form>
+    <app-accommodation-form (notifyFormIsValid)="isModalFormValid($event)"></app-accommodation-form>
   </div>
   <mat-divider></mat-divider>
   <div mat-dialog-actions>
-    <button mat-raised-button color="primary" mat-dialog-close [disabled]="true">
+    <button mat-raised-button color="primary" mat-dialog-close [disabled]="!isValid" (click)="saveNewAccommodation()">
       Speichern
     </button>
     <button mat-raised-button color="accent" mat-dialog-close>
@@ -206,11 +206,11 @@
   <h1 mat-dialog-title>Neue Information über des Landes hinzufügen</h1>
   <mat-divider></mat-divider>
   <div mat-dialog-content>
-    <app-country-information-form (notifyFormIsValid)="isCountryInfoFormValid($event)"></app-country-information-form>
+    <app-country-information-form (notifyFormIsValid)="isModalFormValid($event)"></app-country-information-form>
   </div>
   <mat-divider></mat-divider>
   <div mat-dialog-actions>
-    <button mat-raised-button color="primary" mat-dialog-close [disabled]="!isValidCountryInfoForm" (click)="saveNewCountryInfo()">
+    <button mat-raised-button color="primary" mat-dialog-close [disabled]="!isValid" (click)="saveNewCountryInfo()">
       Speichern
     </button>
     <button mat-raised-button color="accent" mat-dialog-close>

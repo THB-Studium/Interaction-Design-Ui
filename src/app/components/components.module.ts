@@ -24,6 +24,9 @@ import { MatNativeDateModule } from "@angular/material/core";
 import { MatChipsModule } from '@angular/material/chips';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatListModule } from '@angular/material/list';
 
 import { SidebarComponent } from "./sidebar/sidebar.component";
 import { NavbarComponent } from "./navbar/navbar.component";
@@ -62,7 +65,10 @@ import { CountryInformationFormComponent } from './forms/country-information-for
     MatNativeDateModule,
     MatChipsModule,
     MatAutocompleteModule,
-    MatGridListModule
+    MatGridListModule,
+    MatToolbarModule,
+    MatProgressBarModule,
+    MatListModule
   ],
   declarations: [
     FooterComponent,
