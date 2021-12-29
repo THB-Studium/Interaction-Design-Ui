@@ -33,7 +33,9 @@ import { AdminLayoutRoutes } from "./admin-layout.routing";
 import { DashboardComponent } from "../../pages/dashboard/dashboard.component";
 import { AdminComponent } from "../../pages/admins/admin.component";
 import { BookingComponent } from "../../pages/booking/booking.component";
+import { EditTripofferComponent } from 'src/app/pages/edit-tripoffer/edit-tripoffer.component';
 import { TravelerComponent } from "../../pages/traveler/traveler.component";
+import { TripofferComponent } from 'src/app/pages/tripoffer/tripoffer.component';
 import { UserProfileComponent } from "../../pages/user-profile/user-profile.component";
 
 @NgModule({
@@ -69,7 +71,9 @@ import { UserProfileComponent } from "../../pages/user-profile/user-profile.comp
     DashboardComponent,
     AdminComponent,
     BookingComponent,
+    EditTripofferComponent,
     TravelerComponent,
+    TripofferComponent,
     UserProfileComponent,
   ],
 })

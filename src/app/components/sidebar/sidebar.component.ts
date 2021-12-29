@@ -33,6 +33,12 @@ export const ROUTES: RouteInfo[] = [
     class: "",
   },
   {
+    path: "/tripoffers",
+    title: "Reise-Angeboten",
+    icon: "fas fa-plane-departure text-black",
+    class: "",
+  },
+  {
     path: "/user-profile",
     title: "User profile",
     icon: "ni-single-02 text-yellow",

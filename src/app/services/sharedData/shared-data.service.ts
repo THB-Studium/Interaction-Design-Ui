@@ -6,6 +6,7 @@ import { BehaviorSubject } from "rxjs";
 
 import { Admin } from "src/app/models/admin";
 import { Traveler } from "src/app/models/traveler";
+import { TripOffer } from "src/app/models/tripOffer";
 
 @Injectable({
   providedIn: "root",
@@ -54,4 +55,31 @@ export class SharedDataService {
     this.travelerSource.next(traveler);
   }
   //#endregion
+
+  //#region offers
+  private tripoffer: TripOffer = {
+    id: "",
+    titel: "",
+    anmeldungsFrist: new Date(),
+    startDatum: new Date(),
+    endDatum: new Date(),
+    startbild: "",
+    plaetze: 0,
+    freiPlaetze: 0,
+    interessiert: 0,
+    leistungen: [],
+    mitreiseberechtigt: [],
+    hinweise: [],
+    landId: "",
+    buchungsklassenReadListTO: null,
+    erwartungenReadListTO: null,
+  };
+
+  private tripOfferSource = new BehaviorSubject<TripOffer>(this.tripoffer);
+  public currenttripOfferSource = this.tripOfferSource.asObservable();
+
+  changeCurrentTripOffer(tripoffer: TripOffer) {
+    this.tripOfferSource.next(tripoffer);
+  }
+  //#endregion offers
 }

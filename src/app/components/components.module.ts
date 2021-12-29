@@ -27,6 +27,7 @@ import { NavbarComponent } from "./navbar/navbar.component";
 import { FooterComponent } from "./footer/footer.component";
 import { AdminFormComponent } from "./forms/admin-form/admin-form.component";
 import { TravelerFormComponent } from './forms/traveler-form/traveler-form.component';
+import { TripofferFormComponent } from './forms/tripoffer-form/tripoffer-form.component';
 
 @NgModule({
   imports: [
@@ -60,6 +61,7 @@ import { TravelerFormComponent } from './forms/traveler-form/traveler-form.compo
     SidebarComponent,
     AdminFormComponent,
     TravelerFormComponent,
+    TripofferFormComponent,
   ],
   exports: [
     FooterComponent, 
@@ -67,6 +69,7 @@ import { TravelerFormComponent } from './forms/traveler-form/traveler-form.compo
     SidebarComponent,
     AdminFormComponent,
     TravelerFormComponent,
+    TripofferFormComponent
   ]
 })
 export class ComponentsModule {}
