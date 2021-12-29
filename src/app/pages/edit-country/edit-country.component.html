@@ -1,0 +1,261 @@
+<div class="header bg-gradient-green pb-6 pt-5 pt-md-8">
+    <div class="container-fluid">
+        <div class="header-body">
+            <div class="row">
+                <div class="text-center col-md-12">
+                    <em class="fas fa-globe text-white"></em>
+                    <h1 class="display-2 text-white">Land bearbeiten</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Page content -->
+<div class="container-fluid mt-3">
+    <div class="col-md-12">
+        <div class="row">
+            <button class="mb-2" mat-mini-fab color="primary" aria-label="back icon" matTooltip="Zurück zur Liste"
+                matTooltipHideDelay="{{ toolTipDuration }}" (click)="navigateToCountriesList()">
+                <mat-icon>arrow_back</mat-icon>
+            </button>
+        </div>
+        <!--country-->
+        <div class="row">
+            <h1 class="mt-2">Land</h1>
+            <app-country-form class="col-md-12 p-0" (notifyFormIsValid)="isCountryFormValid($event)"></app-country-form>
+        </div>
+        <!--Country info-->
+        <div class="row">
+            <h1 class="mt-5">
+                Informationen
+                <button class="ml-1" mat-mini-fab color="primary" aria-label="add icon"
+                    matTooltip="Neue Info hinzufügen" matTooltipHideDelay="{{ toolTipDuration }}"
+                    (click)="addCountryInfoDialog(countryInfoDialog)">
+                    <mat-icon>add</mat-icon>
+                </button>
+            </h1>
+        </div>
+        <!--Info list-->
+        <div class="row">
+            <mat-accordion *ngIf="countryInfos" class="col-md-12 p-0" multi>
+                <mat-expansion-panel *ngFor="let info of countryInfos">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title class="font-weight-600">
+                            {{info.titel.toUpperCase()}}
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <ng-template class="font-weight-500" matExpansionPanelContent>
+                        {{info.description}}
+                    </ng-template>
+                </mat-expansion-panel>
+            </mat-accordion>
+        </div>
+        <!--Highlights-->
+        <div class="row">
+            <h1 class="mt-5">
+                Highlights
+                <button class="ml-1" mat-mini-fab color="primary" aria-label="add icon"
+                    matTooltip="Neues Highlight hinzufügen" matTooltipHideDelay="{{ toolTipDuration }}"
+                    (click)="addHighlightDialog(highlightDialog)">
+                    <mat-icon>add</mat-icon>
+                </button>
+            </h1>
+        </div>
+        <!--Highlights list-->
+        <div class="row">
+            <div class="col-md-4">
+                <mat-card class="col-md-12">
+                    <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg"
+                        alt="Photo of a Shiba Inu">
+                    <mat-card-content>
+                        <h2>Shiba Inu</h2>
+                        <p>
+                            The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from
+                            Japan.
+                            A small, agile dog that copes very well with mountainous terrain, the Shiba Inu was
+                            originally
+                            bred for hunting.
+                        </p>
+                    </mat-card-content>
+                    <mat-card-actions>
+                        <button mat-button>Editieren</button>
+                        <button mat-button>Entfernen</button>
+                    </mat-card-actions>
+                </mat-card>
+            </div>
+            <div class="col-md-4">
+                <mat-card class="col-md-12">
+                    <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg"
+                        alt="Photo of a Shiba Inu">
+                    <mat-card-content>
+                        <h3>Shiba Inu</h3>
+                        <p>
+                            The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from
+                            Japan.
+                            A small, agile dog that copes very well with mountainous terrain, the Shiba Inu was
+                            originally
+                            bred for hunting.
+                        </p>
+                    </mat-card-content>
+                    <mat-card-actions>
+                        <button mat-button>Editieren</button>
+                        <button mat-button>Entfernen</button>
+                    </mat-card-actions>
+                </mat-card>
+            </div>
+            <div class="col-md-4">
+                <mat-card class="col-md-12">
+                    <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg"
+                        alt="Photo of a Shiba Inu">
+                    <mat-card-content>
+                        <h3>Shiba Inu</h3>
+                        <p>
+                            The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from
+                            Japan.
+                            A small, agile dog that copes very well with mountainous terrain, the Shiba Inu was
+                            originally
+                            bred for hunting.
+                        </p>
+                    </mat-card-content>
+                    <mat-card-actions>
+                        <button mat-button>Editieren</button>
+                        <button mat-button>Entfernen</button>
+                    </mat-card-actions>
+                </mat-card>
+            </div>
+        </div>
+        <!--accommodation-->
+        <div class="row">
+            <h1 class="mt-5">
+                Unterkünfte
+                <button class="ml-1" mat-mini-fab color="primary" aria-label="add icon"
+                    matTooltip="Neue Unterkunft hinzufügen" matTooltipHideDelay="{{ toolTipDuration }}"
+                    (click)="addAccommodationDialog(accommodationDialog)">
+                    <mat-icon>add</mat-icon>
+                </button>
+            </h1>
+        </div>
+        <!--accommodations list-->
+        <div class="row">
+            <mat-card class="col-md-12">
+                <mat-card-content class="mb-0">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <h2 class="mb-0">Title</h2>
+                            <p>
+                                <small>link</small><br>
+                                Address
+                            </p>
+                            <p>Text</p>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="row">
+                                <div class="col-md-5 mr-3">
+                                    <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg"
+                                        alt="Photo of a Shiba Inu">
+                                </div>
+                                <div class="col-md-5">
+                                    <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg"
+                                        alt="Photo of a Shiba Inu">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </mat-card-content>
+                <mat-card-actions class="mt-0">
+                    <button mat-button>Editieren</button>
+                    <button mat-button>Entfernen</button>
+                </mat-card-actions>
+            </mat-card>
+        </div>
+        <!--Save button-->
+        <div class="row">
+            <button class="mt-4" color="primary" mat-raised-button [disabled]="!isCountryFromValid">Speichern</button>
+        </div>
+    </div>
+</div>
+
+<!-- Add country modal-->
+<ng-template #countryDialog>
+    <h1 mat-dialog-title>Neues Land hinzufügen</h1>
+    <mat-divider></mat-divider>
+    <div mat-dialog-content>
+        <app-country-form (notifyFormIsValid)="isModalFormValid($event)"></app-country-form>
+    </div>
+    <mat-divider></mat-divider>
+    <div mat-dialog-actions>
+        <button mat-raised-button color="primary" mat-dialog-close [disabled]="!isValid" (click)="saveNewCountry()">
+            Speichern
+        </button>
+        <button mat-raised-button color="accent" mat-dialog-close>
+            Abbrechen
+        </button>
+    </div>
+</ng-template>
+
+<!-- Delete confirmation dialog -->
+<ng-template #deleteDialog>
+    <h1 mat-dialog-title>Bestätigen Sie das Löschen</h1>
+    <mat-divider></mat-divider>
+    <div mat-dialog-content>
+        <p>Wollen Sie wirklich <strong>{{currentCountry.name}}</strong> löschen?</p>
+    </div>
+    <div mat-dialog-actions>
+        <button mat-raised-button color="primary" mat-dialog-close (click)="deleteCountry()">Ja</button>
+        <button mat-raised-button color="accent" mat-dialog-close>Nein</button>
+    </div>
+</ng-template>
+
+<!-- Add Highligth modal-->
+<ng-template #highlightDialog>
+    <h1 mat-dialog-title>Neues Highlight hinzufügen</h1>
+    <mat-divider></mat-divider>
+    <div mat-dialog-content>
+        <app-highlight-form (notifyFormIsValid)="isModalFormValid($event)"></app-highlight-form>
+    </div>
+    <mat-divider></mat-divider>
+    <div mat-dialog-actions>
+        <button mat-raised-button color="primary" mat-dialog-close [disabled]="!isValid" (click)="saveHighlight()">
+            Speichern
+        </button>
+        <button mat-raised-button color="accent" mat-dialog-close>
+            Abbrechen
+        </button>
+    </div>
+</ng-template>
+
+<!-- Add accommodation modal-->
+<ng-template #accommodationDialog>
+    <h1 mat-dialog-title>Neue Unterfunkt hinzufügen</h1>
+    <mat-divider></mat-divider>
+    <div mat-dialog-content>
+        <app-accommodation-form (notifyFormIsValid)="isModalFormValid($event)"></app-accommodation-form>
+    </div>
+    <mat-divider></mat-divider>
+    <div mat-dialog-actions>
+        <button mat-raised-button color="primary" mat-dialog-close [disabled]="!isValid" (click)="saveAccommodation()">
+            Speichern
+        </button>
+        <button mat-raised-button color="accent" mat-dialog-close>
+            Abbrechen
+        </button>
+    </div>
+</ng-template>
+
+<!-- Add country info modal-->
+<ng-template #countryInfoDialog>
+    <h1 mat-dialog-title>Neue Information über des Landes hinzufügen</h1>
+    <mat-divider></mat-divider>
+    <div mat-dialog-content>
+        <app-country-information-form (notifyFormIsValid)="isModalFormValid($event)"></app-country-information-form>
+    </div>
+    <mat-divider></mat-divider>
+    <div mat-dialog-actions>
+        <button mat-raised-button color="primary" mat-dialog-close [disabled]="!isValid" (click)="saveCountryInfo()">
+            Speichern
+        </button>
+        <button mat-raised-button color="accent" mat-dialog-close>
+            Abbrechen
+        </button>
+    </div>
+</ng-template>
