@@ -91,7 +91,7 @@ export class AccommodationFormComponent implements OnInit, AfterViewInit {
   private setFormDefaultValue(accommodation: Accommodation): void {
     this.accommodationForm.setValue({
       name: accommodation.name,
-      address: accommodation.adresse,
+      address: accommodation.addresse,
       web: accommodation.link,
       description: accommodation.beschreibung
     });
@@ -108,7 +108,7 @@ export class AccommodationFormComponent implements OnInit, AfterViewInit {
         this.currentAccommodation = {
           id: id,
           name: this.accommodationForm.get("name").value,
-          adresse: this.accommodationForm.get('address').value,
+          addresse: this.accommodationForm.get('address').value,
           link: this.accommodationForm.get('web').value,
           beschreibung: this.accommodationForm.get("description").value,
           bilder: this.uploadedImges,
@@ -148,11 +148,18 @@ export class AccommodationFormComponent implements OnInit, AfterViewInit {
         const reader = new FileReader();
         reader.readAsDataURL(this.selectedFiles.item(i));
         this.selectedFileNames.push(this.selectedFiles.item(i).name);
+         // convert it to byte array
+         reader.addEventListener("loadend", () => {
+          const bytearray = this.convertDataURIToBinary(reader.result);
+          // set the current images
+          this.uploadedImges.push(bytearray);
+        });
       }
       // convert to byte array
-      for (let i = 0; i < this.selectedFiles.length; i++) {
+      /*for (let i = 0; i < this.selectedFiles.length; i++) {
         this.convertToByteArray(this.selectedFiles.item(i));
-      }
+        
+      }*/
       // set the current images
       this.currentAccommodation.bilder = this.uploadedImges;
     }
@@ -172,6 +179,19 @@ export class AccommodationFormComponent implements OnInit, AfterViewInit {
         this.uploadedImges.push(bytearray);
       });
     }
+  }
+
+  convertDataURIToBinary(dataURI) {
+    var base64Index = dataURI.indexOf(";base64,") + ";base64,".length;
+    var base64 = dataURI.substring(base64Index);
+    var raw = window.atob(base64);
+    var rawLength = raw.length;
+    var array = new Uint8Array(new ArrayBuffer(rawLength));
+
+    for (let i = 0; i < rawLength; i++) {
+      array[i] = raw.charCodeAt(i);
+    }
+    return array;
   }
 
 }

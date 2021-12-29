@@ -10,7 +10,7 @@ import { Country } from 'src/app/models/country';
 })
 export class CountryService {
   // API for countries
-  readonly COUNTRY_URL: string = `${Server.API_URL}/lands`;
+  readonly COUNTRY_URL: string = `${Server.API_URL}/laender`;
   headers = new HttpHeaders({ "Content-Type": "application/json" });
 
   constructor(private httpClient: HttpClient) { }

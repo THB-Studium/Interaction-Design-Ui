@@ -87,7 +87,10 @@ import { CountryInformationFormComponent } from './forms/country-information-for
     SidebarComponent,
     AdminFormComponent,
     TravelerFormComponent,
-    CountryFormComponent
+    CountryFormComponent,
+    HighlightFormComponent,
+    AccommodationFormComponent,
+    CountryInformationFormComponent
   ]
 })
 export class ComponentsModule { }

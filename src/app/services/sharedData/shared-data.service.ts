@@ -6,6 +6,7 @@ import { BehaviorSubject } from "rxjs";
 import { Accommodation } from "src/app/models/accommodation";
 
 import { Admin } from "src/app/models/admin";
+import { Country } from "src/app/models/country";
 import { CountryInformation } from "src/app/models/countryInformation";
 import { Highlight } from "src/app/models/highlight";
 import { Traveler } from "src/app/models/traveler";
@@ -58,6 +59,22 @@ export class SharedDataService {
   }
   //#endregion traveler
 
+  //#region country
+  private country: Country = {
+    id: '',
+    name: '',
+    flughafen: [],
+    unterkunft_text: ''
+  };
+
+  private countrySource = new BehaviorSubject<Country>(this.country);
+  public currentCountry = this.countrySource.asObservable();
+
+  changeCurrentCountry(country: Country) {
+    this.countrySource.next(country);
+  }
+  //#endregion country
+
   //#region country information
   private countryInformation: CountryInformation = {
     id: "",
@@ -94,7 +111,7 @@ export class SharedDataService {
   private accommodation: Accommodation = {
     id: '',
     name: '',
-    adresse: '',
+    addresse: '',
     link: '',
     beschreibung: '',
     bilder: [],

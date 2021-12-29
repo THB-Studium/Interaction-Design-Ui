@@ -33,16 +33,18 @@ export class HighlightService {
       id: highlight.id,
       name: highlight.name,
       description: highlight.description,
-      landId: highlight.landId
+      landId: highlight.landId,
     };
-    
-    formData.append("bild", highlight.bild);
+
+    formData.append("bild", new Blob([highlight.bild], {
+      type: "application/multipart/form-data",
+    }));
 
     formData.append(
       "highlight",
       new Blob([JSON.stringify(_highlight)], {
         type: "application/json",
-      }), ""
+      })
     );
 
     return this.httpClient.post<FormData>(this.HIGHLIGHT_URL, formData);

@@ -133,7 +133,10 @@ export class HighlightFormComponent implements OnInit, AfterViewInit {
     this.uploadedImge = [];
     this.selectedFileName = [];
     this.selectedFile = event.target.files;
-
+    this.currentHighlight.bild = this.selectedFile[0];
+    this.isImgSelected = true;
+    this.isFormValid();
+    return;
     if (this.selectedFile && this.selectedFile[0]) {
       this.isImgSelected = true;
       const numberOfFiles = this.selectedFile.length;

@@ -24,24 +24,24 @@ import { MatSortModule } from "@angular/material/sort";
 import { MatDialogModule } from "@angular/material/dialog";
 import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatNativeDateModule } from "@angular/material/core";
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { MatGridListModule } from '@angular/material/grid-list';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { MatListModule } from '@angular/material/list';
+import { MatAutocompleteModule } from "@angular/material/autocomplete";
+import { MatGridListModule } from "@angular/material/grid-list";
+import { MatToolbarModule } from "@angular/material/toolbar";
+import { MatProgressBarModule } from "@angular/material/progress-bar";
+import { MatListModule } from "@angular/material/list";
+import { MatExpansionModule } from "@angular/material/expansion";
 
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { ComponentsModule } from "src/app/components/components.module";
 
 import { AdminLayoutRoutes } from "./admin-layout.routing";
 
-import { DashboardComponent } from "../../pages/dashboard/dashboard.component";
 import { AdminComponent } from "../../pages/admins/admin.component";
 import { BookingComponent } from "../../pages/booking/booking.component";
+import { CountryComponent } from "src/app/pages/country/country.component";
+import { DashboardComponent } from "../../pages/dashboard/dashboard.component";
+import { EditCountryComponent } from "src/app//pages/edit-country/edit-country.component";
 import { TravelerComponent } from "../../pages/traveler/traveler.component";
-import { CountriesListComponent } from "src/app/pages/country/countries-list/countries-list.component";
-import { AddCountryComponent } from "src/app/pages/country/add-country/add-country.component";
-import { EditCountryComponent } from "src/app/pages/country/edit-country/edit-country.component";
 import { UserProfileComponent } from "../../pages/user-profile/user-profile.component";
 
 @NgModule({
@@ -76,17 +76,17 @@ import { UserProfileComponent } from "../../pages/user-profile/user-profile.comp
     MatGridListModule,
     MatToolbarModule,
     MatProgressBarModule,
-    MatListModule
+    MatListModule,
+    MatExpansionModule
   ],
   declarations: [
-    DashboardComponent,
     AdminComponent,
     BookingComponent,
-    TravelerComponent,
-    CountriesListComponent,
-    AddCountryComponent,
+    CountryComponent,
+    DashboardComponent,
     EditCountryComponent,
+    TravelerComponent,
     UserProfileComponent,
   ],
 })
-export class AdminLayoutModule { }
+export class AdminLayoutModule {}
