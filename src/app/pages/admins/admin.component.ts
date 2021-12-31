@@ -39,6 +39,8 @@ export class AdminComponent implements OnInit, AfterViewInit, OnCommit {
   valid: boolean = false;
   // Defines dialogConfig
   dialogConfig = new MatDialogConfig();
+  // Defines copyEmail
+  copyEmail: string;
 
   constructor(
     private adminService: AdminService,
@@ -147,6 +149,8 @@ export class AdminComponent implements OnInit, AfterViewInit, OnCommit {
     this.sharedDataService.isAddBtnClicked = false;
     // update current admin information
     this.currentAdmin = row;
+    // save the email
+    this.copyEmail = row.email;
     // set the value of the admin into the service
     this.sharedDataService.changeCurrentUser(this.currentAdmin);
     // Open the edit admin dialog
@@ -199,9 +203,9 @@ export class AdminComponent implements OnInit, AfterViewInit, OnCommit {
         (x) =>
           x.email === this.currentAdmin.email && x.id !== this.currentAdmin.id
       );
-      if (exists) {
+      if (exists && this.currentAdmin.email.toLowerCase() !== this.copyEmail.toLowerCase()) {
         this.toastrService.info(
-          "Bereits registrierte E-Mail",
+          `Bereits registrierte E-Mail - ${this.currentAdmin.email}`,
           "Benutzer vorhanden"
         );
       } else {

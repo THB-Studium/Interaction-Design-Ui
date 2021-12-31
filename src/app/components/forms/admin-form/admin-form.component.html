@@ -36,7 +36,7 @@
   <!-- Password -->
   <div class="form-row">
     <div class="form-group col-md-12">
-      <mat-form-field class="col-md-12" appearance="standard" [hidden]="hidePwdInput">
+      <mat-form-field class="col-md-12" appearance="standard">
         <mat-label>Passwort</mat-label>
         <input matInput [type]="hidePwd ? 'password' : 'text'" formControlName="pwd" required>
         <button mat-icon-button matSuffix (click)="hidePwd = !hidePwd" [attr.aria-label]="'Hide password'"
@@ -53,7 +53,7 @@
   <!-- Password repeat -->
   <div class="form-row">
     <div class="form-group col-md-12">
-      <mat-form-field class="col-md-12" appearance="standard" [hidden]="hidePwdInput">
+      <mat-form-field class="col-md-12" appearance="standard">
         <mat-label>Passwort wiederholen</mat-label>
         <input matInput [type]="hideConfirmPwd ? 'password' : 'text'" formControlName="pwdRepeat" required>
         <button mat-icon-button matSuffix (click)="hideConfirmPwd = !hideConfirmPwd" [attr.aria-label]="'Hide password'"
