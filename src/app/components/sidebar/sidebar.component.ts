@@ -15,8 +15,8 @@ export const ROUTES: RouteInfo[] = [
     class: "",
   },
   {
-    path: "/admins",
-    title: "Admins",
+    path: "/users",
+    title: "Benutzer",
     icon: "fa fa-users text-black-50",
     class: "",
   },
