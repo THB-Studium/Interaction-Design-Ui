@@ -9,7 +9,8 @@ import { FormControl, FormGroup, Validators } from "@angular/forms";
 
 import { SharedDataService } from "src/app/services/sharedData/shared-data.service";
 
-import { Admin } from "src/app/models/admin";
+import { Role } from "src/app/models/role";
+import { User } from "src/app/models/user";
 
 @Component({
   selector: "app-admin-form",
@@ -21,8 +22,10 @@ export class AdminFormComponent implements OnInit, AfterViewInit {
   @Output() notifyAdminFormValid = new EventEmitter<boolean>(false);
   // Defines AdminForm
   adminForm = new FormGroup({
-    // name
-    name: new FormControl("", [Validators.required]),
+    // firstname
+    firstname: new FormControl("", [Validators.required]),
+    // lastname
+    lastname: new FormControl("", [Validators.required]),
     // email
     email: new FormControl("", [Validators.required, Validators.email]),
     // password
@@ -35,15 +38,11 @@ export class AdminFormComponent implements OnInit, AfterViewInit {
   });
 
   // Defines currentAdmin. Contains complet current admin information.
-  currentAdmin: Admin;
+  currentAdmin: User;
   // Defines currentAdminId. Contains the id of the current admin. Helpfull to handle an edit process.
   currentAdminId: string = "";
-  // Defines currentAdminPwd. Contains the password of the current admin. Helpfull to handle an edit process.
-  currentAdminPwd: string = "";
   // Defines isAdd. Flags to know if it is an add / edit process.
   isAdd: boolean = true;
-  // Defines hidePwdInput. Will hide/display the pasword input respectively for edit or add process.
-  hidePwdInput: boolean = false;
   // Defines hide. By default we hide the password input field.
   hidePwd = true;
   // Defines hideConfirmPwd
@@ -62,67 +61,56 @@ export class AdminFormComponent implements OnInit, AfterViewInit {
   // Calls on onload. This will help to know if we want to edit an admin or add a new one.
   // The method need the shareDataService as well, to populate those information.
   private initAdminForm() {
-    this.isAdd = this.sharedDataService.isAddBtnClicked;
-
-    if (!this.isAdd) {
-      // Get and display existing information. Some need to be saved (the id and password).
-      this.sharedDataService.currentAdmin
-        .subscribe((value) => {
-          this.adminForm.setValue({
-            name: value.name,
-            email: value.email,
-            // remove the pwd for security reason
-            pwd: "",
-            pwdRepeat: "",
-          });
-          // save id and pwd
-          this.currentAdminId = value.id;
-          // Save the realy value of the pwd here
-          this.currentAdminPwd = value.kennwort;
-          // we hide the password input since that we want to edit
-          this.hidePwdInput = true;
-        })
-        // to avoid recursion.
-        .unsubscribe();
-    } else {
-      // All inputs need to be displayed.
-      this.hidePwdInput = false;
-    }
+    // Get and display existing information. Some need to be saved (the id and password).
+    this.sharedDataService.currentUser
+    .subscribe((value) => {
+      this.adminForm.setValue({
+        lastname: value.name,
+        firstname: value.surname,
+        email: value.email,
+        // remove the pwd for security reason
+        pwd: "",
+        pwdRepeat: "",
+      });
+      // save id and pwd
+      this.currentAdminId = value.id;
+    })
+    // to avoid recursion.
+    .unsubscribe();
   }
 
   // Always get the value from the form and update the current admin information when any input value changed
   private onFormValuesChanged(): void {
     this.adminForm.valueChanges.subscribe(() => {
-      const name = this.transformName(this.adminForm.value.name);
-      if (this.isAdd) {
-        this.currentAdmin = {
-          id: null,
-          name: name,
-          email: this.adminForm.value.email.trim(),
-          kennwort: this.adminForm.value.pwd,
-        };
-      } else {
-        this.currentAdmin = {
-          id: this.currentAdminId,
-          name: name,
-          email: this.adminForm.value.email.trim(),
-          kennwort: this.currentAdminPwd,
-        };
+
+      let id = null;
+      let updateddate = null;
+      this.isAdd = this.sharedDataService.isAddBtnClicked;
+      if (!this.isAdd) {
+        id = this.currentAdminId;
+        updateddate = new Date();
       }
 
+      this.currentAdmin = {
+        id: id,
+        name: this.transformName(this.adminForm.value.lastname),
+        surname: this.transformName(this.adminForm.value.firstname),
+        email: this.adminForm.value.email.trim(),
+        password: this.adminForm.value.pwd.trim(),
+        role: Role.ADMIN,
+        creationDate: new Date(),
+        updateDate: updateddate
+      };
+
       // First check what process is be done to know how and when to notify others components.
-      if (
-        (!this.isAdd &&
-          this.adminForm.get("name").valid &&
-          this.adminForm.get("email").valid) ||
-        (this.isAdd &&
-          this.adminForm.get("name").valid &&
+      if (this.adminForm.get("lastname").valid &&
+          this.adminForm.get("firstname").valid &&
           this.adminForm.get("email").valid &&
           this.adminForm.get("pwd").valid &&
           this.adminForm.get("pwd").value ===
-            this.adminForm.get("pwdRepeat").value)
+          this.adminForm.get("pwdRepeat").value
       ) {
-        this.sharedDataService.changeCurrentAdmin(this.currentAdmin);
+        this.sharedDataService.changeCurrentUser(this.currentAdmin);
         // notify the parent that the form is valid
         this.notifyAdminFormValid.emit(true);
       } else {

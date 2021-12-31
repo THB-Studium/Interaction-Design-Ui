@@ -8,7 +8,7 @@ import { UserProfileComponent } from "../../pages/user-profile/user-profile.comp
 
 export const AdminLayoutRoutes: Routes = [
   { path: "verwaltung", component: DashboardComponent },
-  { path: "admins", component: AdminComponent },
+  { path: "users", component: AdminComponent },
   { path: "bookings", component: BookingComponent },
   { path: "travelers", component: TravelerComponent },
   { path: "user-profile", component: UserProfileComponent },
