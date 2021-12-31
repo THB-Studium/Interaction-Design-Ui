@@ -27,11 +27,12 @@ import { NavbarComponent } from "./navbar/navbar.component";
 import { FooterComponent } from "./footer/footer.component";
 import { AdminFormComponent } from "./forms/admin-form/admin-form.component";
 import { TravelerFormComponent } from './forms/traveler-form/traveler-form.component';
+import { NavbarGuestComponent } from './navbar-guest/navbar-guest.component';
 
 @NgModule({
   imports: [
-    CommonModule, 
-    RouterModule, 
+    CommonModule,
+    RouterModule,
     NgbModule,
     FormsModule,
     ReactiveFormsModule,
@@ -60,13 +61,15 @@ import { TravelerFormComponent } from './forms/traveler-form/traveler-form.compo
     SidebarComponent,
     AdminFormComponent,
     TravelerFormComponent,
+    NavbarGuestComponent
   ],
   exports: [
-    FooterComponent, 
-    NavbarComponent, 
+    FooterComponent,
+    NavbarComponent,
     SidebarComponent,
     AdminFormComponent,
     TravelerFormComponent,
+    NavbarGuestComponent
   ]
 })
-export class ComponentsModule {}
+export class ComponentsModule { }
