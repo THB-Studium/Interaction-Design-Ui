@@ -9,7 +9,6 @@ import { FormControl, FormGroup, Validators } from "@angular/forms";
 
 import { SharedDataService } from "src/app/services/sharedData/shared-data.service";
 
-import { Role } from "src/app/models/role";
 import { User } from "src/app/models/user";
 
 @Component({
@@ -61,6 +60,7 @@ export class AdminFormComponent implements OnInit, AfterViewInit {
   // Calls on onload. This will help to know if we want to edit an admin or add a new one.
   // The method need the shareDataService as well, to populate those information.
   private initAdminForm() {
+    this.isAdd = this.sharedDataService.isAddBtnClicked;
     // Get and display existing information. Some need to be saved (the id and password).
     this.sharedDataService.currentUser
     .subscribe((value) => {
@@ -85,11 +85,13 @@ export class AdminFormComponent implements OnInit, AfterViewInit {
 
       let id = null;
       let updateddate = null;
-      this.isAdd = this.sharedDataService.isAddBtnClicked;
+      let password = this.adminForm.value.pwd.trim();
 
       if (!this.isAdd) {
         id = this.currentAdminId;
         updateddate = new Date();
+        // if any key is null the value will not be updated in backend
+        password = null;
       }
 
       this.currentAdmin = {
@@ -97,20 +99,15 @@ export class AdminFormComponent implements OnInit, AfterViewInit {
         name: this.transformName(this.adminForm.value.lastname),
         surname: this.transformName(this.adminForm.value.firstname),
         email: this.adminForm.value.email.trim(),
-        password: this.adminForm.value.pwd.trim(),
-        role: Role.ADMIN,
+        password: password,
+        // the role is automatically added in backend
+        role: null,
         creationDate: new Date(),
         updateDate: updateddate
       };
 
       // First check what process is be done to know how and when to notify others components.
-      if (this.adminForm.get("lastname").valid &&
-          this.adminForm.get("firstname").valid &&
-          this.adminForm.get("email").valid &&
-          this.adminForm.get("pwd").valid &&
-          this.adminForm.get("pwd").value ===
-          this.adminForm.get("pwdRepeat").value
-      ) {
+      if (this.isFormValid()) {
         this.sharedDataService.changeCurrentUser(this.currentAdmin);
         // notify the parent that the form is valid
         this.notifyAdminFormValid.emit(true);
@@ -121,13 +118,31 @@ export class AdminFormComponent implements OnInit, AfterViewInit {
     });
   }
 
+  private isFormValid(): boolean {
+    if (this.isAdd) {
+      if (this.adminForm.get("lastname").valid &&
+      this.adminForm.get("firstname").valid &&
+      this.adminForm.get("email").valid &&
+      this.adminForm.get("pwd").valid &&
+      this.adminForm.get("pwd").value ===
+      this.adminForm.get("pwdRepeat").value) {
+        return true;
+      }
+    }
+
+    if (!this.isAdd) {
+      if (this.adminForm.get("lastname").valid &&
+      this.adminForm.get("firstname").valid &&
+      this.adminForm.get("email").valid) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
   // Transforms the first character of the lastname and firstname to upper
   private transformName(name: string): string {
-    const parts: string[] = name.split(" ");
-    let result = "";
-    parts.forEach((part) => {
-      result += `${part.charAt(0).toUpperCase() + part.slice(1)}` + " ";
-    });
-    return result.trim();
+    return name.charAt(0).toUpperCase() + name.slice(1).trim();
   }
 }

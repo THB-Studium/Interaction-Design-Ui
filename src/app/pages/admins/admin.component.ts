@@ -102,7 +102,7 @@ export class AdminComponent implements OnInit, AfterViewInit, OnCommit {
   // Gets all already registered administrators as promise
   private getAdminList(): Promise<User[]> {
     return new Promise((resolve) => {
-      this.adminService.getAllAdmins().subscribe({
+      this.adminService.getAll().subscribe({
         next: (admins: User[]) => resolve(admins),
         error: (error) => {
           this.handleError(error);
@@ -216,7 +216,7 @@ export class AdminComponent implements OnInit, AfterViewInit, OnCommit {
 
   // Saves the form as administrator. Be sure that the information not already exists before save information.
   private saveAdmin(): void {
-    this.adminService.addAdmin(this.currentAdmin).subscribe({
+    this.adminService.addOne(this.currentAdmin).subscribe({
       next: (res: User) => {
         // set the current local admin
         this.currentAdmin = res;
@@ -242,7 +242,7 @@ export class AdminComponent implements OnInit, AfterViewInit, OnCommit {
 
   // Saves the value of the to be updated admin.
   private updateAdmin(): void {
-    this.adminService.updateAdmin(this.currentAdmin).subscribe({
+    this.adminService.updateOne(this.currentAdmin).subscribe({
       next: (res: User) => {
         // set the local current admin value
         this.currentAdmin = res;
@@ -250,6 +250,7 @@ export class AdminComponent implements OnInit, AfterViewInit, OnCommit {
         const itemIndex = this.adminList.findIndex((x) => x.id === res.id);
         this.adminList[itemIndex].email = res.email;
         this.adminList[itemIndex].name = res.name;
+        this.adminList[itemIndex].surname = res.surname;
         // Update the view
         this.sortByFirstName(this.adminList);
         this.dataSource.data = this.adminList;
@@ -277,7 +278,7 @@ export class AdminComponent implements OnInit, AfterViewInit, OnCommit {
 
   // Delete the current selected admin.
   deleteAdmin(): void {
-    this.adminService.deleteAdmin(this.currentAdmin.id).subscribe({
+    this.adminService.deleteOne(this.currentAdmin.id).subscribe({
       next: (response: string) => {
         if (response) {
           // if the value is not empty
@@ -307,6 +308,7 @@ export class AdminComponent implements OnInit, AfterViewInit, OnCommit {
 
   // On error
   private handleError(error: any) {
+    console.log(error)
     if (error?.message) {
       this.errors.errorMessage = error?.message;
     }

@@ -16,30 +16,30 @@ export class AdminService {
   constructor(private httpClient: HttpClient) {}
 
   // GET ONE
-  getOneAdmin(id: string): Observable<User> {
+  getOne(id: string): Observable<User> {
     const admintoberead_url = `${this.ADMIN_URL}/${id}`;
     return this.httpClient.get<User>(admintoberead_url);
   }
 
   // GET ALL
-  getAllAdmins(): Observable<User[]> {
+  getAll(): Observable<User[]> {
     return this.httpClient.get<User[]>(this.ADMIN_URL);
   }
 
   // POST
-  addAdmin(admin: User): Observable<User> {
+  addOne(admin: User): Observable<User> {
     return this.httpClient.post<User>(this.ADMIN_URL, admin);
   }
 
   // PUT
-  updateAdmin(admin: User): Observable<User> {
+  updateOne(admin: User): Observable<User> {
     return this.httpClient.put<User>(this.ADMIN_URL, admin, {
       headers: this.headers,
     });
   }
 
   // DELETE
-  deleteAdmin(id: string) {
+  deleteOne(id: string) {
     const admintobedeleted_url = `${this.ADMIN_URL}/${id}`;
     return this.httpClient.delete(admintobedeleted_url, {
       responseType: "text",
