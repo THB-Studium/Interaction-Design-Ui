@@ -1,6 +1,9 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from "@angular/forms";
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
+
+import { AuthentificationService } from 'src/app/services/authentification/authentification.service';
+import { TokenstorageService } from 'src/app/services/tokenstorage/tokenstorage.service';
 
 @Component({
   selector: 'app-login',
@@ -21,10 +24,24 @@ export class LoginComponent implements OnInit, AfterViewInit {
   hidePwd = true;
   // Defines isFormValid
   isFormValid = false;
+  // Defines errorMessage
+  errorMessage = '';
+  // Defines uri
+  uri: string = "/verwaltung";
 
-  constructor(private router: Router) { }
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private router: Router,
+    private authService: AuthentificationService,
+    private tokenStorageService: TokenstorageService
+  ) { }
 
   ngOnInit() {
+    // if the user is already connected and try to access the login page, then redirect to the dashboard
+    if (this.isConnected()) {
+      this.router.navigate([this.uri]);
+    }
+    // Otherwise we display the page and get the page that the user wanted to access
     this.initForm();
   }
 
@@ -50,10 +67,42 @@ export class LoginComponent implements OnInit, AfterViewInit {
   }
 
   login() {
+    if (this.loginForm.get('email').valid && this.loginForm.get('pwd').valid) {
+      const user = {
+        email: this.loginForm.get('email').value,
+        password: this.loginForm.get('pwd').value
+      };
 
+      this.authService.login(user).subscribe({
+        next: (data) => {
+          this.tokenStorageService.saveUser(data);
+          this.tokenStorageService.saveToken(data.token);
+          this.tokenStorageService.saveRefreshToken(data.refreshToken);
+          // redirected page if connection successful
+          this.uri = this.activatedRoute.snapshot.queryParams.returnUrl;
+        },
+        error: (err) => {
+          if (err?.error) {
+            const msg: string = err.error?.error;
+            if (msg.toLowerCase() === 'bad credentials') {
+              this.errorMessage = 'Benutzername und/oder Passwort sind falsch!';
+            }
+          }
+        },
+        complete: () => this.router.navigateByUrl(this.uri)
+      });
+    }
   }
 
-  navigateToRegistrationPage() {
-    this.router.navigate(['/register']);
+  /** Check whether the user is already connected or not */
+  private isConnected(): boolean {
+    if (this.tokenStorageService.getUser()) {
+      return true;
+    }
+    return false;
+  }
+
+  navigateToHome() {
+    this.router.navigate(['/home']);
   }
 }
