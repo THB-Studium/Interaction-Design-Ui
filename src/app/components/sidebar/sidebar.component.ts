@@ -37,14 +37,7 @@ export const ROUTES: RouteInfo[] = [
     title: "User profile",
     icon: "ni-single-02 text-yellow",
     class: "",
-  },
-  { path: "/login", title: "Login", icon: "ni-key-25 text-info", class: "" },
-  {
-    path: "/register",
-    title: "Register",
-    icon: "ni-circle-08 text-pink",
-    class: "",
-  },
+  }
 ];
 
 @Component({
@@ -56,7 +49,7 @@ export class SidebarComponent implements OnInit {
   public menuItems: any[];
   public isCollapsed = true;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router) { }
 
   ngOnInit() {
     this.menuItems = ROUTES.filter((menuItem) => menuItem);
