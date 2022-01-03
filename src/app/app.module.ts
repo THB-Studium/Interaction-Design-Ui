@@ -13,6 +13,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppRoutingModule } from './app.routing';
 import { ComponentsModule } from './components/components.module';
+import { CarouselComponent } from './pages/carousel/carousel.component';
 
 @NgModule({
   imports: [
@@ -31,7 +32,8 @@ import { ComponentsModule } from './components/components.module';
   declarations: [
     AppComponent,
     AdminLayoutComponent,
-    AuthLayoutComponent
+    AuthLayoutComponent,
+    CarouselComponent
   ],
   providers: [],
   bootstrap: [AppComponent]
