@@ -9,8 +9,10 @@ import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 import { ToastrService } from "ngx-toastr";
 import { AdminService } from "src/app/services/admin/admin.service";
 import { SharedDataService } from "src/app/services/sharedData/shared-data.service";
+import { TokenstorageService } from "src/app/services/tokenstorage/tokenstorage.service";
 
 import { User } from "src/app/models/user";
+
 @Component({
   selector: "app-admin",
   templateUrl: "./admin.component.html",
@@ -46,7 +48,8 @@ export class AdminComponent implements OnInit, AfterViewInit, OnCommit {
     private adminService: AdminService,
     private sharedDataService: SharedDataService,
     private dialog: MatDialog,
-    private toastrService: ToastrService
+    private toastrService: ToastrService,
+    private tokenStorageService: TokenstorageService
   ) {
     this.dialogConfiguration();
   }
@@ -54,7 +57,16 @@ export class AdminComponent implements OnInit, AfterViewInit, OnCommit {
   ngOnInit(): void {
     // Datasource initialization. This is needed to set paginator and items size
     this.dataSource = new MatTableDataSource([
-      { id: "", name: "", surname: "", email: "", role: "", password: "", creationDate: null, updateDate: null },
+      {
+        id: "",
+        name: "",
+        surname: "",
+        email: "",
+        role: "",
+        password: "",
+        creationDate: null,
+        updateDate: null,
+      },
     ]);
     // define the list of admins
     this.adminList = this.dataSource.data;
@@ -102,7 +114,7 @@ export class AdminComponent implements OnInit, AfterViewInit, OnCommit {
   // Gets all already registered administrators as promise
   private getAdminList(): Promise<User[]> {
     return new Promise((resolve) => {
-      this.adminService.getAllAdmins().subscribe({
+      this.adminService.getAll().subscribe({
         next: (admins: User[]) => resolve(admins),
         error: (error) => {
           this.handleError(error);
@@ -135,7 +147,7 @@ export class AdminComponent implements OnInit, AfterViewInit, OnCommit {
       email: "",
       password: "",
       creationDate: null,
-      updateDate: null
+      updateDate: null,
     };
     // set the value of the admin into the service
     this.sharedDataService.changeCurrentUser(this.currentAdmin);
@@ -203,7 +215,10 @@ export class AdminComponent implements OnInit, AfterViewInit, OnCommit {
         (x) =>
           x.email === this.currentAdmin.email && x.id !== this.currentAdmin.id
       );
-      if (exists && this.currentAdmin.email.toLowerCase() !== this.copyEmail.toLowerCase()) {
+      if (
+        exists &&
+        this.currentAdmin.email.toLowerCase() !== this.copyEmail.toLowerCase()
+      ) {
         this.toastrService.info(
           `Bereits registrierte E-Mail - ${this.currentAdmin.email}`,
           "Benutzer vorhanden"
@@ -216,7 +231,7 @@ export class AdminComponent implements OnInit, AfterViewInit, OnCommit {
 
   // Saves the form as administrator. Be sure that the information not already exists before save information.
   private saveAdmin(): void {
-    this.adminService.addAdmin(this.currentAdmin).subscribe({
+    this.adminService.addOne(this.currentAdmin).subscribe({
       next: (res: User) => {
         // set the current local admin
         this.currentAdmin = res;
@@ -242,14 +257,26 @@ export class AdminComponent implements OnInit, AfterViewInit, OnCommit {
 
   // Saves the value of the to be updated admin.
   private updateAdmin(): void {
-    this.adminService.updateAdmin(this.currentAdmin).subscribe({
+    const updatedValue = {
+      id: this.currentAdmin?.id,
+      name: this.currentAdmin?.name,
+      surname: this.currentAdmin?.surname,
+      email:
+        this.currentAdmin?.email != this.copyEmail
+          ? this.currentAdmin?.email
+          : null,
+    };
+
+    this.adminService.updateOne(updatedValue).subscribe({
       next: (res: User) => {
         // set the local current admin value
         this.currentAdmin = res;
-        // The view need to be updated. Get the index of the updated item from the list and update the values as well.
+        // The view need to be updated. Get the index of the updated item from the list and
+        // update the values as well.
         const itemIndex = this.adminList.findIndex((x) => x.id === res.id);
         this.adminList[itemIndex].email = res.email;
         this.adminList[itemIndex].name = res.name;
+        this.adminList[itemIndex].surname = res.surname;
         // Update the view
         this.sortByFirstName(this.adminList);
         this.dataSource.data = this.adminList;
@@ -272,12 +299,19 @@ export class AdminComponent implements OnInit, AfterViewInit, OnCommit {
   // Dialog for deletion process
   deleteAdminDialog(row: User, dialogForm: any) {
     this.currentAdmin = row;
-    this.dialog.open(dialogForm, this.dialogConfig);
+    // A user can not delete it self
+    if (this.currentAdmin.email !== this.tokenStorageService.getUser().email) {
+      this.dialog.open(dialogForm, this.dialogConfig);
+    } else {
+      this.toastrService.info(
+        "Diese Aktion kann nicht ausgeführt werden. Melden Sie sich mit einem anderen Konto an, um die Aktion ausführen zu können."
+      );
+    }
   }
 
   // Delete the current selected admin.
   deleteAdmin(): void {
-    this.adminService.deleteAdmin(this.currentAdmin.id).subscribe({
+    this.adminService.deleteOne(this.currentAdmin.id).subscribe({
       next: (response: string) => {
         if (response) {
           // if the value is not empty
@@ -307,6 +341,7 @@ export class AdminComponent implements OnInit, AfterViewInit, OnCommit {
 
   // On error
   private handleError(error: any) {
+    console.log(error);
     if (error?.message) {
       this.errors.errorMessage = error?.message;
     }
