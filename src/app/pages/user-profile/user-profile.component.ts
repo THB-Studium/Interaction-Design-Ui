@@ -58,9 +58,16 @@ export class UserProfileComponent implements OnInit, AfterViewInit {
   }
 
   savePassword() {
-    const userId = this.currentUser?.id;
-    const oldPwd = this.formGroup.get('oldpwd').value;
-    const newPwd = this.formGroup.get('newpwd').value;
-    // todo call the service
+    const updatedValue = {
+      "id": this.currentUser?.id,
+      "newPassword": this.formGroup.get('newpwd').value,
+      "oldPassword": this.formGroup.get('oldpwd').value,
+    };
+    // Save the changes
+    this.adminService.updateOne(updatedValue).subscribe({
+      next: (user) => this.currentUser = user,
+      error: () => this.toastrService.error("Das alte Passwort ist bestimmt falsch."),
+      complete: () => this.toastrService.success("Das Passwort wurde erfolgreich geändert")
+    })
   }
 }

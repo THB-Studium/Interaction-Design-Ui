@@ -103,7 +103,7 @@
   <h1 mat-dialog-title>Bestätigen Sie das Löschen</h1>
   <mat-divider></mat-divider>
   <div mat-dialog-content>
-    <p>Wollen Sie wirklich <strong>{{currentAdmin.name}}</strong> löschen?</p>
+    <p>Wollen Sie wirklich <strong>{{currentAdmin?.surname}} {{currentAdmin?.name}}</strong> löschen?</p>
   </div>
   <div mat-dialog-actions>
     <button mat-raised-button color="primary" mat-dialog-close (click)="deleteAdmin()">Ja</button>

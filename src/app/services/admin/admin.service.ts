@@ -32,7 +32,7 @@ export class AdminService {
   }
 
   // PUT
-  updateOne(admin: User): Observable<User> {
+  updateOne(admin: any): Observable<User> {
     return this.httpClient.put<User>(this.ADMIN_URL, admin, {
       headers: this.headers,
     });

@@ -84,7 +84,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
         error: (err) => {
           if (err?.error) {
             const msg: string = err.error?.error;
-            if (msg.toLowerCase() === 'bad credentials') {
+            if (msg.toLowerCase() === 'bad credentials' || err.error?.error) {
               this.errorMessage = 'Benutzername und/oder Passwort sind falsch!';
             }
           }
