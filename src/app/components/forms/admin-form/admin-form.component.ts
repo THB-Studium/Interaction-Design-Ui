@@ -86,6 +86,7 @@ export class AdminFormComponent implements OnInit, AfterViewInit {
       let id = null;
       let updateddate = null;
       this.isAdd = this.sharedDataService.isAddBtnClicked;
+
       if (!this.isAdd) {
         id = this.currentAdminId;
         updateddate = new Date();
