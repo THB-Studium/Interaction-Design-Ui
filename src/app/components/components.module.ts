@@ -36,11 +36,12 @@ import { TravelerFormComponent } from './forms/traveler-form/traveler-form.compo
 import { TripofferFormComponent } from './forms/tripoffer-form/tripoffer-form.component';
 import { ExpectationFormComponent } from './forms/expectation-form/expectation-form.component';
 import { BookingclassFormComponent } from './forms/bookingclass-form/bookingclass-form.component';
+import { NavbarGuestComponent } from './navbar-guest/navbar-guest.component';
 
 @NgModule({
   imports: [
-    CommonModule, 
-    RouterModule, 
+    CommonModule,
+    RouterModule,
     NgbModule,
     FormsModule,
     ReactiveFormsModule,
@@ -78,16 +79,18 @@ import { BookingclassFormComponent } from './forms/bookingclass-form/bookingclas
     TripofferFormComponent,
     ExpectationFormComponent,
     BookingclassFormComponent,
+    NavbarGuestComponent
   ],
   exports: [
-    FooterComponent, 
-    NavbarComponent, 
+    FooterComponent,
+    NavbarComponent,
     SidebarComponent,
     AdminFormComponent,
     TravelerFormComponent,
     TripofferFormComponent,
     ExpectationFormComponent,
     BookingclassFormComponent,
+    NavbarGuestComponent
   ]
 })
-export class ComponentsModule {}
+export class ComponentsModule { }

@@ -4,9 +4,9 @@
 import { Injectable } from "@angular/core";
 import { BehaviorSubject } from "rxjs";
 
-import { Admin } from "src/app/models/admin";
 import { BookingClass } from "src/app/models/bookingClass";
 import { Expectation } from "src/app/models/expectation";
+import { User } from "src/app/models/user";
 import { Traveler } from "src/app/models/traveler";
 import { TripOffer } from "src/app/models/tripOffer";
 
@@ -19,21 +19,25 @@ export class SharedDataService {
 
   constructor() {}
 
-  //#region  Admin
-  private admin: Admin = {
+  //#region  Users
+  private user: User = {
     id: "",
     email: "",
     name: "",
-    kennwort: "",
+    role: "",
+    surname: "",
+    password: "",
+    creationDate: null,
+    updateDate: null,
   };
-  private adminSource = new BehaviorSubject<Admin>(this.admin);
-  // Contains all information of the admin that has been selected/edited.
-  public currentAdmin = this.adminSource.asObservable();
+  private userSource = new BehaviorSubject<User>(this.user);
+  // Contains all information of the user that has been selected/edited.
+  public currentUser = this.userSource.asObservable();
 
-  changeCurrentAdmin(admin: Admin) {
-    this.adminSource.next(admin);
+  changeCurrentUser(user: User) {
+    this.userSource.next(user);
   }
-  //#endregion admin
+  //#endregion Users
 
   //#region Traveler
   private traveler: Traveler = {
@@ -93,7 +97,9 @@ export class SharedDataService {
     preis: 0,
     reiseAngebotId: "",
   };
-  private bookingclassSource = new BehaviorSubject<BookingClass>(this.bookingclass);
+  private bookingclassSource = new BehaviorSubject<BookingClass>(
+    this.bookingclass
+  );
   public currentBookingclass = this.bookingclassSource.asObservable();
 
   changeCurrentBookinclass(bookingclass: BookingClass) {
@@ -106,9 +112,11 @@ export class SharedDataService {
     id: "",
     text: "",
     wert: 0,
-    reiseAngebotId: ""
+    reiseAngebotId: "",
   };
-  private expectationSource = new BehaviorSubject<Expectation>(this.expectation);
+  private expectationSource = new BehaviorSubject<Expectation>(
+    this.expectation
+  );
   public currentExpectation = this.expectationSource.asObservable();
 
   changeCurrentExpectation(expectation: Expectation) {

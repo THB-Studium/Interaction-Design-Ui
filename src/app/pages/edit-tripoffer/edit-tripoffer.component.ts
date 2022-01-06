@@ -73,6 +73,7 @@ export class EditTripofferComponent implements OnInit, AfterViewInit {
           tripofferid = param.id;
           this.tripofferService.getOne(tripofferid).subscribe({
             next: (resp) => {
+              console.log(resp)
               this.currentTripoffer = resp;
               this.sharedDataService.changeCurrentTripOffer(
                 this.currentTripoffer
