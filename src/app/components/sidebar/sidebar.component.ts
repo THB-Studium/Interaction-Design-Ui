@@ -15,8 +15,8 @@ export const ROUTES: RouteInfo[] = [
     class: "",
   },
   {
-    path: "/admins",
-    title: "Admins",
+    path: "/users",
+    title: "Benutzer",
     icon: "fa fa-users text-black-50",
     class: "",
   },
@@ -40,17 +40,10 @@ export const ROUTES: RouteInfo[] = [
   },
   {
     path: "/user-profile",
-    title: "User profile",
-    icon: "ni-single-02 text-yellow",
+    title: "Benutzerprofil",
+    icon: "fas fa-id-card text-green",
     class: "",
-  },
-  { path: "/login", title: "Login", icon: "ni-key-25 text-info", class: "" },
-  {
-    path: "/register",
-    title: "Register",
-    icon: "ni-circle-08 text-pink",
-    class: "",
-  },
+  }
 ];
 
 @Component({
@@ -62,11 +55,11 @@ export class SidebarComponent implements OnInit {
   public menuItems: any[];
   public isCollapsed = true;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router) { }
 
   ngOnInit() {
     this.menuItems = ROUTES.filter((menuItem) => menuItem);
-    this.router.events.subscribe((event) => {
+    this.router.events.subscribe(() => {
       this.isCollapsed = true;
     });
   }

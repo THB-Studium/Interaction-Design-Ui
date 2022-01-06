@@ -37,6 +37,7 @@ import { CountryFormComponent } from './forms/country-form/country-form.componen
 import { HighlightFormComponent } from './forms/highlight-form/highlight-form.component';
 import { AccommodationFormComponent } from './forms/accommodation-form/accommodation-form.component';
 import { CountryInformationFormComponent } from './forms/country-information-form/country-information-form.component';
+import { NavbarGuestComponent } from './navbar-guest/navbar-guest.component';
 
 @NgModule({
   imports: [
@@ -80,6 +81,7 @@ import { CountryInformationFormComponent } from './forms/country-information-for
     HighlightFormComponent,
     AccommodationFormComponent,
     CountryInformationFormComponent,
+    NavbarGuestComponent
   ],
   exports: [
     FooterComponent,
@@ -90,7 +92,8 @@ import { CountryInformationFormComponent } from './forms/country-information-for
     CountryFormComponent,
     HighlightFormComponent,
     AccommodationFormComponent,
-    CountryInformationFormComponent
+    CountryInformationFormComponent,
+    NavbarGuestComponent
   ]
 })
 export class ComponentsModule { }

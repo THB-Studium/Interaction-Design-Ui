@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Observable } from "rxjs";
 
 import { Server } from "../../variables/server";
-import { Admin } from "src/app/models/admin";
+import { User } from "src/app/models/user";
 
 @Injectable({
   providedIn: "root",
@@ -16,30 +16,30 @@ export class AdminService {
   constructor(private httpClient: HttpClient) {}
 
   // GET ONE
-  getOneAdmin(id: string): Observable<Admin> {
+  getOne(id: string): Observable<User> {
     const admintoberead_url = `${this.ADMIN_URL}/${id}`;
-    return this.httpClient.get<Admin>(admintoberead_url);
+    return this.httpClient.get<User>(admintoberead_url);
   }
 
   // GET ALL
-  getAllAdmins(): Observable<Admin[]> {
-    return this.httpClient.get<Admin[]>(this.ADMIN_URL);
+  getAll(): Observable<User[]> {
+    return this.httpClient.get<User[]>(this.ADMIN_URL);
   }
 
   // POST
-  addAdmin(admin: Admin): Observable<Admin> {
-    return this.httpClient.post<Admin>(this.ADMIN_URL, admin);
+  addOne(admin: User): Observable<User> {
+    return this.httpClient.post<User>(this.ADMIN_URL, admin);
   }
 
   // PUT
-  updateAdmin(admin: Admin): Observable<Admin> {
-    return this.httpClient.put<Admin>(this.ADMIN_URL, admin, {
+  updateOne(admin: any): Observable<User> {
+    return this.httpClient.put<User>(this.ADMIN_URL, admin, {
       headers: this.headers,
     });
   }
 
   // DELETE
-  deleteAdmin(id: string) {
+  deleteOne(id: string) {
     const admintobedeleted_url = `${this.ADMIN_URL}/${id}`;
     return this.httpClient.delete(admintobedeleted_url, {
       responseType: "text",

@@ -5,10 +5,10 @@ import { Injectable } from "@angular/core";
 import { BehaviorSubject } from "rxjs";
 import { Accommodation } from "src/app/models/accommodation";
 
-import { Admin } from "src/app/models/admin";
 import { Country } from "src/app/models/country";
 import { CountryInformation } from "src/app/models/countryInformation";
 import { Highlight } from "src/app/models/highlight";
+import { User } from "src/app/models/user";
 import { Traveler } from "src/app/models/traveler";
 
 @Injectable({
@@ -20,21 +20,25 @@ export class SharedDataService {
 
   constructor() {}
 
-  //#region  Admin
-  private admin: Admin = {
+  //#region  Users
+  private user: User = {
     id: "",
     email: "",
     name: "",
-    kennwort: "",
+    role: "",
+    surname: "",
+    password: "",
+    creationDate: null,
+    updateDate: null
   };
-  private adminSource = new BehaviorSubject<Admin>(this.admin);
-  // Contains all information of the admin that has been selected/edited.
-  public currentAdmin = this.adminSource.asObservable();
+  private userSource = new BehaviorSubject<User>(this.user);
+  // Contains all information of the user that has been selected/edited.
+  public currentUser = this.userSource.asObservable();
 
-  changeCurrentAdmin(admin: Admin) {
-    this.adminSource.next(admin);
+  changeCurrentUser(user: User) {
+    this.userSource.next(user);
   }
-  //#endregion admin
+  //#endregion Users
 
   //#region traveler
   private traveler: Traveler = {
