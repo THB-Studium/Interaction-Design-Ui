@@ -27,15 +27,15 @@ export const ROUTES: RouteInfo[] = [
     class: "",
   },
   {
-    path: "/travelers",
-    title: "Reisende",
-    icon: "fas fa-users text-primary",
+    path: "/tripoffers",
+    title: "Reiseangebote",
+    icon: "fas fa-plane-departure text-black",
     class: "",
   },
   {
-    path: "/tripoffers",
-    title: "Reise-Angeboten",
-    icon: "fas fa-plane-departure text-black",
+    path: "/travelers",
+    title: "Reisende",
+    icon: "fas fa-users text-primary",
     class: "",
   },
   {

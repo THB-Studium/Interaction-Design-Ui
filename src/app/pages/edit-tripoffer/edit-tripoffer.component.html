@@ -4,7 +4,7 @@
             <div class="row">
                 <div class="text-center col-md-12">
                     <em class="fas fa-plane-departure text-white"></em>
-                    <h1 class="display-2 text-white">Angebot Editieren</h1>
+                    <h1 class="display-2 text-white">Angebot bearbeiten</h1>
                 </div>
             </div>
         </div>
@@ -12,10 +12,131 @@
 </div>
 <!-- Page content -->
 <div class="container-fluid mt-3">
-    <div class="row">
-        <button class="mb-2" mat-mini-fab color="primary" aria-label="back icon" matTooltip="Zurück zur Liste"
-            matTooltipHideDelay="{{ toolTipDuration }}" (click)="navigateToTripoffersList()">
-            <mat-icon>arrow_back</mat-icon>
+    <mat-card class="m-0">
+        <mat-card-header>
+            <div class="row">
+                <button class="mb-2" mat-mini-fab color="primary" aria-label="back icon" matTooltip="Zurück zur Liste"
+                    matTooltipHideDelay="{{ toolTipDuration }}" (click)="navigateToTripoffersList()">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+            </div>
+        </mat-card-header>
+        <mat-divider inset></mat-divider>
+        <mat-card-content class="col-md-12">
+            <div class="row">
+                <h1 class="mt-2">Informationen des Angebots</h1>
+                <app-tripoffer-form class="col-md-12 p-0" (notifyFormIsValid)="isTripFormValid($event)"></app-tripoffer-form>
+            </div>
+            <div class="row">
+                <h1 class="mt-5">
+                    Buchungsklassen
+                    <button class="ml-1" mat-mini-fab color="primary" aria-label="add icon"
+                        matTooltip="Neue Info hinzufügen" matTooltipHideDelay="{{ toolTipDuration }}"
+                        (click)="addBookingclassDialog(bookingclassDialog)">
+                        <mat-icon>add</mat-icon>
+                    </button>
+                </h1>
+            </div>
+            <!--bookingclass list-->
+            <div class="row" *ngIf="bookingclassArray.length > 0">
+                <div class="card col-md-3" *ngFor="let bc of bookingclassArray">
+                    <div class="card-body">
+                        <h1 class="card-title">{{bc.type}}</h1>
+                        <h4 class="card-subtitle mb-2 text-muted">Preis: {{bc.preis}}.-</h4>
+                        <p class="card-text font-weight-700">{{bc.text}}</p>
+                        <button type="button" class="btn btn-outline-info" (click)="editBookingclass(bc, bookingclassDialog)">Editieren</button>
+                        <button type="button" class="btn btn-outline-danger" (click)="deleteBookingclassDialog(bc, deleteBcDialog)">Entfernen</button>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <h1 class="mt-5">
+                    Erwartungen
+                    <button class="ml-1" mat-mini-fab color="primary" aria-label="add icon"
+                        matTooltip="Neue Info hinzufügen" matTooltipHideDelay="{{ toolTipDuration }}"
+                        (click)="addExpectationDialog(expectationDialog)">
+                        <mat-icon>add</mat-icon>
+                    </button>
+                </h1>
+            </div>
+            <!--Expectations list-->
+            <div class="row" *ngIf="expectationsArray.length > 0">
+                <div class="card col-md-3" *ngFor="let exp of expectationsArray">
+                    <div class="card-body">
+                        <h4 class="card-title">Wert: {{exp.wert}}</h4>
+                        <p class="card-text">{{exp.text}}</p>
+                        <button type="button" class="btn btn-outline-info" (click)="editExpectation(exp, expectationDialog)">Editieren</button>
+                        <button type="button" class="btn btn-outline-danger" (click)="deleteExpectationDialog(exp, deleteExpDialog)">Entfernen</button>
+                    </div>
+                </div>
+            </div>
+        </mat-card-content>
+        <mat-divider inset></mat-divider>
+        <mat-card-actions>
+            <button color="primary" mat-raised-button [disabled]="!isFormValid" (click)="saveTripoffer()">Speichern</button>
+            <button color="accent" mat-raised-button>Abbrechen</button>
+        </mat-card-actions>
+    </mat-card>
+</div>
+
+<ng-template #bookingclassDialog>
+    <h1 mat-dialog-title>Neue Buchungsklasse hinzufügen</h1>
+    <mat-divider></mat-divider>
+    <div mat-dialog-content>
+        <app-bookingclass-form (notifyFormIsValid)="isModalFormValid($event)" class="col-md-12"></app-bookingclass-form>
+    </div>
+    <mat-divider></mat-divider>
+    <div mat-dialog-actions>
+        <button mat-raised-button color="primary" mat-dialog-close [disabled]="!isValid" (click)="saveBookingclass()">
+            Speichern
+        </button>
+        <button mat-raised-button color="accent" mat-dialog-close>
+            Abbrechen
         </button>
     </div>
-</div>
+</ng-template>
+
+<ng-template #expectationDialog>
+    <h1 mat-dialog-title>Neue Erwartung hinzufügen</h1>
+    <mat-divider></mat-divider>
+    <div mat-dialog-content>
+        <app-expectation-form (notifyFormIsValid)="isModalFormValid($event)" class="col-md-12"></app-expectation-form>
+    </div>
+    <mat-divider></mat-divider>
+    <div mat-dialog-actions>
+        <button mat-raised-button color="primary" mat-dialog-close [disabled]="!isValid" (click)="saveExpectation()">
+            Speichern
+        </button>
+        <button mat-raised-button color="accent" mat-dialog-close>
+            Abbrechen
+        </button>
+    </div>
+</ng-template>
+
+<ng-template #deleteBcDialog>
+    <h1 mat-dialog-title>Bestätigen Sie das Löschen</h1>
+    <mat-divider></mat-divider>
+    <div mat-dialog-content>
+        <p>
+            Wollen Sie diese Buchungsklasee wirklich löschen?
+        </p>
+    </div>
+    <div mat-dialog-actions>
+        <button mat-raised-button color="primary" mat-dialog-close (click)="deleteBookingclass()">Ja</button>
+        <button mat-raised-button color="accent" mat-dialog-close>Nein</button>
+    </div>
+</ng-template>
+
+<ng-template #deleteExpDialog>
+    <h1 mat-dialog-title>Bestätigen Sie das Löschen</h1>
+    <mat-divider></mat-divider>
+    <div mat-dialog-content>
+        <p>
+            Wollen Sie diese Erwartung wirklich löschen?
+        </p>
+    </div>
+    <div mat-dialog-actions>
+        <button mat-raised-button color="primary" mat-dialog-close (click)="deleteExpectation()">Ja</button>
+        <button mat-raised-button color="accent" mat-dialog-close>Nein</button>
+    </div>
+</ng-template>

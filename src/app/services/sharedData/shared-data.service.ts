@@ -5,6 +5,8 @@ import { Injectable } from "@angular/core";
 import { BehaviorSubject } from "rxjs";
 
 import { Admin } from "src/app/models/admin";
+import { BookingClass } from "src/app/models/bookingClass";
+import { Expectation } from "src/app/models/expectation";
 import { Traveler } from "src/app/models/traveler";
 import { TripOffer } from "src/app/models/tripOffer";
 
@@ -63,7 +65,7 @@ export class SharedDataService {
     anmeldungsFrist: new Date(),
     startDatum: new Date(),
     endDatum: new Date(),
-    startbild: "",
+    startbild: null,
     plaetze: 0,
     freiPlaetze: 0,
     interessiert: 0,
@@ -82,4 +84,35 @@ export class SharedDataService {
     this.tripOfferSource.next(tripoffer);
   }
   //#endregion offers
+
+  //#region bookinclass
+  private bookingclass: BookingClass = {
+    id: "",
+    type: "",
+    text: "",
+    preis: 0,
+    reiseAngebotId: "",
+  };
+  private bookingclassSource = new BehaviorSubject<BookingClass>(this.bookingclass);
+  public currentBookingclass = this.bookingclassSource.asObservable();
+
+  changeCurrentBookinclass(bookingclass: BookingClass) {
+    this.bookingclassSource.next(bookingclass);
+  }
+  //#endregion bookinclass
+
+  //#region bookinclass
+  private expectation: Expectation = {
+    id: "",
+    text: "",
+    wert: 0,
+    reiseAngebotId: ""
+  };
+  private expectationSource = new BehaviorSubject<Expectation>(this.expectation);
+  public currentExpectation = this.expectationSource.asObservable();
+
+  changeCurrentExpectation(expectation: Expectation) {
+    this.expectationSource.next(expectation);
+  }
+  //#endregion bookinclass
 }

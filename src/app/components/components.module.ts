@@ -21,6 +21,12 @@ import { MatSortModule } from "@angular/material/sort";
 import { MatDialogModule } from "@angular/material/dialog";
 import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatNativeDateModule } from "@angular/material/core";
+import { MatChipsModule } from '@angular/material/chips';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatListModule } from '@angular/material/list';
 
 import { SidebarComponent } from "./sidebar/sidebar.component";
 import { NavbarComponent } from "./navbar/navbar.component";
@@ -28,6 +34,8 @@ import { FooterComponent } from "./footer/footer.component";
 import { AdminFormComponent } from "./forms/admin-form/admin-form.component";
 import { TravelerFormComponent } from './forms/traveler-form/traveler-form.component';
 import { TripofferFormComponent } from './forms/tripoffer-form/tripoffer-form.component';
+import { ExpectationFormComponent } from './forms/expectation-form/expectation-form.component';
+import { BookingclassFormComponent } from './forms/bookingclass-form/bookingclass-form.component';
 
 @NgModule({
   imports: [
@@ -53,7 +61,13 @@ import { TripofferFormComponent } from './forms/tripoffer-form/tripoffer-form.co
     MatSortModule,
     MatDialogModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MatChipsModule,
+    MatAutocompleteModule,
+    MatGridListModule,
+    MatToolbarModule,
+    MatProgressBarModule,
+    MatListModule
   ],
   declarations: [
     FooterComponent,
@@ -62,6 +76,8 @@ import { TripofferFormComponent } from './forms/tripoffer-form/tripoffer-form.co
     AdminFormComponent,
     TravelerFormComponent,
     TripofferFormComponent,
+    ExpectationFormComponent,
+    BookingclassFormComponent,
   ],
   exports: [
     FooterComponent, 
@@ -69,7 +85,9 @@ import { TripofferFormComponent } from './forms/tripoffer-form/tripoffer-form.co
     SidebarComponent,
     AdminFormComponent,
     TravelerFormComponent,
-    TripofferFormComponent
+    TripofferFormComponent,
+    ExpectationFormComponent,
+    BookingclassFormComponent,
   ]
 })
 export class ComponentsModule {}

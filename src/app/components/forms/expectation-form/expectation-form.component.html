@@ -1,0 +1,31 @@
+<form [formGroup]="expectationForm" class="col-md-12">
+    <!-- text -->
+    <div class="form-row">
+        <div class="form-group col-md-12">
+            <mat-form-field class="col-md-12" appearance="standard">
+                <mat-label>Erwartungstext</mat-label>
+                <input matInput formControlName="text" placeholder="Text" required>
+                <mat-error *ngIf="expectationForm.get('text').invalid">
+                    Der Eingabe ist <strong>erforderlich</strong>.
+                </mat-error>
+            </mat-form-field>
+        </div>
+    </div>
+    <!-- value -->
+    <div class="form-row">
+        <div class="form-group col-md-12">
+            <mat-form-field class="col-md-12" appearance="standard">
+                <mat-label>Erwartungswert</mat-label>
+                <input matInput type="number" formControlName="value" placeholder="Wert" required>
+                <mat-error
+                    *ngIf="expectationForm.get('value').errors && expectationForm.get('value').hasError('required')">
+                    Der Eingabe ist <strong>erforderlich</strong>.
+                </mat-error>
+                <mat-error
+                    *ngIf="expectationForm.get('value').errors && expectationForm.get('value').hasError('min') || expectationForm.get('value').errors && expectationForm.get('value').hasError('max')">
+                    Der Wert muss zwischen <strong>[0 - 100]</strong> sein.
+                </mat-error>
+            </mat-form-field>
+        </div>
+    </div>
+</form>

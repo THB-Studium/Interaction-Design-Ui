@@ -1,8 +1,167 @@
-<mat-card class="col-md-12">
-    <mat-card-content class="col-md-12 mt-0">
-        <!--form-->
-        <form [formGroup]="tripofferForm" class="col-md-12">
-            
-        </form>
-    </mat-card-content>
-</mat-card>
+<form [formGroup]="tripofferForm" class="col-md-12">
+    <div class="form-row">
+        <!-- Title -->
+        <div class="form-group col-md-8">
+            <mat-form-field class="col-md-12" appearance="standard">
+                <mat-label>Titel</mat-label>
+                <input matInput formControlName="title" placeholder="Titel/Name" required>
+                <mat-error *ngIf="tripofferForm.get('title').invalid">
+                    Die Eingabe ist <strong>erforderlich</strong>.
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <!-- Total place -->
+        <div class="form-group col-md-4">
+            <mat-form-field class="col-md-12" appearance="standard">
+                <mat-label>Gesamtplatz</mat-label>
+                <input type="number" matInput formControlName="totalplace" placeholder="Gesamtplatz" required>
+                <mat-error *ngIf="tripofferForm.get('totalplace').invalid">
+                    Die Eingabe ist <strong>erforderlich</strong>.
+                </mat-error>
+            </mat-form-field>
+        </div>
+    </div>
+    <!--Image uploader-->
+    <div class="form-row">
+        <div class="form-group col-md-12">
+            <mat-form-field class="col-md-12">
+                <mat-toolbar class="mb-1">
+                    <input matInput [value]="selectedFileName.length ? selectedFileName : 'Bild auswählen'"
+                        formControlName="image" required />
+                </mat-toolbar>
+                <input type="file" id="fileInput" name="fileInput" accept="image/*" (change)="selectFile($event)" />
+                <mat-error *ngIf="!isImgSelected">
+                    Die Eingabe ist <strong>erforderlich</strong>.
+                </mat-error>
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="form-row">
+        <!-- start date -->
+        <div class="form-group col-md-4">
+            <mat-form-field class="col-md-12" appearance="standard">
+                <mat-label>Startdatum</mat-label>
+                <input matInput readonly (dateChange)="onStartDateSelected($event)" [matDatepicker]="startdatepicker"
+                    formControlName="startdate" (click)="clearStartDateError()" required>
+                <mat-datepicker-toggle matSuffix [for]="startdatepicker" (click)="clearStartDateError()">
+                </mat-datepicker-toggle>
+                <mat-datepicker #startdatepicker>
+                    <mat-datepicker-actions>
+                        <button mat-button matDatepickerCancel>Abbrechen</button>
+                        <button mat-raised-button color="primary" matDatepickerApply>Ok</button>
+                    </mat-datepicker-actions>
+                </mat-datepicker>
+                <mat-error *ngIf="tripofferForm.get('startdate').invalid">
+                    Die Eingabe ist <strong>erforderlich</strong>.
+                </mat-error>
+                <mat-hint class="text-danger" *ngIf="errors.startdate">
+                    {{errors.startdate}}
+                </mat-hint>
+            </mat-form-field>
+        </div>
+        <!-- end date -->
+        <div class="form-group col-md-4">
+            <mat-form-field class="col-md-12" appearance="standard">
+                <mat-label>Enddatum</mat-label>
+                <input matInput readonly (dateChange)="onEndDateSelected($event)" [matDatepicker]="enddatepicker"
+                    formControlName="enddate" (click)="clearEndDateError()" required>
+                <mat-datepicker-toggle matSuffix [for]="enddatepicker" (click)="clearEndDateError()">
+                </mat-datepicker-toggle>
+                <mat-datepicker #enddatepicker>
+                    <mat-datepicker-actions>
+                        <button mat-button matDatepickerCancel>Abbrechen</button>
+                        <button mat-raised-button color="primary" matDatepickerApply>Ok</button>
+                    </mat-datepicker-actions>
+                </mat-datepicker>
+                <mat-error *ngIf="tripofferForm.get('enddate').invalid">
+                    Die Eingabe ist <strong>erforderlich</strong>.
+                </mat-error>
+                <mat-hint class="text-danger" *ngIf="errors.enddate">
+                    {{errors.enddate}}
+                </mat-hint>
+            </mat-form-field>
+        </div>
+        <!-- Deadline date -->
+        <div class="form-group col-md-4">
+            <mat-form-field class="col-md-12" appearance="standard">
+                <mat-label>Anmeldungsfrist</mat-label>
+                <input matInput readonly (dateChange)="onDeadlineDateSelected($event)"
+                    [matDatepicker]="deadlinedatepicker" formControlName="deadline" (click)="clearDeadlineDateError()"
+                    required>
+                <mat-datepicker-toggle matSuffix [for]="deadlinedatepicker" (click)="clearDeadlineDateError()">
+                </mat-datepicker-toggle>
+                <mat-datepicker #deadlinedatepicker>
+                    <mat-datepicker-actions>
+                        <button mat-button matDatepickerCancel>Abbrechen</button>
+                        <button mat-raised-button color="primary" matDatepickerApply>Ok</button>
+                    </mat-datepicker-actions>
+                </mat-datepicker>
+                <mat-error *ngIf="tripofferForm.get('deadline').invalid">
+                    Die Eingabe ist <strong>erforderlich</strong>.
+                </mat-error>
+                <mat-hint class="text-danger" *ngIf="errors.deadlinedate">
+                    {{errors.deadlinedate}}
+                </mat-hint>
+            </mat-form-field>
+        </div>
+    </div>
+    <!--Services-->
+    <div class="form-row">
+        <div class="form-group col-md-12">
+            <mat-form-field class="col-md-12" appearance="standard">
+                <mat-label>Leistungen</mat-label>
+                <mat-chip-list #serviceList aria-label="services" multiple required>
+                    <mat-chip *ngFor="let service of serviceArray" [selected]="service" [value]="service"
+                        (removed)="removeService(service)">
+                        {{service}}
+                    </mat-chip>
+                    <input placeholder="Neue Leistung..." formControlName="services" [matChipInputFor]="serviceList"
+                        (matChipInputTokenEnd)="addServiceFromInput($event)">
+                </mat-chip-list>
+                <mat-error *ngIf="tripofferForm.get('services').invalid">
+                    Die Eingabe ist <strong>erforderlich</strong>.
+                </mat-error>
+            </mat-form-field>
+        </div>
+    </div>
+    <!--Authorizedtotravel-->
+    <div class="form-row">
+        <div class="form-group col-md-12">
+            <mat-form-field class="col-md-12" appearance="standard">
+                <mat-label>Mitberechtigt</mat-label>
+                <mat-chip-list #authorizationList aria-label="authorizedtotravel" multiple required>
+                    <mat-chip *ngFor="let value of authorizedtotravelArray" [selected]="value" [value]="value"
+                        (removed)="removeAuthorization(value)">
+                        {{value}}
+                    </mat-chip>
+                    <input placeholder="Neue..." formControlName="authorizedtotravel"
+                        [matChipInputFor]="authorizationList"
+                        (matChipInputTokenEnd)="addAuthorizationFromInput($event)">
+                </mat-chip-list>
+                <mat-error *ngIf="tripofferForm.get('authorizedtotravel').invalid">
+                    Die Eingabe ist <strong>erforderlich</strong>.
+                </mat-error>
+            </mat-form-field>
+        </div>
+    </div>
+    <!--Notes-->
+    <div class="form-row">
+        <div class="form-group col-md-12">
+            <mat-form-field class="col-md-12" appearance="standard">
+                <mat-label>Wichtige Hinweise</mat-label>
+                <mat-chip-list #noteList aria-label="Notes" multiple required>
+                    <mat-chip *ngFor="let note of notesArray" [selected]="note" [value]="note"
+                        (removed)="removeNote(note)">
+                        {{note}}
+                    </mat-chip>
+                    <input placeholder="Neuer Hinweis..." formControlName="notes" [matChipInputFor]="noteList"
+                        (matChipInputTokenEnd)="addNoteFromInput($event)">
+                </mat-chip-list>
+                <mat-error *ngIf="tripofferForm.get('notes').invalid">
+                    Die Eingabe ist <strong>erforderlich</strong>.
+                </mat-error>
+            </mat-form-field>
+        </div>
+    </div>
+    <mat-divider></mat-divider>
+</form>

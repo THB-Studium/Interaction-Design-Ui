@@ -68,7 +68,7 @@ export class TripofferComponent implements OnInit, AfterViewInit {
         anmeldungsFrist: null,
         startDatum: null,
         endDatum: null,
-        startbild: "",
+        startbild: null,
         plaetze: 0,
         freiPlaetze: 0,
         interessiert: 0,
@@ -149,7 +149,7 @@ export class TripofferComponent implements OnInit, AfterViewInit {
       anmeldungsFrist: new Date(),
       startDatum: new Date(),
       endDatum: new Date(),
-      startbild: "",
+      startbild: null,
       plaetze: 0,
       freiPlaetze: 0,
       interessiert: 0,
@@ -168,28 +168,67 @@ export class TripofferComponent implements OnInit, AfterViewInit {
   }
 
   commitChanges() {
-    this.tripOfferService.addOne(this.currentTripOffer).subscribe({
-      next: (res: TripOffer) => {
-        // set the current local tripoffer
-        this.currentTripOffer = res;
-        // Add the new added item to the current list and update the table
-        this.tripOfferList.push(res);
-        this.sortByTitle(this.tripOfferList);
-        this.dataSource.data = this.tripOfferList;
-      },
-      error: (err) => {
-        this.handleError(err);
-        this.toastrService.error(
-          `${this.currentTripOffer.titel} konnte nicht hinzugefuegt werden.`,
-          "Fehler"
-        );
-      },
-      complete: () => {
-        this.toastrService.success(
-          `${this.currentTripOffer.titel} wurde erfolgreich hinzugefuegt.`
-        );
-      },
-    });
+    let formData = new FormData();
+    // read value to be saved from the data service
+    this.sharedDataService.currenttripOfferSource
+      .subscribe({
+        next: (tripoffer) => {
+          // Build formdata to pass as value to be saved
+          formData.append("bild", tripoffer.startbild);
+          formData.append(
+            "reiseAngebot",
+            new Blob(
+              [
+                JSON.stringify({
+                  id: tripoffer.id,
+                  titel: tripoffer.titel,
+                  startDatum: tripoffer.startDatum,
+                  endDatum: tripoffer.endDatum,
+                  anmeldungsFrist: tripoffer.anmeldungsFrist,
+                  plaetze: tripoffer.plaetze,
+                  freiPlaetze: tripoffer.freiPlaetze,
+                  leistungen: tripoffer.leistungen,
+                  interessiert: tripoffer.interessiert,
+                  mitreiseberechtigt: tripoffer.mitreiseberechtigt,
+                  hinweise: tripoffer.hinweise,
+                  erwartungenReadListTO: tripoffer.erwartungenReadListTO,
+                  buchungsklassenReadListTO:
+                    tripoffer.buchungsklassenReadListTO,
+                  landId: tripoffer.landId,
+                }),
+              ],
+              { type: "application/json" }
+            )
+          );
+
+          this.tripOfferService.addOne(formData).subscribe({
+            next: (res: TripOffer) => {
+              console.log(res);
+              // set the current local tripoffer
+              this.currentTripOffer = res;
+              // Add the new added item to the current list and update the table
+              this.tripOfferList.push(res);
+              this.sortByTitle(this.tripOfferList);
+              this.dataSource.data = this.tripOfferList;
+            },
+            error: (err) => {
+              this.handleError(err);
+              this.toastrService.error(
+                `${this.currentTripOffer.titel} konnte nicht hinzugefuegt werden.`,
+                "Fehler"
+              );
+            },
+            complete: () => {
+              this.toastrService.success(
+                `${this.currentTripOffer.titel} wurde erfolgreich hinzugefuegt.`
+              );
+            },
+          });
+        },
+      })
+      .unsubscribe();
+    //
+    this.valid = false;
   }
 
   editTripofferDialog(tripoffer: TripOffer) {
@@ -199,7 +238,9 @@ export class TripofferComponent implements OnInit, AfterViewInit {
     this.currentTripOffer = tripoffer;
     this.sharedDataService.changeCurrentTripOffer(tripoffer);
     // navigate to the edit page
-    this.router.navigate([`edit/${tripoffer.id}`], { relativeTo: this.activatedRoute });
+    this.router.navigate([`edit/${tripoffer.id}`], {
+      relativeTo: this.activatedRoute,
+    });
   }
 
   deleteTripofferDialog(tripoffer: TripOffer, dialogForm: any) {

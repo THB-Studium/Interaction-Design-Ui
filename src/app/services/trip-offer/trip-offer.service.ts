@@ -27,8 +27,8 @@ export class TripOfferService {
   }
 
   // POST
-  addOne(tripoffer: TripOffer): Observable<TripOffer> {
-    return this.httpClient.post<TripOffer>(this.TRIPOFFERS_URL, tripoffer);
+  addOne(formData: FormData): Observable<TripOffer> {    
+    return this.httpClient.post<TripOffer>(this.TRIPOFFERS_URL, formData);
   }
 
   // PUT

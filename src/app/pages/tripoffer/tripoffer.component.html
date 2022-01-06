@@ -135,7 +135,7 @@
     <h1 mat-dialog-title>Angebot hinzufügen</h1>
     <mat-divider></mat-divider>
     <div mat-dialog-content>
-        <app-tripoffer-form (notifyTravelerFormValid)="isFormValid($event)"></app-tripoffer-form>
+        <app-tripoffer-form (notifyFormIsValid)="isFormValid($event)"></app-tripoffer-form>
     </div>
     <div mat-dialog-actions>
         <button mat-raised-button color="primary" mat-dialog-close (click)="commitChanges()" [disabled]="!valid">

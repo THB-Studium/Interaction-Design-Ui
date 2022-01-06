@@ -5,7 +5,7 @@ import { Expectation } from "./expectation";
 export class TripOffer {
   public id: string;
   public titel: string;
-  public startbild: string;
+  public startbild: File;
   public startDatum: Date;
   public endDatum: Date;
   public anmeldungsFrist: Date;

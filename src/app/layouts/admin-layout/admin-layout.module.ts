@@ -29,7 +29,6 @@ import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { ComponentsModule } from "src/app/components/components.module";
 
 import { AdminLayoutRoutes } from "./admin-layout.routing";
-
 import { DashboardComponent } from "../../pages/dashboard/dashboard.component";
 import { AdminComponent } from "../../pages/admins/admin.component";
 import { BookingComponent } from "../../pages/booking/booking.component";
