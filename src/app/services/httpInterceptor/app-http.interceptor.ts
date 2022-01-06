@@ -49,7 +49,7 @@ export class AppHttpInterceptor implements HttpInterceptor {
       this.isRefreshing = true;
       this.refreshTokenSubject.next(null);
 
-      const token = this.tokenstorageService.getRefreshToken();
+      const token = this.tokenstorageService.getToken();
 
       if (token) {
         return this.authService.refreshToken(token).pipe(
