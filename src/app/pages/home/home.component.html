@@ -1,42 +1,12 @@
-<ngb-carousel
-  [showNavigationArrows]="true"
-  [showNavigationIndicators]="true"
-  interval="10000"
-  [keyboard]="true"
-  [pauseOnHover]="true"
-  [wrap]="true"
-  [activeId]="'secondSlide'"
->
-  <ng-template ngbSlide>
+<ngb-carousel [showNavigationArrows]="true" [showNavigationIndicators]="true" interval="{{slideList.length > 1 ? 5000 : 0}}"
+  [keyboard]="true" [pauseOnHover]="true" [wrap]="true" [activeId]="'secondSlide'">
+  <ng-template *ngFor="let slide of slideList" ngbSlide>
     <div class="picsum-img-wrapper">
-      <img
-        src="../.././../assets/carousel/pexels-belle-co-1000445.jpg"
-        alt=" Carousel 1"
-      />
+      <img src="{{slide.image}}" alt="{{slide.alt}}" />
     </div>
     <div class="carousel-caption">
-      <h3>>>together around the World<<</h3>
-      <p>
-        Wir bieten Studienreisen für studierende und <br />
-        Hochschulmitglied an, die Bildung und Reiseabenteuer <br />
-        in Backpacker-Mentalität miteinander verbinden.
-      </p>
-    </div>
-  </ng-template>
-  <ng-template ngbSlide>
-    <div class="picsum-img-wrapper">
-      <img
-        src="../../../assets/carousel/ibrahim-rifath-Y6tBl0pTe-g-unsplash.jpg"
-        alt=" Carousel 2"
-      />
-    </div>
-    <div class="carousel-caption">
-      <h3>>>together around the World<<</h3>
-      <p>
-        Wir bieten Studienreisen für studierende und <br />
-        Hochschulmitglied an, die Bildung und Reiseabenteuer <br />
-        in Backpacker-Mentalität miteinander verbinden.
-      </p>
+      <h3>{{slide.title}}</h3>
+      <p>{{slide.description}}</p>
     </div>
   </ng-template>
 </ngb-carousel>

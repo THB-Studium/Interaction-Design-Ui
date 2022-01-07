@@ -26,7 +26,7 @@ export class NavbarGuestComponent implements OnInit {
       title = title.slice(1);
     }
 
-    if (title.toLowerCase() === '/login' || title.toLowerCase() === '/register') {
+    if (title.toLowerCase().includes('login') || title.toLowerCase().includes('register')) {
       this.isAuth = true;
     } else {
       this.isAuth = false;
