@@ -15,6 +15,7 @@ import { NgxWebstorageModule } from 'ngx-webstorage';
 
 import { AppRoutingModule } from './app.routing';
 import { ComponentsModule } from './components/components.module';
+import { AboutusComponent } from './pages/aboutus/aboutus.component';
 
 @NgModule({
   imports: [
@@ -34,7 +35,8 @@ import { ComponentsModule } from './components/components.module';
   declarations: [
     AppComponent,
     AdminLayoutComponent,
-    AuthLayoutComponent
+    AuthLayoutComponent,
+    AboutusComponent
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AppHttpInterceptor, multi: true },
