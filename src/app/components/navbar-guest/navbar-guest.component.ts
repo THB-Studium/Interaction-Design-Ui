@@ -1,14 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import { Location } from '@angular/common';
-import { Router } from '@angular/router';
+import { Component, OnInit } from "@angular/core";
+import { Location } from "@angular/common";
+import { Router } from "@angular/router";
 
 @Component({
-  selector: 'app-navbar-guest',
-  templateUrl: './navbar-guest.component.html',
-  styleUrls: ['./navbar-guest.component.css']
+  selector: "app-navbar-guest",
+  templateUrl: "./navbar-guest.component.html",
+  styleUrls: ["./navbar-guest.component.css"],
 })
 export class NavbarGuestComponent implements OnInit {
-
   public listTitles: any[];
   public location: Location;
 
@@ -22,11 +21,15 @@ export class NavbarGuestComponent implements OnInit {
 
   ngOnInit() {
     var title = this.location.prepareExternalUrl(this.location.path());
-    if (title.charAt(0) === '#') {
+    if (title.charAt(0) === "#") {
       title = title.slice(1);
     }
 
-    if (title.toLowerCase() === '/login' || title.toLowerCase() === '/register') {
+    if (
+      title.toLowerCase().includes("login") ||
+      title.toLowerCase().includes("register") ||
+      title.toLowerCase().includes("aboutus")
+    ) {
       this.isAuth = true;
     } else {
       this.isAuth = false;

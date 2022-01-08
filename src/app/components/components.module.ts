@@ -26,8 +26,8 @@ import { SidebarComponent } from "./sidebar/sidebar.component";
 import { NavbarComponent } from "./navbar/navbar.component";
 import { FooterComponent } from "./footer/footer.component";
 import { AdminFormComponent } from "./forms/admin-form/admin-form.component";
-import { TravelerFormComponent } from './forms/traveler-form/traveler-form.component';
-import { NavbarGuestComponent } from './navbar-guest/navbar-guest.component';
+import { TravelerFormComponent } from "./forms/traveler-form/traveler-form.component";
+import { NavbarGuestComponent } from "./navbar-guest/navbar-guest.component";
 
 @NgModule({
   imports: [
@@ -53,7 +53,7 @@ import { NavbarGuestComponent } from './navbar-guest/navbar-guest.component';
     MatSortModule,
     MatDialogModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
   ],
   declarations: [
     FooterComponent,
@@ -61,7 +61,7 @@ import { NavbarGuestComponent } from './navbar-guest/navbar-guest.component';
     SidebarComponent,
     AdminFormComponent,
     TravelerFormComponent,
-    NavbarGuestComponent
+    NavbarGuestComponent,
   ],
   exports: [
     FooterComponent,
@@ -69,7 +69,7 @@ import { NavbarGuestComponent } from './navbar-guest/navbar-guest.component';
     SidebarComponent,
     AdminFormComponent,
     TravelerFormComponent,
-    NavbarGuestComponent
-  ]
+    NavbarGuestComponent,
+  ],
 })
-export class ComponentsModule { }
+export class ComponentsModule {}
