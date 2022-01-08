@@ -68,25 +68,83 @@ ngb-carousel {
   width: 25em;
 }
 
+
 /*######## Reiseangebot ########*/
-.reiseangebot-contents {
+
+.section-contents-RG {
   margin-top: 30px;
   padding: 6em;
-  /*background-size: auto;*/
-}
-
-.row {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-}
-
-.mehrErfahren {
-  float: right !important;
-  font-family: "ubuntu medium" !important;
 }
 
 mat-card {
   margin-top: 4em;
   min-height: 600px;
+
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
 }
+
+.set-content-bottom {
+  width: 95%;
+}
+
+.set-content-bottom h2 {
+  margin-bottom: 3px;
+}
+
+.set-content-bottom .myRow {
+  margin-bottom: -15px;
+}
+
+.mehrErfahren {
+  font-family: "ubuntu medium" !important;
+  cursor: pointer;
+}
+
+
+/*######## Feedback ########*/
+
+#feedback-title {
+  margin-left: 2.2em;
+}
+
+#addFeedback {
+  background-color: #2D92AB !important;
+}
+
+#feedback-pic {
+  /*max-width: 50%;*/
+  max-height: 40em;
+}
+
+.section-contents-FB {
+  margin-top: 30px;
+  padding: 6em 6em 6em 0;
+}
+
+.section-contents-FB .myRow {
+  margin-bottom: 1em;
+}
+
+.feedback-contents .feedback-message {
+  padding: 0 1em;
+}
+
+#quotation-mark {
+  margin-bottom: 2em;
+}
+
+.feedback-contents .message {
+  font-size: 14px;
+  letter-spacing: 2.5px;
+}
+
+.feedback-contents .autor {
+  font-weight: bold;
+}
+
+.feedback-contents mat-icon {
+  color: #2D92AB !important;
+  cursor: pointer;
+}
+
