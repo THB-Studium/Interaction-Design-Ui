@@ -5,3 +5,14 @@
 .bg-auth {
   background-color: #2d92ab !important;
 }
+.navbar-nav a {
+  font-size: 18px;
+  text-transform: uppercase;
+  font-weight: 800;
+}
+.navbar-nav {
+  text-align: center;
+}
+.nav-link {
+  padding: 0.2rem 1rem;
+}

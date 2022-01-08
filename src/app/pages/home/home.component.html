@@ -1,5 +1,12 @@
-<p class="font-weigt-800">
-  <mat-icon aria-label="icon" class="text-info">info</mat-icon> Das NavBar bzw. die Menu ist da aber nichts zu sehen,
-  da den Hintergrund nicht gesetzt wurde. Das Carousel/Slide sollte dies sichbar machen.
-</p>
-
+<ngb-carousel [showNavigationArrows]="true" [showNavigationIndicators]="true" interval="{{slideList.length > 1 ? 5000 : 0}}"
+  [keyboard]="true" [pauseOnHover]="true" [wrap]="true" [activeId]="'secondSlide'">
+  <ng-template *ngFor="let slide of slideList" ngbSlide>
+    <div class="picsum-img-wrapper">
+      <img src="{{slide.image}}" alt="{{slide.alt}}" />
+    </div>
+    <div class="carousel-caption">
+      <h3>{{slide.title}}</h3>
+      <p>{{slide.description}}</p>
+    </div>
+  </ng-template>
+</ngb-carousel>
