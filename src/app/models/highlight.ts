@@ -3,5 +3,5 @@ export class Highlight {
   public name: string;
   public description: string;
   public bild: string;
-  public landId: string;
+  public landId!: string;
 }

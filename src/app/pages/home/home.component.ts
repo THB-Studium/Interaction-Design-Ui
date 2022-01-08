@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-
-interface Slide {
-  image: string;
-  alt: string;
-  title: string;
-  description: string;
-}
+import { Country } from "../../models/country";
+import { Countries } from "../../shared/countries";
+import { SlideList } from "../../shared/slideList";
+import { Slide } from "../../models/slide";
+import { format } from 'date-fns';
 
 @Component({
   selector: 'app-home',
@@ -13,32 +11,28 @@ interface Slide {
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-
-  slideList: Slide[];
-  private title: string;
-  private description: string;
+  slideList: Array<Slide>;
+  reiseAngebot: Array<Country>
 
   constructor() {
-    this.title = '>>together around the World<<';
-    this.description = 'Wir bieten Studienreisen für studierende und Hochschulmitglied an, die Bildung und Reiseabenteuer in Backpacker-Mentalität miteinander verbinden.';
-
-    this.slideList = [
-      {
-        image: '../../../assets/carousel/pexels-belle-co-1000445.jpg',
-        alt: 'Slide 1',
-        title: this.title,
-        description: this.description
-      },
-      {
-        image: '../../../assets/carousel/ibrahim-rifath-Y6tBl0pTe-g-unsplash.jpg',
-        alt: 'Slide 1',
-        title: this.title,
-        description: this.description
-      }
-    ];
+    this.slideList = SlideList.daten;
+    this.reiseAngebot = Countries.data;
   }
 
   ngOnInit(): void {
+    console.log(this.reiseAngebot)
+  }
+
+  formatDate(date: Date): string {
+    // const dateToString = format(date, 'dd.MMM.yyyy').split('.')
+    // return dateToString[0] + '.' + dateToString[1] + ' - '
+    return ' - '
+  }
+
+  setBackground(img: string): string {
+    let backGround = "background-size: contain; background-repeat: no-repeat; background-size: 100% 100%;"
+    return backGround += "background-image: url('assets/img/travel-offer/" + img + "')"
+
   }
 
 }

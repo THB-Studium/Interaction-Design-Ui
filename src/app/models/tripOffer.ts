@@ -4,7 +4,7 @@ import { Expectation } from "./expectation";
 /** Reise Angebot */
 export class TripOffer {
   public id: string;
-  public titel: string;
+  public title: string;
   public startbild: string;
   public startDatum: Date;
   public endDatum: Date;

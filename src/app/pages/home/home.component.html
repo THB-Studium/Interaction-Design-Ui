@@ -1,12 +1,36 @@
+<!-- Carousel-Header -->
 <ngb-carousel [showNavigationArrows]="true" [showNavigationIndicators]="true" interval="{{slideList.length > 1 ? 5000 : 0}}"
   [keyboard]="true" [pauseOnHover]="true" [wrap]="true" [activeId]="'secondSlide'">
-  <ng-template *ngFor="let slide of slideList" ngbSlide>
+  <ng-template *ngFor="let slide of slideList; let i = index" ngbSlide>
     <div class="picsum-img-wrapper">
-      <img src="{{slide.image}}" alt="{{slide.alt}}" />
+      <img src="../../../assets/img/carousel/{{slide.image}}" alt="Slide {{i+1}}"/>
     </div>
     <div class="carousel-caption">
-      <h3>{{slide.title}}</h3>
+      <h1>{{slide.title}}</h1>
       <p>{{slide.description}}</p>
     </div>
   </ng-template>
 </ngb-carousel>
+
+
+<!-- Reiseangebot -->
+<div class="reiseangebot-contents">
+  <h2 class="black-color">Reiseangebot</h2>
+
+  <div  *ngFor="let gebot of reiseAngebot">
+    <mat-card class="card-shadow white-color" [style]= setBackground(gebot.reiseAngebot[0].startbild)>
+      <div class="set-content-bottom">
+        <h2 class="white-color">{{gebot.name | uppercase}}</h2>
+        <p>
+          {{formatDate(gebot.reiseAngebot[0]?.startDatum)}}
+          {{gebot.reiseAngebot[0]?.endDatum | date: 'dd.MMM.yyyy'}}
+        </p>
+
+        <p>Freie Plätze: {{gebot.reiseAngebot[0].freiPlaetze}}/{{gebot.reiseAngebot[0].plaetze}}</p>
+        <p>Interessierte: {{gebot.reiseAngebot[0].interessiert}}</p>
+
+        <p class="mehrErfahren cursor-pointer">MEHR ERFAHREN ></p>
+      </div>
+    </mat-card>
+  </div>
+</div>
