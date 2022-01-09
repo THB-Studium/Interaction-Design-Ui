@@ -68,7 +68,11 @@ export class SharedDataService {
     id: '',
     name: '',
     flughafen: [],
-    unterkunft_text: ''
+    unterkunft_text: '',
+    karte_bild: [],
+    landInfo: [],
+    highlights: [],
+    unterkunft: []
   };
 
   private countrySource = new BehaviorSubject<Country>(this.country);
@@ -100,7 +104,7 @@ export class SharedDataService {
     id: '',
     name: '',
     description: '',
-    bild: [],
+    bild: null,
     landId: ''
   };
   private highlightSource = new BehaviorSubject<Highlight>(this.highlight);

@@ -44,15 +44,6 @@ export class CountryComponent implements OnInit, AfterViewInit {
   isValid = false;
   image: any;
 
-  dummy = [
-    {
-      id: "1",
-      name: "Kamerun",
-      flughafen: ["Douala", "Yaounde"],
-      unterkunft_text: "Text for the accommodation"
-    }
-  ];
-
   constructor(
     private countryService: CountryService,
     private sharedDataService: SharedDataService,
@@ -62,13 +53,6 @@ export class CountryComponent implements OnInit, AfterViewInit {
     private route: ActivatedRoute
   ) {
     this.dialogConfiguration();
-    // Initialization
-    this.currentCountry = {
-      id: "",
-      name: "",
-      flughafen: [],
-      unterkunft_text: "",
-    };
   }
 
   ngOnInit(): void {
@@ -79,6 +63,7 @@ export class CountryComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+    this.sharedDataService.currentCountry.subscribe(country => this.currentCountry = country);
   }
 
   // Dialog configurations
@@ -107,10 +92,9 @@ export class CountryComponent implements OnInit, AfterViewInit {
   }
 
   private getCountries() {
-    this.countriesList = this.dummy;
     this.sortByName(this.countriesList);
     this.dataSource.data = this.countriesList;
-    /*this.countryService.getAll().subscribe({
+    this.countryService.getAll().subscribe({
       next: (countries) => {
         this.countriesList = countries;
         this.sortByName(this.countriesList);
@@ -123,11 +107,15 @@ export class CountryComponent implements OnInit, AfterViewInit {
           "Fehler"
         );
       },
-    });*/
+    });
   }
 
   isModalFormValid(value: boolean) {
     this.isValid = value;
+  }
+
+  displayTheNFirstCharacter(text: string, n: number): string {
+    return text.length >= n ? `${text.slice(0, n-1)}...` : text;
   }
 
   AddNewCountryDialog(dialogForm: any) {
@@ -138,29 +126,38 @@ export class CountryComponent implements OnInit, AfterViewInit {
   }
 
   saveNewCountry() {
+    const formData = new FormData();
+    formData.append('bild', this.currentCountry.karte_bild);
+    formData.append('land', new Blob([
+      JSON.stringify({
+        id: this.currentCountry.id,
+        name: this.currentCountry.name,
+        flughafen: this.currentCountry.flughafen,
+        unterkunft_text: this.currentCountry.unterkunft_text
+      })
+    ], {type: 'application/json'}));
+
     // get the value from the data service
-    this.sharedDataService.currentCountry.subscribe((val) => {
-      this.countryService.addOne(val).subscribe({
-        next: (resp) => {
-          this.currentCountry = resp;
-          // Add the new added item to the current list and update the table
-          this.countriesList.push(resp);
-          this.sortByName(this.countriesList);
-          this.dataSource.data = this.countriesList;
-        },
-        error: (err) => {
-          this.handleError(err);
-          this.toastrService.error(
-            `Das Land konnte nicht gespeichert werden.`,
-            "Fehler"
-          );
-        },
-        complete: () => {
-          this.toastrService.success(
-            `${this.currentCountry.name} wurde erfolgreich hinzugefuegt.`
-          );
-        },
-      });
+    this.countryService.addOne(formData).subscribe({
+      next: (resp) => {
+        this.currentCountry = resp;
+        // Add the new added item to the current list and update the table
+        this.countriesList.push(resp);
+        this.sortByName(this.countriesList);
+        this.dataSource.data = this.countriesList;
+      },
+      error: (err) => {
+        this.handleError(err);
+        this.toastrService.error(
+          `Das Land konnte nicht gespeichert werden.`,
+          "Fehler"
+        );
+      },
+      complete: () => {
+        this.toastrService.success(
+          `${this.currentCountry.name} wurde erfolgreich hinzugefuegt.`
+        );
+      },
     });
     // set the flag to false
     this.isValid = false;
@@ -176,7 +173,7 @@ export class CountryComponent implements OnInit, AfterViewInit {
   deleteCountryDialog(country: Country, dialogForm: any) {
     this.currentCountry = country;
     this.dialog.open(dialogForm, this.dialogConfig);
-  } 
+  }
 
   // Delete country from the entries
   deleteCountry() {

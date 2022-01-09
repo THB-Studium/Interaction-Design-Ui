@@ -27,32 +27,13 @@ export class HighlightService {
   }
 
   // POST
-  addOne(highlight: Highlight): Observable<any> {
-    const formData = new FormData();
-    const _highlight = {
-      id: highlight.id,
-      name: highlight.name,
-      description: highlight.description,
-      landId: highlight.landId,
-    };
-
-    formData.append("bild", new Blob([highlight.bild], {
-      type: "application/multipart/form-data",
-    }));
-
-    formData.append(
-      "highlight",
-      new Blob([JSON.stringify(_highlight)], {
-        type: "application/json",
-      })
-    );
-
+  addOne(formData: FormData): Observable<any> {
     return this.httpClient.post<FormData>(this.HIGHLIGHT_URL, formData);
   }
 
   // PUT
-  updateOne(highlight: Highlight): Observable<Highlight> {
-    return this.httpClient.put<Highlight>(this.HIGHLIGHT_URL, highlight, {
+  updateOne(formData: FormData): Observable<Highlight> {
+    return this.httpClient.put<Highlight>(this.HIGHLIGHT_URL, formData, {
       headers: this.headers,
     });
   }

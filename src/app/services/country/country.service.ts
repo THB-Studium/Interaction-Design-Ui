@@ -27,13 +27,13 @@ export class CountryService {
   }
 
   // POST
-  addOne(country: Country): Observable<Country> {
-    return this.httpClient.post<Country>(this.COUNTRY_URL, country);
+  addOne(formData: FormData): Observable<Country> {
+    return this.httpClient.post<Country>(this.COUNTRY_URL, formData);
   }
 
   // PUT
-  updateOne(country: Country): Observable<Country> {
-    return this.httpClient.put<Country>(this.COUNTRY_URL, country, {
+  updateOne(formData: FormData): Observable<Country> {
+    return this.httpClient.put<Country>(this.COUNTRY_URL, formData, {
       headers: this.headers,
     });
   }

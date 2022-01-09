@@ -75,7 +75,7 @@ export class CountryInformationFormComponent implements OnInit, AfterViewInit {
 
   private setFormDefaultValue(countryInfo: CountryInformation): void {
     this.countryInfoForm.setValue({
-      titel: countryInfo.titel,
+      title: countryInfo.titel,
       description: countryInfo.description
     });
   }

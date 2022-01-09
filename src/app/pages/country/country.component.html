@@ -59,7 +59,7 @@
                             Unterkunftstext
                         </th>
                         <td mat-cell *matCellDef="let row">
-                            {{row?.unterkunft_text}}
+                            {{displayTheNFirstCharacter(row?.unterkunft_text, 15)}}
                         </td>
                     </ng-container>
 
@@ -100,10 +100,10 @@
 
 <!-- Add country modal-->
 <ng-template #countryDialog>
-    <h1 mat-dialog-title>Neues Land hinzufügen</h1>
+    <h1 mat-dialog-title>Ein neues Land hier hinzufügen</h1>
     <mat-divider></mat-divider>
     <div mat-dialog-content>
-      <app-country-form class="col-md-12" (notifyFormIsValid)="isModalFormValid($event)"></app-country-form>
+      <app-country-form (notifyFormIsValid)="isModalFormValid($event)"></app-country-form>
     </div>
     <mat-divider></mat-divider>
     <div mat-dialog-actions>

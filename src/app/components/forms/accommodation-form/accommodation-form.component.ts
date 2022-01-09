@@ -71,6 +71,7 @@ export class AccommodationFormComponent implements OnInit, AfterViewInit {
     this.isAnAdd = this.sharedDataService.isAddBtnClicked;
     // If it is not an add
     if (!this.isAnAdd) {
+      this.isImgSelected = true;
       this.sharedDataService.currentAccommodation.subscribe({
         next: (accommodation) => {
           this.currentAccommodation = accommodation;
@@ -91,29 +92,16 @@ export class AccommodationFormComponent implements OnInit, AfterViewInit {
   private setFormDefaultValue(accommodation: Accommodation): void {
     this.accommodationForm.setValue({
       name: accommodation.name,
-      address: accommodation.addresse,
+      address: '',
       web: accommodation.link,
-      description: accommodation.beschreibung
+      description: accommodation.beschreibung,
+      images: ''
     });
   }
 
   private onFormValuesChanged(): void {
     this.accommodationForm.valueChanges.subscribe({
       next: () => {
-        var id = null;
-        if (!this.isAnAdd) {
-          id = this.currentAccommodationId;
-        }
-
-        this.currentAccommodation = {
-          id: id,
-          name: this.accommodationForm.get("name").value,
-          addresse: this.accommodationForm.get('address').value,
-          link: this.accommodationForm.get('web').value,
-          beschreibung: this.accommodationForm.get("description").value,
-          bilder: this.uploadedImges,
-          landId: this.currentcountryId
-        }
         // check whether the form is valid or not
         this.isFormValid();
       }
@@ -122,9 +110,24 @@ export class AccommodationFormComponent implements OnInit, AfterViewInit {
 
   private isFormValid(): void {
     if (this.accommodationForm.get("name").valid &&
-        this.accommodationForm.get("description").valid &&
-        this.accommodationForm.get("address").valid &&
-        this.accommodationForm.get("web").valid && this.isImgSelected) {
+      this.accommodationForm.get("description").valid &&
+      this.accommodationForm.get("address").valid &&
+      this.accommodationForm.get("web").valid && this.isImgSelected) {
+
+      var id = null;
+      if (!this.isAnAdd) {
+        id = this.currentAccommodationId;
+      }
+
+      this.currentAccommodation = {
+        id: id,
+        name: this.accommodationForm.get("name").value,
+        addresse: this.accommodationForm.get('address').value,
+        link: this.accommodationForm.get('web').value,
+        beschreibung: this.accommodationForm.get("description").value,
+        bilder: this.uploadedImges,
+        landId: this.currentcountryId
+      }
       // change the value of the accommodation into the service
       this.sharedDataService.changeCurrentAccommodation(this.currentAccommodation);
       // notify the parent
@@ -137,31 +140,17 @@ export class AccommodationFormComponent implements OnInit, AfterViewInit {
 
   // On files selected
   selectFiles(event: any): void {
-    this.uploadedImges = [];
     this.selectedFileNames = [];
     this.selectedFiles = event.target.files;
 
     if (this.selectedFiles && this.selectedFiles[0]) {
-      this.isImgSelected = true;
       const numberOfFiles = this.selectedFiles.length;
       for (let i = 0; i < numberOfFiles; i++) {
-        const reader = new FileReader();
-        reader.readAsDataURL(this.selectedFiles.item(i));
         this.selectedFileNames.push(this.selectedFiles.item(i).name);
-         // convert it to byte array
-         reader.addEventListener("loadend", () => {
-          const bytearray = this.convertDataURIToBinary(reader.result);
-          // set the current images
-          this.uploadedImges.push(bytearray);
-        });
       }
-      // convert to byte array
-      /*for (let i = 0; i < this.selectedFiles.length; i++) {
-        this.convertToByteArray(this.selectedFiles.item(i));
-        
-      }*/
       // set the current images
-      this.currentAccommodation.bilder = this.uploadedImges;
+      this.currentAccommodation.bilder = this.selectedFiles;
+      this.isImgSelected = true;
     }
     else {
       this.isImgSelected = false;
@@ -169,29 +158,4 @@ export class AccommodationFormComponent implements OnInit, AfterViewInit {
     // check whether the form is valid or not
     this.isFormValid();
   }
-
-  // Convert file to byte array
-  private convertToByteArray(file: File): void {
-    if (file) {
-      var buffer = file.arrayBuffer();
-      buffer.then(value => {
-        let bytearray = new Uint8Array(value.byteLength);
-        this.uploadedImges.push(bytearray);
-      });
-    }
-  }
-
-  convertDataURIToBinary(dataURI) {
-    var base64Index = dataURI.indexOf(";base64,") + ";base64,".length;
-    var base64 = dataURI.substring(base64Index);
-    var raw = window.atob(base64);
-    var rawLength = raw.length;
-    var array = new Uint8Array(new ArrayBuffer(rawLength));
-
-    for (let i = 0; i < rawLength; i++) {
-      array[i] = raw.charCodeAt(i);
-    }
-    return array;
-  }
-
 }
