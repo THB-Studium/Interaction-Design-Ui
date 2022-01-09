@@ -1,0 +1,30 @@
+.conatiner {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  min-height: 100vh;
+}
+.first {
+  color: #084f43;
+  font-size: 20px;
+}
+.second {
+  color: #2d92ab;
+  font-size: 20px;
+}
+.third {
+  color: #ee713f;
+  font-size: 20px;
+}
+h1 {
+  text-align: center;
+  font-weight: bold;
+  font-size: 40px;
+  margin-top: 40px;
+  color: #000;
+}
+h2 {
+  text-align: center;
+  font-size: 28px;
+  color: #a8b14c;
+}
