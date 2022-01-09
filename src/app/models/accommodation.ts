@@ -5,7 +5,7 @@ export class Accommodation {
   public link: string;
   public beschreibung: string;
   public adresse: string;
-  public bilder: Array<number>;
+  public bilder: Array<string>;
   public landId: string;
 }
 

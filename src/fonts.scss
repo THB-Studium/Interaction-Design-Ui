@@ -1,0 +1,43 @@
+/*##################################### Fonts settings ###################################*/
+
+@font-face {
+  font-family: "american typewriter";
+  src:
+    local("american typewriter"), local("americanTypewriter"),
+    url(assets/fonts/american-typewriter-cufonfonts/ufonts.com_american-typewriter.ttf) format("truetype");
+}
+
+@font-face {
+  font-family: "american typewriter bold";
+  src:
+    local("american typewriter bold"), local("americanTypewriter-bold"),
+    url(assets/fonts/american-typewriter-cufonfonts/ufonts.com_american-typewriter-bold.ttf) format("truetype");
+}
+
+@font-face {
+  font-family: "american typewriter light";
+  src:
+    local("american typewriter light"), local("americanTypewriter-light"),
+    url(assets/fonts/american-typewriter-cufonfonts/ufonts.com_american-typewriter-light.ttf) format("truetype");
+}
+
+@font-face {
+  font-family: "ubuntu";
+  src:
+    local("ubuntu"),
+    url(assets/fonts/domus-titling-font/ubuntu/Ubuntu-Regular.ttf) format("truetype");
+}
+
+@font-face {
+  font-family: "ubuntu medium";
+  src:
+    local("ubuntu"), local("ubuntu-medium"),
+    url(assets/fonts/domus-titling-font/ubuntu/Ubuntu-Medium.ttf) format("truetype");
+}
+
+@font-face {
+  font-family: "ubuntu bold";
+  src:
+    local("ubuntu"), local("ubuntu-bold"),
+    url(assets/fonts/domus-titling-font/ubuntu/Ubuntu-Bold.ttf) format("truetype");
+}
