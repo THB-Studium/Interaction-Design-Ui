@@ -1,0 +1,92 @@
+/*######## Carousel ########*/
+
+ngb-carousel {
+  max-width: 100%;
+  z-index: 0;
+  top: 0;
+}
+
+ngb-carousel img {
+  width: 100%;
+  height: 100vh;
+  outline: none;
+}
+
+ngb-carousel {
+  width: inherit;
+  height: inherit;
+}
+
+.carousel-inner {
+  overflow: visible;
+}
+
+.carousel-item {
+  display: flex !important;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 1.2s ease-in-out, visibility 1.2s;
+  z-index: -1;
+  height: 100vh;
+  min-height: 300px;
+}
+
+.carousel-item.active {
+  opacity: 1;
+  visibility: visible;
+  z-index: 10;
+}
+
+.carousel-control-prev {
+  z-index: 20;
+}
+
+.carousel-control-next {
+  z-index: 20;
+}
+
+.carousel-indicators {
+  z-index: 20;
+}
+
+.carousel-caption {
+  left: 0;
+  bottom: 10%;
+}
+
+.carousel-caption h1 {
+  font-size: 80px !important;
+  margin-top: 20px;
+  color: #fff;
+}
+
+.carousel-caption p {
+  font-size: 18px;
+  margin: 3% 0 0 18%;
+  line-height: 1.5;
+  text-align: left;
+  width: 25em;
+}
+
+/*######## Reiseangebot ########*/
+.reiseangebot-contents {
+  margin-top: 30px;
+  padding: 6em;
+  /*background-size: auto;*/
+}
+
+.row {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+}
+
+.mehrErfahren {
+  float: right !important;
+  font-family: "ubuntu medium" !important;
+}
+
+mat-card {
+  margin-top: 4em;
+  min-height: 600px;
+}

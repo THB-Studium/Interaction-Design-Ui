@@ -244,7 +244,7 @@ export class EditCountryComponent implements OnInit, AfterViewInit {
           name: this.accommodationForm.name,
           beschreibung: this.accommodationForm.beschreibung,
           link: this.accommodationForm.link,
-          adresse: this.accommodationForm.addresse,
+          adresse: this.accommodationForm.adresse,
           landId: this.accommodationForm.landId,
         }
       )], { type: "application/json" })
@@ -264,7 +264,7 @@ export class EditCountryComponent implements OnInit, AfterViewInit {
       this.accommodationService.updateOne(this.accommodationForm).subscribe({
         next: (updatedAccommodation) => {
           const idx = this.accommodations.findIndex(x => x.id === updatedAccommodation.id);
-          this.accommodations[idx].addresse = updatedAccommodation.addresse;
+          this.accommodations[idx].adresse = updatedAccommodation.adresse;
           this.accommodations[idx].beschreibung = updatedAccommodation.beschreibung;
           this.accommodations[idx].link = updatedAccommodation.link;
           this.accommodations[idx].name = updatedAccommodation.name;

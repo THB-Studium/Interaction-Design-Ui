@@ -6,7 +6,6 @@ import {
   EventEmitter,
 } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
-import { Observable } from 'rxjs';
 
 import { SharedDataService } from "src/app/services/sharedData/shared-data.service";
 import { ToastrService } from "ngx-toastr";
@@ -122,7 +121,7 @@ export class AccommodationFormComponent implements OnInit, AfterViewInit {
       this.currentAccommodation = {
         id: id,
         name: this.accommodationForm.get("name").value,
-        addresse: this.accommodationForm.get('address').value,
+        adresse: this.accommodationForm.get('address').value,
         link: this.accommodationForm.get('web').value,
         beschreibung: this.accommodationForm.get("description").value,
         bilder: this.uploadedImges,

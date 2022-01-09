@@ -119,6 +119,7 @@ export class CountryComponent implements OnInit, AfterViewInit {
   }
 
   AddNewCountryDialog(dialogForm: any) {
+    this.sharedDataService.isAddBtnClicked = true;
     // set the value of the country into the service
     this.sharedDataService.changeCurrentCountry(this.currentCountry);
     // Open the add country dialog

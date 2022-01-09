@@ -69,7 +69,7 @@ export class SharedDataService {
     name: '',
     flughafen: [],
     unterkunft_text: '',
-    karte_bild: [],
+    karte_bild: null,
     landInfo: [],
     highlights: [],
     unterkunft: []
@@ -119,7 +119,7 @@ export class SharedDataService {
   private accommodation: Accommodation = {
     id: '',
     name: '',
-    addresse: '',
+    adresse: '',
     link: '',
     beschreibung: '',
     bilder: [],

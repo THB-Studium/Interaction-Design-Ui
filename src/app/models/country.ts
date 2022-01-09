@@ -7,7 +7,7 @@ export class Country {
   public name: string;
   public flughafen: Array<string>;
   public unterkunft_text: string;
-  public karte_bild: any;
+  public karte_bild: File;
   public landInfo: CountryInformation[];
   public highlights: Highlight[];
   public unterkunft: Accommodation[];

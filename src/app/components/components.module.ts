@@ -94,6 +94,6 @@ import { NavbarGuestComponent } from './navbar-guest/navbar-guest.component';
     AccommodationFormComponent,
     CountryInformationFormComponent,
     NavbarGuestComponent
-  ]
+  ],
 })
-export class ComponentsModule { }
+export class ComponentsModule {}
