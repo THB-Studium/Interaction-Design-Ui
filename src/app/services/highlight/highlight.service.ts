@@ -1,19 +1,19 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Observable } from "rxjs";
 
-import { Server } from 'src/app/variables/server';
-import { Highlight } from 'src/app/models/highlight';
+import { Server } from "src/app/variables/server";
+import { Highlight } from "src/app/models/highlight";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class HighlightService {
   // API for country highlights
   readonly HIGHLIGHT_URL: string = `${Server.API_URL}/highlights`;
   headers = new HttpHeaders({ "Content-Type": "application/json" });
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient) {}
 
   // GET ONE
   getOne(id: string): Observable<Highlight> {
@@ -27,13 +27,13 @@ export class HighlightService {
   }
 
   // POST
-  addOne(highlight: Highlight): Observable<Highlight> {
-    return this.httpClient.post<Highlight>(this.HIGHLIGHT_URL, highlight);
+  addOne(formData: FormData): Observable<any> {
+    return this.httpClient.post<FormData>(this.HIGHLIGHT_URL, formData);
   }
 
   // PUT
-  updateOne(highlight: Highlight): Observable<Highlight> {
-    return this.httpClient.put<Highlight>(this.HIGHLIGHT_URL, highlight, {
+  updateOne(formData: FormData): Observable<Highlight> {
+    return this.httpClient.put<Highlight>(this.HIGHLIGHT_URL, formData, {
       headers: this.headers,
     });
   }

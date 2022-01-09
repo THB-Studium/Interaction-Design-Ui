@@ -2,7 +2,7 @@ import { v4 as uuid_v4 } from 'uuid';
 import { Highlight } from "../models/highlight";
 
 export class Highlights {
-  public static readonly daten: Array<Highlight> = [
+  public static readonly daten: Array<any> = [
     {
       id: uuid_v4(),
       landId: uuid_v4(),

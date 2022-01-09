@@ -2,7 +2,7 @@ import { v4 as uuid_v4 } from 'uuid';
 import { CountryInformation } from "../models/countryInformation";
 
 export class CountryInfos {
-  public static readonly daten: Array<CountryInformation> = [
+  public static readonly daten: Array<any> = [
     {
       id: uuid_v4(),
       landId: uuid_v4(),

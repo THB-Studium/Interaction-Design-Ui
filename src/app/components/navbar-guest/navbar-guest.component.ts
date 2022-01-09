@@ -41,7 +41,7 @@ export class NavbarGuestComponent implements OnInit {
 
   /**Change navbar backgroung on scroll */
   @HostListener('window:scroll', ['$event'])
-  onWindowScroll(e) {
+  onWindowScroll(e: any) {
     if (this.title.includes('home')) {
       let element = document.querySelector('.navbar');
       if (window.pageYOffset > element.clientHeight) {

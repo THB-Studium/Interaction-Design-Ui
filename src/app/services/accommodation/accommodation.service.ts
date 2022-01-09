@@ -1,19 +1,19 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Observable } from "rxjs";
 
-import { Server } from 'src/app/variables/server';
-import { Accommodation } from 'src/app/models/accommodation';
+import { Server } from "src/app/variables/server";
+import { Accommodation } from "src/app/models/accommodation";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class AccommodationService {
   // API for accommodations
   readonly ACCOMMODATIONS_URL: string = `${Server.API_URL}/unterkunfte`;
   headers = new HttpHeaders({ "Content-Type": "application/json" });
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient) {}
 
   // GET ONE
   getOne(id: string): Observable<Accommodation> {
@@ -27,15 +27,22 @@ export class AccommodationService {
   }
 
   // POST
-  addOne(accommodation: Accommodation): Observable<Accommodation> {
-    return this.httpClient.post<Accommodation>(this.ACCOMMODATIONS_URL, accommodation);
+  addOne(formData: FormData): Observable<Accommodation> {
+    return this.httpClient.post<Accommodation>(
+      this.ACCOMMODATIONS_URL,
+      formData
+    );
   }
 
   // PUT
   updateOne(accommodation: Accommodation): Observable<Accommodation> {
-    return this.httpClient.put<Accommodation>(this.ACCOMMODATIONS_URL, accommodation, {
-      headers: this.headers,
-    });
+    return this.httpClient.put<Accommodation>(
+      this.ACCOMMODATIONS_URL,
+      accommodation,
+      {
+        headers: this.headers,
+      }
+    );
   }
 
   // DELETE

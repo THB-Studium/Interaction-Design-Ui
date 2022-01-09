@@ -7,12 +7,12 @@ import { BookingClassen } from "./bookingClassen";
 import { Country } from "../models/country";
 
 export class Countries {
-  public static readonly data: Array<Country> = [
+  public static readonly data: Array<any> = [
     {
       id: uuid_v4(),
       name: 'Island',
       karte_bild: 'Karte_farbe_2.png',
-      flughafen: 'BRB',
+      flughafen: ['BRB'],
       infosLands: CountryInfos.daten,
       highlights: Highlights.daten,
       reiseAngebot: [{
@@ -117,7 +117,7 @@ export class Countries {
       id: uuid_v4(),
       name: 'Hawaii',
       karte_bild: 'Karte_farbe_2.png',
-      flughafen: 'BRB',
+      flughafen: ['BRB'],
       infosLands: CountryInfos.daten,
       highlights: Highlights.daten,
       reiseAngebot: [{
