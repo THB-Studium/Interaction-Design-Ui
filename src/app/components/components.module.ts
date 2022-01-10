@@ -36,6 +36,10 @@ import { TravelerFormComponent } from './forms/traveler-form/traveler-form.compo
 import { TripofferFormComponent } from './forms/tripoffer-form/tripoffer-form.component';
 import { ExpectationFormComponent } from './forms/expectation-form/expectation-form.component';
 import { BookingclassFormComponent } from './forms/bookingclass-form/bookingclass-form.component';
+import { CountryFormComponent } from './forms/country-form/country-form.component';
+import { HighlightFormComponent } from './forms/highlight-form/highlight-form.component';
+import { AccommodationFormComponent } from './forms/accommodation-form/accommodation-form.component';
+import { CountryInformationFormComponent } from './forms/country-information-form/country-information-form.component';
 import { NavbarGuestComponent } from './navbar-guest/navbar-guest.component';
 
 @NgModule({
@@ -79,6 +83,10 @@ import { NavbarGuestComponent } from './navbar-guest/navbar-guest.component';
     TripofferFormComponent,
     ExpectationFormComponent,
     BookingclassFormComponent,
+    CountryFormComponent,
+    HighlightFormComponent,
+    AccommodationFormComponent,
+    CountryInformationFormComponent,
     NavbarGuestComponent
   ],
   exports: [
@@ -90,7 +98,11 @@ import { NavbarGuestComponent } from './navbar-guest/navbar-guest.component';
     TripofferFormComponent,
     ExpectationFormComponent,
     BookingclassFormComponent,
+    CountryFormComponent,
+    HighlightFormComponent,
+    AccommodationFormComponent,
+    CountryInformationFormComponent,
     NavbarGuestComponent
-  ]
+  ],
 })
-export class ComponentsModule { }
+export class ComponentsModule {}

@@ -33,6 +33,12 @@ export const ROUTES: RouteInfo[] = [
     class: "",
   },
   {
+    path: "/countries",
+    title: "Länder",
+    icon: "fas fa-globe text-green",
+    class: ""
+  },
+  {
     path: "/travelers",
     title: "Reisende",
     icon: "fas fa-users text-primary",

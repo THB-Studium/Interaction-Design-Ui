@@ -3,9 +3,13 @@
  */
 import { Injectable } from "@angular/core";
 import { BehaviorSubject } from "rxjs";
+import { Accommodation } from "src/app/models/accommodation";
 
 import { BookingClass } from "src/app/models/bookingClass";
 import { Expectation } from "src/app/models/expectation";
+import { Country } from "src/app/models/country";
+import { CountryInformation } from "src/app/models/countryInformation";
+import { Highlight } from "src/app/models/highlight";
 import { User } from "src/app/models/user";
 import { Traveler } from "src/app/models/traveler";
 import { TripOffer } from "src/app/models/tripOffer";
@@ -39,7 +43,7 @@ export class SharedDataService {
   }
   //#endregion Users
 
-  //#region Traveler
+  //#region traveler
   private traveler: Traveler = {
     id: "",
     name: "",
@@ -129,4 +133,76 @@ export class SharedDataService {
     this.expectationSource.next(expectation);
   }
   //#endregion bookinclass
+  //#endregion traveler
+
+  //#region country
+  private country: Country = {
+    id: '',
+    name: '',
+    flughafen: [],
+    unterkunft_text: '',
+    karte_bild: null,
+    landInfo: [],
+    highlights: [],
+    unterkunft: []
+  };
+
+  private countrySource = new BehaviorSubject<Country>(this.country);
+  public currentCountry = this.countrySource.asObservable();
+
+  changeCurrentCountry(country: Country) {
+    this.countrySource.next(country);
+  }
+  //#endregion country
+
+  //#region country information
+  private countryInformation: CountryInformation = {
+    id: "",
+    titel: "",
+    description: "",
+    landId: ""
+  }
+
+  private countryInformationSource = new BehaviorSubject<CountryInformation>(this.countryInformation);
+  public currentCountryInfo = this.countryInformationSource.asObservable();
+
+  changeCurrentCountryInfo(countryInfo: CountryInformation) {
+    this.countryInformationSource.next(countryInfo);
+  }
+  //#endregion country information
+
+  //#region highlight
+  private highlight: Highlight = {
+    id: '',
+    name: '',
+    description: '',
+    bild: null,
+    landId: ''
+  };
+  private highlightSource = new BehaviorSubject<Highlight>(this.highlight);
+  public currentHighlight = this.highlightSource.asObservable();
+
+  changeCurrentHighlight(highlight: Highlight) {
+    this.highlightSource.next(highlight);
+  }
+  //#endregion highlight
+
+  //#region accommodation
+  private accommodation: Accommodation = {
+    id: '',
+    name: '',
+    adresse: '',
+    link: '',
+    beschreibung: '',
+    bilder: [],
+    landId: ''
+  }
+
+  private accommodationSource = new BehaviorSubject<Accommodation>(this.accommodation);
+  public currentAccommodation = this.accommodationSource.asObservable();
+
+  changeCurrentAccommodation(accommodation: Accommodation) {
+    this.accommodationSource.next(accommodation);
+  }
+  //#endregion accommodation
 }
