@@ -32,8 +32,8 @@ export class TripOfferService {
   }
 
   // PUT
-  updateOne(tripoffer: TripOffer): Observable<TripOffer> {
-    return this.httpClient.put<TripOffer>(this.TRIPOFFERS_URL, tripoffer, {
+  updateOne(formData: FormData): Observable<TripOffer> {
+    return this.httpClient.put<TripOffer>(this.TRIPOFFERS_URL, formData, {
       headers: this.headers,
     });
   }

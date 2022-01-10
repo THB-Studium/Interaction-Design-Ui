@@ -79,7 +79,7 @@ export class BookingclassFormComponent implements OnInit, AfterViewInit {
   private setFormDefaultValue(bookinclass: BookingClass): void {
     this.bookinclassForm.setValue({
       title: bookinclass.type,
-      description: bookinclass.text? bookinclass.text:"",
+      description: bookinclass.description? bookinclass.description:"",
       price: bookinclass.preis,
     });
   }
@@ -95,7 +95,7 @@ export class BookingclassFormComponent implements OnInit, AfterViewInit {
         this.currentBookingclass = {
           id: id,
           type: this.bookinclassForm.get("title").value,
-          text: this.bookinclassForm.get("description").value,
+          description: this.bookinclassForm.get("description").value,
           preis: this.bookinclassForm.get("price").value,
           reiseAngebotId: this.currentTripofferId,
         };

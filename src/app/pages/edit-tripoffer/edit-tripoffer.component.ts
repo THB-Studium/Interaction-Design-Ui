@@ -28,14 +28,16 @@ export class EditTripofferComponent implements OnInit, AfterViewInit {
   isValid = false;
   // Defines isFormValid. Fire when the tripofferform is valid
   isFormValid = true;
-  // Defines bookingclassArray
-  bookingclassArray: BookingClass[] = [];
   // Defines expectationsArray
-  expectationsArray: Expectation[] = [];
+  expectations: Expectation;
   // Defines bookingclasstobedeleted
   bookingclasstobedeleted: BookingClass;
   // Defines expectationtobedeleted
   expectationtobedeleted: Expectation;
+  // Defines expectationSaved
+  expectationSaved = false;
+  //
+  currentExpectation: Expectation;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -53,11 +55,15 @@ export class EditTripofferComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.sharedDataService.isAddBtnClicked = false;
     this.getTripofferToBeUpdated();
-    this.getAllBookingClass();
-    this.getAllExpectations();
+    //this.getAllBookingClass();
+    //this.getAllExpectations();
   }
 
-  ngAfterViewInit(): void {}
+  ngAfterViewInit(): void {
+    this.sharedDataService.currentExpectation.subscribe((expectation) => {
+      this.currentExpectation = expectation;
+    });
+  }
 
   // Dialog configurations
   dialogConfiguration() {
@@ -67,32 +73,34 @@ export class EditTripofferComponent implements OnInit, AfterViewInit {
 
   getTripofferToBeUpdated() {
     let tripofferid = "";
-    this.activatedRoute.params
-      .subscribe({
-        next: (param) => {
-          tripofferid = param.id;
-          this.tripofferService.getOne(tripofferid).subscribe({
-            next: (resp) => {
-              console.log(resp)
-              this.currentTripoffer = resp;
-              this.sharedDataService.changeCurrentTripOffer(
-                this.currentTripoffer
-              );
-            },
-            error: () =>
-              this.toastrService.error(
-                "Die Daten konnten nicht geladen werden.",
-                "Fehler"
-              ),
-          });
-        },
-      })
-      .unsubscribe();
+    this.activatedRoute.params.subscribe({
+      next: (param) => {
+        tripofferid = param.id;
+        this.tripofferService.getOne(tripofferid).subscribe({
+          next: (resp) => {
+            console.log(resp);
+            this.currentTripoffer = resp;
+            this.sharedDataService.changeCurrentTripOffer(
+              this.currentTripoffer
+            );
+
+            if (resp.erwartungenReadListTO)
+              this.sharedDataService.changeCurrentExpectation(resp.erwartungenReadListTO);
+          },
+          error: () =>
+            this.toastrService.error(
+              "Die Daten konnten nicht geladen werden.",
+              "Fehler"
+            ),
+        });
+      },
+    });
   }
 
-  getAllBookingClass() {
+  /*getAllBookingClass() {
     this.bookingclassService.getAll().subscribe({
       next: (bgs) => {
+        console.log(bgs)
         this.bookingclassArray = bgs.filter(
           (x) => x.reiseAngebotId === this.currentTripoffer?.id
         );
@@ -103,9 +111,9 @@ export class EditTripofferComponent implements OnInit, AfterViewInit {
           "Fehler"
         ),
     });
-  }
+  }*/
 
-  getAllExpectations() {
+  /*getAllExpectations() {
     this.expectationService.getAll().subscribe({
       next: (exps) => {
         this.expectationsArray = exps.filter(
@@ -118,7 +126,7 @@ export class EditTripofferComponent implements OnInit, AfterViewInit {
           "Fehler"
         ),
     });
-  }
+  }*/
 
   /**Opens dialog to add new Bookingclass */
   addBookingclassDialog(dialogForm: any) {
@@ -136,7 +144,8 @@ export class EditTripofferComponent implements OnInit, AfterViewInit {
           // check whether it is an update or not
           if (this.sharedDataService.isAddBtnClicked) {
             this.bookingclassService.addOne(bookingclass).subscribe({
-              next: (resp) => this.bookingclassArray.push(resp),
+              next: (resp) =>
+                this.currentTripoffer?.buchungsklassenReadListTO.push(resp),
               error: () =>
                 this.toastrService.error(
                   "Die Buchungsklasse konnte nicht gespeichert werden.",
@@ -150,10 +159,11 @@ export class EditTripofferComponent implements OnInit, AfterViewInit {
           } else {
             this.bookingclassService.updateOne(bookingclass).subscribe({
               next: (resp) => {
-                const idx = this.bookingclassArray.findIndex(
-                  (x) => x.id === resp.id
-                );
-                this.bookingclassArray[idx] = resp;
+                const idx =
+                  this.currentTripoffer?.buchungsklassenReadListTO.findIndex(
+                    (x) => x.id === resp.id
+                  );
+                this.currentTripoffer.buchungsklassenReadListTO[idx] = resp;
               },
               error: () => this.updateError(),
               complete: () => this.updateSuccess(),
@@ -162,66 +172,90 @@ export class EditTripofferComponent implements OnInit, AfterViewInit {
         }
       })
       .unsubscribe();
-  }
-
-  /**Opens dialog to add new expectation */
-  addExpectationDialog(dialogForm: any) {
-    this.sharedDataService.isAddBtnClicked = true;
-    this.dialog.open(dialogForm, this.dialogConfig);
   }
 
   /**Saves new expectation and update the list */
-  saveExpectation() {
-    this.sharedDataService.currentExpectation
-      .subscribe((expectation) => {
-        if (expectation) {
-          // set the value of the reiseangebot
-          expectation.reiseAngebotId = this.currentTripoffer.id;
-          // check whether it is an add or not
-          if (this.sharedDataService.isAddBtnClicked) {
-            this.expectationService.addOne(expectation).subscribe({
-              next: (resp) => this.expectationsArray.push(resp),
-              error: () =>
-                this.toastrService.error(
-                  "Die Erwartung konnte nicht gespeichert werden.",
-                  "Fehler"
-                ),
-              complete: () =>
-                this.toastrService.success(
-                  "Die Erwartung wurde erfolgreich gespeichert."
-                ),
-            });
-          } else {
-            this.expectationService.addOne(expectation).subscribe({
-              next: (resp) => {
-                const idx = this.expectationsArray.findIndex(
-                  (x) => x.id === resp.id
-                );
-                this.expectationsArray[idx] = resp;
-              },
-              error: () => this.updateError(),
-              complete: () => this.updateSuccess(),
-            });
-          }
-        }
-      })
-      .unsubscribe();
+  private saveExpectation(): Promise<Expectation> {
+    return new Promise((resolve) => {
+      // set the value of the reiseangebot
+      this.currentExpectation.reiseAngebotId = this.currentTripoffer.id;
+      // check whether it is an add or not. If the id is equal than null, than it is an add
+      if (!this.currentExpectation.id) {
+        this.expectationService.addOne(this.currentExpectation).subscribe({
+          next: (resp) => resolve(resp),
+          error: () => {
+            this.expectationSaved = false;
+            this.toastrService.error(
+              "Die Erwartungen konnten nicht gespeichert werden.",
+              "Fehler"
+            );
+          },
+          complete: () => (this.expectationSaved = true),
+        });
+      } else {
+        this.expectationService.updateOne(this.currentExpectation).subscribe({
+          next: (resp) => resolve(resp),
+          error: () => {
+            this.expectationSaved = false;
+            this.toastrService.error(
+              "Die Änderungen konnten nicht gespeichert werden.",
+              "Fehler"
+            );
+          },
+          complete: () => (this.expectationSaved = true),
+        });
+      }
+    });
   }
 
   /** Updates current trip offer */
   saveTripoffer() {
-    this.sharedDataService.currenttripOfferSource
-      .subscribe({
-        next: (tripoffer) => {
-          this.tripofferService.updateOne(tripoffer).subscribe({
-            next: () => {
-              this.updateSuccess();
+    // first save the expectations
+    this.saveExpectation().then((expectation) => {
+      if (expectation) {
+        let formData = new FormData();
+        this.sharedDataService.currenttripOfferSource
+          .subscribe({
+            next: (tripoffer) => {
+              formData.append("bild", null);
+              formData.append(
+                "reiseAngebot",
+                new Blob(
+                  [
+                    JSON.stringify({
+                      id: this.currentTripoffer.id,
+                      titel: tripoffer.titel,
+                      startDatum: tripoffer.startDatum,
+                      endDatum: tripoffer.endDatum,
+                      anmeldungsFrist: tripoffer.anmeldungsFrist,
+                      plaetze: tripoffer.plaetze,
+                      freiPlaetze: tripoffer.freiPlaetze,
+                      leistungen: tripoffer.leistungen,
+                      interessiert: tripoffer.interessiert,
+                      mitReiserBerechtigt: tripoffer.mitReiserBerechtigt,
+                      hinweise: tripoffer.hinweise,
+                      sonstigeHinweise: tripoffer.sonstigeHinweise,
+                      erwartungenReadListTO: expectation,
+                      buchungsklassenReadListTO:
+                        tripoffer.buchungsklassenReadListTO,
+                      landId: tripoffer.landId,
+                    }),
+                  ],
+                  { type: "application/json" }
+                )
+              );
+
+              this.tripofferService.updateOne(formData).subscribe({
+                next: () => {
+                  this.updateSuccess();
+                },
+                error: () => this.updateError(),
+              });
             },
-            error: () => this.updateError(),
-          });
-        },
-      })
-      .unsubscribe();
+          })
+          .unsubscribe();
+      }
+    });
   }
 
   isTripFormValid(value: boolean) {
@@ -248,10 +282,11 @@ export class EditTripofferComponent implements OnInit, AfterViewInit {
       .deleteOne(this.bookingclasstobedeleted.id)
       .subscribe({
         next: () => {
-          const idx = this.bookingclassArray.findIndex(
-            (x) => x.id === this.bookingclasstobedeleted.id
-          );
-          this.bookingclassArray.splice(idx, 1);
+          const idx =
+            this.currentTripoffer?.buchungsklassenReadListTO.findIndex(
+              (x) => x.id === this.bookingclasstobedeleted.id
+            );
+          this.currentTripoffer?.buchungsklassenReadListTO.splice(idx, 1);
         },
         error: () =>
           this.toastrService.error(
@@ -280,12 +315,7 @@ export class EditTripofferComponent implements OnInit, AfterViewInit {
     this.expectationService
       .deleteOne(this.expectationtobedeleted.id)
       .subscribe({
-        next: () => {
-          const idx = this.expectationsArray.findIndex(
-            (x) => x.id === this.expectationtobedeleted.id
-          );
-          this.expectationsArray.splice(idx, 1);
-        },
+        next: () => (this.currentTripoffer.erwartungenReadListTO = null),
         error: () =>
           this.toastrService.error(
             "Die Erwartung konnte nicht entfernt werden.",

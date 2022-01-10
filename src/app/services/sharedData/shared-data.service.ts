@@ -74,8 +74,9 @@ export class SharedDataService {
     freiPlaetze: 0,
     interessiert: 0,
     leistungen: [],
-    mitreiseberechtigt: [],
-    hinweise: [],
+    mitReiserBerechtigt: [],
+    hinweise: "",
+    sonstigeHinweise: "",
     landId: "",
     buchungsklassenReadListTO: null,
     erwartungenReadListTO: null,
@@ -93,7 +94,7 @@ export class SharedDataService {
   private bookingclass: BookingClass = {
     id: "",
     type: "",
-    text: "",
+    description: "",
     preis: 0,
     reiseAngebotId: "",
   };
@@ -110,9 +111,14 @@ export class SharedDataService {
   //#region bookinclass
   private expectation: Expectation = {
     id: "",
-    text: "",
-    wert: 0,
+    abenteuer: 0,
+    entschleunigung: 0,
+    konfort: 0,
+    nachhaltigkeit: 0,
     reiseAngebotId: "",
+    road: 0,
+    sicherheit: 0,
+    sonne_strand: 0
   };
   private expectationSource = new BehaviorSubject<Expectation>(
     this.expectation

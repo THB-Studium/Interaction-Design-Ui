@@ -33,27 +33,31 @@ export class TripofferFormComponent implements OnInit, AfterViewInit {
     // image
     image: new FormControl("", [Validators.required]),
     // startdate
-    startdate: new FormControl(new Date(), [Validators.required]),
+    startdate: new FormControl("", [Validators.required]),
     // enddate
-    enddate: new FormControl(new Date(), [Validators.required]),
+    enddate: new FormControl("", [Validators.required]),
     // deadline
-    deadline: new FormControl(new Date(), [Validators.required]),
+    deadline: new FormControl("", [Validators.required]),
     // totalplace
     totalplace: new FormControl("", [Validators.required]),
     // services
     services: new FormControl("", [Validators.required]),
     // authorizedtotravel
     authorizedtotravel: new FormControl("", [Validators.required]),
-    // notes
-    notes: new FormControl("", [Validators.required]),
+    // note
+    note: new FormControl("", [Validators.required]),
+    // othernote
+    anothernote: new FormControl("", [Validators.required]),
   });
 
   // Defines serviceArray
   serviceArray = new Set([]);
   // Defines authorizedtotravelArray
   authorizedtotravelArray = new Set([]);
-  // Defines notesArray
-  notesArray = new Set([]);
+  // Defines note
+  note: string;
+  // Defines anothernote
+  anothernote: string;
   // Defines isValid
   isValid = false;
   // Defines currentTripoffer
@@ -78,7 +82,10 @@ export class TripofferFormComponent implements OnInit, AfterViewInit {
     private sharedDataService: SharedDataService,
     private toastrService: ToastrService,
     private tripofferService: TripOfferService
-  ) {}
+  ) {
+    this.note = "";
+    this.anothernote = "";
+  }
 
   ngOnInit(): void {
     this.initForm();
@@ -126,12 +133,9 @@ export class TripofferFormComponent implements OnInit, AfterViewInit {
 
     // authorization array
     this.authorizedtotravelArray.clear();
-    tripoffer.mitreiseberechtigt?.forEach((value) =>
+    tripoffer.mitReiserBerechtigt?.forEach((value) =>
       this.authorizedtotravelArray.add(value)
     );
-    // note array
-    this.notesArray.clear();
-    tripoffer.hinweise?.forEach((value) => this.notesArray.add(value));
 
     // In order to display the really value of the date, we need to remove 1day from the date. Since the datepicker module display the given date + 1day
     let startdate = new Date(
@@ -157,10 +161,11 @@ export class TripofferFormComponent implements OnInit, AfterViewInit {
       enddate: enddate,
       deadline: deadlinedate,
       totalplace: tripoffer.plaetze,
-      // The value will be take from the array
+      // The value will be readed from the array
       services: "",
       authorizedtotravel: "",
-      notes: "",
+      note: tripoffer.hinweise,
+      anothernote: tripoffer.sonstigeHinweise,
     });
 
     // Since there is already an attached image, we set image selected flag to true.
@@ -201,23 +206,6 @@ export class TripofferFormComponent implements OnInit, AfterViewInit {
     this.isFormValid();
   }
 
-  // Adds new selected note into the list of notes
-  addNoteFromInput(event: MatChipInputEvent) {
-    if (event.value) {
-      this.notesArray.add(event.value);
-      event.chipInput!.clear();
-    }
-    // check whether the form is valid or not
-    this.isFormValid();
-  }
-
-  // Removes selected from the list of notes
-  removeNote(note: string) {
-    this.notesArray.delete(note);
-    // check whether the form is valid or not
-    this.isFormValid();
-  }
-
   private onFormValuesChanged(): void {
     this.tripofferForm.valueChanges.subscribe({
       next: () => {
@@ -237,7 +225,8 @@ export class TripofferFormComponent implements OnInit, AfterViewInit {
       this.tripofferForm.get("totalplace").valid &&
       this.serviceArray.size > 0 &&
       this.authorizedtotravelArray.size > 0 &&
-      this.notesArray.size > 0
+      this.tripofferForm.get("note").valid &&
+      this.tripofferForm.get("anothernote").valid
     ) {
       // The module returns the selected date - 1day, so we need to add 1day to the selected date before save it
       let startdate = this.tripofferForm.get("startdate").value;
@@ -255,16 +244,24 @@ export class TripofferFormComponent implements OnInit, AfterViewInit {
         freiPlaetze: this.tripofferForm.get("totalplace").value,
         interessiert: 0,
         leistungen: Array.from(this.serviceArray),
-        mitreiseberechtigt: Array.from(this.authorizedtotravelArray),
-        hinweise: Array.from(this.notesArray),
+        mitReiserBerechtigt: Array.from(this.authorizedtotravelArray),
+        hinweise: this.tripofferForm.get("note").value,
+        sonstigeHinweise: this.tripofferForm.get("anothernote").value,
         erwartungenReadListTO: null,
         landId: null,
         buchungsklassenReadListTO: null,
       };
 
       this.sharedDataService.changeCurrentTripOffer(this.currentTripoffer);
-      // notify the parent
-      this.notifyFormIsValid.emit(true);
+      // Check if the dates are valid
+      if (startdate === enddate && startdate === deadlinedate) {
+        this.tripofferForm.get("enddate").setErrors({'valid': false});
+        // notify the parent
+        this.notifyFormIsValid.emit(false);
+      } else {
+        // notify the parent
+        this.notifyFormIsValid.emit(true);
+      }
     } else {
       this.notifyFormIsValid.emit(false);
     }

@@ -73,8 +73,9 @@ export class TripofferComponent implements OnInit, AfterViewInit {
         freiPlaetze: 0,
         interessiert: 0,
         leistungen: [],
-        mitreiseberechtigt: [],
-        hinweise: [],
+        mitReiserBerechtigt: [],
+        hinweise: "",
+        sonstigeHinweise: "",
         landId: "",
         buchungsklassenReadListTO: null,
         erwartungenReadListTO: null,
@@ -154,8 +155,9 @@ export class TripofferComponent implements OnInit, AfterViewInit {
       freiPlaetze: 0,
       interessiert: 0,
       leistungen: [],
-      mitreiseberechtigt: [],
-      hinweise: [],
+      mitReiserBerechtigt: [],
+      hinweise: "",
+      sonstigeHinweise: "",
       landId: "",
       buchungsklassenReadListTO: null,
       erwartungenReadListTO: null,
@@ -189,11 +191,11 @@ export class TripofferComponent implements OnInit, AfterViewInit {
                   freiPlaetze: tripoffer.freiPlaetze,
                   leistungen: tripoffer.leistungen,
                   interessiert: tripoffer.interessiert,
-                  mitreiseberechtigt: tripoffer.mitreiseberechtigt,
+                  mitReiserBerechtigt: tripoffer.mitReiserBerechtigt,
                   hinweise: tripoffer.hinweise,
+                  sonstigeHinweise: tripoffer.sonstigeHinweise,
                   erwartungenReadListTO: tripoffer.erwartungenReadListTO,
-                  buchungsklassenReadListTO:
-                    tripoffer.buchungsklassenReadListTO,
+                  buchungsklassenReadListTO: tripoffer.buchungsklassenReadListTO,
                   landId: tripoffer.landId,
                 }),
               ],
@@ -203,7 +205,6 @@ export class TripofferComponent implements OnInit, AfterViewInit {
 
           this.tripOfferService.addOne(formData).subscribe({
             next: (res: TripOffer) => {
-              console.log(res);
               // set the current local tripoffer
               this.currentTripOffer = res;
               // Add the new added item to the current list and update the table

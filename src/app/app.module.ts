@@ -5,7 +5,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { ToastrModule } from 'ngx-toastr';
 
-import { AppHttpInterceptor } from './services/httpInterceptor/app-http.interceptor';
+//import { AppHttpInterceptor } from './services/httpInterceptor/app-http.interceptor';
 import { AppComponent } from './app.component';
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 import { AuthLayoutComponent } from './layouts/auth-layout/auth-layout.component';
@@ -37,7 +37,7 @@ import { ComponentsModule } from './components/components.module';
     AuthLayoutComponent
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: AppHttpInterceptor, multi: true },
+    //{ provide: HTTP_INTERCEPTORS, useClass: AppHttpInterceptor, multi: true },
   ],
   bootstrap: [AppComponent]
 })

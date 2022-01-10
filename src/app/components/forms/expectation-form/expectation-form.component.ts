@@ -22,12 +22,34 @@ export class ExpectationFormComponent implements OnInit, AfterViewInit {
   @Output() notifyFormIsValid = new EventEmitter<boolean>(false);
 
   expectationForm = new FormGroup({
-    text: new FormControl("", [Validators.required]),
-    value: new FormControl("", [
-      Validators.required,
+    adventure: new FormControl("", [
       Validators.min(0),
       Validators.max(100),
     ]),
+    comfort: new FormControl("", [
+      Validators.min(0),
+      Validators.max(100),
+    ]),
+    deceleration: new FormControl("", [
+      Validators.min(0),
+      Validators.max(100),
+    ]),
+    road: new FormControl("", [
+      Validators.min(0),
+      Validators.max(100),
+    ]),
+    safety: new FormControl("", [
+      Validators.min(0),
+      Validators.max(100),
+    ]),
+    sun_beach: new FormControl("", [
+      Validators.min(0),
+      Validators.max(100),
+    ]),
+    sustainability: new FormControl("", [
+      Validators.min(0),
+      Validators.max(100),
+    ])
   });
 
   // Defines currentExpectation
@@ -77,8 +99,13 @@ export class ExpectationFormComponent implements OnInit, AfterViewInit {
 
   private setFormDefaultValue(expectation: Expectation): void {
     this.expectationForm.setValue({
-      text: expectation.text? expectation.text: "",
-      value: expectation.wert,
+      adventure: expectation.abenteuer,
+      comfort: expectation.konfort,
+      deceleration: expectation.entschleunigung,
+      road: expectation.road,
+      safety: expectation.sicherheit,
+      sun_beach: expectation.sonne_strand,
+      sustainability: expectation.nachhaltigkeit
     });
   }
 
@@ -92,8 +119,13 @@ export class ExpectationFormComponent implements OnInit, AfterViewInit {
 
         this.currentExpectation = {
           id: id,
-          text: this.expectationForm.get("text").value,
-          wert: this.expectationForm.get("value").value,
+          abenteuer: this.expectationForm.get("adventure").value,
+          konfort: this.expectationForm.get("comfort").value,
+          entschleunigung: this.expectationForm.get("deceleration").value,
+          road: this.expectationForm.get("road").value,
+          sicherheit: this.expectationForm.get("safety").value,
+          sonne_strand: this.expectationForm.get("sun_beach").value,
+          nachhaltigkeit: this.expectationForm.get("sustainability").value,
           reiseAngebotId: this.currentReiseAngebotId,
         };
         // check whether the form is valid or not
@@ -104,8 +136,13 @@ export class ExpectationFormComponent implements OnInit, AfterViewInit {
 
   private isFormValid(): void {
     if (
-      this.expectationForm.get("text").valid &&
-      this.expectationForm.get("value").valid
+      this.expectationForm.get("adventure").valid ||
+      this.expectationForm.get("comfort").valid ||
+      this.expectationForm.get("deceleration").valid ||
+      this.expectationForm.get("road").valid ||
+      this.expectationForm.get("safety").valid ||
+      this.expectationForm.get("sun_beach").valid ||
+      this.expectationForm.get("sustainability").valid
     ) {
       // change the value of the expectation into the service
       this.sharedDataService.changeCurrentExpectation(this.currentExpectation);
