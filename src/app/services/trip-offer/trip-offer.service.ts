@@ -27,13 +27,13 @@ export class TripOfferService {
   }
 
   // POST
-  addOne(tripoffer: TripOffer): Observable<TripOffer> {
-    return this.httpClient.post<TripOffer>(this.TRIPOFFERS_URL, tripoffer);
+  addOne(formData: FormData): Observable<TripOffer> {    
+    return this.httpClient.post<TripOffer>(this.TRIPOFFERS_URL, formData);
   }
 
   // PUT
-  updateOne(tripoffer: TripOffer): Observable<TripOffer> {
-    return this.httpClient.put<TripOffer>(this.TRIPOFFERS_URL, tripoffer, {
+  updateOne(formData: FormData): Observable<TripOffer> {
+    return this.httpClient.put<TripOffer>(this.TRIPOFFERS_URL, formData, {
       headers: this.headers,
     });
   }

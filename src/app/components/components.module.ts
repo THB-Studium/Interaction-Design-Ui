@@ -33,6 +33,9 @@ import { NavbarComponent } from "./navbar/navbar.component";
 import { FooterComponent } from "./footer/footer.component";
 import { AdminFormComponent } from "./forms/admin-form/admin-form.component";
 import { TravelerFormComponent } from './forms/traveler-form/traveler-form.component';
+import { TripofferFormComponent } from './forms/tripoffer-form/tripoffer-form.component';
+import { ExpectationFormComponent } from './forms/expectation-form/expectation-form.component';
+import { BookingclassFormComponent } from './forms/bookingclass-form/bookingclass-form.component';
 import { CountryFormComponent } from './forms/country-form/country-form.component';
 import { HighlightFormComponent } from './forms/highlight-form/highlight-form.component';
 import { AccommodationFormComponent } from './forms/accommodation-form/accommodation-form.component';
@@ -77,6 +80,9 @@ import { NavbarGuestComponent } from './navbar-guest/navbar-guest.component';
     SidebarComponent,
     AdminFormComponent,
     TravelerFormComponent,
+    TripofferFormComponent,
+    ExpectationFormComponent,
+    BookingclassFormComponent,
     CountryFormComponent,
     HighlightFormComponent,
     AccommodationFormComponent,
@@ -89,6 +95,9 @@ import { NavbarGuestComponent } from './navbar-guest/navbar-guest.component';
     SidebarComponent,
     AdminFormComponent,
     TravelerFormComponent,
+    TripofferFormComponent,
+    ExpectationFormComponent,
+    BookingclassFormComponent,
     CountryFormComponent,
     HighlightFormComponent,
     AccommodationFormComponent,
