@@ -16,6 +16,7 @@ import { ToastrService } from "ngx-toastr";
 import { TripOfferService } from "src/app/services/trip-offer/trip-offer.service";
 
 import { TripOffer } from "src/app/models/tripOffer";
+import { DomSanitizer } from "@angular/platform-browser";
 
 @Component({
   selector: "app-tripoffer-form",
@@ -81,7 +82,8 @@ export class TripofferFormComponent implements OnInit, AfterViewInit {
     private activatedRoute: ActivatedRoute,
     private sharedDataService: SharedDataService,
     private toastrService: ToastrService,
-    private tripofferService: TripOfferService
+    private tripofferService: TripOfferService,
+    private sanitizer: DomSanitizer
   ) {
     this.note = "";
     this.anothernote = "";
@@ -102,7 +104,13 @@ export class TripofferFormComponent implements OnInit, AfterViewInit {
         this.currentTripofferId = param.id;
         // read the tripoffer from the api
         this.tripofferService.getOne(this.currentTripofferId).subscribe({
-          next: (resp) => (this.currentTripoffer = resp),
+          next: (resp) => {
+            
+            //convert image
+            let objectURL = 'data:image/png;base64,' + resp.startbild;
+            resp.realImage = this.sanitizer.bypassSecurityTrustUrl(objectURL);
+            this.currentTripoffer = resp
+          },
           error: () =>
             this.toastrService.error(
               "Die Daten konnten nicht geladen werden.",

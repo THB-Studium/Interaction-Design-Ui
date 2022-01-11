@@ -11,4 +11,5 @@ export class Country {
   public highlights: Highlight[];
   public unterkunft: Accommodation[];
   public unterkunft_text: string;
+  public realImage?: any;
 }

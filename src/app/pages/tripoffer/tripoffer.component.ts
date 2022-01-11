@@ -11,6 +11,7 @@ import { TripOffer } from "src/app/models/tripOffer";
 import { SharedDataService } from "src/app/services/sharedData/shared-data.service";
 import { ToastrService } from "ngx-toastr";
 import { TripOfferService } from "src/app/services/trip-offer/trip-offer.service";
+import { DomSanitizer } from "@angular/platform-browser";
 
 @Component({
   selector: "app-tripoffer",
@@ -54,7 +55,8 @@ export class TripofferComponent implements OnInit, AfterViewInit {
     private dialog: MatDialog,
     private toastrService: ToastrService,
     private activatedRoute: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private sanitizer: DomSanitizer
   ) {
     this.dialogConfiguration();
   }
@@ -122,9 +124,17 @@ export class TripofferComponent implements OnInit, AfterViewInit {
   private getTripoffers() {
     this.tripOfferService.getAll().subscribe({
       next: (offers) => {
+
+       
+
         this.tripOfferList = offers;
         this.sortByTitle(this.tripOfferList);
-        this.dataSource.data = this.tripOfferList;
+        this.dataSource.data = this.tripOfferList.map(tripOffer => {
+            //convert image
+            let objectURL = 'data:image/png;base64,' + tripOffer.startbild;
+            tripOffer.realImage = this.sanitizer.bypassSecurityTrustUrl(objectURL);
+            return tripOffer;
+        });
       },
       error: (error) => {
         this.handleError(error);

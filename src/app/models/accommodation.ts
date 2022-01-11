@@ -7,6 +7,7 @@ export class Accommodation {
   public adresse: string;
   public bilder: any;
   public landId: string;
+  public realImages?: any;
 }
 
 // Bilder array of array ? : rename adresse to addresse

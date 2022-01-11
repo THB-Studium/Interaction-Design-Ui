@@ -3,5 +3,6 @@ export class Highlight {
   public name: string;
   public description: string;
   public bild: File;
-  public landId!: string;
+  public landId: string;
+  public realImage?: any;
 }
