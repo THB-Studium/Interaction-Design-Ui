@@ -1,16 +1,19 @@
 import { AfterViewInit, Component, OnInit } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
+import { FormControl } from "@angular/forms";
 
 import { BookingClassService } from "src/app/services/booking-class/booking-class.service";
+import { CountryService } from "src/app/services/country/country.service";
 import { ExpectationsService } from "src/app/services/expectations/expectations.service";
 import { SharedDataService } from "src/app/services/sharedData/shared-data.service";
 import { ToastrService } from "ngx-toastr";
 import { TripOfferService } from "src/app/services/trip-offer/trip-offer.service";
 
-import { TripOffer } from "src/app/models/tripOffer";
 import { BookingClass } from "src/app/models/bookingClass";
+import { Country } from "src/app/models/country";
 import { Expectation } from "src/app/models/expectation";
+import { TripOffer } from "src/app/models/tripOffer";
 
 @Component({
   selector: "app-edit-tripoffer",
@@ -38,6 +41,12 @@ export class EditTripofferComponent implements OnInit, AfterViewInit {
   expectationSaved = false;
   //
   currentExpectation: Expectation;
+  // Defines currentBookingclass
+  currentBookingclass: BookingClass;
+  // Defines countriesList
+  countriesList: Country[];
+  // Defines selectedCountry
+  public selectedCountry: FormControl = new FormControl();
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -47,7 +56,8 @@ export class EditTripofferComponent implements OnInit, AfterViewInit {
     private expectationService: ExpectationsService,
     private sharedDataService: SharedDataService,
     private tripofferService: TripOfferService,
-    private toastrService: ToastrService
+    private toastrService: ToastrService,
+    private countryService: CountryService
   ) {
     this.dialogConfiguration();
   }
@@ -55,20 +65,35 @@ export class EditTripofferComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.sharedDataService.isAddBtnClicked = false;
     this.getTripofferToBeUpdated();
-    //this.getAllBookingClass();
-    //this.getAllExpectations();
   }
 
   ngAfterViewInit(): void {
+    this.getAllCountries();
+
     this.sharedDataService.currentExpectation.subscribe((expectation) => {
       this.currentExpectation = expectation;
     });
+
+    this.sharedDataService.currentBookingclass.subscribe(bc => this.currentBookingclass = bc);
   }
 
   // Dialog configurations
   dialogConfiguration() {
     this.dialogConfig.disableClose = true;
     this.dialogConfig.autoFocus = true;
+  }
+
+  getAllCountries() {
+    this.countryService.getAll().subscribe({
+      next: (countries) => this.countriesList = countries,
+      error: () => this.toastrService.error('Die Länder konnten nicht zugegriefen werden', 'Fehler')
+    });
+  }
+
+  getCountryById(id: string): Country {
+    const country = this.countriesList.find(x => x.id === id);
+    this.currentTripoffer.landId = country.id;
+    return country;
   }
 
   getTripofferToBeUpdated() {
@@ -80,12 +105,17 @@ export class EditTripofferComponent implements OnInit, AfterViewInit {
           next: (resp) => {
             console.log(resp);
             this.currentTripoffer = resp;
+            if (resp.landId) {
+              this.currentTripoffer.landId = resp.landId;
+            }
+
+            if (resp.erwartungenReadListTO) {
+              this.sharedDataService.changeCurrentExpectation(resp.erwartungenReadListTO);
+            }
+
             this.sharedDataService.changeCurrentTripOffer(
               this.currentTripoffer
             );
-
-            if (resp.erwartungenReadListTO)
-              this.sharedDataService.changeCurrentExpectation(resp.erwartungenReadListTO);
           },
           error: () =>
             this.toastrService.error(
@@ -97,119 +127,12 @@ export class EditTripofferComponent implements OnInit, AfterViewInit {
     });
   }
 
-  /*getAllBookingClass() {
-    this.bookingclassService.getAll().subscribe({
-      next: (bgs) => {
-        console.log(bgs)
-        this.bookingclassArray = bgs.filter(
-          (x) => x.reiseAngebotId === this.currentTripoffer?.id
-        );
-      },
-      error: () =>
-        this.toastrService.error(
-          "Die dazugehorigen Buchungsklassen konnten nicht geladen werden.",
-          "Fehler"
-        ),
-    });
-  }*/
-
-  /*getAllExpectations() {
-    this.expectationService.getAll().subscribe({
-      next: (exps) => {
-        this.expectationsArray = exps.filter(
-          (x) => x.reiseAngebotId === this.currentTripoffer?.id
-        );
-      },
-      error: () =>
-        this.toastrService.error(
-          "Die dazugehorigen Erwartungen konnten nicht geladen werden.",
-          "Fehler"
-        ),
-    });
-  }*/
-
-  /**Opens dialog to add new Bookingclass */
-  addBookingclassDialog(dialogForm: any) {
-    this.sharedDataService.isAddBtnClicked = true;
-    this.dialog.open(dialogForm, this.dialogConfig);
-  }
-
-  /**Saves the new Bookingclass and update the list */
-  saveBookingclass() {
-    this.sharedDataService.currentBookingclass
-      .subscribe((bookingclass) => {
-        if (bookingclass) {
-          // set the value of the reiseangebot
-          bookingclass.reiseAngebotId = this.currentTripoffer.id;
-          // check whether it is an update or not
-          if (this.sharedDataService.isAddBtnClicked) {
-            this.bookingclassService.addOne(bookingclass).subscribe({
-              next: (resp) =>
-                this.currentTripoffer?.buchungsklassenReadListTO.push(resp),
-              error: () =>
-                this.toastrService.error(
-                  "Die Buchungsklasse konnte nicht gespeichert werden.",
-                  "Fehler"
-                ),
-              complete: () =>
-                this.toastrService.success(
-                  "Die Buchungsklasse wurde erfolgreich gespeichert."
-                ),
-            });
-          } else {
-            this.bookingclassService.updateOne(bookingclass).subscribe({
-              next: (resp) => {
-                const idx =
-                  this.currentTripoffer?.buchungsklassenReadListTO.findIndex(
-                    (x) => x.id === resp.id
-                  );
-                this.currentTripoffer.buchungsklassenReadListTO[idx] = resp;
-              },
-              error: () => this.updateError(),
-              complete: () => this.updateSuccess(),
-            });
-          }
-        }
-      })
-      .unsubscribe();
-  }
-
-  /**Saves new expectation and update the list */
-  private saveExpectation(): Promise<Expectation> {
-    return new Promise((resolve) => {
-      // set the value of the reiseangebot
-      this.currentExpectation.reiseAngebotId = this.currentTripoffer.id;
-      // check whether it is an add or not. If the id is equal than null, than it is an add
-      if (!this.currentExpectation.id) {
-        this.expectationService.addOne(this.currentExpectation).subscribe({
-          next: (resp) => resolve(resp),
-          error: () => {
-            this.expectationSaved = false;
-            this.toastrService.error(
-              "Die Erwartungen konnten nicht gespeichert werden.",
-              "Fehler"
-            );
-          },
-          complete: () => (this.expectationSaved = true),
-        });
-      } else {
-        this.expectationService.updateOne(this.currentExpectation).subscribe({
-          next: (resp) => resolve(resp),
-          error: () => {
-            this.expectationSaved = false;
-            this.toastrService.error(
-              "Die Änderungen konnten nicht gespeichert werden.",
-              "Fehler"
-            );
-          },
-          complete: () => (this.expectationSaved = true),
-        });
-      }
-    });
-  }
-
   /** Updates current trip offer */
   saveTripoffer() {
+    if (!this.currentTripoffer.landId) {
+      this.currentTripoffer.landId = this.selectedCountry.value.id
+    }
+    console.log(this.currentTripoffer)
     // first save the expectations
     this.saveExpectation().then((expectation) => {
       if (expectation) {
@@ -258,12 +181,46 @@ export class EditTripofferComponent implements OnInit, AfterViewInit {
     });
   }
 
-  isTripFormValid(value: boolean) {
-    this.isFormValid = value;
+  /**Opens dialog to add new Bookingclass */
+  addBookingclassDialog(dialogForm: any) {
+    this.sharedDataService.isAddBtnClicked = true;
+    this.dialog.open(dialogForm, this.dialogConfig);
   }
 
-  isModalFormValid(value: boolean) {
-    this.isValid = value;
+  /**Saves the new Bookingclass and update the list */
+  saveBookingclass() {
+    if (!this.currentBookingclass.id) {
+      // set the value of the reiseangebot
+      this.currentBookingclass.reiseAngebotId = this.currentTripoffer.id;
+      // check whether it is an update or not
+      if (this.sharedDataService.isAddBtnClicked) {
+        this.bookingclassService.addOne(this.currentBookingclass).subscribe({
+          next: (resp) =>
+            this.currentTripoffer?.buchungsklassenReadListTO.push(resp),
+          error: () =>
+            this.toastrService.error(
+              "Die Buchungsklasse konnte nicht gespeichert werden.",
+              "Fehler"
+            ),
+          complete: () =>
+            this.toastrService.success(
+              "Die Buchungsklasse wurde erfolgreich gespeichert."
+            ),
+        });
+      } else {
+        this.bookingclassService.updateOne(this.currentBookingclass).subscribe({
+          next: (resp) => {
+            const idx =
+              this.currentTripoffer?.buchungsklassenReadListTO.findIndex(
+                (x) => x.id === resp.id
+              );
+            this.currentTripoffer.buchungsklassenReadListTO[idx] = resp;
+          },
+          error: () => this.updateError(),
+          complete: () => this.updateSuccess(),
+        });
+      }
+    }
   }
 
   editBookingclass(bc: BookingClass, dialogForm: any) {
@@ -300,6 +257,40 @@ export class EditTripofferComponent implements OnInit, AfterViewInit {
       });
   }
 
+  /**Saves new expectation and update the list */
+  private saveExpectation(): Promise<Expectation> {
+    return new Promise((resolve) => {
+      // set the value of the reiseangebot
+      this.currentExpectation.reiseAngebotId = this.currentTripoffer.id;
+      // check whether it is an add or not. If the id is equal than null, than it is an add
+      if (!this.currentExpectation.id) {
+        this.expectationService.addOne(this.currentExpectation).subscribe({
+          next: (resp) => resolve(resp),
+          error: () => {
+            this.expectationSaved = false;
+            this.toastrService.error(
+              "Die Erwartungen konnten nicht gespeichert werden.",
+              "Fehler"
+            );
+          },
+          complete: () => (this.expectationSaved = true),
+        });
+      } else {
+        this.expectationService.updateOne(this.currentExpectation).subscribe({
+          next: (resp) => resolve(resp),
+          error: () => {
+            this.expectationSaved = false;
+            this.toastrService.error(
+              "Die Änderungen konnten nicht gespeichert werden.",
+              "Fehler"
+            );
+          },
+          complete: () => (this.expectationSaved = true),
+        });
+      }
+    });
+  }
+
   editExpectation(exp: Expectation, dialogForm: any) {
     this.sharedDataService.isAddBtnClicked = false;
     this.sharedDataService.changeCurrentExpectation(exp);
@@ -326,6 +317,14 @@ export class EditTripofferComponent implements OnInit, AfterViewInit {
             "Die Erwartung wurde erfolgreich entfernt."
           ),
       });
+  }
+
+  isTripFormValid(value: boolean) {
+    this.isFormValid = value;
+  }
+
+  isModalFormValid(value: boolean) {
+    this.isValid = value;
   }
 
   /**Navigate to the list of offers */
