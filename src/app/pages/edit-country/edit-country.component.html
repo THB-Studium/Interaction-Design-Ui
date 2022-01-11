@@ -198,7 +198,7 @@
       </div>
       <div class="col-md-12">
         <h3>Bild:</h3>
-        <img src="{{highlightForm.bild}}" alt="{{highlightForm.name}}" />
+        <img [src]="highlightForm.realImage" alt="{{highlightForm.name}}" />
       </div>
     </div>
   </div>
@@ -247,9 +247,9 @@
         <h3>Beschreibung:</h3> {{accommodationForm.beschreibung}}
       </div>
       <div class="row">
-        <div class="col-md-3" *ngFor="let image of accommodationForm.bilder">
+        <div class="col-md-3" *ngFor="let image of accommodationForm.realImages">
           <h3>Bilder:</h3>
-          <img src="{{image}}" alt="image-{{accommodationForm.name}}" />
+          <img [src]="image" alt="image-{{accommodationForm.name}}" />
         </div>
       </div>
     </div>

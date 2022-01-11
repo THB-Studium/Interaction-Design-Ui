@@ -14,6 +14,7 @@ import { BookingClass } from "src/app/models/bookingClass";
 import { Country } from "src/app/models/country";
 import { Expectation } from "src/app/models/expectation";
 import { TripOffer } from "src/app/models/tripOffer";
+import { DomSanitizer } from "@angular/platform-browser";
 
 @Component({
   selector: "app-edit-tripoffer",

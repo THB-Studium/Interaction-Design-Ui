@@ -14,6 +14,7 @@ import { SharedDataService } from "src/app/services/sharedData/shared-data.servi
 import { Country } from "src/app/models/country";
 import { CountryService } from "src/app/services/country/country.service";
 import { ToastrService } from "ngx-toastr";
+import { DomSanitizer } from "@angular/platform-browser";
 
 @Component({
   selector: "app-country-form",
@@ -57,7 +58,8 @@ export class CountryFormComponent implements OnInit, AfterViewInit {
     private activatedRoute: ActivatedRoute,
     private countryService: CountryService,
     private sharedDataService: SharedDataService,
-    private toastrService: ToastrService
+    private toastrService: ToastrService,
+    private sanitizer: DomSanitizer
   ) { }
 
   ngOnInit(): void {
@@ -73,7 +75,13 @@ export class CountryFormComponent implements OnInit, AfterViewInit {
       if (param.id) {
         // it is an edit
         this.countryService.getOne(param.id).subscribe({
-          next: (country) => this.currentCountry = country,
+          next: (country) => {
+            
+            //convert image
+            let objectURL = 'data:image/png;base64,' + country.karte_bild;
+            country.realImage = this.sanitizer.bypassSecurityTrustUrl(objectURL);
+            this.currentCountry = country
+          },
           error: () => this.toastrService.error('Die Daten konnten nicht geladen werden', 'Fehler'),
           complete: () => this.setCountryForm(this.currentCountry)
         })

@@ -13,6 +13,7 @@ import { Country } from "src/app/models/country";
 import { Highlight } from "src/app/models/highlight";
 import { Accommodation } from "src/app/models/accommodation";
 import { CountryInformation } from "src/app/models/countryInformation";
+import { DomSanitizer } from "@angular/platform-browser";
 
 @Component({
   selector: "app-edit-country",
@@ -60,7 +61,8 @@ export class EditCountryComponent implements OnInit, AfterViewInit {
     private higlightService: HighlightService,
     private sharedDataService: SharedDataService,
     private toastrService: ToastrService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private sanitizer: DomSanitizer
   ) {
     this.dialogConfiguration();
   }
@@ -90,8 +92,25 @@ export class EditCountryComponent implements OnInit, AfterViewInit {
           console.log(country)
           this.country = country;
           this.countryInfos = this.country.landInfo;
-          this.highlights = this.country.highlights;
-          this.accommodations = this.country.unterkunft;
+
+
+
+          this.highlights = this.country.highlights.map(hight => {
+            //convert image
+            let objectURL = 'data:image/png;base64,' + hight.bild;
+            hight.realImage = this.sanitizer.bypassSecurityTrustUrl(objectURL);
+            return hight;
+          });
+          this.accommodations = this.country.unterkunft.map(unter => {
+
+            unter.bilder.map(bild => {
+              //convert image
+            let objectURL = 'data:image/png;base64,' + bild;
+            unter.realImages.push(this.sanitizer.bypassSecurityTrustUrl(objectURL));
+            });
+            
+            return unter;
+          });
           // set the value of the country in the current component and also into the data service
           this.sharedDataService.changeCurrentCountry(this.country);
         },

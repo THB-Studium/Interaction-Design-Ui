@@ -11,4 +11,5 @@ export class Country {
   public landInfo: CountryInformation[];
   public highlights: Highlight[];
   public unterkunft: Accommodation[];
+  public realImage?: any;
 }
