@@ -4,8 +4,6 @@ import { Router } from '@angular/router';
 
 import { AdminService } from 'src/app/services/admin/admin.service';
 
-import { Role } from "src/app/models/role";
-
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
