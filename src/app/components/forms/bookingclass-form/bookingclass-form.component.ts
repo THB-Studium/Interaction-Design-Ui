@@ -21,8 +21,8 @@ export class BookingclassFormComponent implements OnInit, AfterViewInit {
   // Defines notifyFormIsValid. Notify the parent when the form is valid
   @Output() notifyFormIsValid = new EventEmitter<boolean>(false);
 
-  // Defines bookinclassForm
-  bookinclassForm = new FormGroup({
+  // Defines bookingclassForm
+  bookingclassForm = new FormGroup({
     // title
     title: new FormControl("", [Validators.required]),
     // description
@@ -77,7 +77,7 @@ export class BookingclassFormComponent implements OnInit, AfterViewInit {
   }
 
   private setFormDefaultValue(bookinclass: BookingClass): void {
-    this.bookinclassForm.setValue({
+    this.bookingclassForm.setValue({
       title: bookinclass.type,
       description: bookinclass.description? bookinclass.description:"",
       price: bookinclass.preis,
@@ -85,7 +85,7 @@ export class BookingclassFormComponent implements OnInit, AfterViewInit {
   }
 
   private onFormValuesChanged(): void {
-    this.bookinclassForm.valueChanges.subscribe({
+    this.bookingclassForm.valueChanges.subscribe({
       next: () => {
         var id = null;
         if (!this.isAnAdd) {
@@ -94,9 +94,9 @@ export class BookingclassFormComponent implements OnInit, AfterViewInit {
 
         this.currentBookingclass = {
           id: id,
-          type: this.bookinclassForm.get("title").value,
-          description: this.bookinclassForm.get("description").value,
-          preis: this.bookinclassForm.get("price").value,
+          type: this.bookingclassForm.get("title").value,
+          description: this.bookingclassForm.get("description").value,
+          preis: this.bookingclassForm.get("price").value,
           reiseAngebotId: this.currentTripofferId,
         };
         // check whether the form is valid or not
@@ -107,9 +107,9 @@ export class BookingclassFormComponent implements OnInit, AfterViewInit {
 
   private isFormValid(): void {
     if (
-      this.bookinclassForm.get("title").valid &&
-      this.bookinclassForm.get("description").valid &&
-      this.bookinclassForm.get("price").valid
+      this.bookingclassForm.get("title").valid &&
+      this.bookingclassForm.get("description").valid &&
+      this.bookingclassForm.get("price").valid
     ) {
       this.sharedDataService.changeCurrentBookinclass(this.currentBookingclass);
       // notify the parent

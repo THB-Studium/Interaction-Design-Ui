@@ -3,25 +3,28 @@
  */
 import { Injectable } from "@angular/core";
 import { BehaviorSubject } from "rxjs";
-import { Accommodation } from "src/app/models/accommodation";
 
+import { Accommodation } from "src/app/models/accommodation";
+import { Booking } from "src/app/models/booking";
 import { BookingClass } from "src/app/models/bookingClass";
-import { Expectation } from "src/app/models/expectation";
 import { Country } from "src/app/models/country";
 import { CountryInformation } from "src/app/models/countryInformation";
+import { Expectation } from "src/app/models/expectation";
 import { Highlight } from "src/app/models/highlight";
-import { User } from "src/app/models/user";
 import { Traveler } from "src/app/models/traveler";
 import { TripOffer } from "src/app/models/tripOffer";
+import { User } from "src/app/models/user";
 
 @Injectable({
   providedIn: "root",
 })
 export class SharedDataService {
   // Flags that give information about the method that is currently has to be done. Change it to false if it is an edit.
-  public isAddBtnClicked: boolean = true;
+  public isAddBtnClicked: boolean;
 
-  constructor() {}
+  constructor() {
+    this.isAddBtnClicked = true;
+  }
 
   //#region  Users
   private user: User = {
@@ -64,7 +67,7 @@ export class SharedDataService {
   changeCurrentTraveler(traveler: Traveler) {
     this.travelerSource.next(traveler);
   }
-  //#endregion
+   //#endregion traveler
 
   //#region offers
   private tripoffer: TripOffer = {
@@ -112,7 +115,7 @@ export class SharedDataService {
   }
   //#endregion bookinclass
 
-  //#region bookinclass
+  //#region expectation
   private expectation: Expectation = {
     id: "",
     abenteuer: 0,
@@ -133,8 +136,7 @@ export class SharedDataService {
     this.expectationSource.next(expectation);
   }
   //#endregion bookinclass
-  //#endregion traveler
-
+ 
   //#region country
   private country: Country = {
     id: '',
@@ -203,6 +205,28 @@ export class SharedDataService {
 
   changeCurrentAccommodation(accommodation: Accommodation) {
     this.accommodationSource.next(accommodation);
+  }
+  //#endregion accommodation
+
+  //#region booking
+  private booking: Booking = {
+    id: '',
+    buchungsklasseId: '',
+    datum: '',
+    flugHafen: '',
+    handGepaeck: '',
+    koffer: '',
+    mitReiser: null,
+    reiseAngebotId: '',
+    reiser: null,
+    zahlungsMethode: null
+  }
+
+  private bookingSource = new BehaviorSubject<Booking>(this.booking);
+  public currentBooking = this.bookingSource.asObservable();
+
+  changeCurrentBooking(booking: Booking) {
+    this.bookingSource.next(booking);
   }
   //#endregion accommodation
 }

@@ -67,10 +67,12 @@
                     <ng-container matColumnDef="action">
                         <th mat-header-cell *matHeaderCellDef scope="col">ACTION</th>
                         <td mat-cell *matCellDef="let row">
-                            <label class="mr-3" matTooltip="Editieren" matTooltipHideDelay="{{toolTipDuration}}" (click)="editCountry(row)">
+                            <label class="mr-3" matTooltip="Editieren" matTooltipHideDelay="{{toolTipDuration}}"
+                                (click)="editCountry(row)">
                                 <em class="fa fa-pen text-info"></em>
                             </label>
-                            <label matTooltip="Entfernen" matTooltipHideDelay="{{toolTipDuration}}" (click)="deleteCountryDialog(row, deleteDialog)">
+                            <label matTooltip="Entfernen" matTooltipHideDelay="{{toolTipDuration}}"
+                                (click)="deleteCountryDialog(row, deleteDialog)">
                                 <em class="fa fa-trash text-red"></em>
                             </label>
                         </td>
@@ -94,7 +96,7 @@
                 Die Liste ist leer!
             </p>
         </div>
-        <img [src]='image' alt=""/>
+        <img [src]='image' alt="" />
     </div>
 </div>
 
@@ -103,20 +105,20 @@
     <h1 mat-dialog-title>Ein neues Land hier hinzufügen</h1>
     <mat-divider></mat-divider>
     <div mat-dialog-content>
-      <app-country-form (notifyFormIsValid)="isModalFormValid($event)"></app-country-form>
+        <app-country-form (notifyFormIsValid)="isModalFormValid($event)"></app-country-form>
     </div>
     <mat-divider></mat-divider>
     <div mat-dialog-actions>
-      <button mat-raised-button color="primary" mat-dialog-close [disabled]="!isValid" (click)="saveNewCountry()">
-        Speichern
-      </button>
-      <button mat-raised-button color="accent" mat-dialog-close>
-        Abbrechen
-      </button>
+        <button mat-raised-button color="primary" mat-dialog-close [disabled]="!isValid" (click)="saveNewCountry()">
+            Speichern
+        </button>
+        <button mat-raised-button color="accent" mat-dialog-close>
+            Abbrechen
+        </button>
     </div>
-  </ng-template>
+</ng-template>
 
-  <!-- Delete confirmation dialog -->
+<!-- Delete confirmation dialog -->
 <ng-template #deleteDialog>
     <h1 mat-dialog-title>Bestätigen Sie das Löschen</h1>
     <mat-divider></mat-divider>

@@ -22,6 +22,7 @@ import { MatSortModule } from "@angular/material/sort";
 import { MatDialogModule } from "@angular/material/dialog";
 import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatNativeDateModule } from "@angular/material/core";
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 
 import { LoginComponent } from "../../pages/login/login.component";
 import { RegisterComponent } from "../../pages/register/register.component";
@@ -52,6 +53,7 @@ import { HomeComponent } from "src/app/pages/home/home.component";
     MatDialogModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    NgxMatSelectSearchModule
   ],
   declarations: [HomeComponent, LoginComponent, RegisterComponent],
 })

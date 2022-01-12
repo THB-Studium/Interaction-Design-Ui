@@ -25,7 +25,7 @@
         <!--Add Button-->
         <div class="col-12">
             <button mat-mini-fab color="primary" aria-label="add icon" matTooltip="Booking Hinzufügen"
-                matTooltipHideDelay="{{toolTipDuration}}">
+                matTooltipHideDelay="{{toolTipDuration}}" (click)="addBookingDialog(bookingDialog)">
                 <mat-icon>add</mat-icon>
             </button>
         </div>
@@ -71,14 +71,14 @@
                         <td mat-cell *matCellDef="let row"> {{row?.handgepaeck}} </td>
                     </ng-container>
 
-                     <!-- coffer Column -->
-                     <ng-container matColumnDef="suitcase">
+                    <!-- coffer Column -->
+                    <ng-container matColumnDef="suitcase">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header scope="col">KOFFER</th>
                         <td mat-cell *matCellDef="let row"> {{row?.koffer}} </td>
                     </ng-container>
 
-                     <!-- payment Column -->
-                     <ng-container matColumnDef="paymentmethod">
+                    <!-- payment Column -->
+                    <ng-container matColumnDef="paymentmethod">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header scope="col">ZAHLUNGSMETHODE</th>
                         <td mat-cell *matCellDef="let row"> {{row?.zahlungsmethode}} </td>
                     </ng-container>
@@ -112,3 +112,20 @@
         </div>
     </div>
 </div>
+
+<ng-template #bookingDialog>
+    <h1 mat-dialog-title>Eine neue Buchung hinzufügen</h1>
+    <mat-divider></mat-divider>
+    <div mat-dialog-content>
+        <app-booking-form></app-booking-form>
+    </div>
+    <mat-divider></mat-divider>
+    <div mat-dialog-actions>
+        <button mat-raised-button color="primary" mat-dialog-close>
+            Speichern
+        </button>
+        <button mat-raised-button color="accent" mat-dialog-close>
+            Abbrechen
+        </button>
+    </div>
+</ng-template>

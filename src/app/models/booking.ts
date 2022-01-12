@@ -1,3 +1,4 @@
+import { PaymentMethod } from "../enums/paymentMethod";
 import { Traveler } from "./traveler";
 
 export class Booking {
@@ -9,5 +10,6 @@ export class Booking {
     public koffer: string;
     public mitReiser: Traveler;
     public reiser: Traveler;
-    public zahlungsMethode: string;
+    public zahlungsMethode: PaymentMethod;
+    public reiseAngebotId: string;
 }

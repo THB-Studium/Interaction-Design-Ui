@@ -17,7 +17,7 @@ import { Booking } from "src/app/models/booking";
   templateUrl: "./booking.component.html",
   styleUrls: ["./booking.component.css"],
 })
-export class BookingComponent implements OnInit, AfterViewInit, OnCommit {
+export class BookingComponent implements OnInit, AfterViewInit {
   // Defines paginator
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
   // Defines sort
@@ -71,7 +71,8 @@ export class BookingComponent implements OnInit, AfterViewInit, OnCommit {
         koffer: "",
         mitReiser: null,
         reiser: null,
-        zahlungsMethode: "",
+        zahlungsMethode: null,
+        reiseAngebotId: "",
       },
     ]);
 
@@ -88,10 +89,6 @@ export class BookingComponent implements OnInit, AfterViewInit, OnCommit {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
-
-  beforeSave(): void {}
-
-  beforeUpdate(): void {}
 
   // Filters that get and display the entered value if found.
   applyFilter(event: Event) {
@@ -141,8 +138,16 @@ export class BookingComponent implements OnInit, AfterViewInit, OnCommit {
     this.dataSource.data = this.bookingList;
   }
 
-   // On error
-   private handleError(error: any) {
+  addBookingDialog(dialogForm: any) {
+    // Notify the sharedataservice that it is an add
+    this.sharedDataService.isAddBtnClicked = true;
+    this.sharedDataService.changeCurrentBooking(this.currentBooking);
+    // Open the add admin dialog
+    this.dialog.open(dialogForm, this.dialogConfig);
+  }
+
+  // On error
+  private handleError(error: any) {
     if (error?.message) {
       this.errors.errorMessage = error?.message;
     }

@@ -27,6 +27,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatListModule } from '@angular/material/list';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 
 import { SidebarComponent } from "./sidebar/sidebar.component";
 import { NavbarComponent } from "./navbar/navbar.component";
@@ -41,6 +42,7 @@ import { HighlightFormComponent } from './forms/highlight-form/highlight-form.co
 import { AccommodationFormComponent } from './forms/accommodation-form/accommodation-form.component';
 import { CountryInformationFormComponent } from './forms/country-information-form/country-information-form.component';
 import { NavbarGuestComponent } from './navbar-guest/navbar-guest.component';
+import { BookingFormComponent } from './forms/booking-form/booking-form.component';
 
 @NgModule({
   imports: [
@@ -72,7 +74,8 @@ import { NavbarGuestComponent } from './navbar-guest/navbar-guest.component';
     MatGridListModule,
     MatToolbarModule,
     MatProgressBarModule,
-    MatListModule
+    MatListModule,
+    NgxMatSelectSearchModule
   ],
   declarations: [
     FooterComponent,
@@ -87,7 +90,8 @@ import { NavbarGuestComponent } from './navbar-guest/navbar-guest.component';
     HighlightFormComponent,
     AccommodationFormComponent,
     CountryInformationFormComponent,
-    NavbarGuestComponent
+    NavbarGuestComponent,
+    BookingFormComponent
   ],
   exports: [
     FooterComponent,
@@ -102,7 +106,8 @@ import { NavbarGuestComponent } from './navbar-guest/navbar-guest.component';
     HighlightFormComponent,
     AccommodationFormComponent,
     CountryInformationFormComponent,
-    NavbarGuestComponent
+    NavbarGuestComponent,
+    BookingFormComponent
   ],
 })
 export class ComponentsModule {}
