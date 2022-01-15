@@ -289,6 +289,12 @@ export class TripofferFormComponent implements OnInit, AfterViewInit {
     }
     // check whether the form is valid or not
     this.isFormValid();
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+        console.log(reader.result);
+    };
   }
 
   /**This method will not compare the time*/
