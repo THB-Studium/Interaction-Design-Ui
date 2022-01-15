@@ -38,59 +38,35 @@
                     <!-- Date Column -->
                     <ng-container matColumnDef="date">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header scope="col">DATUM</th>
-                        <td mat-cell *matCellDef="let row"> {{row?.date}} </td>
-                    </ng-container>
-
-                    <!-- Traveler Column -->
-                    <ng-container matColumnDef="traveler">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header scope="col">REISER</th>
-                        <td mat-cell *matCellDef="let row"> {{row?.reiser?.name}} </td>
-                    </ng-container>
-
-                    <!-- Co-Traveler Column -->
-                    <ng-container matColumnDef="cotraveler">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header scope="col">REISER</th>
-                        <td mat-cell *matCellDef="let row"> {{row?.mitreiser?.name}} </td>
+                        <td mat-cell *matCellDef="let row"> {{ convertDateToString(row?.datum) }} </td>
                     </ng-container>
 
                     <!-- Airport Column -->
                     <ng-container matColumnDef="airport">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header scope="col">FLUGHAFEN</th>
-                        <td mat-cell *matCellDef="let row"> {{row?.flughafen}} </td>
-                    </ng-container>
-
-                    <!-- booking class Column -->
-                    <ng-container matColumnDef="bookingclass">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header scope="col">FLUGHAFEN</th>
-                        <td mat-cell *matCellDef="let row"> {{row?.buchungsklasseId}} </td>
-                    </ng-container>
-
-                    <!-- handluggage Column -->
-                    <ng-container matColumnDef="handluggage">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header scope="col">HANDGEPÄCK</th>
-                        <td mat-cell *matCellDef="let row"> {{row?.handgepaeck}} </td>
-                    </ng-container>
-
-                    <!-- coffer Column -->
-                    <ng-container matColumnDef="suitcase">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header scope="col">KOFFER</th>
-                        <td mat-cell *matCellDef="let row"> {{row?.koffer}} </td>
+                        <td mat-cell *matCellDef="let row"> {{row?.flugHafen}} </td>
                     </ng-container>
 
                     <!-- payment Column -->
                     <ng-container matColumnDef="paymentmethod">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header scope="col">ZAHLUNGSMETHODE</th>
-                        <td mat-cell *matCellDef="let row"> {{row?.zahlungsmethode}} </td>
+                        <td mat-cell *matCellDef="let row"> {{row?.zahlungMethod}} </td>
                     </ng-container>
 
                     <!-- Action Column -->
                     <ng-container matColumnDef="action">
                         <th mat-header-cell *matHeaderCellDef scope="col">ACTION</th>
                         <td mat-cell *matCellDef="let row">
-                            <label class="mr-3" matTooltip="Editieren" matTooltipHideDelay="{{toolTipDuration}}">
+                            <label class="mr-3" matTooltip="Ansehen" matTooltipHideDelay="{{toolTipDuration}}"
+                                (click)="detailsDialog(row, viewDialog)">
+                                <em class="fa fa-eye text-primary"></em>
+                            </label>
+                            <label class="mr-3" matTooltip="Editieren" matTooltipHideDelay="{{toolTipDuration}}"
+                                (click)="editDialog(row, bookingDialog)">
                                 <em class="fa fa-pen text-info"></em>
                             </label>
-                            <label matTooltip="Entfernen" matTooltipHideDelay="{{toolTipDuration}}">
+                            <label matTooltip="Entfernen" matTooltipHideDelay="{{toolTipDuration}}"
+                                (click)="deleteDialog(row, delDialog)">
                                 <em class="fa fa-trash text-red"></em>
                             </label>
                         </td>
@@ -117,15 +93,200 @@
     <h1 mat-dialog-title>Eine neue Buchung hinzufügen</h1>
     <mat-divider></mat-divider>
     <div mat-dialog-content>
-        <app-booking-form></app-booking-form>
+        <app-booking-form (notifyFormIsValid)="isFormValid($event)"></app-booking-form>
     </div>
     <mat-divider></mat-divider>
-    <div mat-dialog-actions>
-        <button mat-raised-button color="primary" mat-dialog-close>
+    <div class="justify-content-end" mat-dialog-actions>
+        <button class="ms-auto" (click)="saveBooking()" [disabled]="!valid" mat-raised-button color="primary"
+            mat-dialog-close>
             Speichern
         </button>
         <button mat-raised-button color="accent" mat-dialog-close>
             Abbrechen
         </button>
+    </div>
+</ng-template>
+
+<ng-template #viewDialog>
+    <h1 mat-dialog-title>Mehr Informationen</h1>
+    <mat-divider></mat-divider>
+    <div mat-dialog-content>
+        <mat-card class="col-md-12 m-0">
+            <mat-card-content class="col-md-12">
+                <!--Tripoffer-->
+                <div class="col-md-12">
+                    <h4>Reiseangebot:</h4>
+                    <mat-divider class="mb-0"></mat-divider>
+                    <div class="form-row">
+                        <div class="form-group col-md-12 mb-0">
+                            <mat-form-field class="col-md-12" appearance="standard">
+                                <mat-label>Angebot</mat-label>
+                                <input matInput [value]="tripoffer.titel" disabled>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6 mb-0">
+                            <mat-form-field class="col-md-12" appearance="standard">
+                                <mat-label>Von</mat-label>
+                                <input matInput [value]="convertDateToString(tripoffer.startDatum)" disabled>
+                            </mat-form-field>
+                        </div>
+                        <div class="form-group col-md-6 mb-0">
+                            <mat-form-field class="col-md-12" appearance="standard">
+                                <mat-label>Bis</mat-label>
+                                <input matInput [value]="convertDateToString(tripoffer.endDatum)" disabled>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6 mb-0">
+                            <mat-form-field class="col-md-12" appearance="standard">
+                                <mat-label>Plätze</mat-label>
+                                <input matInput [value]="tripoffer.plaetze" disabled>
+                            </mat-form-field>
+                        </div>
+                        <div class="form-group col-md-6 mb-0">
+                            <mat-form-field class="col-md-12" appearance="standard">
+                                <mat-label>Freiplätze</mat-label>
+                                <input matInput [value]="tripoffer.freiplaetze" disabled>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+                <!--Country-->
+                <div class="col-md-12">
+                    <h4>Ziel:</h4>
+                    <mat-divider class="mb-0"></mat-divider>
+                    <div class="form-row">
+                        <div class="form-group col-md-12 mb-0">
+                            <mat-form-field class="col-md-12" appearance="standard">
+                                <mat-label>Name</mat-label>
+                                <input matInput [value]="country.name" disabled>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+                <!--Bookingclass-->
+                <div class="col-md-12">
+                    <h4>Buchungsklasse:</h4>
+                    <mat-divider class="mb-0"></mat-divider>
+                    <div class="form-row">
+                        <div class="form-group col-md-6 mb-0">
+                            <mat-form-field class="col-md-12" appearance="standard">
+                                <mat-label>Typ</mat-label>
+                                <input matInput [value]="bookingclass.type" disabled>
+                            </mat-form-field>
+                        </div>
+                        <div class="form-group col-md-6 mb-0">
+                            <mat-form-field class="col-md-12" appearance="standard">
+                                <mat-label>Preis</mat-label>
+                                <input matInput [value]="bookingclass.preis" disabled>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+                <!--Traveler-->
+                <div class="col-md-12">
+                    <h4>Reisende:</h4>
+                    <mat-divider class="mb-0"></mat-divider>
+                    <div class="form-row">
+                        <div class="form-group col-md-6 mb-0">
+                            <mat-form-field class="col-md-12" appearance="standard">
+                                <mat-label>Vorname:</mat-label>
+                                <input matInput [value]="traveler.vorname" disabled>
+                            </mat-form-field>
+                        </div>
+                        <div class="form-group col-md-6 mb-0">
+                            <mat-form-field class="col-md-12" appearance="standard">
+                                <mat-label>Nachname</mat-label>
+                                <input matInput [value]="traveler.name" disabled>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6 mb-0">
+                            <mat-form-field class="col-md-12" appearance="standard">
+                                <mat-label>Email:</mat-label>
+                                <input matInput [value]="traveler.email" disabled>
+                            </mat-form-field>
+                        </div>
+                        <div class="form-group col-md-6 mb-0">
+                            <mat-form-field class="col-md-12" appearance="standard">
+                                <mat-label>Handy</mat-label>
+                                <input matInput [value]="traveler.telefonnummer" disabled>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12 mb-0">
+                            <mat-form-field class="col-md-12" appearance="standard">
+                                <mat-label>Adresse</mat-label>
+                                <input matInput [value]="traveler.adresse" disabled>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+                <!--Co traveler-->
+                <div *ngIf="cotraveler" class="col-md-12">
+                    <h4>Mitreisende:</h4>
+                    <mat-divider class="mb-0"></mat-divider>
+                    <div class="form-row">
+                        <div class="form-group col-md-6 mb-0">
+                            <mat-form-field class="col-md-12" appearance="standard">
+                                <mat-label>Vorname:</mat-label>
+                                <input matInput [value]="cotraveler.vorname" disabled>
+                            </mat-form-field>
+                        </div>
+                        <div class="form-group col-md-6 mb-0">
+                            <mat-form-field class="col-md-12" appearance="standard">
+                                <mat-label>Nachname</mat-label>
+                                <input matInput [value]="cotraveler.name" disabled>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6 mb-0">
+                            <mat-form-field class="col-md-12" appearance="standard">
+                                <mat-label>Email:</mat-label>
+                                <input matInput [value]="cotraveler.email" disabled>
+                            </mat-form-field>
+                        </div>
+                        <div class="form-group col-md-6 mb-0">
+                            <mat-form-field class="col-md-12" appearance="standard">
+                                <mat-label>Handy</mat-label>
+                                <input matInput [value]="cotraveler.telefonnummer" disabled>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12 mb-0">
+                            <mat-form-field class="col-md-12" appearance="standard">
+                                <mat-label>Adresse</mat-label>
+                                <input matInput [value]="cotraveler.adresse" disabled>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+    <mat-divider></mat-divider>
+    <div class="justify-content-end" mat-dialog-actions>
+        <button mat-button mat-dialog-close>
+            Ok
+        </button>
+    </div>
+</ng-template>
+
+<ng-template #delDialog>
+    <h1 mat-dialog-title>Bestätigen Sie das Löschen</h1>
+    <mat-divider></mat-divider>
+    <div mat-dialog-content>
+        <p>Wollen Sie wirklich löschen?</p>
+    </div>
+    <div class="justify-content-end" mat-dialog-actions>
+        <button mat-raised-button color="primary" mat-dialog-close (click)="deleteBooking()">Ja</button>
+        <button mat-raised-button color="accent" mat-dialog-close>Nein</button>
     </div>
 </ng-template>

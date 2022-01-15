@@ -10,6 +10,6 @@ export class Booking {
     public koffer: string;
     public mitReiser: Traveler;
     public reiser: Traveler;
-    public zahlungsMethode: PaymentMethod;
+    public zahlungMethod: PaymentMethod;
     public reiseAngebotId: string;
 }

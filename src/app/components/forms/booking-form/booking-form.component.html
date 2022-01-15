@@ -1,11 +1,74 @@
 <form [formGroup]="bookingForm" class="col-md-12">
-    <!-- Title & price -->
+    <!--date-->
     <div class="form-row">
         <div class="form-group col-md-12">
             <mat-form-field class="col-md-12" appearance="standard">
-                <mat-select formControlName="tripoffer" placeholder="Reiseangebot" #singleSelect required>
+                <mat-label>Datum</mat-label>
+                <input matInput [matDatepicker]="picker" formControlName="date" placeholder="mm/dd/yyyy" required>
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker>
+                </mat-datepicker>
+                <mat-error *ngIf="bookingForm.get('date').invalid">
+                    Die Eingabe ist <strong>erforderlich</strong>.
+                </mat-error>
+                <mat-hint *ngIf="dateError" class="text-danger">{{dateError}}</mat-hint>
+            </mat-form-field>
+        </div>
+    </div>
+    <!--bookingClass-->
+    <div class="form-row">
+        <div class="form-group col-md-12">
+            <mat-form-field class="col-md-12" appearance="standard">
+                <mat-label>Buchungsklasse auswählen</mat-label>
+                <mat-select formControlName="bookingClass" placeholder="Search by name" #singleSelect required>
                     <mat-option>
-                        <ngx-mat-select-search [formControl]="tripofferFilteringCtrl" [searching]="searching"></ngx-mat-select-search>
+                        <ngx-mat-select-search [formControl]="bookingclassFilteringCtrl" [searching]="searching">
+                        </ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option *ngIf="bookingForm.get('bookingClass').value" [value]="bookingForm.get('bookingClass').value" selected>
+                        {{bookingForm.get('bookingClass').value.type}}
+                    </mat-option>
+                    <mat-option *ngFor="let bookingClass of filteredBookingclass | async" [value]="bookingClass">
+                        {{bookingClass.type}}
+                    </mat-option>
+                </mat-select>
+                <mat-error *ngIf="bookingForm.get('bookingClass').invalid">
+                    Die Eingabe ist <strong>erforderlich</strong>.
+                </mat-error>
+            </mat-form-field>
+        </div>
+    </div>
+    <!--paymentMethod-->
+    <div class="form-row">
+        <div class="form-group col-md-12">
+            <mat-form-field appearance="standard" class="col-md-12">
+                <mat-label>Zahlungsmethode</mat-label>
+                <mat-select formControlName="paymentMethod" required>
+                    <mat-option disabled>auswählen</mat-option>
+                    <mat-option *ngIf="currentBooking.zahlungMethod" [value]="currentBooking.zahlungMethod" selected>
+                        {{currentBooking.zahlungMethod}}
+                    </mat-option>
+                    <mat-option *ngFor="let method of paymentMethodArray" [value]="method">
+                        {{method}}
+                    </mat-option>
+                </mat-select>
+                <mat-error *ngIf="bookingForm.get('paymentMethod').invalid">
+                    Die Eingabe ist <strong>erforderlich</strong>.
+                </mat-error>
+            </mat-form-field>
+        </div>
+    </div>
+    <!-- Tripoffer -->
+    <div class="form-row">
+        <div class="form-group col-md-12">
+            <mat-form-field class="col-md-12" appearance="standard">
+                <mat-select formControlName="tripoffer" placeholder="Reiseangebot auswählen" #singleSelect required>
+                    <mat-option>
+                        <ngx-mat-select-search [formControl]="tripofferFilteringCtrl" [searching]="searching">
+                        </ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option *ngIf="bookingForm.get('tripoffer').value" [value]="bookingForm.get('tripoffer').value" selected>
+                        {{bookingForm.get('tripoffer').value.titel}}
                     </mat-option>
                     <mat-option *ngFor="let tripoffer of filteredTripoffers | async" [value]="tripoffer">
                         {{tripoffer.titel}}
@@ -20,22 +83,89 @@
     <!--airport-->
     <div class="form-row">
         <div class="form-group col-md-12">
-            <mat-form-field class="col-md-12" appearance="standard">
+            <mat-form-field appearance="standard" class="col-md-12">
                 <mat-label>Flughafen</mat-label>
-                <input matInput type="number" formControlName="airport" placeholder="Flughafen" required>
+                <mat-select formControlName="airport" required>
+                    <mat-option disabled>auswählen</mat-option>
+                    <mat-option *ngIf="defaultAirport" [value]="defaultAirport" selected>
+                        {{defaultAirport}}
+                    </mat-option>
+                    <mat-option *ngFor="let airport of airportArray" [value]="airport">
+                        {{airport}}
+                    </mat-option>
+                </mat-select>
                 <mat-error *ngIf="bookingForm.get('airport').invalid">
                     Die Eingabe ist <strong>erforderlich</strong>.
                 </mat-error>
             </mat-form-field>
         </div>
     </div>
-    <!--date-->
+    <!-- Traveler -->
     <div class="form-row">
         <div class="form-group col-md-12">
             <mat-form-field class="col-md-12" appearance="standard">
-                <mat-label>Datum</mat-label>
-                <textarea matInput formControlName="date" required></textarea>
-                <mat-error *ngIf="bookingForm.get('date').invalid">
+                <mat-label>Reisender aus der Liste auswählen</mat-label>
+                <mat-select formControlName="traveler" placeholder="Search by email" #singleSelect required>
+                    <mat-option>
+                        <ngx-mat-select-search [formControl]="travelerFilteringCtrl" [searching]="searching">
+                        </ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option *ngIf="bookingForm.get('traveler').value" [value]="bookingForm.get('traveler').value" selected>
+                        {{bookingForm.get('traveler').value.email}}
+                    </mat-option>
+                    <mat-option *ngFor="let traveler of filteredTravelers | async" [value]="traveler">
+                        {{traveler.email}}
+                    </mat-option>
+                </mat-select>
+                <mat-error *ngIf="bookingForm.get('traveler').invalid">
+                    Die Eingabe ist <strong>erforderlich</strong>.
+                </mat-error>
+            </mat-form-field>
+        </div>
+    </div>
+    <!-- Co-Traveler -->
+    <div class="form-row">
+        <div class="form-group col-md-12">
+            <mat-form-field class="col-md-12" appearance="standard">
+                <mat-label>Mitreisender? Dann bitte aus der Liste auswählen</mat-label>
+                <mat-select formControlName="coTraveler" placeholder="Search by email" #singleSelect [required]="false">
+                    <mat-option>
+                        <ngx-mat-select-search [formControl]="travelerFilteringCtrl" [searching]="searching">
+                        </ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option [value]="null" selected>Keine</mat-option>
+                    <mat-option *ngIf="bookingForm.get('coTraveler').value" [value]="bookingForm.get('coTraveler').value" selected>
+                        {{bookingForm.get('coTraveler').value.email}}
+                    </mat-option>
+                    <mat-option *ngFor="let traveler of filteredTravelers | async" [value]="traveler">
+                        {{traveler.email}}
+                    </mat-option>
+                </mat-select>
+                <mat-error *ngIf="bookingForm.get('coTraveler').invalid">
+                    Die Eingabe ist <strong>erforderlich</strong>.
+                </mat-error>
+            </mat-form-field>
+        </div>
+    </div>
+    <!--handLuggage-->
+    <div class="form-row">
+        <div class="form-group col-md-12">
+            <mat-form-field class="col-md-12" appearance="standard">
+                <mat-label>HandGepäck</mat-label>
+                <textarea matInput formControlName="handLuggage" [required]="false"></textarea>
+                <mat-error *ngIf="bookingForm.get('handLuggage').invalid">
+                    Die Eingabe ist <strong>erforderlich</strong>.
+                </mat-error>
+            </mat-form-field>
+        </div>
+    </div>
+    <!--suitcase-->
+    <div class="form-row">
+        <div class="form-group col-md-12">
+            <mat-form-field class="col-md-12" appearance="standard">
+                <mat-label>Koffer</mat-label>
+                <textarea matInput formControlName="suitcase" [required]="false"></textarea>
+                <mat-error *ngIf="bookingForm.get('suitcase').invalid">
                     Die Eingabe ist <strong>erforderlich</strong>.
                 </mat-error>
             </mat-form-field>
