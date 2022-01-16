@@ -66,7 +66,7 @@ export class TripofferFormComponent implements OnInit, AfterViewInit {
   // Defines currentTripofferId
   currentTripofferId: string;
   // Defines selectedFile
-  selectedFile?: FileList;
+  selectedFile?: any;
   // Defines selectedFileNames
   selectedFileName: string[] = [];
   // Defines isImgSelected
@@ -243,7 +243,7 @@ export class TripofferFormComponent implements OnInit, AfterViewInit {
 
       this.currentTripoffer = {
         id: this.currentTripofferId,
-        startbild: this.selectedFile?.item(0),
+        startbild: this.isImgSelected ? this.selectedFile : this.currentTripoffer.startbild,
         titel: this.tripofferForm.get("title").value,
         startDatum: startdate.setDate(startdate.getDate() + 1),
         endDatum: enddate.setDate(enddate.getDate() + 1),
@@ -284,17 +284,20 @@ export class TripofferFormComponent implements OnInit, AfterViewInit {
       this.selectedFileName.push(this.selectedFile.item(0).name);
       // set the value of the input
       this.tripofferForm.value.image = this.selectedFileName[0];
+      // check whether the form is valid or not
+      this.isFormValid();
+      const file = event.target.files[0];
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+          console.log(reader.result);
+          this.selectedFile = reader.result;
+      };
+      this.isImgSelected = true;
     } else {
       this.isImgSelected = false;
     }
-    // check whether the form is valid or not
-    this.isFormValid();
-    const file = event.target.files[0];
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => {
-        console.log(reader.result);
-    };
+
   }
 
   /**This method will not compare the time*/

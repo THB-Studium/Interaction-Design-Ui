@@ -58,7 +58,8 @@ export class EditTripofferComponent implements OnInit, AfterViewInit {
     private sharedDataService: SharedDataService,
     private tripofferService: TripOfferService,
     private toastrService: ToastrService,
-    private countryService: CountryService
+    private countryService: CountryService,
+    private sanitizer: DomSanitizer
   ) {
     this.dialogConfiguration();
   }
@@ -105,6 +106,9 @@ export class EditTripofferComponent implements OnInit, AfterViewInit {
         this.tripofferService.getOne(tripofferid).subscribe({
           next: (resp) => {
             console.log(resp);
+            //convert image
+            let objectURL = resp.startbild;
+            resp.realImage = this.sanitizer.bypassSecurityTrustUrl(objectURL);
             this.currentTripoffer = resp;
             if (resp.landId) {
               this.currentTripoffer.landId = resp.landId;
@@ -131,45 +135,36 @@ export class EditTripofferComponent implements OnInit, AfterViewInit {
   /** Updates current trip offer */
   saveTripoffer() {
     if (!this.currentTripoffer.landId) {
-      this.currentTripoffer.landId = this.selectedCountry.value.id
+      this.currentTripoffer.landId = this.selectedCountry?.value?.id
     }
-    console.log(this.currentTripoffer)
     // first save the expectations
     this.saveExpectation().then((expectation) => {
       if (expectation) {
-        let formData = new FormData();
         this.sharedDataService.currenttripOfferSource
           .subscribe({
             next: (tripoffer) => {
-              formData.append("bild", null);
-              formData.append(
-                "reiseAngebot",
-                new Blob(
-                  [
-                    JSON.stringify({
-                      id: this.currentTripoffer.id,
-                      titel: tripoffer.titel,
-                      startDatum: tripoffer.startDatum,
-                      endDatum: tripoffer.endDatum,
-                      anmeldungsFrist: tripoffer.anmeldungsFrist,
-                      plaetze: tripoffer.plaetze,
-                      freiPlaetze: tripoffer.freiPlaetze,
-                      leistungen: tripoffer.leistungen,
-                      interessiert: tripoffer.interessiert,
-                      mitReiserBerechtigt: tripoffer.mitReiserBerechtigt,
-                      hinweise: tripoffer.hinweise,
-                      sonstigeHinweise: tripoffer.sonstigeHinweise,
-                      erwartungenReadListTO: expectation,
-                      buchungsklassenReadListTO:
-                        tripoffer.buchungsklassenReadListTO,
-                      landId: tripoffer.landId,
-                    }),
-                  ],
-                  { type: "application/json" }
-                )
-              );
+              
+              console.log(tripoffer)
+              let tocreate = {
+                id: this.currentTripoffer.id,
+                titel: tripoffer.titel,
+                startDatum: tripoffer.startDatum,
+                endDatum: tripoffer.endDatum,
+                anmeldungsFrist: tripoffer.anmeldungsFrist,
+                plaetze: tripoffer.plaetze,
+                freiPlaetze: tripoffer.freiPlaetze,
+                leistungen: tripoffer.leistungen,
+                interessiert: tripoffer.interessiert,
+                mitReiserBerechtigt: tripoffer.mitReiserBerechtigt,
+                hinweise: tripoffer.hinweise,
+                sonstigeHinweise: tripoffer.sonstigeHinweise,
+                erwartungenReadListTO: tripoffer.erwartungenReadListTO,
+                buchungsklassenReadListTO: tripoffer.buchungsklassenReadListTO,
+                landId: tripoffer.landId,
+                startbild: tripoffer.startbild
+              }
 
-              this.tripofferService.updateOne(formData).subscribe({
+              this.tripofferService.updateOne(tocreate).subscribe({
                 next: () => {
                   this.updateSuccess();
                 },
