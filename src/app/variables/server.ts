@@ -1,4 +1,4 @@
-const HOST = 'http://localhost';
+const HOST = 'http://85.214.194.89';
 const PORT = '5050';
 export class Server {
   // API url definition
