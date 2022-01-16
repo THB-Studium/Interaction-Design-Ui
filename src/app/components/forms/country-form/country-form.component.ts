@@ -48,7 +48,7 @@ export class CountryFormComponent implements OnInit, AfterViewInit {
   // Defines selectedFileName
   selectedFileName: string;
   // Defines selectedFile
-  selectedFile?: FileList;
+  selectedFile?: any;
   // Defines isAnAdd
   isAnAdd = false;
   // Defines isValid
@@ -135,6 +135,14 @@ export class CountryFormComponent implements OnInit, AfterViewInit {
     }
     // check whether the form is valid or not
     this.isFormValid();
+
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+        console.log(reader.result);
+        this.selectedFile = reader.result;
+    };
   }
 
   private onFormValuesChanged(): void {
@@ -159,7 +167,7 @@ export class CountryFormComponent implements OnInit, AfterViewInit {
         name: this.countryForm.get('name').value,
         flughafen: Array.from(this.airportsArray),
         unterkunft_text: this.countryForm.get('accommodation_text').value,
-        karte_bild: this.selectedFile?.item(0) ? this.selectedFile.item(0) : this.currentCountry.karte_bild,
+        karte_bild: this.selectedFile,
         highlights: this.currentCountry.highlights ? this.currentCountry.highlights : [],
         landInfo: this.currentCountry.landInfo ? this.currentCountry.landInfo : [],
         unterkunft: this.currentCountry.unterkunft ? this.currentCountry.unterkunft : []
