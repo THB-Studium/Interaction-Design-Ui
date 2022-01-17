@@ -109,7 +109,8 @@ export class TripofferFormComponent implements OnInit, AfterViewInit {
             //convert image
             let objectURL = 'data:image/png;base64,' + resp.startbild;
             resp.realImage = this.sanitizer.bypassSecurityTrustUrl(objectURL);
-            this.currentTripoffer = resp
+            
+            this.currentTripoffer = resp;
           },
           error: () =>
             this.toastrService.error(
@@ -177,7 +178,7 @@ export class TripofferFormComponent implements OnInit, AfterViewInit {
     });
 
     // Since there is already an attached image, we set image selected flag to true.
-    this.isImgSelected = true;
+    //this.isImgSelected = true;
   }
 
   // Adds new selected service into the list of services
@@ -224,7 +225,8 @@ export class TripofferFormComponent implements OnInit, AfterViewInit {
   }
 
   private isFormValid(): void {
-    if (
+
+    if(
       this.tripofferForm.get("title").valid &&
       this.tripofferForm.get("startdate").valid &&
       this.tripofferForm.get("enddate").valid &&
@@ -234,7 +236,7 @@ export class TripofferFormComponent implements OnInit, AfterViewInit {
       this.serviceArray.size > 0 &&
       this.authorizedtotravelArray.size > 0 &&
       this.tripofferForm.get("note").valid &&
-      this.tripofferForm.get("anothernote").valid
+      this.tripofferForm.get("anothernote").valid 
     ) {
       // The module returns the selected date - 1day, so we need to add 1day to the selected date before save it
       let startdate = this.tripofferForm.get("startdate").value;
@@ -243,7 +245,7 @@ export class TripofferFormComponent implements OnInit, AfterViewInit {
 
       this.currentTripoffer = {
         id: this.currentTripofferId,
-        startbild: this.isImgSelected ? this.selectedFile : this.currentTripoffer.startbild,
+        startbild: this.currentTripoffer?.startbild,
         titel: this.tripofferForm.get("title").value,
         startDatum: startdate.setDate(startdate.getDate() + 1),
         endDatum: enddate.setDate(enddate.getDate() + 1),
@@ -257,8 +259,10 @@ export class TripofferFormComponent implements OnInit, AfterViewInit {
         sonstigeHinweise: this.tripofferForm.get("anothernote").value,
         erwartungenReadListTO: null,
         landId: null,
-        buchungsklassenReadListTO: null,
+        buchungsklassenReadListTO: null
       };
+
+      console.log('form_valid',this.currentTripoffer)
 
       this.sharedDataService.changeCurrentTripOffer(this.currentTripoffer);
       // Check if the dates are valid
@@ -280,7 +284,7 @@ export class TripofferFormComponent implements OnInit, AfterViewInit {
     this.selectedFileName = [];
     this.selectedFile = event.target.files;
     if (this.selectedFile && this.selectedFile.item(0)) {
-      this.isImgSelected = true;
+      //this.isImgSelected = true;
       this.selectedFileName.push(this.selectedFile.item(0).name);
       // set the value of the input
       this.tripofferForm.value.image = this.selectedFileName[0];
@@ -290,9 +294,10 @@ export class TripofferFormComponent implements OnInit, AfterViewInit {
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = () => {
-          console.log(reader.result);
           this.selectedFile = reader.result;
+          this.currentTripoffer.startbild = reader.result;
       };
+
       this.isImgSelected = true;
     } else {
       this.isImgSelected = false;
