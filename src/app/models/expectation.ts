@@ -4,8 +4,8 @@ export class Expectation {
   public entschleunigung: number;
   public konfort: number;
   public nachhaltigkeit: number;
-  public road: number;
-  public sicherheit: number;
   public sonne_strand: number;
+  public sicherheit: number;
+  public road: number;
   public reiseAngebotId: string;
 }

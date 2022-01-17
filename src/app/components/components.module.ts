@@ -21,13 +21,26 @@ import { MatSortModule } from "@angular/material/sort";
 import { MatDialogModule } from "@angular/material/dialog";
 import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatNativeDateModule } from "@angular/material/core";
+import { MatChipsModule } from '@angular/material/chips';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatListModule } from '@angular/material/list';
 
 import { SidebarComponent } from "./sidebar/sidebar.component";
 import { NavbarComponent } from "./navbar/navbar.component";
 import { FooterComponent } from "./footer/footer.component";
 import { AdminFormComponent } from "./forms/admin-form/admin-form.component";
-import { TravelerFormComponent } from "./forms/traveler-form/traveler-form.component";
-import { NavbarGuestComponent } from "./navbar-guest/navbar-guest.component";
+import { TravelerFormComponent } from './forms/traveler-form/traveler-form.component';
+import { TripofferFormComponent } from './forms/tripoffer-form/tripoffer-form.component';
+import { ExpectationFormComponent } from './forms/expectation-form/expectation-form.component';
+import { BookingclassFormComponent } from './forms/bookingclass-form/bookingclass-form.component';
+import { CountryFormComponent } from './forms/country-form/country-form.component';
+import { HighlightFormComponent } from './forms/highlight-form/highlight-form.component';
+import { AccommodationFormComponent } from './forms/accommodation-form/accommodation-form.component';
+import { CountryInformationFormComponent } from './forms/country-information-form/country-information-form.component';
+import { NavbarGuestComponent } from './navbar-guest/navbar-guest.component';
 
 @NgModule({
   imports: [
@@ -54,6 +67,12 @@ import { NavbarGuestComponent } from "./navbar-guest/navbar-guest.component";
     MatDialogModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    MatChipsModule,
+    MatAutocompleteModule,
+    MatGridListModule,
+    MatToolbarModule,
+    MatProgressBarModule,
+    MatListModule
   ],
   declarations: [
     FooterComponent,
@@ -61,7 +80,14 @@ import { NavbarGuestComponent } from "./navbar-guest/navbar-guest.component";
     SidebarComponent,
     AdminFormComponent,
     TravelerFormComponent,
-    NavbarGuestComponent,
+    TripofferFormComponent,
+    ExpectationFormComponent,
+    BookingclassFormComponent,
+    CountryFormComponent,
+    HighlightFormComponent,
+    AccommodationFormComponent,
+    CountryInformationFormComponent,
+    NavbarGuestComponent
   ],
   exports: [
     FooterComponent,
@@ -69,7 +95,14 @@ import { NavbarGuestComponent } from "./navbar-guest/navbar-guest.component";
     SidebarComponent,
     AdminFormComponent,
     TravelerFormComponent,
-    NavbarGuestComponent,
+    TripofferFormComponent,
+    ExpectationFormComponent,
+    BookingclassFormComponent,
+    CountryFormComponent,
+    HighlightFormComponent,
+    AccommodationFormComponent,
+    CountryInformationFormComponent,
+    NavbarGuestComponent
   ],
 })
 export class ComponentsModule {}
