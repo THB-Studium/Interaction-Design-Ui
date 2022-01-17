@@ -2,7 +2,7 @@ import { v4 as uuid_v4 } from 'uuid';
 import {BookingClass} from "../models/bookingClass";
 
 export class BookingClassen {
-  public static readonly daten: Array<BookingClass> = [
+  public static readonly daten: Array<any> = [
     {
       id: uuid_v4(),
       type: 'studenten-tarif',

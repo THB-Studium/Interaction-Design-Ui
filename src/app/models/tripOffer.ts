@@ -4,8 +4,8 @@ import { Expectation } from "./expectation";
 /** Reise Angebot */
 export class TripOffer {
   public id: string;
-  public title: string;
-  public startbild: string;
+  public titel: string;
+  public startbild: any;
   public startDatum: Date;
   public endDatum: Date;
   public anmeldungsFrist: Date;
@@ -13,7 +13,11 @@ export class TripOffer {
   public freiPlaetze: number;
   public leistungen: Array<string>;
   public interessiert: number;
+  public mitReiserBerechtigt: string[];
+  public hinweise: string;
+  public sonstigeHinweise: string;
   public erwartungenReadListTO: Expectation;
   public buchungsklassenReadListTO: Array<BookingClass>;
   public landId: string;
+  public realImage?: any;
 }

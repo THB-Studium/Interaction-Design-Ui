@@ -21,6 +21,12 @@ export const ROUTES: RouteInfo[] = [
     class: "",
   },
   {
+    path: "/user-profile",
+    title: "Benutzerprofil",
+    icon: "fas fa-id-card text-green",
+    class: "",
+  },
+  {
     path: "/bookings",
     title: "Buchungen",
     icon: "fas fa-th-list text-info",
@@ -30,7 +36,13 @@ export const ROUTES: RouteInfo[] = [
     path: "/countries",
     title: "Länder",
     icon: "fas fa-globe text-green",
-    class: ""
+    class: "",
+  },
+  {
+    path: "/tripoffers",
+    title: "Reiseangebote",
+    icon: "fas fa-plane-departure text-black",
+    class: "",
   },
   {
     path: "/travelers",
@@ -38,12 +50,6 @@ export const ROUTES: RouteInfo[] = [
     icon: "fas fa-users text-primary",
     class: "",
   },
-  {
-    path: "/user-profile",
-    title: "Benutzerprofil",
-    icon: "fas fa-id-card text-green",
-    class: "",
-  }
 ];
 
 @Component({
@@ -55,7 +61,7 @@ export class SidebarComponent implements OnInit {
   public menuItems: any[];
   public isCollapsed = true;
 
-  constructor(private router: Router) { }
+  constructor(private router: Router) {}
 
   ngOnInit() {
     this.menuItems = ROUTES.filter((menuItem) => menuItem);

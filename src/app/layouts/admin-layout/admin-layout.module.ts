@@ -36,14 +36,16 @@ import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { ComponentsModule } from "src/app/components/components.module";
 
 import { AdminLayoutRoutes } from "./admin-layout.routing";
-
 import { AdminComponent } from "../../pages/admins/admin.component";
 import { BookingComponent } from "../../pages/booking/booking.component";
 import { CountryComponent } from "src/app/pages/country/country.component";
 import { DashboardComponent } from "../../pages/dashboard/dashboard.component";
 import { EditCountryComponent } from "src/app//pages/edit-country/edit-country.component";
 import { TravelerComponent } from "../../pages/traveler/traveler.component";
+import { TripofferComponent } from 'src/app/pages/tripoffer/tripoffer.component';
+import { EditTripofferComponent } from 'src/app/pages/edit-tripoffer/edit-tripoffer.component';
 import { UserProfileComponent } from "../../pages/user-profile/user-profile.component";
+import { MatChipsModule } from "@angular/material/chips";
 
 @NgModule({
   imports: [
@@ -84,10 +86,12 @@ import { UserProfileComponent } from "../../pages/user-profile/user-profile.comp
   declarations: [
     AdminComponent,
     BookingComponent,
+    EditTripofferComponent,
     CountryComponent,
     DashboardComponent,
     EditCountryComponent,
     TravelerComponent,
+    TripofferComponent,
     UserProfileComponent,
   ],
 })
