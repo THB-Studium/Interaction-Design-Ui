@@ -67,6 +67,7 @@ export class TripofferFormComponent implements OnInit, AfterViewInit {
   currentTripofferId: string;
   // Defines selectedFile
   selectedFile?: any;
+  fileInputByte: any;
   // Defines selectedFileNames
   selectedFileName: string[] = [];
   // Defines isImgSelected
@@ -245,7 +246,7 @@ export class TripofferFormComponent implements OnInit, AfterViewInit {
 
       this.currentTripoffer = {
         id: this.currentTripofferId,
-        startbild: this.currentTripoffer?.startbild,
+        startbild: this.fileInputByte,
         titel: this.tripofferForm.get("title").value,
         startDatum: startdate.setDate(startdate.getDate() + 1),
         endDatum: enddate.setDate(enddate.getDate() + 1),
@@ -294,8 +295,7 @@ export class TripofferFormComponent implements OnInit, AfterViewInit {
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = () => {
-          this.selectedFile = reader.result;
-          this.currentTripoffer.startbild = reader.result;
+        this.fileInputByte = reader.result;
       };
 
       this.isImgSelected = true;
