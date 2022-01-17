@@ -205,6 +205,8 @@ export class TripofferComponent implements OnInit, AfterViewInit {
             startbild: tripoffer.startbild
           }
 
+          console.log('to create', tocreate);
+
           this.tripOfferService.addOne(tocreate).subscribe({
             next: (res: TripOffer) => {
               // set the current local tripoffer
