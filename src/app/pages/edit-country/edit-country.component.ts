@@ -1,5 +1,7 @@
 import { AfterViewInit, Component, OnInit } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
+import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { MatChipInputEvent } from "@angular/material/chips";
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 
 import { AccommodationService } from "src/app/services/accommodation/accommodation.service";
@@ -20,6 +22,25 @@ import { CountryInformation } from "src/app/models/countryInformation";
   styleUrls: ["./edit-country.component.css"],
 })
 export class EditCountryComponent implements OnInit, AfterViewInit {
+   // Defines countryForm
+   countryForm = new FormGroup({
+    // name
+    name: new FormControl("", [Validators.required]),
+    // airport
+    airports: new FormControl("", [Validators.required]),
+    // text
+    accommodation_text: new FormControl("", [Validators.required]),
+    // image
+    image: new FormControl("", [Validators.required])
+  });
+   // Defines airportsArray
+   airportsArray = new Set([]);
+   // Defines isImgSelected
+   isImgSelected = false;
+   // Defines selectedFileName
+   selectedFileName: string;
+   // Defines selectedFile
+   selectedFile?: FileList;
   // Defines dialogConfig
   dialogConfig = new MatDialogConfig();
   // Defines country
@@ -70,6 +91,7 @@ export class EditCountryComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+    this.onFormValuesChanged();
     this.sharedDataService.currentAccommodation.subscribe(currentValue => this.accommodationForm = currentValue);
     this.sharedDataService.currentCountryInfo.subscribe(currentCountryInfo => this.countryInfoForm = currentCountryInfo);
     this.sharedDataService.currentHighlight.subscribe(currentHighlight => this.highlightForm = currentHighlight);
@@ -121,6 +143,62 @@ export class EditCountryComponent implements OnInit, AfterViewInit {
         complete: () => this.success()
       });
     });
+  }
+
+  // Adds new selected airport into the list of airports
+  addAirportFromInput(event: MatChipInputEvent) {
+    if (event.value) {
+      this.airportsArray.add(event.value);
+      event.chipInput!.clear();
+    }
+    // check whether the form is valid or not
+    this.isFormValid();
+  }
+
+  // Removes selected from the list of airports
+  removeAirport(airport: string) {
+    this.airportsArray.delete(airport);
+    // check whether the form is valid or not
+    this.isFormValid();
+  }
+
+  selectFile(event: any) {
+    this.selectedFile = event.target.files;
+    if (this.selectedFile && this.selectedFile.item(0)) {
+      this.isImgSelected = true;
+      this.selectedFileName = this.selectedFile.item(0).name;
+      // display the name
+      this.countryForm.value.image = this.selectedFileName;
+    } else {
+      this.isImgSelected = false;
+    }
+    // check whether the form is valid or not
+    this.isFormValid();
+  }
+
+  private onFormValuesChanged(): void {
+    this.countryForm.valueChanges.subscribe({
+      next: () => this.isFormValid(),
+    });
+  }
+
+  private isFormValid(): void {
+    if (
+      this.countryForm.get("name").valid && this.isImgSelected &&
+      this.countryForm.get("accommodation_text").valid && this.airportsArray.size > 0
+    ) {
+
+      let currentCountry = {
+        id: null,
+        name: this.countryForm.get('name').value,
+        flughafen: Array.from(this.airportsArray),
+        unterkunft_text: this.countryForm.get('accommodation_text').value,
+        karte_bild: null,
+        landInfo: [],
+        unterkunft: [],
+      };
+      this.isValid = true;
+    }
   }
 
   navigateToCountriesList() {
