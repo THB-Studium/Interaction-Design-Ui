@@ -45,7 +45,6 @@ import { TravelerComponent } from "../../pages/traveler/traveler.component";
 import { TripofferComponent } from 'src/app/pages/tripoffer/tripoffer.component';
 import { EditTripofferComponent } from 'src/app/pages/edit-tripoffer/edit-tripoffer.component';
 import { UserProfileComponent } from "../../pages/user-profile/user-profile.component";
-import { MatChipsModule } from "@angular/material/chips";
 
 @NgModule({
   imports: [
