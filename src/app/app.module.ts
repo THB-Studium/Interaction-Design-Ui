@@ -6,9 +6,9 @@ import { RouterModule } from "@angular/router";
 import { ToastrModule } from "ngx-toastr";
 
 //import { AppHttpInterceptor } from './services/httpInterceptor/app-http.interceptor';
-import { AppComponent } from './app.component';
-import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
-import { AuthLayoutComponent } from './layouts/auth-layout/auth-layout.component';
+import { AppComponent } from "./app.component";
+import { AdminLayoutComponent } from "./layouts/admin-layout/admin-layout.component";
+import { AuthLayoutComponent } from "./layouts/auth-layout/auth-layout.component";
 import { AppHttpInterceptor } from "./services/httpInterceptor/app-http.interceptor";
 
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
@@ -16,6 +16,7 @@ import { NgxWebstorageModule } from "ngx-webstorage";
 
 import { AppRoutingModule } from "./app.routing";
 import { ComponentsModule } from "./components/components.module";
+import { AboutusComponent } from "./pages/aboutus/aboutus.component";
 
 @NgModule({
   imports: [
@@ -32,7 +33,12 @@ import { ComponentsModule } from "./components/components.module";
     }),
     NgxWebstorageModule.forRoot(),
   ],
-  declarations: [AppComponent, AdminLayoutComponent, AuthLayoutComponent],
+  declarations: [
+    AppComponent,
+    AdminLayoutComponent,
+    AuthLayoutComponent,
+    AboutusComponent,
+  ],
   providers: [
     //{ provide: HTTP_INTERCEPTORS, useClass: AppHttpInterceptor, multi: true },
   ],
