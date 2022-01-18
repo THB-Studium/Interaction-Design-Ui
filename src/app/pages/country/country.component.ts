@@ -11,6 +11,7 @@ import { ToastrService } from "ngx-toastr";
 import { SharedDataService } from "src/app/services/sharedData/shared-data.service";
 
 import { Country } from "src/app/models/country";
+import { DomSanitizer } from "@angular/platform-browser";
 
 @Component({
   selector: "app-country",
@@ -41,7 +42,7 @@ export class CountryComponent implements OnInit, AfterViewInit {
   // Defines dialogConfig
   dialogConfig = new MatDialogConfig();
   //
-  isValid = false;
+  isValid = true;
   image: any;
 
   constructor(
@@ -50,7 +51,8 @@ export class CountryComponent implements OnInit, AfterViewInit {
     private dialog: MatDialog,
     private toastrService: ToastrService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private sanitizer: DomSanitizer
   ) {
     this.dialogConfiguration();
   }
@@ -98,7 +100,12 @@ export class CountryComponent implements OnInit, AfterViewInit {
       next: (countries) => {
         this.countriesList = countries;
         this.sortByName(this.countriesList);
-        this.dataSource.data = this.countriesList;
+        this.dataSource.data = this.countriesList.map(country => {
+          //convert image
+          let objectURL = 'data:image/png;base64,' + country.karte_bild;
+          country.realImage = this.sanitizer.bypassSecurityTrustUrl(objectURL);
+          return country;
+        })
       },
       error: (err) => {
         this.handleError(err);
@@ -127,19 +134,18 @@ export class CountryComponent implements OnInit, AfterViewInit {
   }
 
   saveNewCountry() {
-    const formData = new FormData();
-    formData.append('bild', this.currentCountry.karte_bild);
-    formData.append('land', new Blob([
-      JSON.stringify({
-        id: this.currentCountry.id,
-        name: this.currentCountry.name,
-        flughafen: this.currentCountry.flughafen,
-        unterkunft_text: this.currentCountry.unterkunft_text
-      })
-    ], {type: 'application/json'}));
+    let tocreate = {
+      id: this.currentCountry.id,
+      name: this.currentCountry.name,
+      flughafen: this.currentCountry.flughafen,
+      unterkunft_text: this.currentCountry.unterkunft_text,
+      image: this.currentCountry.karte_bild
+    }
+
+    console.log(tocreate);
 
     // get the value from the data service
-    this.countryService.addOne(formData).subscribe({
+    this.countryService.addOne(tocreate).subscribe({
       next: (resp) => {
         this.currentCountry = resp;
         // Add the new added item to the current list and update the table

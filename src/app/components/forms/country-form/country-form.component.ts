@@ -34,7 +34,7 @@ export class CountryFormComponent implements OnInit, AfterViewInit {
     // text
     accommodation_text: new FormControl("", [Validators.required]),
     // image
-    image: new FormControl("", [Validators.required])
+    image: new FormControl("")
   });
 
   // Defines currentCountry. Contains complet current country information.
@@ -49,6 +49,7 @@ export class CountryFormComponent implements OnInit, AfterViewInit {
   selectedFileName: string;
   // Defines selectedFile
   selectedFile?: any;
+  fileInputByte: any;
   // Defines isAnAdd
   isAnAdd = false;
   // Defines isValid
@@ -136,25 +137,26 @@ export class CountryFormComponent implements OnInit, AfterViewInit {
   }
 
   selectFile(event: any) {
+    let name = [];
     this.selectedFile = event.target.files;
     if (this.selectedFile && this.selectedFile.item(0)) {
       this.isImgSelected = true;
-      this.selectedFileName = this.selectedFile.item(0).name;
-      // display the name
-      this.countryForm.value.image = this.selectedFileName;
+      // set the value of the input
+      name.push(this.selectedFile.item(0).name);
+      this.countryForm.value.image = name[0];
+      // check whether the form is valid or not
+      this.isFormValid();
+      const file = event.target.files[0];
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        console.log(reader.result);
+        this.fileInputByte = reader.result;
+      };
+
     } else {
       this.isImgSelected = false;
     }
-    // check whether the form is valid or not
-    this.isFormValid();
-
-    const file = event.target.files[0];
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => {
-        console.log(reader.result);
-        this.selectedFile = reader.result;
-    };
   }
 
   private onFormValuesChanged(): void {
@@ -165,8 +167,8 @@ export class CountryFormComponent implements OnInit, AfterViewInit {
 
   private isFormValid(): void {
     if (
-      this.countryForm.get("name").valid && this.isImgSelected &&
-      this.countryForm.get("accommodation_text").valid && this.airportsArray.size > 0
+      this.countryForm.get("name").valid  &&
+      this.countryForm.get("accommodation_text").valid
     ) {
 
       var id = null;
@@ -179,7 +181,7 @@ export class CountryFormComponent implements OnInit, AfterViewInit {
         name: this.countryForm.get('name').value,
         flughafen: Array.from(this.airportsArray),
         unterkunft_text: this.countryForm.get('accommodation_text').value,
-        karte_bild: this.selectedFile,
+        karte_bild: this.fileInputByte,
         highlights: this.currentCountry.highlights ? this.currentCountry.highlights : [],
         landInfo: this.currentCountry.landInfo ? this.currentCountry.landInfo : [],
         unterkunft: this.currentCountry.unterkunft ? this.currentCountry.unterkunft : []
