@@ -59,6 +59,24 @@ export class TripofferComponent implements OnInit, AfterViewInit {
     private sanitizer: DomSanitizer
   ) {
     this.dialogConfiguration();
+    this.currentTripOffer = {
+      id: "",
+      titel: "",
+      anmeldungsFrist: new Date(),
+      startDatum: new Date(),
+      endDatum: new Date(),
+      startbild: null,
+      plaetze: 0,
+      freiPlaetze: 0,
+      interessiert: 0,
+      leistungen: [],
+      mitReiserBerechtigt: [],
+      hinweise: "",
+      sonstigeHinweise: "",
+      landId: "",
+      buchungsklassenReadListTO: null,
+      erwartungenReadListTO: null,
+    };
   }
 
   ngOnInit(): void {
@@ -154,25 +172,6 @@ export class TripofferComponent implements OnInit, AfterViewInit {
   addOffersDialog(dialogForm: any) {
     // Notify the sharedataservice that it is an add
     this.sharedDataService.isAddBtnClicked = true;
-    this.currentTripOffer = {
-      id: "",
-      titel: "",
-      anmeldungsFrist: new Date(),
-      startDatum: new Date(),
-      endDatum: new Date(),
-      startbild: null,
-      plaetze: 0,
-      freiPlaetze: 0,
-      interessiert: 0,
-      leistungen: [],
-      mitReiserBerechtigt: [],
-      hinweise: "",
-      sonstigeHinweise: "",
-      landId: "",
-      buchungsklassenReadListTO: null,
-      erwartungenReadListTO: null,
-    };
-
     // set the value of the offer into the service
     this.sharedDataService.changeCurrentTripOffer(this.currentTripOffer);
     // Open the add traveler dialog

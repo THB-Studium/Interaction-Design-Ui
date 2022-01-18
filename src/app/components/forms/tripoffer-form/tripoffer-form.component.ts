@@ -98,41 +98,24 @@ export class TripofferFormComponent implements OnInit, AfterViewInit {
   }
 
   private initForm() {
-    // Check whether it is an edit or add. If there is id as key from the url, than it is an edit
-    this.activatedRoute.params.subscribe((param) => {
-      if (param.id) {
-        this.currentTripofferId = param.id;
-        // read the tripoffer from the api
-        this.tripofferService.getOne(this.currentTripofferId).subscribe({
-          next: (resp) => {
-            
-            //convert image
-            let objectURL = 'data:image/png;base64,' + resp.startbild;
-            resp.realImage = this.sanitizer.bypassSecurityTrustUrl(objectURL);
-            
-            this.currentTripoffer = resp;
-          },
-          error: () =>
-            this.toastrService.error(
-              "Die Daten konnten nicht geladen werden.",
-              "Fehler"
-            ),
-          complete: () => {
-            this.setcurrentTripofferForm(this.currentTripoffer);
-            // change the value of the tripoffer into dataservice
-            this.sharedDataService.changeCurrentTripOffer(
-              this.currentTripoffer
-            );
-            // emit form valid
-            this.notifyFormIsValid.emit(true);
-          },
-        });
-      } else {
-        this.currentTripoffer = null;
-        this.currentTripofferId = null;
-        this.notifyFormIsValid.emit(false);
-      }
-    });
+    this.currentTripoffer = {
+      id: "",
+      titel: "",
+      anmeldungsFrist: new Date(),
+      startDatum: new Date(),
+      endDatum: new Date(),
+      startbild: null,
+      plaetze: 0,
+      freiPlaetze: 0,
+      interessiert: 0,
+      leistungen: [],
+      mitReiserBerechtigt: [],
+      hinweise: "",
+      sonstigeHinweise: "",
+      landId: "",
+      buchungsklassenReadListTO: null,
+      erwartungenReadListTO: null,
+    };
   }
 
   private setcurrentTripofferForm(tripoffer: TripOffer) {
@@ -236,7 +219,7 @@ export class TripofferFormComponent implements OnInit, AfterViewInit {
       this.serviceArray.size > 0 &&
       this.authorizedtotravelArray.size > 0 &&
       this.tripofferForm.get("note").valid &&
-      this.tripofferForm.get("anothernote").valid 
+      this.tripofferForm.get("anothernote").valid
     ) {
       // The module returns the selected date - 1day, so we need to add 1day to the selected date before save it
       let startdate = this.tripofferForm.get("startdate").value;

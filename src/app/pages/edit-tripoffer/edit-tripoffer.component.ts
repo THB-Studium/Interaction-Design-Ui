@@ -71,29 +71,29 @@ export class EditTripofferComponent implements OnInit, AfterViewInit {
     anothernote: new FormControl("", [Validators.required]),
   });
 
-    // Defines serviceArray
-    serviceArray = new Set([]);
-    // Defines authorizedtotravelArray
-    authorizedtotravelArray = new Set([]);
-    // Defines note
-    note: string;
-    // Defines anothernote
-    anothernote: string;
-    // Defines currentTripofferId
-    currentTripofferId: string;
-    // Defines selectedFile
-    selectedFile: any;
-    fileInputByte: any;
-    // Defines selectedFileNames
-    selectedFileName: string[] = [];
-    // Defines isImgSelected
-    isImgSelected = false;
-    // Defines error
-    errors = {
-      startdate: "",
-      enddate: "",
-      deadlinedate: "",
-    };
+  // Defines serviceArray
+  serviceArray = new Set([]);
+  // Defines authorizedtotravelArray
+  authorizedtotravelArray = new Set([]);
+  // Defines note
+  note: string;
+  // Defines anothernote
+  anothernote: string;
+  // Defines currentTripofferId
+  currentTripofferId: string;
+  // Defines selectedFile
+  selectedFile: any;
+  fileInputByte: any;
+  // Defines selectedFileNames
+  selectedFileName: string[] = [];
+  // Defines isImgSelected
+  isImgSelected = false;
+  // Defines error
+  errors = {
+    startdate: "",
+    enddate: "",
+    deadlinedate: "",
+  };
   isFormValid = true;
 
   constructor(
@@ -111,11 +111,28 @@ export class EditTripofferComponent implements OnInit, AfterViewInit {
     this.dialogConfiguration();
     this.note = "";
     this.anothernote = "";
+    this.currentTripoffer = {
+      titel: '',
+      id: null,
+      anmeldungsFrist: null,
+      buchungsklassenReadListTO: null,
+      endDatum: null,
+      erwartungenReadListTO: null,
+      freiPlaetze: 0,
+      hinweise: '',
+      interessiert: 0,
+      landId: null,
+      leistungen: [],
+      mitReiserBerechtigt: null,
+      plaetze: 0,
+      sonstigeHinweise: '',
+      startDatum: null,
+      startbild: null,
+      realImage: null,
+    }
   }
 
   ngOnInit(): void {
-    this.sharedDataService.isAddBtnClicked = false;
-    // this.getTripofferToBeUpdated();
     this.initForm();
   }
 
@@ -137,11 +154,10 @@ export class EditTripofferComponent implements OnInit, AfterViewInit {
         // read the tripoffer from the api
         this.tripofferService.getOne(this.currentTripofferId).subscribe({
           next: (resp) => {
-            
             //convert image
             let objectURL = 'data:image/png;base64,' + resp.startbild;
             resp.realImage = this.sanitizer.bypassSecurityTrustUrl(objectURL);
-            
+
             this.currentTripoffer = resp;
           },
           error: () =>
@@ -151,18 +167,10 @@ export class EditTripofferComponent implements OnInit, AfterViewInit {
             ),
           complete: () => {
             this.setcurrentTripofferForm(this.currentTripoffer);
-            // change the value of the tripoffer into dataservice
-            this.sharedDataService.changeCurrentTripOffer(
-              this.currentTripoffer
-            );
-            // emit form valid
-            //this.notifyFormIsValid.emit(true);
           },
         });
       } else {
-        this.currentTripoffer = null;
         this.currentTripofferId = null;
-        //this.notifyFormIsValid.emit(false);
       }
     });
   }
@@ -208,9 +216,6 @@ export class EditTripofferComponent implements OnInit, AfterViewInit {
       note: tripoffer.hinweise,
       anothernote: tripoffer.sonstigeHinweise,
     });
-
-    // Since there is already an attached image, we set image selected flag to true.
-    //this.isImgSelected = true;
   }
 
   // Dialog configurations
@@ -267,133 +272,96 @@ export class EditTripofferComponent implements OnInit, AfterViewInit {
   }
 
   private isFormValid_(): void {
+    // The module returns the selected date - 1day, so we need to add 1day to the selected date before save it
+    let startdate = this.tripofferForm.get("startdate").value;
+    let enddate = this.tripofferForm.get("enddate").value;
+    let deadlinedate = this.tripofferForm.get("deadline").value;
 
-      // The module returns the selected date - 1day, so we need to add 1day to the selected date before save it
-      let startdate = this.tripofferForm.get("startdate").value;
-      let enddate = this.tripofferForm.get("enddate").value;
-      let deadlinedate = this.tripofferForm.get("deadline").value;
+    /*let toUpdate = {
+      id: this.currentTripofferId,
+      startbild: this.isImgSelected ? this.selectFile : this.currentTripoffer.startbild,
+      titel: this.tripofferForm.get("title").value,
+      startDatum: startdate.setDate(startdate.getDate() + 1),
+      endDatum: enddate.setDate(enddate.getDate() + 1),
+      anmeldungsFrist: deadlinedate.setDate(deadlinedate.getDate() + 1),
+      plaetze: this.tripofferForm.get("totalplace").value,
+      freiPlaetze: this.tripofferForm.get("totalplace").value,
+      interessiert: 0,
+      leistungen: Array.from(this.serviceArray),
+      mitReiserBerechtigt: Array.from(this.authorizedtotravelArray),
+      hinweise: this.tripofferForm.get("note").value,
+      sonstigeHinweise: this.tripofferForm.get("anothernote").value,
+      erwartungenReadListTO: null,
+      landId: null,
+      buchungsklassenReadListTO: null
+    };*/
 
-      let toUpdate = {
-        id: this.currentTripofferId,
-        startbild: this.isImgSelected ? this.selectFile : this.currentTripoffer.startbild,
-        titel: this.tripofferForm.get("title").value,
-        startDatum: startdate.setDate(startdate.getDate() + 1),
-        endDatum: enddate.setDate(enddate.getDate() + 1),
-        anmeldungsFrist: deadlinedate.setDate(deadlinedate.getDate() + 1),
-        plaetze: this.tripofferForm.get("totalplace").value,
-        freiPlaetze: this.tripofferForm.get("totalplace").value,
-        interessiert: 0,
-        leistungen: Array.from(this.serviceArray),
-        mitReiserBerechtigt: Array.from(this.authorizedtotravelArray),
-        hinweise: this.tripofferForm.get("note").value,
-        sonstigeHinweise: this.tripofferForm.get("anothernote").value,
-        erwartungenReadListTO: null,
-        landId: null,
-        buchungsklassenReadListTO: null
-      };
-
-      console.log('form_valid',toUpdate)
-      // Check if the dates are valid
-      if (startdate === enddate && startdate === deadlinedate) {
-        this.tripofferForm.get("enddate").setErrors({'valid': false});
-        // notify the parent
-        //this.notifyFormIsValid.emit(false);
-      }
+    // Check if the dates are valid
+    if (startdate === enddate && startdate === deadlinedate) {
+      this.tripofferForm.get("enddate").setErrors({ 'valid': false });
+    }
   }
 
-    // On file selected
-    selectFile(event: any): void {
-      if (event.target.files) {
-        //this.isImgSelected = true;
-        this.selectedFileName.push(event.target.files.item(0).name);
-        // set the value of the input
-        this.tripofferForm.value.image = this.selectedFileName[0];
-        // check whether the form is valid or not
-        this.isFormValid_();
-        const file = event.target.files[0];
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => {
-          this.fileInputByte = reader.result;
-        };
-  
-        this.isImgSelected = true;
-      } else {
-        this.isImgSelected = false;
-      }
-  
+  // On file selected
+  selectFile(event: any): void {
+    if (event.target.files) {
+      this.selectedFileName.push(event.target.files.item(0).name);
+      // set the value of the input
+      this.tripofferForm.value.image = this.selectedFileName[0];
+      // check whether the form is valid or not
+      this.isFormValid_();
+      const file = event.target.files[0];
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        this.fileInputByte = reader.result;
+      };
+      this.isImgSelected = true;
+    } else {
+      this.isImgSelected = false;
     }
 
-  // getTripofferToBeUpdated() {
-  //   let tripofferid = "";
-  //   this.activatedRoute.params.subscribe({
-  //     next: (param) => {
-  //       tripofferid = param.id;
-  //       this.tripofferService.getOne(tripofferid).subscribe({
-  //         next: (resp) => {
-  //           console.log(resp);
-  //           //convert image
-  //           let objectURL = resp.startbild;
-  //           resp.realImage = this.sanitizer.bypassSecurityTrustUrl(objectURL);
-  //           this.currentTripoffer = resp;
-  //           if (resp.landId) {
-  //             this.currentTripoffer.landId = resp.landId;
-  //           }
-
-  //         },
-  //         error: () =>
-  //           this.toastrService.error(
-  //             "Die Daten konnten nicht geladen werden.",
-  //             "Fehler"
-  //           ),
-  //       });
-  //     },
-  //   });
-  // }
+  }
 
   /** Updates current trip offer */
   saveTripoffer() {
-    if (!this.currentTripoffer.landId) {
-      this.currentTripoffer.landId = this.selectedCountry?.value?.id
-    }
     // first save the expectations
     this.saveExpectation().then((expectation) => {
       if (expectation) {
+        console.log(expectation)
+        // The module returns the selected date - 1day, so we need to add 1day to the selected date before save it
+        let startdate = this.tripofferForm.get("startdate").value;
+        let enddate = this.tripofferForm.get("enddate").value;
+        let deadlinedate = this.tripofferForm.get("deadline").value;
 
-              
-              // The module returns the selected date - 1day, so we need to add 1day to the selected date before save it
-              let startdate = this.tripofferForm.get("startdate").value;
-              let enddate = this.tripofferForm.get("enddate").value;
-              let deadlinedate = this.tripofferForm.get("deadline").value;
+        let currentImg = this.currentTripoffer.realImage.changingThisBreaksApplicationSecurity;
+        let toUpdate = {
+          id: this.currentTripofferId,
+          startbild: this.isImgSelected ? this.fileInputByte : currentImg,
+          titel: this.tripofferForm.get("title").value,
+          startDatum: startdate.setDate(startdate.getDate() + 1),
+          endDatum: enddate.setDate(enddate.getDate() + 1),
+          anmeldungsFrist: deadlinedate.setDate(deadlinedate.getDate() + 1),
+          plaetze: this.tripofferForm.get("totalplace").value,
+          freiPlaetze: this.tripofferForm.get("totalplace").value,
+          interessiert: 0,
+          leistungen: Array.from(this.serviceArray),
+          mitReiserBerechtigt: Array.from(this.authorizedtotravelArray),
+          hinweise: this.tripofferForm.get("note").value,
+          sonstigeHinweise: this.tripofferForm.get("anothernote").value,
+          erwartungenReadListTO: expectation,
+          landId: this.selectedCountry?.value?.id,
+          buchungsklassenReadListTO: this.currentTripoffer.buchungsklassenReadListTO
+        };
 
-              let currentImg = this.currentTripoffer.realImage.changingThisBreaksApplicationSecurity;
-              let toUpdate = {
-                id: this.currentTripofferId,
-                startbild: this.isImgSelected ? this.fileInputByte : currentImg,
-                titel: this.tripofferForm.get("title").value,
-                startDatum: startdate.setDate(startdate.getDate() + 1),
-                endDatum: enddate.setDate(enddate.getDate() + 1),
-                anmeldungsFrist: deadlinedate.setDate(deadlinedate.getDate() + 1),
-                plaetze: this.tripofferForm.get("totalplace").value,
-                freiPlaetze: this.tripofferForm.get("totalplace").value,
-                interessiert: 0,
-                leistungen: Array.from(this.serviceArray),
-                mitReiserBerechtigt: Array.from(this.authorizedtotravelArray),
-                hinweise: this.tripofferForm.get("note").value,
-                sonstigeHinweise: this.tripofferForm.get("anothernote").value,
-                erwartungenReadListTO: null,
-                landId: null,
-                buchungsklassenReadListTO: null
-              };
+        console.log('toUpdate', toUpdate)
+        this.tripofferService.updateOne(toUpdate).subscribe({
+          next: () => {
+            this.updateSuccess();
+          },
+          error: () => this.updateError(),
+        });
 
-              console.log('toUpdate',toUpdate)
-              this.tripofferService.updateOne(toUpdate).subscribe({
-                next: () => {
-                  this.updateSuccess();
-                },
-                error: () => this.updateError(),
-              });
-            
       }
     });
   }
@@ -410,40 +378,42 @@ export class EditTripofferComponent implements OnInit, AfterViewInit {
       // set the value of the reiseangebot
       this.currentBookingclass.reiseAngebotId = this.currentTripoffer.id;
       // check whether it is an update or not
-      if (this.sharedDataService.isAddBtnClicked) {
-        this.bookingclassService.addOne(this.currentBookingclass).subscribe({
-          next: (resp) =>
-            this.currentTripoffer?.buchungsklassenReadListTO.push(resp),
-          error: () =>
-            this.toastrService.error(
-              "Die Buchungsklasse konnte nicht gespeichert werden.",
-              "Fehler"
-            ),
-          complete: () =>
-            this.toastrService.success(
-              "Die Buchungsklasse wurde erfolgreich gespeichert."
-            ),
-        });
-      } else {
-        this.bookingclassService.updateOne(this.currentBookingclass).subscribe({
-          next: (resp) => {
-            const idx =
-              this.currentTripoffer?.buchungsklassenReadListTO.findIndex(
-                (x) => x.id === resp.id
-              );
-            this.currentTripoffer.buchungsklassenReadListTO[idx] = resp;
-          },
-          error: () => this.updateError(),
-          complete: () => this.updateSuccess(),
-        });
-      }
+      this.bookingclassService.addOne(this.currentBookingclass).subscribe({
+        next: (resp) =>
+          this.currentTripoffer?.buchungsklassenReadListTO.push(resp),
+        error: () =>
+          this.toastrService.error(
+            "Die Buchungsklasse konnte nicht gespeichert werden.",
+            "Fehler"
+          ),
+        complete: () =>
+          this.toastrService.success(
+            "Die Buchungsklasse wurde erfolgreich gespeichert."
+          ),
+      });
+    } else {
+      this.bookingclassService.updateOne(this.currentBookingclass).subscribe({
+        next: (resp) => {
+          const idx =
+            this.currentTripoffer?.buchungsklassenReadListTO.findIndex(
+              (x) => x.id === resp.id
+            );
+          this.currentTripoffer.buchungsklassenReadListTO[idx] = resp;
+        },
+        error: () => this.updateError(),
+        complete: () => this.updateSuccess(),
+      });
     }
   }
 
   editBookingclass(bc: BookingClass, dialogForm: any) {
     this.sharedDataService.isAddBtnClicked = false;
-    this.sharedDataService.changeCurrentBookinclass(bc);
-    this.dialog.open(dialogForm, this.dialogConfig);
+    // Get bookingclass information
+    this.bookingclassService.getOne(bc.id).subscribe({
+      next: (result) => this.sharedDataService.changeCurrentBookinclass(result),
+      error: () => this.toastrService.error('Die Buchungsklasse konnte nicht geladen werden'),
+      complete: () => this.dialog.open(dialogForm, this.dialogConfig)
+    });
   }
 
   deleteBookingclassDialog(bc: BookingClass, dialogForm: any) {
