@@ -1,23 +1,26 @@
-<div class="container footer text-center pt-5 pb-4" [ngStyle]="footerBgColor">
-  <div class="row">
-    <div class="col-4 mx-auto mb-4">
-      <h2 class="text-white">Kontakt</h2>
+<div
+  class="container footer text-center text-md-left"
+  [ngStyle]="footerBgColor"
+>
+  <div class="row text-center text-md-left">
+    <div class="col-md-4 col-lg-4 col-xl-4 mx-auto mb-3">
+      <h3 class="text-white">Kontakt</h3>
       <p class="text-white">Julia Schnitzer</p>
       <p class="text-white">post@university-travel-club.org</p>
     </div>
-    <div class="col-4 mx-auto mb-4">
-      <h2 class="text-white">Newsletter abonnieren</h2>
+    <div class="col-md-4 col-lg-4 col-xl-4 mx-auto mb-3">
+      <h3 class="text-white">Newsletter abonnieren</h3>
       <div class="row">
         <div class="col-md-8">
           <Input
             type="text"
             placeholder="Enter Email"
-            class="form-control"
-            required=""
+            class="form-control input-form"
+            required
           />
         </div>
         <div class="col-md-4">
-          <button class="btn btn-info">ABONNIEREN</button>
+          <button class="btn submit">ABONNIEREN</button>
         </div>
       </div>
     </div>
@@ -59,21 +62,21 @@
         </div>
       </div>-->
 
-    <div class="col-4 mx-auto mb-4">
+    <div class="col-md-4 col-lg-4 col-xl-4 mx-auto mb-3 mt-4">
       <ul>
-        <li>
+        <li class="mb-4">
           <a
             class="box-icons"
             href="https://www.facebook.com/universitytravelclub"
             class="text-white"
-            ><i class="bi bi-facebook">
-              <span class="text-icon">facebook</span>
+            ><i class="bi bi-facebook mr-3">
+              <span class="text-icon">Facebook</span>
             </i>
           </a>
         </li>
         <li>
           <a href="https://www.instagram.com/utcgermany/" class="text-white">
-            <i class="bi bi-instagram"
+            <i class="bi bi-instagram mr-3"
               ><span class="text-icon">Instagram</span></i
             >
           </a>
@@ -81,16 +84,17 @@
       </ul>
     </div>
   </div>
-  <div class="row footer-copy-r">
-    <div class="col-6">
-      <p class="ml-5 text-white">
+  <hr class="mb-4" />
+  <div class="row align-items-center">
+    <div class="col-md-7 col-lg-8">
+      <p class="mt-5 text-white footer-copy-r">
         &copy; COPYRIGHT {{ currentDate | date: "yyyy" }} - UNIVERSITY TRAVEL
         CLUB
       </p>
     </div>
 
-    <div class="col-6">
-      <div class="box-icons-impressum">
+    <div class="col-md-5 col-lg-4 mt-5">
+      <div class="text-center text-md-rigth">
         <a href="" class="text-white">Impressum</a>
 
         <a href="" class="text-white">Datenschutz</a>
@@ -102,7 +106,6 @@
           data-bs-placement="top"
           title="Back to top"
         >
-          <title>Back to Top</title>
           <i class="bi bi-arrow-up-circle-fill"></i>
         </a>
       </div>
