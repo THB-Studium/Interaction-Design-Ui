@@ -115,6 +115,8 @@ export class TripofferFormComponent implements OnInit, AfterViewInit {
       landId: "",
       buchungsklassenReadListTO: null,
       erwartungenReadListTO: null,
+      erwartungen: null,
+      buchungsklassen: null
     };
   }
 
@@ -242,7 +244,9 @@ export class TripofferFormComponent implements OnInit, AfterViewInit {
         sonstigeHinweise: this.tripofferForm.get("anothernote").value,
         erwartungenReadListTO: null,
         landId: null,
-        buchungsklassenReadListTO: null
+        buchungsklassenReadListTO: null,
+        erwartungen: null,
+        buchungsklassen: null
       };
 
       console.log('form_valid',this.currentTripoffer)

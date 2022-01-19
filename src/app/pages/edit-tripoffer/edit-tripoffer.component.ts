@@ -116,8 +116,10 @@ export class EditTripofferComponent implements OnInit, AfterViewInit {
       id: null,
       anmeldungsFrist: null,
       buchungsklassenReadListTO: null,
+      buchungsklassen: null,
       endDatum: null,
       erwartungenReadListTO: null,
+      erwartungen: null,
       freiPlaetze: 0,
       hinweise: '',
       interessiert: 0,
@@ -154,6 +156,7 @@ export class EditTripofferComponent implements OnInit, AfterViewInit {
         // read the tripoffer from the api
         this.tripofferService.getOne(this.currentTripofferId).subscribe({
           next: (resp) => {
+            console.log(resp)
             //convert image
             let objectURL = 'data:image/png;base64,' + resp.startbild;
             resp.realImage = this.sanitizer.bypassSecurityTrustUrl(objectURL);
@@ -329,6 +332,7 @@ export class EditTripofferComponent implements OnInit, AfterViewInit {
     this.saveExpectation().then((expectation) => {
       if (expectation) {
         console.log(expectation)
+        return
         // The module returns the selected date - 1day, so we need to add 1day to the selected date before save it
         let startdate = this.tripofferForm.get("startdate").value;
         let enddate = this.tripofferForm.get("enddate").value;
@@ -349,9 +353,9 @@ export class EditTripofferComponent implements OnInit, AfterViewInit {
           mitReiserBerechtigt: Array.from(this.authorizedtotravelArray),
           hinweise: this.tripofferForm.get("note").value,
           sonstigeHinweise: this.tripofferForm.get("anothernote").value,
-          erwartungenReadListTO: expectation,
+          erwartungen: expectation,
           landId: this.selectedCountry?.value?.id,
-          buchungsklassenReadListTO: this.currentTripoffer.buchungsklassenReadListTO
+          buchungsklassen: this.currentTripoffer.buchungsklassenReadListTO
         };
 
         console.log('toUpdate', toUpdate)

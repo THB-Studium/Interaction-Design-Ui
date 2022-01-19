@@ -17,7 +17,9 @@ export class TripOffer {
   public hinweise: string;
   public sonstigeHinweise: string;
   public erwartungenReadListTO: Expectation;
+  public erwartungen: Expectation;
   public buchungsklassenReadListTO: Array<BookingClass>;
+  public buchungsklassen: Array<BookingClass>;
   public landId: string;
   public realImage?: any;
 }

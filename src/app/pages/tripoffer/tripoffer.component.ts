@@ -76,6 +76,8 @@ export class TripofferComponent implements OnInit, AfterViewInit {
       landId: "",
       buchungsklassenReadListTO: null,
       erwartungenReadListTO: null,
+      erwartungen: null,
+      buchungsklassen: null
     };
   }
 
@@ -99,6 +101,8 @@ export class TripofferComponent implements OnInit, AfterViewInit {
         landId: "",
         buchungsklassenReadListTO: null,
         erwartungenReadListTO: null,
+        erwartungen: null,
+        buchungsklassen: null
       },
     ]);
 
