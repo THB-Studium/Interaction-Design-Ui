@@ -8,15 +8,15 @@ deploy dev:
     - APPLICATION="interaction-design-ui"
     - REMOTE_FOLDER="/var/www/html/$ENVIRONMENT/$APPLICATION"
     - REMOTE_SERVICE_OWNER="gitlab-runner"
-    - echo $GITLAB_RUNNER_PASSWORD | chown -R $REMOTE_SERVICE_OWNER:$REMOTE_SERVICE_OWNER .
-    - echo $GITLAB_RUNNER_PASSWORD | rm -rf ./package-lock.json
-    - echo $GITLAB_RUNNER_PASSWORD | rm -rf ./node_modules
-    - echo $GITLAB_RUNNER_PASSWORD | rm -rf ./dist
-    - echo $GITLAB_RUNNER_PASSWORD | npm install
-    - echo $GITLAB_RUNNER_PASSWORD | ng build --base-href / --configuration=$ENVIRONMENT
-    - echo $GITLAB_RUNNER_PASSWORD | mkdir -p $REMOTE_FOLDER
-    - echo $GITLAB_RUNNER_PASSWORD | cp -rf ./dist/* $REMOTE_FOLDER
-    - echo $GITLAB_RUNNER_PASSWORD | chown -R $REMOTE_SERVICE_OWNER:$REMOTE_SERVICE_OWNER .
+    - echo $GITLAB_RUNNER_PASSWORD | sudo -S chown -R $REMOTE_SERVICE_OWNER:$REMOTE_SERVICE_OWNER .
+    - echo $GITLAB_RUNNER_PASSWORD | sudo -S rm -rf ./package-lock.json
+    - echo $GITLAB_RUNNER_PASSWORD | sudo -S rm -rf ./node_modules
+    - echo $GITLAB_RUNNER_PASSWORD | sudo -S rm -rf ./dist
+    - echo $GITLAB_RUNNER_PASSWORD | sudo -S npm install
+    - echo $GITLAB_RUNNER_PASSWORD | sudo -S ng build --base-href / --configuration=$ENVIRONMENT
+    - echo $GITLAB_RUNNER_PASSWORD | sudo -S mkdir -p $REMOTE_FOLDER
+    - echo $GITLAB_RUNNER_PASSWORD | sudo -S cp -rf ./dist/* $REMOTE_FOLDER
+    - echo $GITLAB_RUNNER_PASSWORD | sudo -S chown -R $REMOTE_SERVICE_OWNER:$REMOTE_SERVICE_OWNER .
   environment: development
   when: manual
 
@@ -27,15 +27,15 @@ deploy test:
     - APPLICATION="interaction-design-ui"
     - REMOTE_FOLDER="/var/www/html/$ENVIRONMENT/$APPLICATION"
     - REMOTE_SERVICE_OWNER="gitlab-runnerv"
-    - echo $GITLAB_RUNNER_PASSWORD | chown -R $REMOTE_SERVICE_OWNER:$REMOTE_SERVICE_OWNER .
-    - echo $GITLAB_RUNNER_PASSWORD | rm -rf ./package-lock.json
-    - echo $GITLAB_RUNNER_PASSWORD | rm -rf ./node_modules
-    - echo $GITLAB_RUNNER_PASSWORD | rm -rf ./dist
-    - echo $GITLAB_RUNNER_PASSWORD | npm install
-    - echo $GITLAB_RUNNER_PASSWORD | ng build --base-href / --configuration=$ENVIRONMENT
-    - echo $GITLAB_RUNNER_PASSWORD | mkdir -p $REMOTE_FOLDER
-    - echo $GITLAB_RUNNER_PASSWORD | cp -rf ./dist/* $REMOTE_FOLDER
-    - echo $GITLAB_RUNNER_PASSWORD | chown -R $REMOTE_SERVICE_OWNER:$REMOTE_SERVICE_OWNER .
+    - echo $GITLAB_RUNNER_PASSWORD | sudo -S chown -R $REMOTE_SERVICE_OWNER:$REMOTE_SERVICE_OWNER .
+    - echo $GITLAB_RUNNER_PASSWORD | sudo -S rm -rf ./package-lock.json
+    - echo $GITLAB_RUNNER_PASSWORD | sudo -S rm -rf ./node_modules
+    - echo $GITLAB_RUNNER_PASSWORD | sudo -S rm -rf ./dist
+    - echo $GITLAB_RUNNER_PASSWORD | sudo -S npm install
+    - echo $GITLAB_RUNNER_PASSWORD | sudo -S ng build --base-href / --configuration=$ENVIRONMENT
+    - echo $GITLAB_RUNNER_PASSWORD | sudo -S mkdir -p $REMOTE_FOLDER
+    - echo $GITLAB_RUNNER_PASSWORD | sudo -S cp -rf ./dist/* $REMOTE_FOLDER
+    - echo $GITLAB_RUNNER_PASSWORD | sudo -S chown -R $REMOTE_SERVICE_OWNER:$REMOTE_SERVICE_OWNER .
   environment: development
   when: manual
 
@@ -46,14 +46,14 @@ deploy prod:
     - APPLICATION="interaction-design-ui"
     - REMOTE_FOLDER="/var/www/html/$ENVIRONMENT/$APPLICATION"
     - REMOTE_SERVICE_OWNER="gitlab-runner"
-    - echo $GITLAB_RUNNER_PASSWORD | chown -R $REMOTE_SERVICE_OWNER:$REMOTE_SERVICE_OWNER .
-    - echo $GITLAB_RUNNER_PASSWORD | rm -rf ./package-lock.json
-    - echo $GITLAB_RUNNER_PASSWORD | rm -rf ./node_modules
-    - echo $GITLAB_RUNNER_PASSWORD | rm -rf ./dist
-    - echo $GITLAB_RUNNER_PASSWORD | npm install
-    - echo $GITLAB_RUNNER_PASSWORD | ng build --base-href / --configuration=$ENVIRONMENT
-    - echo $GITLAB_RUNNER_PASSWORD | mkdir -p $REMOTE_FOLDER
-    - echo $GITLAB_RUNNER_PASSWORD | cp -rf ./dist/* $REMOTE_FOLDER
-    - echo $GITLAB_RUNNER_PASSWORD | chown -R $REMOTE_SERVICE_OWNER:$REMOTE_SERVICE_OWNER .
+    - echo $GITLAB_RUNNER_PASSWORD | sudo -S chown -R $REMOTE_SERVICE_OWNER:$REMOTE_SERVICE_OWNER .
+    - echo $GITLAB_RUNNER_PASSWORD | sudo -S rm -rf ./package-lock.json
+    - echo $GITLAB_RUNNER_PASSWORD | sudo -S rm -rf ./node_modules
+    - echo $GITLAB_RUNNER_PASSWORD | sudo -S rm -rf ./dist
+    - echo $GITLAB_RUNNER_PASSWORD | sudo -S npm install
+    - echo $GITLAB_RUNNER_PASSWORD | sudo -S ng build --base-href / --configuration=$ENVIRONMENT
+    - echo $GITLAB_RUNNER_PASSWORD | sudo -S mkdir -p $REMOTE_FOLDER
+    - echo $GITLAB_RUNNER_PASSWORD | sudo -S cp -rf ./dist/* $REMOTE_FOLDER
+    - echo $GITLAB_RUNNER_PASSWORD | sudo -S chown -R $REMOTE_SERVICE_OWNER:$REMOTE_SERVICE_OWNER .
   environment: development
   when: manual
