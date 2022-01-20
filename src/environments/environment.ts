@@ -3,7 +3,10 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  prod: false,
+  env: 'Test',
+  appName: 'Interaction-design-ui',
+  version: '0.0.1',
 };
 
 /*

@@ -1,0 +1,115 @@
+<form [formGroup]="expectationForm" class="col-md-12">
+    <!-- Adventure -->
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <mat-form-field class="col-md-12" appearance="standard">
+                <mat-label>Abenteuer</mat-label>
+                <input matInput type="number" formControlName="adventure" placeholder="Wert" [required]="false">
+                <mat-error
+                    *ngIf="expectationForm.get('adventure').errors && expectationForm.get('adventure').hasError('required')">
+                    Der Eingabe ist <strong>erforderlich</strong>.
+                </mat-error>
+                <mat-error
+                    *ngIf="expectationForm.get('adventure').errors && expectationForm.get('adventure').hasError('min') || expectationForm.get('adventure').errors && expectationForm.get('adventure').hasError('max')">
+                    Der Wert muss zwischen <strong>[0 - 100]</strong> sein.
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <!-- Comfort -->
+        <div class="form-group col-md-6">
+            <mat-form-field class="col-md-12" appearance="standard">
+                <mat-label>Konfort</mat-label>
+                <input matInput type="number" formControlName="comfort" placeholder="Wert" [required]="false">
+                <mat-error
+                    *ngIf="expectationForm.get('comfort').errors && expectationForm.get('comfort').hasError('required')">
+                    Der Eingabe ist <strong>erforderlich</strong>.
+                </mat-error>
+                <mat-error
+                    *ngIf="expectationForm.get('comfort').errors && expectationForm.get('comfort').hasError('min') || expectationForm.get('comfort').errors && expectationForm.get('comfort').hasError('max')">
+                    Der Wert muss zwischen <strong>[0 - 100]</strong> sein.
+                </mat-error>
+            </mat-form-field>
+        </div>
+    </div>
+    <!-- Deceleration -->
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <mat-form-field class="col-md-12" appearance="standard">
+                <mat-label>Konfort</mat-label>
+                <input matInput type="number" formControlName="deceleration" placeholder="Wert" [required]="false">
+                <mat-error
+                    *ngIf="expectationForm.get('deceleration').errors && expectationForm.get('deceleration').hasError('required')">
+                    Der Eingabe ist <strong>erforderlich</strong>.
+                </mat-error>
+                <mat-error
+                    *ngIf="expectationForm.get('deceleration').errors && expectationForm.get('deceleration').hasError('min') || expectationForm.get('deceleration').errors && expectationForm.get('deceleration').hasError('max')">
+                    Der Wert muss zwischen <strong>[0 - 100]</strong> sein.
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <!-- Road -->
+        <div class="form-group col-md-6">
+            <mat-form-field class="col-md-12" appearance="standard">
+                <mat-label>Road</mat-label>
+                <input matInput type="number" formControlName="road" placeholder="Wert" [required]="false">
+                <mat-error
+                    *ngIf="expectationForm.get('road').errors && expectationForm.get('road').hasError('required')">
+                    Der Eingabe ist <strong>erforderlich</strong>.
+                </mat-error>
+                <mat-error
+                    *ngIf="expectationForm.get('road').errors && expectationForm.get('road').hasError('min') || expectationForm.get('road').errors && expectationForm.get('road').hasError('max')">
+                    Der Wert muss zwischen <strong>[0 - 100]</strong> sein.
+                </mat-error>
+            </mat-form-field>
+        </div>
+    </div>
+    <!-- Road -->
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <mat-form-field class="col-md-12" appearance="standard">
+                <mat-label>Sicherheit</mat-label>
+                <input matInput type="number" formControlName="safety" placeholder="Wert" [required]="false">
+                <mat-error
+                    *ngIf="expectationForm.get('safety').errors && expectationForm.get('safety').hasError('required')">
+                    Der Eingabe ist <strong>erforderlich</strong>.
+                </mat-error>
+                <mat-error
+                    *ngIf="expectationForm.get('safety').errors && expectationForm.get('safety').hasError('min') || expectationForm.get('safety').errors && expectationForm.get('safety').hasError('max')">
+                    Der Wert muss zwischen <strong>[0 - 100]</strong> sein.
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <!-- Road -->
+        <div class="form-group col-md-6">
+            <mat-form-field class="col-md-12" appearance="standard">
+                <mat-label>Sonne Strand</mat-label>
+                <input matInput type="number" formControlName="sun_beach" placeholder="Wert" [required]="false">
+                <mat-error
+                    *ngIf="expectationForm.get('sun_beach').errors && expectationForm.get('sun_beach').hasError('required')">
+                    Der Eingabe ist <strong>erforderlich</strong>.
+                </mat-error>
+                <mat-error
+                    *ngIf="expectationForm.get('sun_beach').errors && expectationForm.get('sun_beach').hasError('min') || expectationForm.get('sun_beach').errors && expectationForm.get('sun_beach').hasError('max')">
+                    Der Wert muss zwischen <strong>[0 - 100]</strong> sein.
+                </mat-error>
+            </mat-form-field>
+        </div>
+    </div>
+    <!-- Sustainability -->
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <mat-form-field class="col-md-12" appearance="standard">
+                <mat-label>Nachhaltigkeit</mat-label>
+                <input matInput type="number" formControlName="sustainability" placeholder="Wert" [required]="false">
+                <mat-error
+                    *ngIf="expectationForm.get('sustainability').errors && expectationForm.get('sustainability').hasError('required')">
+                    Der Eingabe ist <strong>erforderlich</strong>.
+                </mat-error>
+                <mat-error
+                    *ngIf="expectationForm.get('sustainability').errors && expectationForm.get('sustainability').hasError('min') || expectationForm.get('sustainability').errors && expectationForm.get('sustainability').hasError('max')">
+                    Der Wert muss zwischen <strong>[0 - 100]</strong> sein.
+                </mat-error>
+            </mat-form-field>
+        </div>
+    </div>
+</form>

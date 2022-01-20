@@ -1,0 +1,45 @@
+table {
+  width: 100%;
+}
+
+.mat-form-field {
+  font-size: 14px;
+  width: 100%;
+}
+
+td,
+th {
+  width: 20%;
+}
+
+th {
+  font-weight: 600;
+}
+
+td em {
+  cursor: pointer;
+}
+
+/* Border */
+.filter
+  ::ng-deep
+  .mat-form-field-appearance-standard
+  .mat-form-field-underline {
+  background-color: rgba(255, 255, 255, 255) !important;
+}
+
+.filter ::ng-deep .mat-form-field-ripple {
+  background-color: rgba(255, 255, 255, 255);
+}
+
+h1 {
+  font-size: 30px !important;
+}
+
+h2 {
+  font-size: 26px !important;
+}
+
+h3 {
+  font-size: 20px !important;
+}
