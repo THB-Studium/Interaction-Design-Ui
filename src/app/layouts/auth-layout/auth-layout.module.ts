@@ -1,6 +1,6 @@
 import { NgModule } from "@angular/core";
 import { RouterModule } from "@angular/router";
-import { CommonModule } from "@angular/common";
+import { CommonModule, HashLocationStrategy, LocationStrategy } from "@angular/common";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { AuthLayoutRoutes } from "./auth-layout.routing";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
@@ -54,5 +54,9 @@ import { HomeComponent } from "src/app/pages/home/home.component";
     MatNativeDateModule,
   ],
   declarations: [HomeComponent, LoginComponent, RegisterComponent],
+  providers: [
+    //{ provide: HTTP_INTERCEPTORS, useClass: AppHttpInterceptor, multi: true },
+    {provide: LocationStrategy, useClass: HashLocationStrategy}
+  ],
 })
 export class AuthLayoutModule {}

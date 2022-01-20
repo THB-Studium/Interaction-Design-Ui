@@ -16,6 +16,7 @@ import { NgxWebstorageModule } from "ngx-webstorage";
 
 import { AppRoutingModule } from "./app.routing";
 import { ComponentsModule } from "./components/components.module";
+import { HashLocationStrategy, LocationStrategy } from "@angular/common";
 
 @NgModule({
   imports: [
@@ -35,6 +36,7 @@ import { ComponentsModule } from "./components/components.module";
   declarations: [AppComponent, AdminLayoutComponent, AuthLayoutComponent],
   providers: [
     //{ provide: HTTP_INTERCEPTORS, useClass: AppHttpInterceptor, multi: true },
+    {provide: LocationStrategy, useClass: HashLocationStrategy}
   ],
   bootstrap: [AppComponent],
 })
