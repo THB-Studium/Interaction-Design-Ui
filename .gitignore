@@ -13,8 +13,9 @@
 .project
 .classpath
 .c9/
-*.launch
 .settings/
+.history
+*.launch
 *.sublime-workspace
 
 # IDE - VSCode
@@ -23,6 +24,9 @@
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+
+# i18n
+src/locale/src/messages.xlf
 
 # misc
 /.sass-cache
@@ -33,6 +37,18 @@ npm-debug.log
 yarn-error.log
 testem.log
 /typings
+.package-lock.json
+package-lock.json
+
+# e2e
+REPORTS/
+!dev.protractor.conf.js
+!test.protractor.conf.js
+!e2e/testData.js
+
+# test user passwords
+!e2e/credentials.js
+.protractor-fail-fast
 
 # System Files
 .DS_Store

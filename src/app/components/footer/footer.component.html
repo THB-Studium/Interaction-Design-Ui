@@ -1,25 +1,29 @@
-<footer class="footer">
+<div class="container-fluid">
   <div class="row align-items-center justify-content-xl-between">
     <div class="col-xl-6">
       <div class="copyright text-center text-xl-left text-muted">
-        &copy; {{ test | date: "yyyy" }} <a href="https://www.creative-tim.com?ref=ada-footer-admin-layout" class="font-weight-bold ml-1" target="_blank">Creative Tim</a>
+        <h3 class="text-white">Kontakt</h3>
+        <p class="text-white">Julia Schnitzer</p>
+        <p class="text-white">post@university-travel-club.org</p>
+
+        <p class="text-white">&copy; COPYRIGHT {{ currentDate | date: "yyyy" }} - UNIVERSITY TRAVEL CLUB</p>
       </div>
     </div>
-    <div class="col-xl-6">
-      <ul class="nav nav-footer justify-content-center justify-content-xl-end">
-        <li class="nav-item">
-          <a href="https://www.creative-tim.com?ref=ada-footer-admin-layout" class="nav-link" target="_blank">Creative Tim</a>
-        </li>
-        <li class="nav-item">
-          <a href="https://www.creative-tim.com/presentation?ref=ada-footer-admin-layout" class="nav-link" target="_blank">About Us</a>
-        </li>
-        <li class="nav-item">
-          <a href="http://blog.creative-tim.com?ref=ada-footer-admin-layout" class="nav-link" target="_blank">Blog</a>
-        </li>
-        <li class="nav-item">
-          <a href="https://github.com/creativetimofficial/argon-dashboard-angular/blob/master/LICENSE.md" class="nav-link" target="_blank">MIT License</a>
-        </li>
-      </ul>
+    <div class="col-xl-4">
+      <h3 class="text-white">Newsletter abonnieren</h3>
+      <Input type="text" placeholder="E-mail Adresse..." />
+      <button class="submit" [ngStyle]="btnColor">ABONNIEREN</button>
+    </div>
+    <div class="col-xl-2">
+      <a href="https://www.facebook.com/universitytravelclub" class="text-white"><i class="bi bi-facebook">facebook</i></a>
+      <br />
+      <a href="https://www.instagram.com/utcgermany/" class="text-white">
+        <i class="bi bi-instagram">Instagram</i></a>
+      <br />
+      <a href="" class="text-white">Impressum und DatenSchutz</a>
+      <br />
+      <br />
+      <a hre="" class="text-white"><i class="bi bi-arrow-up-circle-fill"></i></a>
     </div>
   </div>
-</footer>
+</div>

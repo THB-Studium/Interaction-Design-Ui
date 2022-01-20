@@ -1,0 +1,163 @@
+<div class="header bg-gradient-primary pb-6 pt-5 pt-md-8">
+    <div class="container-fluid">
+        <div class="header-body">
+            <div class="row">
+                <div class="text-center col-md-12">
+                    <em class="fas fa-plane-departure text-white"></em>
+                    <h1 class="display-2 text-white">Reise Angeboten</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Page content -->
+<div class="container-fluid mt--6">
+    <!-- Filter -->
+    <div class="row filter">
+        <mat-form-field appearance="standard" class="col-md-12 text-white">
+            <mat-label class="text-white">Filter</mat-label>
+            <input matInput (keyup)="applyFilter($event)" class="text-white" #input />
+        </mat-form-field>
+    </div>
+
+    <!-- Table -->
+    <div class="row mt-4">
+        <!--Add Button-->
+        <div class="col-12">
+            <button mat-mini-fab color="primary" aria-label="add icon" matTooltip="Angebot hinzufügen"
+                matTooltipHideDelay="{{ toolTipDuration }}" (click)="addOffersDialog(offersDialog)">
+                <mat-icon>add</mat-icon>
+            </button>
+        </div>
+        <div class="col mt-2">
+            <div class="mat-elevation-z4 col-12" *ngIf="dataSource.data.length > 0">
+                <div class="spinner-container" *ngIf="dataSource.loading$ | async">
+                    <mat-spinner></mat-spinner>
+                </div>
+                <table mat-table [dataSource]="dataSource" matSort aria-describedby="img">
+                    <!-- Image Column -->
+                    <ng-container matColumnDef="img">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header scope="col">
+                            Bild
+                        </th>
+                        <td mat-cell *matCellDef="let row">
+                            <div class="avatar-group">
+                                <a class="avatar avatar-sm" data-toggle="tooltip"
+                                    data-original-title="Ryan Tompson">
+                                    <img alt="Image placeholder" src="./assets/img/theme/team-1-800x800.jpg"
+                                        class="rounded-circle">
+                                </a>
+                            </div>
+                        </td>
+                    </ng-container>
+
+                    <!-- Title Column -->
+                    <ng-container matColumnDef="title">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header scope="col">
+                            Titel
+                        </th>
+                        <td mat-cell *matCellDef="let row">{{ row?.titel }}</td>
+                    </ng-container>
+
+                    <!-- Date Column -->
+                    <ng-container matColumnDef="date">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header scope="col">
+                            Start/-Enddatum
+                        </th>
+                        <td mat-cell *matCellDef="let row">{{ convertDateToString(row?.startDatum) }} - {{
+                            convertDateToString(row?.endDatum) }}</td>
+                    </ng-container>
+
+                    <!-- Place Column -->
+                    <ng-container matColumnDef="place">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header scope="col">
+                            Plätze
+                        </th>
+                        <td mat-cell *matCellDef="let row">{{ row?.plaetze }}</td>
+                    </ng-container>
+
+                    <!-- Free place Column -->
+                    <ng-container matColumnDef="freeplace">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header scope="col">
+                            Frei Plätze
+                        </th>
+                        <td mat-cell *matCellDef="let row">
+                            {{ row?.freiPlaetze }}
+                        </td>
+                    </ng-container>
+
+                    <!-- Action Column -->
+                    <ng-container matColumnDef="action">
+                        <th mat-header-cell *matHeaderCellDef scope="col">ACTION</th>
+                        <td mat-cell *matCellDef="let row" class="text-left">
+                            <div ngbDropdown placement="left">
+                                <a class="btn btn-sm btn-icon-only text-black" ngbDropdownToggle>
+                                    <em class="fas fa-ellipsis-v"></em>
+                                </a>
+                                <div ngbDropdownMenu class="dropdown-menu-right dropdown-menu-arrow">
+                                    <label class="dropdown-item mr-3" matTooltip="Editieren"
+                                        matTooltipHideDelay="{{ toolTipDuration }}" (click)="editTripofferDialog(row)">
+                                        <em class="fa fa-pen text-info mr-2"></em>Editieren
+                                    </label>
+                                    <label class="dropdown-item" matTooltip="Entfernen"
+                                        matTooltipHideDelay="{{ toolTipDuration }}"
+                                        (click)=" deleteTripofferDialog(row, deleteDialog)">
+                                        <em class="fa fa-trash text-red mr-2"></em>Entfernen
+                                    </label>
+                                </div>
+                            </div>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+                    <!-- Row shown when there is no matching data. -->
+                    <tr class="mat-row" *matNoDataRow>
+                        <td class="mat-cell" colspan="4">
+                            Keine Daten, die dem Filter entsprechen "{{ input.value }}"
+                        </td>
+                    </tr>
+                </table>
+                <!-- paginator -->
+                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of dataSource.data">
+                </mat-paginator>
+            </div>
+            <p *ngIf="dataSource.data.length === 0" class="font-weight-600 pt-2">
+                Die Liste ist leer!
+            </p>
+        </div>
+    </div>
+</div>
+
+<!-- Add/edit tripoffer modal -->
+<ng-template #offersDialog>
+    <h1 mat-dialog-title>Angebot hinzufügen</h1>
+    <mat-divider></mat-divider>
+    <div mat-dialog-content>
+        <app-tripoffer-form (notifyFormIsValid)="isFormValid($event)"></app-tripoffer-form>
+    </div>
+    <div mat-dialog-actions>
+        <button mat-raised-button color="primary" mat-dialog-close (click)="commitChanges()" [disabled]="!valid">
+            Speichern
+        </button>
+        <button mat-raised-button color="accent" mat-dialog-close (click)="resetFormStatus()">
+            Abbrechen
+        </button>
+    </div>
+</ng-template>
+
+<!-- Delete confirmation dialog -->
+<ng-template #deleteDialog>
+    <h1 mat-dialog-title>Bestätigen Sie das Löschen</h1>
+    <mat-divider></mat-divider>
+    <div mat-dialog-content>
+        <p>
+            Wollen Sie wirklich <strong>{{ currentTripOffer?.titel }}</strong> löschen?
+        </p>
+    </div>
+    <div mat-dialog-actions>
+        <button mat-raised-button color="primary" mat-dialog-close (click)="deleteTripOffer()">Ja</button>
+        <button mat-raised-button color="accent" mat-dialog-close>Nein</button>
+    </div>
+</ng-template>

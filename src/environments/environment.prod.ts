@@ -1,3 +1,6 @@
 export const environment = {
-  production: true
+  prod: true,
+  env: 'Prod',
+  appName: 'Interaction-design-ui',
+  version: '0.0.1',
 };
