@@ -62,6 +62,16 @@ export class CountryFormComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.initForm();
+    this.currentCountry = {
+      id: null,
+      name: '',
+      flughafen: [],
+      unterkunft_text: '',
+      karte_bild: null,
+      highlights: [],
+      landInfo: [],
+      unterkunft: []
+    };
   }
 
   ngAfterViewInit(): void {

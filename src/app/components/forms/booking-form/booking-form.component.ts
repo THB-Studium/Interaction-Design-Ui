@@ -203,7 +203,7 @@ export class BookingFormComponent implements OnInit, AfterViewInit, OnDestroy {
             this.currentBooking.zahlungMethod = value.zahlungMethod;
 
             console.log(value);
-            let landId = null;
+
             // Get the tripoffer
             this.tripofferService.getOne(value.reiseAngebotId).subscribe({
               next: (offer) => {
