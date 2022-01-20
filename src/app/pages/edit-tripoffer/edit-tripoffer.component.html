@@ -11,7 +11,7 @@
   </div>
 </div>
 <!-- Page content -->
-<div class="container-fluid mt-3">
+<div class="container-fluid mt-3 mb-5">
   <mat-card class="m-0">
     <mat-card-header>
       <div class="row">
@@ -61,7 +61,7 @@
                   <input matInput [value]="selectedFileName.length ? selectedFileName : 'Bild auswählen'"
                     formControlName="image" required />
                 </mat-toolbar>
-                <input type="file" id="fileInput" name="fileInput" accept="image/*" (change)="selectFile($event)" />
+                <input type="file" id="fileInput" name="fileInput" accept="image/*" (change)="selectFile($event)" formControlName="image" />
                 <mat-error *ngIf="!isImgSelected">
                   Die Eingabe ist <strong>erforderlich</strong>.
                 </mat-error>
@@ -251,14 +251,13 @@
         <h1 class="mt-5">
           Erwartungen
         </h1>
-        <app-expectation-form (notifyFormIsValid)="isModalFormValid($event)" class="col-md-12 m-0 p-0">
-        </app-expectation-form>
+        <app-expectation-form class="col-md-12 m-0 p-0"></app-expectation-form>
       </div>
     </mat-card-content>
     <mat-divider inset></mat-divider>
-    <mat-card-actions>
-      <button color="primary" mat-raised-button [disabled]="!isFormValid" (click)="saveTripoffer()">Speichern</button>
-      <button color="accent" mat-raised-button>Abbrechen</button>
+    <mat-card-actions align="end">
+      <button color="primary" mat-raised-button (click)="saveTripoffer()" [disabled]="!isValid">Speichern</button>
+      <button color="accent" mat-button (click)="navigateToTripoffersList()">Abbrechen</button>
     </mat-card-actions>
   </mat-card>
 </div>

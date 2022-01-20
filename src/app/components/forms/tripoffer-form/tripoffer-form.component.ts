@@ -78,13 +78,7 @@ export class TripofferFormComponent implements OnInit, AfterViewInit {
     deadlinedate: "",
   };
 
-  constructor(
-    private activatedRoute: ActivatedRoute,
-    private sharedDataService: SharedDataService,
-    private toastrService: ToastrService,
-    private tripofferService: TripOfferService,
-    private sanitizer: DomSanitizer
-  ) {
+  constructor(private sharedDataService: SharedDataService) {
     this.note = "";
     this.anothernote = "";
   }
@@ -118,52 +112,6 @@ export class TripofferFormComponent implements OnInit, AfterViewInit {
       erwartungen: null,
       buchungsklassen: null
     };
-  }
-
-  private setcurrentTripofferForm(tripoffer: TripOffer) {
-    // service array
-    this.serviceArray.clear();
-    tripoffer.leistungen?.forEach((value) => this.serviceArray.add(value));
-
-    // authorization array
-    this.authorizedtotravelArray.clear();
-    tripoffer.mitReiserBerechtigt?.forEach((value) =>
-      this.authorizedtotravelArray.add(value)
-    );
-
-    // In order to display the really value of the date, we need to remove 1day from the date. Since the datepicker module display the given date + 1day
-    let startdate = new Date(
-      new Date(tripoffer.startDatum).getFullYear(),
-      new Date(tripoffer.startDatum).getMonth(),
-      new Date(tripoffer.startDatum).getDate() - 1
-    );
-    let enddate = new Date(
-      new Date(tripoffer.endDatum).getFullYear(),
-      new Date(tripoffer.endDatum).getMonth(),
-      new Date(tripoffer.endDatum).getDate() - 1
-    );
-    let deadlinedate = new Date(
-      new Date(tripoffer.anmeldungsFrist).getFullYear(),
-      new Date(tripoffer.anmeldungsFrist).getMonth(),
-      new Date(tripoffer.anmeldungsFrist).getDate() - 1
-    );
-
-    this.tripofferForm.setValue({
-      title: tripoffer.titel,
-      image: "", // todo: add image name here
-      startdate: startdate,
-      enddate: enddate,
-      deadline: deadlinedate,
-      totalplace: tripoffer.plaetze,
-      // The value will be readed from the array
-      services: "",
-      authorizedtotravel: "",
-      note: tripoffer.hinweise,
-      anothernote: tripoffer.sonstigeHinweise,
-    });
-
-    // Since there is already an attached image, we set image selected flag to true.
-    //this.isImgSelected = true;
   }
 
   // Adds new selected service into the list of services
@@ -210,7 +158,6 @@ export class TripofferFormComponent implements OnInit, AfterViewInit {
   }
 
   private isFormValid(): void {
-
     if(
       this.tripofferForm.get("title").valid &&
       this.tripofferForm.get("startdate").valid &&
@@ -249,8 +196,6 @@ export class TripofferFormComponent implements OnInit, AfterViewInit {
         buchungsklassen: null
       };
 
-      console.log('form_valid',this.currentTripoffer)
-
       this.sharedDataService.changeCurrentTripOffer(this.currentTripoffer);
       // Check if the dates are valid
       if (startdate === enddate && startdate === deadlinedate) {
@@ -286,8 +231,10 @@ export class TripofferFormComponent implements OnInit, AfterViewInit {
       };
 
       this.isImgSelected = true;
+      this.tripofferForm.get("image").setErrors(null);
     } else {
       this.isImgSelected = false;
+      this.tripofferForm.get("image").setErrors({ valid: false });
     }
 
   }
