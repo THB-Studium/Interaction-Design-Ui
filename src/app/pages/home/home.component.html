@@ -3,7 +3,7 @@
   [keyboard]="true" [pauseOnHover]="true" [wrap]="true" [activeId]="'secondSlide'">
   <ng-template *ngFor="let slide of slideList; let i = index" ngbSlide>
     <div class="picsum-img-wrapper">
-      <img src="../../../assets/img/carousel/{{slide.image}}" alt="Slide {{i+1}}"/>
+      <img src="./assets/img/carousel/{{slide.image}}" alt="Slide {{i+1}}"/>
     </div>
     <div class="carousel-caption">
       <h1>{{slide.title}}</h1>
