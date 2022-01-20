@@ -18,6 +18,8 @@ deploy dev:
     - echo $GITLAB_RUNNER_PASSWORD | sudo -S cp -rf ./dist/* $REMOTE_FOLDER
     - echo $GITLAB_RUNNER_PASSWORD | sudo -S chown -R $REMOTE_SERVICE_OWNER:$REMOTE_SERVICE_OWNER .
   environment: development
+  only:
+    - dev
   when: manual
 
 deploy test:
@@ -37,6 +39,8 @@ deploy test:
     - echo $GITLAB_RUNNER_PASSWORD | sudo -S cp -rf ./dist/* $REMOTE_FOLDER
     - echo $GITLAB_RUNNER_PASSWORD | sudo -S chown -R $REMOTE_SERVICE_OWNER:$REMOTE_SERVICE_OWNER .
   environment: development
+  only:
+    - test
   when: manual
 
 deploy prod:
@@ -56,4 +60,6 @@ deploy prod:
     - echo $GITLAB_RUNNER_PASSWORD | sudo -S cp -rf ./dist/* $REMOTE_FOLDER
     - echo $GITLAB_RUNNER_PASSWORD | sudo -S chown -R $REMOTE_SERVICE_OWNER:$REMOTE_SERVICE_OWNER .
   environment: development
+  only:
+    - main
   when: manual
