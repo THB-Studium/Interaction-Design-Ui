@@ -1,5 +1,5 @@
 import { Component, OnInit, AfterViewInit, ViewChild } from "@angular/core";
-import { OnCommit } from "src/app/interfaces/OnCommit";
+import { OnCommit } from "src/app/interfaces/onCommit";
 
 import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
@@ -10,7 +10,7 @@ import { ToastrService } from "ngx-toastr";
 import { BookingService } from "src/app/services/booking/booking.service";
 import { SharedDataService } from "src/app/services/sharedData/shared-data.service";
 
-import { Booking } from "src/app/models/booking";
+import { Booking } from "src/app/models/Booking";
 
 @Component({
   selector: "app-booking",

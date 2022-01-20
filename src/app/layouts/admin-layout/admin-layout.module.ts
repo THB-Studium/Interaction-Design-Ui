@@ -1,7 +1,7 @@
 import { NgModule } from "@angular/core";
 import { HttpClientModule } from "@angular/common/http";
 import { RouterModule } from "@angular/router";
-import { CommonModule, HashLocationStrategy, LocationStrategy } from "@angular/common";
+import { CommonModule } from "@angular/common";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 
 import { ClipboardModule } from "ngx-clipboard";
@@ -22,27 +22,15 @@ import { MatTableModule } from "@angular/material/table";
 import { MatPaginatorModule } from "@angular/material/paginator";
 import { MatSortModule } from "@angular/material/sort";
 import { MatDialogModule } from "@angular/material/dialog";
-import { MatDatepickerModule } from "@angular/material/datepicker";
-import { MatNativeDateModule } from "@angular/material/core";
-import { MatAutocompleteModule } from "@angular/material/autocomplete";
-import { MatGridListModule } from "@angular/material/grid-list";
-import { MatToolbarModule } from "@angular/material/toolbar";
-import { MatProgressBarModule } from "@angular/material/progress-bar";
-import { MatListModule } from "@angular/material/list";
-import { MatExpansionModule } from "@angular/material/expansion";
 
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { ComponentsModule } from "src/app/components/components.module";
 
 import { AdminLayoutRoutes } from "./admin-layout.routing";
-import { AdminComponent } from "../../pages/admins/admin.component";
-import { BookingComponent } from "../../pages/booking/booking.component";
-import { CountryComponent } from "src/app/pages/country/country.component";
+
 import { DashboardComponent } from "../../pages/dashboard/dashboard.component";
-import { EditCountryComponent } from "src/app//pages/edit-country/edit-country.component";
-import { TravelerComponent } from "../../pages/traveler/traveler.component";
-import { TripofferComponent } from 'src/app/pages/tripoffer/tripoffer.component';
-import { EditTripofferComponent } from 'src/app/pages/edit-tripoffer/edit-tripoffer.component';
+import { AdminComponent } from "../../pages/admins/admin.component";
+import { BookingComponent } from '../../pages/booking/booking.component';
 import { UserProfileComponent } from "../../pages/user-profile/user-profile.component";
 
 @NgModule({
@@ -70,30 +58,13 @@ import { UserProfileComponent } from "../../pages/user-profile/user-profile.comp
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
-    MatDialogModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
-    MatAutocompleteModule,
-    MatGridListModule,
-    MatToolbarModule,
-    MatProgressBarModule,
-    MatListModule,
-    MatExpansionModule
+    MatDialogModule
   ],
   declarations: [
-    AdminComponent,
+    DashboardComponent, 
+    AdminComponent, 
     BookingComponent,
-    EditTripofferComponent,
-    CountryComponent,
-    DashboardComponent,
-    EditCountryComponent,
-    TravelerComponent,
-    TripofferComponent,
-    UserProfileComponent,
-  ],
-  providers: [
-    //{ provide: HTTP_INTERCEPTORS, useClass: AppHttpInterceptor, multi: true },
-    {provide: LocationStrategy, useClass: HashLocationStrategy}
-  ],
+    UserProfileComponent
+  ]
 })
 export class AdminLayoutModule {}

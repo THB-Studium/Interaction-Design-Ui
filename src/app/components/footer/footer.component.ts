@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-footer',
@@ -6,8 +6,7 @@ import {Component, Input, OnInit} from '@angular/core';
   styleUrls: ['./footer.component.scss']
 })
 export class FooterComponent implements OnInit {
-  @Input() btnColor: any
-  currentDate: Date = new Date();
+  test: Date = new Date();
 
   constructor() { }
 
