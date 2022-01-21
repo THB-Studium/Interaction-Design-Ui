@@ -136,11 +136,11 @@
     <div mat-dialog-content>
         <app-traveler-form (notifyTravelerFormValid)="isFormValid($event)"></app-traveler-form>
     </div>
-    <div mat-dialog-actions>
+    <div class="justify-content-end" mat-dialog-actions>
         <button mat-raised-button color="primary" mat-dialog-close (click)="commitChanges()" [disabled]="!valid">
             Speichern
         </button>
-        <button mat-raised-button color="accent" mat-dialog-close (click)="resetFormStatus()">
+        <button mat-button color="accent" mat-dialog-close (click)="resetFormStatus()">
             Abbrechen
         </button>
     </div>
@@ -155,7 +155,7 @@
             Wollen Sie wirklich <strong>{{ currentTraveler?.vorname }} {{ currentTraveler?.name }}</strong> löschen?
         </p>
     </div>
-    <div mat-dialog-actions>
+    <div  class="justify-content-end" mat-dialog-actions>
         <button mat-raised-button color="primary" mat-dialog-close (click)="deleteTraveler()">Ja</button>
         <button mat-raised-button color="accent" mat-dialog-close>Nein</button>
     </div>
@@ -194,7 +194,7 @@
             <div class="form-row">
                 <mat-form-field class="col-md-12" appearance="standard">
                     <mat-label>Telefonnummer:</mat-label>
-                    <input matInput [value]="currentTraveler.telefonnummer" disabled>
+                    <input matInput [value]="getPhoneNumber(currentTraveler)" disabled>
                 </mat-form-field>
             </div>
             <div class="form-row">
@@ -206,7 +206,7 @@
             </div>
         </form>
     </div>
-    <div mat-dialog-actions>
-        <button mat-button mat-dialog-close>Ok</button>
+    <div  class="justify-content-end" mat-dialog-actions>
+        <button mat-raised-button mat-dialog-close>Ok</button>
     </div>
 </ng-template>
