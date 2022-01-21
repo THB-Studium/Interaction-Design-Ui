@@ -11,6 +11,7 @@ import { SharedDataService } from "src/app/services/sharedData/shared-data.servi
 
 import { Traveler } from "src/app/models/traveler";
 import { Pattern } from "src/app/variables/pattern";
+import { formatDate } from "@angular/common";
 
 @Component({
   selector: "app-traveler-form",
@@ -72,6 +73,8 @@ export class TravelerFormComponent implements OnInit, AfterViewInit {
   };
   // Defines isDobValid
   isDobValid = false;
+  // Defines selectedDate
+  selectedDate: any;
 
   constructor(private sharedDataService: SharedDataService) {}
 
@@ -137,7 +140,7 @@ export class TravelerFormComponent implements OnInit, AfterViewInit {
       street: street,
       postal: postal,
       city: city,
-      mobile: `0${traveler.telefonnummer}`, // Since number has been saved without the 0 before (int)
+      mobile: `+${traveler.telefonnummer}`, // Since number has been saved without the 0 before (int)
       university: traveler.hochschule,
       faculty: traveler.studiengang,
       participated: traveler.schonTeilgenommen
@@ -166,26 +169,25 @@ export class TravelerFormComponent implements OnInit, AfterViewInit {
   // Checks whether the selected date of birth is valid or not
   onDateSelected(selectedDate) {
     const dob = selectedDate.target.value;
-
-    /** The 3 following variables are timestamp type */
-    const today = new Date().getTime();
-    // The user should not be older than 1940
-    const maxDate = Date.UTC(1940, 1, 1);
-    // If is an adult.
-    const minDate = Date.UTC(2003, 1, 1);
-
+    this.selectedDate = dob !== "" ? formatDate(dob, "yyyy-MM-dd", "en_US") : formatDate(null, "yyyy-MM-dd", "en_US");
+    const today = formatDate(new Date(), "yyyy-MM-dd", "en_US");
+     // The user should not be older than 1940
+     const maxDate = formatDate(new Date(1940, 1, 1), "yyyy-MM-dd", "en_US");
+     // If is an adult.
+     const minDate = formatDate(new Date(2003, 1, 1), "yyyy-MM-dd", "en_US");
+ 
     // Check whether the selected date is valid or not
     if (
-      dob.getTime() > today ||
-      (dob.getTime() < today && dob.getTime() > minDate) ||
-      dob.getTime() > minDate
+      this.selectedDate > today ||
+      (this.selectedDate < today && this.selectedDate > minDate) ||
+      this.selectedDate > minDate
     ) {
       this.errors.dateOfBirth = "Es werden nur Erwachsener zugelassen.";
       // set dob to not valid
       this.isDobValid = false;
       // notify the parent that the form is not valid
       this.notifyTravelerFormValid.emit(false);
-    } else if (dob.getTime() < maxDate) {
+    } else if (this.selectedDate < maxDate) {
       this.errors.dateOfBirth = "Älter als 80 Jahre wird nicht zugelassen.";
       // set dob to not valid
       this.isDobValid = false;
@@ -202,35 +204,6 @@ export class TravelerFormComponent implements OnInit, AfterViewInit {
   // Always get the value from the form and update the current traveler information when any input value changed.
   private onFormValuesChanged(): void {
     this.travelerForm.valueChanges.subscribe(() => {
-      var id = null;
-      if (!this.isAnAdd) {
-        id = this.currentTravelerId;
-      }
-
-      const dob = new Date(this.travelerForm.value.birthday);
-      this.currentTraveler = {
-        id: id,
-        vorname: this.firstCharacterToUpper(this.travelerForm.value.firstname),
-        name: this.firstCharacterToUpper(this.travelerForm.value.lastname),
-        // Since the module datepicker returns the date as string. We add 1 day to current selected date of birth
-        geburtsdatum: new Date(dob.setDate(dob.getDate() + 1)),
-        email: this.travelerForm.value.email,
-        adresse: `${this.firstCharacterToUpper(
-          this.travelerForm.value.street
-        )}, ${this.travelerForm.value.postal} ${this.firstCharacterToUpper(
-          this.travelerForm.value.city
-        )}`,
-        telefonnummer: parseInt(this.travelerForm.value.mobile),
-        hochschule: this.firstCharacterToUpper(
-          this.travelerForm.value.university
-        ),
-        studiengang: this.firstCharacterToUpper(
-          this.travelerForm.value.faculty
-        ),
-        schonTeilgenommen:
-          this.travelerForm.value.participated === this.chooseArray[0],
-        arbeitBei: this.firstCharacterToUpper(this.travelerForm.value.workfor),
-      };
       // check whether the form is valid or not
       this.isFormValid();
     });
@@ -251,6 +224,34 @@ export class TravelerFormComponent implements OnInit, AfterViewInit {
       this.travelerForm.get("faculty").valid &&
       this.travelerForm.get("participated").valid
     ) {
+      var id = null;
+      if (!this.isAnAdd) {
+        id = this.currentTravelerId;
+      }
+
+      this.currentTraveler = {
+        id: id,
+        vorname: this.firstCharacterToUpper(this.travelerForm.value.firstname),
+        name: this.firstCharacterToUpper(this.travelerForm.value.lastname),
+        geburtsdatum: this.selectedDate,
+        email: this.travelerForm.value.email,
+        adresse: `${this.firstCharacterToUpper(
+          this.travelerForm.value.street
+        )}, ${this.travelerForm.value.postal} ${this.firstCharacterToUpper(
+          this.travelerForm.value.city
+        )}`,
+        telefonnummer: parseInt(this.travelerForm.value.mobile),
+        hochschule: this.firstCharacterToUpper(
+          this.travelerForm.value.university
+        ),
+        studiengang: this.firstCharacterToUpper(
+          this.travelerForm.value.faculty
+        ),
+        schonTeilgenommen:
+          this.travelerForm.value.participated === this.chooseArray[0],
+        arbeitBei: this.firstCharacterToUpper(this.travelerForm.value.workfor),
+      };
+
       this.sharedDataService.changeCurrentTraveler(this.currentTraveler);
       // notify the parent that the form is valid
       this.notifyTravelerFormValid.emit(true);
