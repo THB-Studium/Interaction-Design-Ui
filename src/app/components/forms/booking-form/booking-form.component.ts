@@ -51,7 +51,7 @@ export class BookingFormComponent implements OnInit, AfterViewInit, OnDestroy {
     // traveler
     traveler: new FormControl("", [Validators.required]),
     // cotraveler
-    coTraveler: new FormControl("", []),
+    coTraveler: new FormControl(null, []),
     // handLuggage
     handLuggage: new FormControl("", []),
     // suitcase
@@ -115,6 +115,8 @@ export class BookingFormComponent implements OnInit, AfterViewInit, OnDestroy {
   dateValid: boolean = false;
   // Defines defaultAirport
   defaultAirport: string;
+  // Defines selectedDate
+  selectedDate: any;
 
   constructor(
     private sharedDataService: SharedDataService,
@@ -127,7 +129,7 @@ export class BookingFormComponent implements OnInit, AfterViewInit, OnDestroy {
     this.currentBooking = {
       buchungsklasseId: "",
       datum: "",
-      flugHafen: "",
+      flughafen: "",
       handGepaeck: "",
       id: "",
       koffer: "",
@@ -165,13 +167,13 @@ export class BookingFormComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // On date value changes check whether it is valide or not.
     this.bookingForm.get("date").valueChanges.subscribe((date) => {
-      const selectedDate =
+      this.selectedDate =
         date !== ""
           ? formatDate(date, "yyyy-MM-dd", "en_US")
           : formatDate(null, "yyyy-MM-dd", "en_US");
       const now = formatDate(new Date(), "yyyy-MM-dd", "en_US");
 
-      if (selectedDate < now) {
+      if (this.selectedDate < now) {
         this.dateError = "Die Eingabe bitte mal prüfen.";
         this.dateValid = false;
       } else {
@@ -310,11 +312,12 @@ export class BookingFormComponent implements OnInit, AfterViewInit, OnDestroy {
       this.bookingForm.get("tripoffer").valid
     ) {
       var id = this.isAnAdd ? null :  this.currentBooking.id;
+
       this.currentBooking = {
         id: id,
         buchungsklasseId: this.bookingForm.get("bookingClass").value.id,
-        flugHafen: this.bookingForm.get("airport").value,
-        datum: this.bookingForm.get("date").value,
+        flughafen: this.bookingForm.get("airport").value,
+        datum: this.selectedDate,
         reiser: this.bookingForm.get("traveler").value,
         mitReiser: this.bookingForm.get("coTraveler").value,
         handGepaeck: this.bookingForm.get("handLuggage").value,

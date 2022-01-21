@@ -79,7 +79,7 @@ export class BookingComponent implements OnInit, AfterViewInit {
         id: "",
         buchungsklasseId: "",
         datum: "",
-        flugHafen: "",
+        flughafen: "",
         handGepaeck: "",
         koffer: "",
         mitReiser: null,

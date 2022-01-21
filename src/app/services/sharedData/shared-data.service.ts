@@ -213,7 +213,7 @@ export class SharedDataService {
     id: '',
     buchungsklasseId: '',
     datum: '',
-    flugHafen: '',
+    flughafen: '',
     handGepaeck: '',
     koffer: '',
     mitReiser: null,
