@@ -27,13 +27,13 @@ export class HighlightService {
   }
 
   // POST
-  addOne(formData: FormData): Observable<any> {
-    return this.httpClient.post<FormData>(this.HIGHLIGHT_URL, formData);
+  addOne(form: any): Observable<any> {
+    return this.httpClient.post<FormData>(this.HIGHLIGHT_URL, form);
   }
 
   // PUT
-  updateOne(formData: FormData): Observable<Highlight> {
-    return this.httpClient.put<Highlight>(this.HIGHLIGHT_URL, formData, {
+  updateOne(form: any): Observable<Highlight> {
+    return this.httpClient.put<Highlight>(this.HIGHLIGHT_URL, form, {
       headers: this.headers,
     });
   }

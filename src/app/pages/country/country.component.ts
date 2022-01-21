@@ -11,7 +11,6 @@ import { ToastrService } from "ngx-toastr";
 import { SharedDataService } from "src/app/services/sharedData/shared-data.service";
 
 import { Country } from "src/app/models/country";
-import { DomSanitizer } from "@angular/platform-browser";
 
 @Component({
   selector: "app-country",
@@ -42,8 +41,7 @@ export class CountryComponent implements OnInit, AfterViewInit {
   // Defines dialogConfig
   dialogConfig = new MatDialogConfig();
   //
-  isValid = true;
-  image: any;
+  isValid = false;
 
   constructor(
     private countryService: CountryService,
@@ -51,21 +49,34 @@ export class CountryComponent implements OnInit, AfterViewInit {
     private dialog: MatDialog,
     private toastrService: ToastrService,
     private router: Router,
-    private route: ActivatedRoute,
-    private sanitizer: DomSanitizer
+    private route: ActivatedRoute
   ) {
     this.dialogConfiguration();
   }
 
   ngOnInit(): void {
-    this.dataSource = new MatTableDataSource([]);
+    this.dataSource = new MatTableDataSource([
+      {
+        flughafen: [],
+        highlights: [],
+        id: "",
+        karte_bild: null,
+        landInfo: null,
+        name: "",
+        unterkunft: [],
+        unterkunft_text: "",
+        realImage: "",
+      },
+    ]);
     this.getCountries();
   }
 
   ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
-    this.sharedDataService.currentCountry.subscribe(country => this.currentCountry = country);
+    this.sharedDataService.currentCountry.subscribe(
+      (country) => (this.currentCountry = country)
+    );
   }
 
   // Dialog configurations
@@ -94,18 +105,13 @@ export class CountryComponent implements OnInit, AfterViewInit {
   }
 
   private getCountries() {
-    this.sortByName(this.countriesList);
-    this.dataSource.data = this.countriesList;
+    //this.sortByName(this.countriesList);
+    //this.dataSource.data = this.countriesList;
     this.countryService.getAll().subscribe({
       next: (countries) => {
         this.countriesList = countries;
         this.sortByName(this.countriesList);
-        this.dataSource.data = this.countriesList.map(country => {
-          //convert image
-          let objectURL = 'data:image/png;base64,' + country.karte_bild;
-          country.realImage = this.sanitizer.bypassSecurityTrustUrl(objectURL);
-          return country;
-        })
+        this.dataSource.data = this.countriesList;
       },
       error: (err) => {
         this.handleError(err);
@@ -122,7 +128,7 @@ export class CountryComponent implements OnInit, AfterViewInit {
   }
 
   displayTheNFirstCharacter(text: string, n: number): string {
-    return text.length >= n ? `${text.slice(0, n-1)}...` : text;
+    return text.length >= n ? `${text.slice(0, n - 1)}...` : text;
   }
 
   AddNewCountryDialog(dialogForm: any) {
@@ -139,10 +145,8 @@ export class CountryComponent implements OnInit, AfterViewInit {
       name: this.currentCountry.name,
       flughafen: this.currentCountry.flughafen,
       unterkunft_text: this.currentCountry.unterkunft_text,
-      image: this.currentCountry.karte_bild
-    }
-
-    console.log(tocreate);
+      image: this.currentCountry.karte_bild,
+    };
 
     // get the value from the data service
     this.countryService.addOne(tocreate).subscribe({
@@ -152,6 +156,7 @@ export class CountryComponent implements OnInit, AfterViewInit {
         this.countriesList.push(resp);
         this.sortByName(this.countriesList);
         this.dataSource.data = this.countriesList;
+        this.router.navigate(["/countries/edit/", resp.id]);
       },
       error: (err) => {
         this.handleError(err);
@@ -207,7 +212,7 @@ export class CountryComponent implements OnInit, AfterViewInit {
         this.toastrService.success(
           `${this.currentCountry.name} wurde erfolgreich entfernt.`
         );
-      }
+      },
     });
   }
 
