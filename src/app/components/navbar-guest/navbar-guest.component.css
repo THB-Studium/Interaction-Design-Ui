@@ -3,8 +3,9 @@
 }
 
 .bg-auth {
-  background-color: #2d92ab !important;
+  background-color: #2d92ab;
 }
+
 .navbar-nav a {
   font-size: 18px;
   text-transform: uppercase;
@@ -15,6 +16,23 @@
 }
 .nav-link {
   padding: 0.2rem 1rem;
+}
+
+img {
+  max-width: 10em !important;
+}
+
+.fixed-top {
+  position: absolute;
+}
+
+.navbar {
+  height: 10em !important;
+}
+
+.navbar-horizontal .navbar-brand img {
+  width: 5.3em;
+  height: unset;
 }
 
 img {
