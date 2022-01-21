@@ -3,6 +3,12 @@
 
 
 /*##################################### Style settings ###################################*/
+:root {
+  --color-blue: #2d92ab;
+  --color-white: #ffff;
+  --color-black: #0000;
+  --set-content-right: auto 0 auto auto;
+}
 
 html,
 body {
@@ -53,6 +59,37 @@ p {
   color: #FFFFFF !important;
 }
 
+.myRow {
+  width: 100% !important;
+  display: flex !important;
+  flex-direction: row !important;
+}
+
+.submit {
+  background-color: #fff;
+  color: #2d92ab;
+  border: 1px solid #fff;
+  border-radius: 4px;
+  height: 30px;
+}
+
+.primary-colors {
+  background-color: #2d92ab;
+  color: #fff;
+}
+
+.margin-bottom {
+  margin-bottom: 10px;
+}
+
+.margin-right {
+  margin-right: 10px;
+}
+
+.margin-left {
+  margin-left: 10px;
+}
+
 .cursor-pointer {
   cursor: pointer;
 }
@@ -62,8 +99,12 @@ p {
   bottom: 0;
 }
 
+.set-content-right {
+  margin: auto 0 auto auto !important;
+}
+
 .card-shadow {
-  box-shadow: 1px 1px 16px 2px rgb(45 146 171) !important;
+  box-shadow: 1px 1px 16px 2px var(--color-blue) !important;
 }
 
 /*##################################### Display Screen settings ###################################*/

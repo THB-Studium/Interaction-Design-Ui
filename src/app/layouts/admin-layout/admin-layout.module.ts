@@ -1,7 +1,7 @@
 import { NgModule } from "@angular/core";
 import { HttpClientModule } from "@angular/common/http";
 import { RouterModule } from "@angular/router";
-import { CommonModule } from "@angular/common";
+import { CommonModule, HashLocationStrategy, LocationStrategy } from "@angular/common";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 
 import { ClipboardModule } from "ngx-clipboard";
@@ -92,6 +92,10 @@ import { UserProfileComponent } from "../../pages/user-profile/user-profile.comp
     TravelerComponent,
     TripofferComponent,
     UserProfileComponent,
+  ],
+  providers: [
+    //{ provide: HTTP_INTERCEPTORS, useClass: AppHttpInterceptor, multi: true },
+    {provide: LocationStrategy, useClass: HashLocationStrategy}
   ],
 })
 export class AdminLayoutModule {}

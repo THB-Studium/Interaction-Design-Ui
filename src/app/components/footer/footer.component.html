@@ -5,15 +5,14 @@
         <h3 class="text-white">Kontakt</h3>
         <p class="text-white">Julia Schnitzer</p>
         <p class="text-white">post@university-travel-club.org</p>
-        &copy; {{ test | date: "yyyy" }}
-        <a href="https://www.creative-tim.com?ref=ada-footer-auth-layout" class="font-weight-bold ml-1 text-white"
-          target="_blank">UNIVERSITY TRAVEL CLUB</a>
+
+        <p class="text-white">&copy; COPYRIGHT {{ currentDate | date: "yyyy" }} - UNIVERSITY TRAVEL CLUB</p>
       </div>
     </div>
     <div class="col-xl-4">
       <h3 class="text-white">Newsletter abonnieren</h3>
       <Input type="text" placeholder="E-mail Adresse..." />
-      <button class="submit">ABONNIEREN</button>
+      <button class="submit" [ngStyle]="btnColor">ABONNIEREN</button>
     </div>
     <div class="col-xl-2">
       <a href="https://www.facebook.com/universitytravelclub" class="text-white"><i class="bi bi-facebook">facebook</i></a>
