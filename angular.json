@@ -36,7 +36,7 @@
             ]
           },
           "configurations": {
-            "production": {
+            "prod": {
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
@@ -60,7 +60,7 @@
               },
               "serviceWorker": false
             },
-            "development": {
+            "dev": {
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
@@ -116,17 +116,17 @@
             "browserTarget": "argon-dashboard-angular:build"
           },
           "configurations": {
-            "production": {
-              "browserTarget": "argon-dashboard-angular:build:production"
+            "prod": {
+              "browserTarget": "argon-dashboard-angular:build:prod"
             },
-            "development": {
-              "browserTarget": "argon-dashboard-angular:build:development"
+            "dev": {
+              "browserTarget": "argon-dashboard-angular:build:dev"
             },
             "test": {
               "browserTarget": "argon-dashboard-angular:build:test"
             }
           },
-          "defaultConfiguration": "production"
+          "defaultConfiguration": "prod"
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
@@ -178,8 +178,8 @@
             "devServerTarget": "argon-dashboard-angular:serve"
           },
           "configurations": {
-            "production": {
-              "devServerTarget": "argon-dashboard-angular:serve:production"
+            "prod": {
+              "devServerTarget": "argon-dashboard-angular:serve:prod"
             }
           }
         },
