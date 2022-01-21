@@ -49,7 +49,16 @@ export class HighlightFormComponent implements OnInit, AfterViewInit {
   constructor(
     private sharedDataService: SharedDataService,
     private toastrService: ToastrService
-  ) { }
+  ) {
+    this.currentHighlight = {
+      bild: null,
+      description: null,
+      id: null,
+      landId: null,
+      name: "",
+      realImage: null,
+    };
+  }
 
   ngOnInit(): void {
     this.initForm();
@@ -61,7 +70,6 @@ export class HighlightFormComponent implements OnInit, AfterViewInit {
 
   initForm() {
     this.isAnAdd = this.sharedDataService.isAddBtnClicked;
-
     // If it is not an add
     if (!this.isAnAdd) {
       this.isImgSelected = true;
@@ -88,7 +96,7 @@ export class HighlightFormComponent implements OnInit, AfterViewInit {
     this.highlightForm.setValue({
       name: highlight.name,
       description: highlight.description,
-      img: '',
+      img: highlight.bild,
     });
   }
 
@@ -116,7 +124,7 @@ export class HighlightFormComponent implements OnInit, AfterViewInit {
         id: id,
         name: this.highlightForm.get("name").value,
         description: this.highlightForm.get("description").value,
-        bild: null,
+        bild: this.currentHighlight.realImage,
         landId: this.currentcountryId,
       };
       // change the value of the value into the service
@@ -136,8 +144,16 @@ export class HighlightFormComponent implements OnInit, AfterViewInit {
       this.selectedFileName = this.selectedFile.item(0).name;
       // display the name
       this.highlightForm.value.img = this.selectedFileName;
+      const file = event.target.files[0];
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        this.currentHighlight.realImage = reader.result;
+      };
+      this.highlightForm.get("img").setErrors(null);
     } else {
       this.isImgSelected = false;
+      this.highlightForm.get("img").setErrors({ valid: true });
     }
     // check whether the form is valid or not
     this.isFormValid();

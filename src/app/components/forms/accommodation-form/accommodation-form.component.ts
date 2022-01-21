@@ -13,12 +13,11 @@ import { ToastrService } from "ngx-toastr";
 import { Accommodation } from "src/app/models/accommodation";
 
 @Component({
-  selector: 'app-accommodation-form',
-  templateUrl: './accommodation-form.component.html',
-  styleUrls: ['./accommodation-form.component.css']
+  selector: "app-accommodation-form",
+  templateUrl: "./accommodation-form.component.html",
+  styleUrls: ["./accommodation-form.component.css"],
 })
 export class AccommodationFormComponent implements OnInit, AfterViewInit {
-
   // Defines notifyFormIsValid.
   @Output() notifyFormIsValid = new EventEmitter<boolean>(false);
 
@@ -33,7 +32,7 @@ export class AccommodationFormComponent implements OnInit, AfterViewInit {
     // description
     description: new FormControl("", [Validators.required]),
     // images
-    images: new FormControl("Bilder auswählen", [Validators.required])
+    images: new FormControl("Bilder auswählen", [Validators.required]),
   });
 
   // Defines currentAccommodation
@@ -56,7 +55,17 @@ export class AccommodationFormComponent implements OnInit, AfterViewInit {
   constructor(
     private sharedDataService: SharedDataService,
     private toastrService: ToastrService
-  ) { }
+  ) {
+    this.currentAccommodation = {
+      adresse: "",
+      beschreibung: "",
+      bilder: [],
+      id: null,
+      landId: null,
+      link: "",
+      name: "",
+    };
+  }
 
   ngOnInit(): void {
     this.initForm();
@@ -71,30 +80,32 @@ export class AccommodationFormComponent implements OnInit, AfterViewInit {
     // If it is not an add
     if (!this.isAnAdd) {
       this.isImgSelected = true;
-      this.sharedDataService.currentAccommodation.subscribe({
-        next: (accommodation) => {
-          this.currentAccommodation = accommodation;
-          this.setFormDefaultValue(accommodation);
-          this.currentAccommodationId = accommodation.id;
-          this.currentcountryId = accommodation.landId
-        },
-        error: () => {
-          this.toastrService.error(
-            `Die Unterkünfte konnten nicht geladen werden.`,
-            "Fehler"
-          );
-        }
-      }).unsubscribe();
+      this.sharedDataService.currentAccommodation
+        .subscribe({
+          next: (accommodation) => {
+            this.currentAccommodation = accommodation;
+            this.setFormDefaultValue(accommodation);
+            this.currentAccommodationId = accommodation.id;
+            this.currentcountryId = accommodation.landId;
+          },
+          error: () => {
+            this.toastrService.error(
+              `Die Unterkünfte konnten nicht geladen werden.`,
+              "Fehler"
+            );
+          },
+        })
+        .unsubscribe();
     }
   }
 
   private setFormDefaultValue(accommodation: Accommodation): void {
     this.accommodationForm.setValue({
       name: accommodation.name,
-      address: '',
+      address: "",
       web: accommodation.link,
       description: accommodation.beschreibung,
-      images: ''
+      images: "",
     });
   }
 
@@ -103,16 +114,18 @@ export class AccommodationFormComponent implements OnInit, AfterViewInit {
       next: () => {
         // check whether the form is valid or not
         this.isFormValid();
-      }
+      },
     });
   }
 
   private isFormValid(): void {
-    if (this.accommodationForm.get("name").valid &&
+    if (
+      this.accommodationForm.get("name").valid &&
       this.accommodationForm.get("description").valid &&
       this.accommodationForm.get("address").valid &&
-      this.accommodationForm.get("web").valid && this.isImgSelected) {
-
+      this.accommodationForm.get("web").valid &&
+      this.isImgSelected
+    ) {
       var id = null;
       if (!this.isAnAdd) {
         id = this.currentAccommodationId;
@@ -121,18 +134,19 @@ export class AccommodationFormComponent implements OnInit, AfterViewInit {
       this.currentAccommodation = {
         id: id,
         name: this.accommodationForm.get("name").value,
-        adresse: this.accommodationForm.get('address').value,
-        link: this.accommodationForm.get('web').value,
+        adresse: this.accommodationForm.get("address").value,
+        link: this.accommodationForm.get("web").value,
         beschreibung: this.accommodationForm.get("description").value,
         bilder: this.uploadedImges,
-        landId: this.currentcountryId
-      }
+        landId: this.currentcountryId,
+      };
       // change the value of the accommodation into the service
-      this.sharedDataService.changeCurrentAccommodation(this.currentAccommodation);
+      this.sharedDataService.changeCurrentAccommodation(
+        this.currentAccommodation
+      );
       // notify the parent
       this.notifyFormIsValid.emit(true);
-    }
-    else {
+    } else {
       this.notifyFormIsValid.emit(false);
     }
   }
@@ -141,18 +155,23 @@ export class AccommodationFormComponent implements OnInit, AfterViewInit {
   selectFiles(event: any): void {
     this.selectedFileNames = [];
     this.selectedFiles = event.target.files;
-
     if (this.selectedFiles && this.selectedFiles[0]) {
       const numberOfFiles = this.selectedFiles.length;
+      this.uploadedImges = [];
       for (let i = 0; i < numberOfFiles; i++) {
         this.selectedFileNames.push(this.selectedFiles.item(i).name);
+        const file = this.selectedFiles.item(i);
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => {
+          this.uploadedImges.push(reader.result);
+        };
       }
-      // set the current images
-      this.currentAccommodation.bilder = this.selectedFiles;
+      this.accommodationForm.get("images").setErrors(null);
       this.isImgSelected = true;
-    }
-    else {
+    } else {
       this.isImgSelected = false;
+      this.accommodationForm.get("images").setErrors({ valid: true });
     }
     // check whether the form is valid or not
     this.isFormValid();
