@@ -1,5 +1,7 @@
 import { AfterViewInit, Component, OnInit } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
+import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { MatChipInputEvent } from "@angular/material/chips";
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 
 import { AccommodationService } from "src/app/services/accommodation/accommodation.service";
@@ -13,6 +15,7 @@ import { Country } from "src/app/models/country";
 import { Highlight } from "src/app/models/highlight";
 import { Accommodation } from "src/app/models/accommodation";
 import { CountryInformation } from "src/app/models/countryInformation";
+import { DomSanitizer } from "@angular/platform-browser";
 
 @Component({
   selector: "app-edit-country",
@@ -20,6 +23,26 @@ import { CountryInformation } from "src/app/models/countryInformation";
   styleUrls: ["./edit-country.component.css"],
 })
 export class EditCountryComponent implements OnInit, AfterViewInit {
+   // Defines countryForm
+   countryForm = new FormGroup({
+    // name
+    name: new FormControl("", [Validators.required]),
+    // airport
+    airports: new FormControl("", [Validators.required]),
+    // text
+    accommodation_text: new FormControl("", [Validators.required]),
+    // image
+    image: new FormControl("", [Validators.required])
+  });
+   // Defines airportsArray
+   airportsArray = new Set([]);
+   // Defines isImgSelected
+   isImgSelected = false;
+   // Defines selectedFileName
+   selectedFileName: string;
+   // Defines selectedFile
+   selectedFile?: any;
+   fileInputByte: any;
   // Defines dialogConfig
   dialogConfig = new MatDialogConfig();
   // Defines country
@@ -41,7 +64,7 @@ export class EditCountryComponent implements OnInit, AfterViewInit {
   // Defines isValid
   isValid: boolean = false;
   // Defines isCountryFromValid
-  isCountryFromValid: boolean = false;
+  isCountryFromValid: boolean = true;
   // Defines errors
   errors = {
     errorMessage: "",
@@ -60,7 +83,8 @@ export class EditCountryComponent implements OnInit, AfterViewInit {
     private higlightService: HighlightService,
     private sharedDataService: SharedDataService,
     private toastrService: ToastrService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private sanitizer: DomSanitizer
   ) {
     this.dialogConfiguration();
   }
@@ -70,6 +94,7 @@ export class EditCountryComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+    this.onFormValuesChanged();
     this.sharedDataService.currentAccommodation.subscribe(currentValue => this.accommodationForm = currentValue);
     this.sharedDataService.currentCountryInfo.subscribe(currentCountryInfo => this.countryInfoForm = currentCountryInfo);
     this.sharedDataService.currentHighlight.subscribe(currentHighlight => this.highlightForm = currentHighlight);
@@ -88,10 +113,30 @@ export class EditCountryComponent implements OnInit, AfterViewInit {
       this.countryService.getOne(id).subscribe({
         next: (country) => {
           console.log(country)
+          //convert image
+          let objectURL = 'data:image/png;base64,' + country.karte_bild;
+          country.realImage = this.sanitizer.bypassSecurityTrustUrl(objectURL);
+
           this.country = country;
+
+          this.setcurrentCountryForm(this.country);
+
           this.countryInfos = this.country.landInfo;
-          this.highlights = this.country.highlights;
-          this.accommodations = this.country.unterkunft;
+          this.highlights = this.country.highlights.map(hight => {
+            //convert image
+            let objectURLHigh = 'data:image/png;base64,' + hight.bild;
+            hight.realImage = this.sanitizer.bypassSecurityTrustUrl(objectURLHigh);
+            return hight;
+          });
+          this.accommodations = this.country.unterkunft.map(unter => {
+            unter.bilder.map(bild => {
+              //convert image
+            let objectURLUnter = 'data:image/png;base64,' + bild;
+            unter.realImages.push(this.sanitizer.bypassSecurityTrustUrl(objectURLUnter));
+            });
+            
+            return unter;
+          });
           // set the value of the country in the current component and also into the data service
           this.sharedDataService.changeCurrentCountry(this.country);
         },
@@ -100,27 +145,100 @@ export class EditCountryComponent implements OnInit, AfterViewInit {
     });
   }
 
-  updateCountry() {
-    this.sharedDataService.currentCountry.subscribe(curValue => {
-      let formData = new FormData();
-      formData.append('bild', new Blob([curValue.karte_bild], {
-        type: "application/multipart/form-data",
-      }));
-      formData.append('land', new Blob([
-        JSON.stringify({
-          id: curValue.id,
-          name: curValue.name,
-          flughafen: curValue.flughafen,
-          unterkunft_text: curValue.unterkunft_text
-        })
-      ], { type: 'application/json' }));
-
-      this.countryService.updateOne(formData).subscribe({
-        next: (updatedCountry) => this.sharedDataService.changeCurrentCountry(updatedCountry),
-        error: () => this.error(),
-        complete: () => this.success()
-      });
+  private setcurrentCountryForm(country: Country) {
+    this.countryForm.setValue({
+      name: country.name,
+      airports: country.flughafen, // todo: add image name here
+      accommodation_text: country.unterkunft_text,
+      image: country.karte_bild
     });
+  }
+
+  updateCountry() {
+
+    let currentImg = this.country.realImage.changingThisBreaksApplicationSecurity;
+
+    let toUpdate = {
+      id: this.country.id,
+      name: this.countryForm.get('name').value,
+      flughafen: Array.from(this.airportsArray),
+      unterkunft_text: this.countryForm.get('accommodation_text').value,
+      image:this.isImgSelected ? this.fileInputByte : currentImg,
+      highlights: this.country.highlights ? this.country.highlights : [],
+      landInfo: this.country.landInfo ? this.country.landInfo : [],
+      unterkunft: this.country.unterkunft ? this.country.unterkunft : []
+    };
+
+    console.log('update',toUpdate);
+
+    this.countryService.updateOne(toUpdate).subscribe({
+      next: (updatedCountry) => this.sharedDataService.changeCurrentCountry(updatedCountry),
+      error: () => this.error(),
+      complete: () => this.success()
+    });
+  }
+
+  // Adds new selected airport into the list of airports
+  addAirportFromInput(event: MatChipInputEvent) {
+    if (event.value) {
+      this.airportsArray.add(event.value);
+      event.chipInput!.clear();
+    }
+    // check whether the form is valid or not
+    this.isFormValid();
+  }
+
+  // Removes selected from the list of airports
+  removeAirport(airport: string) {
+    this.airportsArray.delete(airport);
+    // check whether the form is valid or not
+    this.isFormValid();
+  }
+
+  selectFile(event: any) {
+    this.selectedFile = event.target.files;
+    if (this.selectedFile && this.selectedFile.item(0)) {
+      this.isImgSelected = true;
+      this.selectedFileName = this.selectedFile.item(0).name;
+      // display the name
+      this.countryForm.value.image = this.selectedFileName;
+      const file = event.target.files[0];
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => {
+          console.log(reader.result);
+          this.fileInputByte = reader.result;
+        };
+    } else {
+      this.isImgSelected = false;
+    }
+    // check whether the form is valid or not
+    this.isFormValid();
+  }
+
+  private onFormValuesChanged(): void {
+    this.countryForm.valueChanges.subscribe({
+      next: () => this.isFormValid(),
+    });
+  }
+
+  private isFormValid(): void {
+    if (
+      this.countryForm.get("name").valid &&
+      this.countryForm.get("accommodation_text").valid
+    ) {
+
+      let currentCountry = {
+        id: null,
+        name: this.countryForm.get('name').value,
+        flughafen: Array.from(this.airportsArray),
+        unterkunft_text: this.countryForm.get('accommodation_text').value,
+        karte_bild: null,
+        landInfo: [],
+        unterkunft: [],
+      };
+      this.isValid = true;
+    }
   }
 
   navigateToCountriesList() {
@@ -371,6 +489,7 @@ export class EditCountryComponent implements OnInit, AfterViewInit {
     this.toastrService.success(
       "Die Information wurde erfolgreich gespeichert."
     );
+    this.ngOnInit();
   }
 
   private error() {

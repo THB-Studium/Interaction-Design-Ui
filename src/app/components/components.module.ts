@@ -41,6 +41,7 @@ import { HighlightFormComponent } from './forms/highlight-form/highlight-form.co
 import { AccommodationFormComponent } from './forms/accommodation-form/accommodation-form.component';
 import { CountryInformationFormComponent } from './forms/country-information-form/country-information-form.component';
 import { NavbarGuestComponent } from './navbar-guest/navbar-guest.component';
+import { FeedbackFormComponent } from './forms/feedback-form/feedback-form.component';
 
 @NgModule({
   imports: [
@@ -87,22 +88,24 @@ import { NavbarGuestComponent } from './navbar-guest/navbar-guest.component';
     HighlightFormComponent,
     AccommodationFormComponent,
     CountryInformationFormComponent,
-    NavbarGuestComponent
+    NavbarGuestComponent,
+    FeedbackFormComponent
   ],
-  exports: [
-    FooterComponent,
-    NavbarComponent,
-    SidebarComponent,
-    AdminFormComponent,
-    TravelerFormComponent,
-    TripofferFormComponent,
-    ExpectationFormComponent,
-    BookingclassFormComponent,
-    CountryFormComponent,
-    HighlightFormComponent,
-    AccommodationFormComponent,
-    CountryInformationFormComponent,
-    NavbarGuestComponent
-  ],
+    exports: [
+        FooterComponent,
+        NavbarComponent,
+        SidebarComponent,
+        AdminFormComponent,
+        TravelerFormComponent,
+        TripofferFormComponent,
+        ExpectationFormComponent,
+        BookingclassFormComponent,
+        CountryFormComponent,
+        HighlightFormComponent,
+        AccommodationFormComponent,
+        CountryInformationFormComponent,
+        NavbarGuestComponent,
+        FeedbackFormComponent
+    ],
 })
 export class ComponentsModule {}
