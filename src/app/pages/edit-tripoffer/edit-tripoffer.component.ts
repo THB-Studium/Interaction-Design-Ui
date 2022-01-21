@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, OnInit } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
-import { FormControl } from "@angular/forms";
+import { FormControl, FormGroup, Validators } from "@angular/forms";
 
 import { BookingClassService } from "src/app/services/booking-class/booking-class.service";
 import { CountryService } from "src/app/services/country/country.service";
@@ -14,6 +14,8 @@ import { BookingClass } from "src/app/models/bookingClass";
 import { Country } from "src/app/models/country";
 import { Expectation } from "src/app/models/expectation";
 import { TripOffer } from "src/app/models/tripOffer";
+import { DomSanitizer } from "@angular/platform-browser";
+import { MatChipInputEvent } from "@angular/material/chips";
 
 @Component({
   selector: "app-edit-tripoffer",
@@ -29,8 +31,6 @@ export class EditTripofferComponent implements OnInit, AfterViewInit {
   currentTripoffer: TripOffer;
   // Defines isValid
   isValid = false;
-  // Defines isFormValid. Fire when the tripofferform is valid
-  isFormValid = true;
   // Defines expectationsArray
   expectations: Expectation;
   // Defines bookingclasstobedeleted
@@ -48,6 +48,54 @@ export class EditTripofferComponent implements OnInit, AfterViewInit {
   // Defines selectedCountry
   public selectedCountry: FormControl = new FormControl();
 
+  tripofferForm = new FormGroup({
+    // title
+    title: new FormControl("", [Validators.required]),
+    // image
+    image: new FormControl("", [Validators.required]),
+    // startdate
+    startdate: new FormControl("", [Validators.required]),
+    // enddate
+    enddate: new FormControl("", [Validators.required]),
+    // deadline
+    deadline: new FormControl("", [Validators.required]),
+    // totalplace
+    totalplace: new FormControl("", [Validators.required]),
+    // services
+    services: new FormControl("", [Validators.required]),
+    // authorizedtotravel
+    authorizedtotravel: new FormControl("", [Validators.required]),
+    // note
+    note: new FormControl("", [Validators.required]),
+    // othernote
+    anothernote: new FormControl("", [Validators.required]),
+  });
+
+    // Defines serviceArray
+    serviceArray = new Set([]);
+    // Defines authorizedtotravelArray
+    authorizedtotravelArray = new Set([]);
+    // Defines note
+    note: string;
+    // Defines anothernote
+    anothernote: string;
+    // Defines currentTripofferId
+    currentTripofferId: string;
+    // Defines selectedFile
+    selectedFile: any;
+    fileInputByte: any;
+    // Defines selectedFileNames
+    selectedFileName: string[] = [];
+    // Defines isImgSelected
+    isImgSelected = false;
+    // Defines error
+    errors = {
+      startdate: "",
+      enddate: "",
+      deadlinedate: "",
+    };
+  isFormValid = true;
+
   constructor(
     private activatedRoute: ActivatedRoute,
     private dialog: MatDialog,
@@ -57,14 +105,18 @@ export class EditTripofferComponent implements OnInit, AfterViewInit {
     private sharedDataService: SharedDataService,
     private tripofferService: TripOfferService,
     private toastrService: ToastrService,
-    private countryService: CountryService
+    private countryService: CountryService,
+    private sanitizer: DomSanitizer
   ) {
     this.dialogConfiguration();
+    this.note = "";
+    this.anothernote = "";
   }
 
   ngOnInit(): void {
     this.sharedDataService.isAddBtnClicked = false;
-    this.getTripofferToBeUpdated();
+    // this.getTripofferToBeUpdated();
+    this.initForm();
   }
 
   ngAfterViewInit(): void {
@@ -75,6 +127,90 @@ export class EditTripofferComponent implements OnInit, AfterViewInit {
     });
 
     this.sharedDataService.currentBookingclass.subscribe(bc => this.currentBookingclass = bc);
+  }
+
+  private initForm() {
+    // Check whether it is an edit or add. If there is id as key from the url, than it is an edit
+    this.activatedRoute.params.subscribe((param) => {
+      if (param.id) {
+        this.currentTripofferId = param.id;
+        // read the tripoffer from the api
+        this.tripofferService.getOne(this.currentTripofferId).subscribe({
+          next: (resp) => {
+            
+            //convert image
+            let objectURL = 'data:image/png;base64,' + resp.startbild;
+            resp.realImage = this.sanitizer.bypassSecurityTrustUrl(objectURL);
+            
+            this.currentTripoffer = resp;
+          },
+          error: () =>
+            this.toastrService.error(
+              "Die Daten konnten nicht geladen werden.",
+              "Fehler"
+            ),
+          complete: () => {
+            this.setcurrentTripofferForm(this.currentTripoffer);
+            // change the value of the tripoffer into dataservice
+            this.sharedDataService.changeCurrentTripOffer(
+              this.currentTripoffer
+            );
+            // emit form valid
+            //this.notifyFormIsValid.emit(true);
+          },
+        });
+      } else {
+        this.currentTripoffer = null;
+        this.currentTripofferId = null;
+        //this.notifyFormIsValid.emit(false);
+      }
+    });
+  }
+
+  private setcurrentTripofferForm(tripoffer: TripOffer) {
+    // service array
+    this.serviceArray.clear();
+    tripoffer.leistungen?.forEach((value) => this.serviceArray.add(value));
+
+    // authorization array
+    this.authorizedtotravelArray.clear();
+    tripoffer.mitReiserBerechtigt?.forEach((value) =>
+      this.authorizedtotravelArray.add(value)
+    );
+
+    // In order to display the really value of the date, we need to remove 1day from the date. Since the datepicker module display the given date + 1day
+    let startdate = new Date(
+      new Date(tripoffer.startDatum).getFullYear(),
+      new Date(tripoffer.startDatum).getMonth(),
+      new Date(tripoffer.startDatum).getDate() - 1
+    );
+    let enddate = new Date(
+      new Date(tripoffer.endDatum).getFullYear(),
+      new Date(tripoffer.endDatum).getMonth(),
+      new Date(tripoffer.endDatum).getDate() - 1
+    );
+    let deadlinedate = new Date(
+      new Date(tripoffer.anmeldungsFrist).getFullYear(),
+      new Date(tripoffer.anmeldungsFrist).getMonth(),
+      new Date(tripoffer.anmeldungsFrist).getDate() - 1
+    );
+
+    this.tripofferForm.setValue({
+      title: tripoffer.titel,
+      image: "", // todo: add image name here
+      startdate: startdate,
+      enddate: enddate,
+      deadline: deadlinedate,
+      totalplace: tripoffer.plaetze,
+      // The value will be readed from the array
+      services: "",
+      authorizedtotravel: "",
+      note: tripoffer.hinweise,
+      anothernote: tripoffer.sonstigeHinweise,
+    });
+
+    // Since there is already an attached image, we set image selected flag to true.
+    //this.isImgSelected = true;
   }
 
   // Dialog configurations
@@ -96,87 +232,168 @@ export class EditTripofferComponent implements OnInit, AfterViewInit {
     return country;
   }
 
-  getTripofferToBeUpdated() {
-    let tripofferid = "";
-    this.activatedRoute.params.subscribe({
-      next: (param) => {
-        tripofferid = param.id;
-        this.tripofferService.getOne(tripofferid).subscribe({
-          next: (resp) => {
-            console.log(resp);
-            this.currentTripoffer = resp;
-            if (resp.landId) {
-              this.currentTripoffer.landId = resp.landId;
-            }
-
-            if (resp.erwartungenReadListTO) {
-              this.sharedDataService.changeCurrentExpectation(resp.erwartungenReadListTO);
-            }
-
-            this.sharedDataService.changeCurrentTripOffer(
-              this.currentTripoffer
-            );
-          },
-          error: () =>
-            this.toastrService.error(
-              "Die Daten konnten nicht geladen werden.",
-              "Fehler"
-            ),
-        });
-      },
-    });
+  // Adds new selected service into the list of services
+  addServiceFromInput(event: MatChipInputEvent) {
+    if (event.value) {
+      this.serviceArray.add(event.value);
+      event.chipInput!.clear();
+    }
+    // check whether the form is valid or not
+    this.isFormValid_();
   }
+
+  // Removes selected from the list of services
+  removeService(service: string) {
+    this.serviceArray.delete(service);
+    // check whether the form is valid or not
+    this.isFormValid_();
+  }
+
+  // Adds new selected authorization into the list of authorizations
+  addAuthorizationFromInput(event: MatChipInputEvent) {
+    if (event.value) {
+      this.authorizedtotravelArray.add(event.value);
+      event.chipInput!.clear();
+    }
+    // check whether the form is valid or not
+    this.isFormValid_();
+  }
+
+  // Removes selected from the list of authorization
+  removeAuthorization(auth: string) {
+    this.authorizedtotravelArray.delete(auth);
+    // check whether the form is valid or not
+    this.isFormValid_();
+  }
+
+  private isFormValid_(): void {
+
+      // The module returns the selected date - 1day, so we need to add 1day to the selected date before save it
+      let startdate = this.tripofferForm.get("startdate").value;
+      let enddate = this.tripofferForm.get("enddate").value;
+      let deadlinedate = this.tripofferForm.get("deadline").value;
+
+      let toUpdate = {
+        id: this.currentTripofferId,
+        startbild: this.isImgSelected ? this.selectFile : this.currentTripoffer.startbild,
+        titel: this.tripofferForm.get("title").value,
+        startDatum: startdate.setDate(startdate.getDate() + 1),
+        endDatum: enddate.setDate(enddate.getDate() + 1),
+        anmeldungsFrist: deadlinedate.setDate(deadlinedate.getDate() + 1),
+        plaetze: this.tripofferForm.get("totalplace").value,
+        freiPlaetze: this.tripofferForm.get("totalplace").value,
+        interessiert: 0,
+        leistungen: Array.from(this.serviceArray),
+        mitReiserBerechtigt: Array.from(this.authorizedtotravelArray),
+        hinweise: this.tripofferForm.get("note").value,
+        sonstigeHinweise: this.tripofferForm.get("anothernote").value,
+        erwartungenReadListTO: null,
+        landId: null,
+        buchungsklassenReadListTO: null
+      };
+
+      console.log('form_valid',toUpdate)
+      // Check if the dates are valid
+      if (startdate === enddate && startdate === deadlinedate) {
+        this.tripofferForm.get("enddate").setErrors({'valid': false});
+        // notify the parent
+        //this.notifyFormIsValid.emit(false);
+      }
+  }
+
+    // On file selected
+    selectFile(event: any): void {
+      if (event.target.files) {
+        //this.isImgSelected = true;
+        this.selectedFileName.push(event.target.files.item(0).name);
+        // set the value of the input
+        this.tripofferForm.value.image = this.selectedFileName[0];
+        // check whether the form is valid or not
+        this.isFormValid_();
+        const file = event.target.files[0];
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => {
+          this.fileInputByte = reader.result;
+        };
+  
+        this.isImgSelected = true;
+      } else {
+        this.isImgSelected = false;
+      }
+  
+    }
+
+  // getTripofferToBeUpdated() {
+  //   let tripofferid = "";
+  //   this.activatedRoute.params.subscribe({
+  //     next: (param) => {
+  //       tripofferid = param.id;
+  //       this.tripofferService.getOne(tripofferid).subscribe({
+  //         next: (resp) => {
+  //           console.log(resp);
+  //           //convert image
+  //           let objectURL = resp.startbild;
+  //           resp.realImage = this.sanitizer.bypassSecurityTrustUrl(objectURL);
+  //           this.currentTripoffer = resp;
+  //           if (resp.landId) {
+  //             this.currentTripoffer.landId = resp.landId;
+  //           }
+
+  //         },
+  //         error: () =>
+  //           this.toastrService.error(
+  //             "Die Daten konnten nicht geladen werden.",
+  //             "Fehler"
+  //           ),
+  //       });
+  //     },
+  //   });
+  // }
 
   /** Updates current trip offer */
   saveTripoffer() {
     if (!this.currentTripoffer.landId) {
-      this.currentTripoffer.landId = this.selectedCountry.value.id
+      this.currentTripoffer.landId = this.selectedCountry?.value?.id
     }
-    console.log(this.currentTripoffer)
     // first save the expectations
     this.saveExpectation().then((expectation) => {
       if (expectation) {
-        let formData = new FormData();
-        this.sharedDataService.currenttripOfferSource
-          .subscribe({
-            next: (tripoffer) => {
-              formData.append("bild", null);
-              formData.append(
-                "reiseAngebot",
-                new Blob(
-                  [
-                    JSON.stringify({
-                      id: this.currentTripoffer.id,
-                      titel: tripoffer.titel,
-                      startDatum: tripoffer.startDatum,
-                      endDatum: tripoffer.endDatum,
-                      anmeldungsFrist: tripoffer.anmeldungsFrist,
-                      plaetze: tripoffer.plaetze,
-                      freiPlaetze: tripoffer.freiPlaetze,
-                      leistungen: tripoffer.leistungen,
-                      interessiert: tripoffer.interessiert,
-                      mitReiserBerechtigt: tripoffer.mitReiserBerechtigt,
-                      hinweise: tripoffer.hinweise,
-                      sonstigeHinweise: tripoffer.sonstigeHinweise,
-                      erwartungenReadListTO: expectation,
-                      buchungsklassenReadListTO:
-                        tripoffer.buchungsklassenReadListTO,
-                      landId: tripoffer.landId,
-                    }),
-                  ],
-                  { type: "application/json" }
-                )
-              );
 
-              this.tripofferService.updateOne(formData).subscribe({
+              
+              // The module returns the selected date - 1day, so we need to add 1day to the selected date before save it
+              let startdate = this.tripofferForm.get("startdate").value;
+              let enddate = this.tripofferForm.get("enddate").value;
+              let deadlinedate = this.tripofferForm.get("deadline").value;
+
+              let currentImg = this.currentTripoffer.realImage.changingThisBreaksApplicationSecurity;
+              let toUpdate = {
+                id: this.currentTripofferId,
+                startbild: this.isImgSelected ? this.fileInputByte : currentImg,
+                titel: this.tripofferForm.get("title").value,
+                startDatum: startdate.setDate(startdate.getDate() + 1),
+                endDatum: enddate.setDate(enddate.getDate() + 1),
+                anmeldungsFrist: deadlinedate.setDate(deadlinedate.getDate() + 1),
+                plaetze: this.tripofferForm.get("totalplace").value,
+                freiPlaetze: this.tripofferForm.get("totalplace").value,
+                interessiert: 0,
+                leistungen: Array.from(this.serviceArray),
+                mitReiserBerechtigt: Array.from(this.authorizedtotravelArray),
+                hinweise: this.tripofferForm.get("note").value,
+                sonstigeHinweise: this.tripofferForm.get("anothernote").value,
+                erwartungenReadListTO: null,
+                landId: null,
+                buchungsklassenReadListTO: null
+              };
+
+              console.log('toUpdate',toUpdate)
+              this.tripofferService.updateOne(toUpdate).subscribe({
                 next: () => {
                   this.updateSuccess();
                 },
                 error: () => this.updateError(),
               });
-            },
-          })
-          .unsubscribe();
+            
       }
     });
   }
@@ -336,6 +553,7 @@ export class EditTripofferComponent implements OnInit, AfterViewInit {
     this.toastrService.success(
       "Die Änderungen wurden erfolgreich gespeichert."
     );
+    this.ngOnInit();
   }
 
   private updateError() {
@@ -343,5 +561,77 @@ export class EditTripofferComponent implements OnInit, AfterViewInit {
       "Die Änderungen konnten nicht gespeichert werden.",
       "Fehler"
     );
+  }
+
+  /**This method will not compare the time*/
+  compareDates(date1: Date, date2: Date): number {
+    const d1 = new Date(date1.getFullYear(), date1.getMonth(), date1.getDate());
+    const d2 = new Date(date2.getFullYear(), date2.getMonth(), date2.getDate());
+
+    if (d1 < d2) return -1;
+    else if (d1 > d2) return 1;
+    return 0;
+  }
+
+  onStartDateSelected(selectedDate) {
+    const selecteddate = selectedDate.target.value;
+    const diff = this.compareDates(selecteddate, new Date());
+    // Check whether the selected date is valid or not
+    if (diff === -1) {
+      this.errors.startdate = "Die Eingabe stimmt nicht.";
+      // notify the parent that the form is not valid
+      //this.notifyFormIsValid.emit(false);
+    } else {
+      // check whether the form is valid or not
+      this.isFormValid_();
+    }
+  }
+
+  onEndDateSelected(selectedDate) {
+    const selecteddate = selectedDate.target.value;
+    const startdate = new Date(this.tripofferForm.value.startdate);
+
+    const diff = this.compareDates(selecteddate, startdate);
+    // Check whether the selected date is valid or not
+    if (diff === -1) {
+      this.errors.enddate =
+        "Die Eingabe stimmt nicht. Das Startdatum mal schauen.";
+      // notify the parent that the form is not valid
+      //this.notifyFormIsValid.emit(false);
+    } else {
+      // check whether the form is valid or not
+      this.isFormValid_();
+    }
+  }
+
+  onDeadlineDateSelected(selectedDate) {
+    const selecteddate = selectedDate.target.value;
+    //
+    const startdate = new Date(this.tripofferForm.value.startdate);
+    const enddate = new Date(this.tripofferForm.value.enddate);
+    // Check whether the selected date is valid or not
+    const diff1 = this.compareDates(selecteddate, startdate);
+    const diff2 = this.compareDates(selecteddate, enddate);
+    if (diff1 === -1 || diff2 === 1) {
+      this.errors.deadlinedate =
+        "Die Eingabe stimmt nicht. Das Start-&Enddatum mal schauen";
+      // notify the parent that the form is not valid
+      //this.notifyFormIsValid.emit(false);
+    } else {
+      // check whether the form is valid or not
+      this.isFormValid_();
+    }
+  }
+
+  clearStartDateError() {
+    this.errors.startdate = "";
+  }
+
+  clearEndDateError() {
+    this.errors.enddate = "";
+  }
+
+  clearDeadlineDateError() {
+    this.errors.deadlinedate = "";
   }
 }

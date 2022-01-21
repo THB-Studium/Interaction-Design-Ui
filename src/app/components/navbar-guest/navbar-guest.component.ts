@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener } from "@angular/core";
+import { Component, OnInit, HostListener, Input } from "@angular/core";
 import { Location } from "@angular/common";
 import { Router } from "@angular/router";
 
@@ -8,6 +8,8 @@ import { Router } from "@angular/router";
   styleUrls: ["./navbar-guest.component.css"],
 })
 export class NavbarGuestComponent implements OnInit {
+  bgColor: string = "transparent";
+
   public listTitles: any[];
   public location: Location;
 
@@ -23,6 +25,7 @@ export class NavbarGuestComponent implements OnInit {
 
   ngOnInit() {
     this.title = this.location.prepareExternalUrl(this.location.path());
+    console.log("title: ", this.title);
     if (this.title.charAt(0) === "#") {
       this.title = this.title.slice(1);
     }
@@ -45,12 +48,10 @@ export class NavbarGuestComponent implements OnInit {
   @HostListener("window:scroll", ["$event"])
   onWindowScroll(e: any) {
     if (this.title.includes("home")) {
-      let element = document.querySelector(".navbar");
-      if (window.pageYOffset > element.clientHeight) {
-        element.classList.add("bg-auth");
-      } else {
-        element.classList.remove("bg-auth");
-      }
+      const element = document.querySelector(".navbar");
+      window.pageYOffset > element.clientHeight
+        ? element.classList.add("bg-auth")
+        : element.classList.remove("bg-auth");
     }
   }
 }

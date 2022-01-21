@@ -14,19 +14,36 @@
   </div>
    <!--image-->
    <div class="form-row">
-    <div class="form-group col-md-12">
-      <mat-form-field class="col-md-12" appearance="standard">
-        <mat-label>Bildkarte</mat-label>
-        <mat-toolbar class="mb-1">
-          <input formControlName="image"
-                 [value]="selectedFileName? selectedFileName : 'Bild auswählen'" matInput required />
-        </mat-toolbar>
-        <input id="fileInput" type="file" name="fileInput" accept="image/*" (change)="selectFile($event)" />
-        <mat-error *ngIf="!isImgSelected">
-          Die Eingabe ist <strong>erforderlich</strong>.
-        </mat-error>
-      </mat-form-field>
+    <div class="col-2"></div>
+    <div class="form-group col-md-8 text-center">
+        <img *ngIf="currentCountry?.realImage" [src]="currentCountry?.realImage" width="230px"
+            height="185px" alt="">
     </div>
+    <div class="col-2"></div>
+  </div>
+  <div class="form-row">
+    <div class="col-2"></div>
+    <div class="form-group col-8 text-center">
+        <mat-form-field class="col-md-12">
+            <mat-label>Hintergrundbild</mat-label>
+            <mat-toolbar class="mb-1">
+                <input matInput
+                    [value]="selectedFileName?.length ? selectedFileName : 'Bild auswählen'"
+                    formControlName="image" required />
+            </mat-toolbar>
+            <div class="input-file-container">
+              <div class="js text-center">
+                <input type="file" class="input-file ml-5" id="fileInput" name="fileInput" accept="image/*"
+                  (change)="selectFile($event)" />
+                  <label tabindex="0" for="fileInput" class="input-file-trigger">Select a file...</label>
+              </div>
+            </div>
+            <mat-error *ngIf="!isImgSelected">
+                Die Eingabe ist <strong>erforderlich</strong>.
+            </mat-error>
+        </mat-form-field>
+    </div>
+    <div class="col-2"></div>
   </div>
   <!--Airport-->
   <div class="form-row">
