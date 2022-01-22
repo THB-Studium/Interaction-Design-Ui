@@ -5,4 +5,5 @@ export class Pattern {
     public static password = "^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).{6,12}$";
     public static onlyNumber = "^[0-9]{5,7}$";
     public static street = "^(?<street>(?:\p{L}|\ |\d|\.|-)+?) (?<number>\\d+(?: ?- ?\\d+)? *[a-zA-Z]?)$";
+    public static email = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$";
 }
