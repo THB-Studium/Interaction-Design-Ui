@@ -89,8 +89,6 @@ export class BookingFormComponent implements OnInit, AfterViewInit, OnDestroy {
   /** list of bookingclass */
   protected bookingclass: BookingClass[];
 
-  public bookingclassFilteringCtrl: FormControl = new FormControl();
-
   /** list of banks filtered after simulating server side search */
   public filteredBookingclass: ReplaySubject<BookingClass[]> =
     new ReplaySubject<BookingClass[]>(1);
@@ -108,6 +106,8 @@ export class BookingFormComponent implements OnInit, AfterViewInit, OnDestroy {
   isAnAdd: boolean = true;
   // defines airportArray
   airportArray: string[];
+  // Defines bookingclassArray
+  bookingclassArray: BookingClass[];
   // Defines paymentMethodArray
   paymentMethodArray: string[];
   // Defines dateError
@@ -155,15 +155,13 @@ export class BookingFormComponent implements OnInit, AfterViewInit, OnDestroy {
     this.getAllTripOffers();
     // get the list of all travelers
     this.getAllCustomers();
-    // get the list of all booking class
-    this.getAllBookingClass();
   }
 
   ngAfterViewInit(): void {
     this.onFormValuesChanged();
     // on tripoffer value changes, we read and save the attached airports
     this.bookingForm.get("tripoffer").valueChanges.subscribe((tripoffer) => {
-      this.initAirports(tripoffer.id);
+      this.initAttachedInformation(tripoffer.id);
     });
 
     // On date value changes check whether it is valide or not.
@@ -241,6 +239,8 @@ export class BookingFormComponent implements OnInit, AfterViewInit, OnDestroy {
               next: (offer) => {
                 this.bookingForm.get("tripoffer").setValue(offer);
                 this.currentBooking.reiseAngebotId = offer.id;
+                // set booking class list
+                this.bookingclassArray = offer.buchungsklassenReadListTO;
               },
               error: () => {
                 this.toastrService.error(
@@ -278,7 +278,10 @@ export class BookingFormComponent implements OnInit, AfterViewInit, OnDestroy {
                     const bcId = value.buchungsklasseId;
                     this.bookingclassService.getOne(bcId).subscribe({
                       next: (bc) => {
-                        this.bookingForm.get("bookingClass").setValue(bc);
+                        const idx = this.bookingclassArray.findIndex(x => x.id === bc.id);
+                        this.bookingForm.get("bookingClass").setValue(this.bookingclassArray[idx]);
+                        //this.bookingclassArray.splice(idx, 1);
+                        // set the value of the current booking class in current booking 
                         this.currentBooking.buchungsklasseId = bc.id;
                       },
                       error: () => {
@@ -420,13 +423,14 @@ export class BookingFormComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   /**Initializes the list of airports base of the selected coutry */
-  private initAirports(tripOfferId: string) {
+  private initAttachedInformation(tripOfferId: string) {
     let landId = null;
     let tripoffer: TripOffer = null;
     this.tripofferService.getOne(tripOfferId).subscribe({
       next: (_tripoffer) => {
         tripoffer = _tripoffer;
         landId = _tripoffer.landId;
+        this.bookingclassArray = tripoffer.buchungsklassenReadListTO;
       },
       error: () => {
         this.toastrService.error(
@@ -502,44 +506,8 @@ export class BookingFormComponent implements OnInit, AfterViewInit, OnDestroy {
       });
   }
 
-  private getAllBookingClass() {
-    this.bookingclassService.getAll().subscribe({
-      next: (bc) => (this.bookingclass = bc),
-      error: () => {
-        this.toastrService.error(
-          "Die Liste von Buchungenklassen konnten nicht geladen werden",
-          "Fehler"
-        );
-      },
-      complete: () => this.onBookingclassValueChanges(),
-    });
-  }
-
-  private onBookingclassValueChanges() {
-    this.bookingclassFilteringCtrl.valueChanges
-      .pipe(
-        filter((search) => !!search),
-        tap(() => (this.searching = true)),
-        takeUntil(this._onDestroy),
-        debounceTime(200),
-        map((search) => {
-          if (!this.bookingclass) {
-            return [];
-          }
-          return this.bookingclass.filter(
-            (x) => x.type.toLowerCase().indexOf(search) > -1
-          );
-        }),
-        delay(500),
-        takeUntil(this._onDestroy)
-      )
-      .subscribe({
-        next: (filteredBookingclass) => {
-          this.searching = false;
-          this.filteredBookingclass.next(filteredBookingclass);
-        },
-        error: () => (this.searching = false),
-      });
+  getBookingclassArray(bc:BookingClass[]) {
+    return bc?.filter(x => x.id !== this.bookingForm.get('bookingClass').value.id);
   }
 
   private convertDateToString(date: string) {

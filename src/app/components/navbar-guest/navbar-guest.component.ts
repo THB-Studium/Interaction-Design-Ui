@@ -1,14 +1,14 @@
-import {Component, OnInit, HostListener, Input} from '@angular/core';
-import { Location } from '@angular/common';
-import { Router } from '@angular/router';
+import { Component, OnInit, HostListener, Input } from "@angular/core";
+import { Location } from "@angular/common";
+import { Router } from "@angular/router";
 
 @Component({
-  selector: 'app-navbar-guest',
-  templateUrl: './navbar-guest.component.html',
-  styleUrls: ['./navbar-guest.component.css']
+  selector: "app-navbar-guest",
+  templateUrl: "./navbar-guest.component.html",
+  styleUrls: ["./navbar-guest.component.css"],
 })
 export class NavbarGuestComponent implements OnInit {
-  bgColor: string = 'transparent'
+  bgColor: string = "transparent";
 
   public listTitles: any[];
   public location: Location;
@@ -17,7 +17,7 @@ export class NavbarGuestComponent implements OnInit {
 
   public isAuth = false;
 
-  private title = '';
+  private title = "";
 
   constructor(location: Location, private router: Router) {
     this.location = location;
@@ -25,12 +25,16 @@ export class NavbarGuestComponent implements OnInit {
 
   ngOnInit() {
     this.title = this.location.prepareExternalUrl(this.location.path());
-    console.log('title: ', this.title)
-    if (this.title.charAt(0) === '#') {
+    console.log("title: ", this.title);
+    if (this.title.charAt(0) === "#") {
       this.title = this.title.slice(1);
     }
 
-    if (this.title.toLowerCase().includes('login') || this.title.toLowerCase().includes('register')) {
+    if (
+      this.title.toLowerCase().includes("login") ||
+      this.title.toLowerCase().includes("register") ||
+      this.title.toLowerCase().includes("aboutus")
+    ) {
       this.isAuth = true;
     } else {
       this.isAuth = false;
@@ -42,13 +46,13 @@ export class NavbarGuestComponent implements OnInit {
   }
 
   /**Change navbar backgroung on scroll */
-  @HostListener('window:scroll', ['$event'])
+  @HostListener("window:scroll", ["$event"])
   onWindowScroll(e: any) {
-    if (this.title.includes('home')) {
-      const element = document.querySelector('.navbar');
+    if (this.title.includes("home")) {
+      const element = document.querySelector(".navbar");
       window.pageYOffset > element.clientHeight
-        ? element.classList.add('bg-auth')
-        : element.classList.remove('bg-auth');
+        ? element.classList.add("bg-auth")
+        : element.classList.remove("bg-auth");
     }
   }
 }

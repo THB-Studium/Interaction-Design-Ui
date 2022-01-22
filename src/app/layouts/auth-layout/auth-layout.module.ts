@@ -1,6 +1,10 @@
 import { NgModule } from "@angular/core";
 import { RouterModule } from "@angular/router";
-import { CommonModule, HashLocationStrategy, LocationStrategy } from "@angular/common";
+import {
+  CommonModule,
+  HashLocationStrategy,
+  LocationStrategy,
+} from "@angular/common";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { AuthLayoutRoutes } from "./auth-layout.routing";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
@@ -27,41 +31,46 @@ import { LoginComponent } from "../../pages/login/login.component";
 import { RegisterComponent } from "../../pages/register/register.component";
 import { HomeComponent } from "src/app/pages/home/home.component";
 import { LearnMoreComponent } from "../../pages/learn-more/learn-more.component";
-import {ComponentsModule} from "../../components/components.module";
-import {MatExpansionModule} from "@angular/material/expansion";
+import { ComponentsModule } from "../../components/components.module";
+import { MatExpansionModule } from "@angular/material/expansion";
 
 @NgModule({
-    imports: [
-        CommonModule,
-        RouterModule.forChild(AuthLayoutRoutes),
-        FormsModule,
-        NgbModule,
-        ReactiveFormsModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatSelectModule,
-        MatButtonModule,
-        MatIconModule,
-        MatMenuModule,
-        MatStepperModule,
-        MatCheckboxModule,
-        MatCardModule,
-        MatDividerModule,
-        MatBadgeModule,
-        MatTooltipModule,
-        MatTableModule,
-        MatPaginatorModule,
-        MatSortModule,
-        MatDialogModule,
-        MatDatepickerModule,
-        MatNativeDateModule,
-        ComponentsModule,
-        MatExpansionModule,
-    ],
-  declarations: [HomeComponent, LearnMoreComponent, LoginComponent, RegisterComponent],
+  imports: [
+    CommonModule,
+    RouterModule.forChild(AuthLayoutRoutes),
+    FormsModule,
+    NgbModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatButtonModule,
+    MatIconModule,
+    MatMenuModule,
+    MatStepperModule,
+    MatCheckboxModule,
+    MatCardModule,
+    MatDividerModule,
+    MatBadgeModule,
+    MatTooltipModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatDialogModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    ComponentsModule,
+    MatExpansionModule,
+  ],
+  declarations: [
+    HomeComponent,
+    LearnMoreComponent,
+    LoginComponent,
+    RegisterComponent,
+  ],
   providers: [
     //{ provide: HTTP_INTERCEPTORS, useClass: AppHttpInterceptor, multi: true },
-    {provide: LocationStrategy, useClass: HashLocationStrategy}
+    { provide: LocationStrategy, useClass: HashLocationStrategy },
   ],
 })
 export class AuthLayoutModule {}
