@@ -206,5 +206,18 @@ export class SharedDataService {
   changeCurrentAccommodation(accommodation: Accommodation) {
     this.accommodationSource.next(accommodation);
   }
-  //#endregion accommodation
+
+  //#region body background color
+  private backgroundColor: any = {
+    header: { background: '' },
+    bodyAndFooter: { background: '' },
+  }
+
+  private backgroundColorSource = new BehaviorSubject<any>(this.backgroundColor);
+  public currentBackgroundColor = this.backgroundColorSource.asObservable();
+
+  changeCurrentBackgroundColor(backgroundColor: any) {
+    this.backgroundColorSource.next(backgroundColor);
+  }
+
 }

@@ -42,7 +42,6 @@ export class CountryComponent implements OnInit, AfterViewInit {
   dialogConfig = new MatDialogConfig();
   //
   isValid = false;
-  image: any;
 
   constructor(
     private countryService: CountryService,
@@ -56,14 +55,28 @@ export class CountryComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.dataSource = new MatTableDataSource([]);
+    this.dataSource = new MatTableDataSource([
+      {
+        flughafen: [],
+        highlights: [],
+        id: "",
+        karte_bild: null,
+        landInfo: null,
+        name: "",
+        unterkunft: [],
+        unterkunft_text: "",
+        realImage: "",
+      },
+    ]);
     this.getCountries();
   }
 
   ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
-    this.sharedDataService.currentCountry.subscribe(country => this.currentCountry = country);
+    this.sharedDataService.currentCountry.subscribe(
+      (country) => (this.currentCountry = country)
+    );
   }
 
   // Dialog configurations
@@ -92,8 +105,8 @@ export class CountryComponent implements OnInit, AfterViewInit {
   }
 
   private getCountries() {
-    this.sortByName(this.countriesList);
-    this.dataSource.data = this.countriesList;
+    //this.sortByName(this.countriesList);
+    //this.dataSource.data = this.countriesList;
     this.countryService.getAll().subscribe({
       next: (countries) => {
         this.countriesList = countries;
@@ -115,7 +128,7 @@ export class CountryComponent implements OnInit, AfterViewInit {
   }
 
   displayTheNFirstCharacter(text: string, n: number): string {
-    return text.length >= n ? `${text.slice(0, n-1)}...` : text;
+    return text.length >= n ? `${text.slice(0, n - 1)}...` : text;
   }
 
   AddNewCountryDialog(dialogForm: any) {
@@ -127,25 +140,23 @@ export class CountryComponent implements OnInit, AfterViewInit {
   }
 
   saveNewCountry() {
-    const formData = new FormData();
-    formData.append('bild', this.currentCountry.karte_bild);
-    formData.append('land', new Blob([
-      JSON.stringify({
-        id: this.currentCountry.id,
-        name: this.currentCountry.name,
-        flughafen: this.currentCountry.flughafen,
-        unterkunft_text: this.currentCountry.unterkunft_text
-      })
-    ], {type: 'application/json'}));
+    let tocreate = {
+      id: this.currentCountry.id,
+      name: this.currentCountry.name,
+      flughafen: this.currentCountry.flughafen,
+      unterkunft_text: this.currentCountry.unterkunft_text,
+      image: this.currentCountry.karte_bild,
+    };
 
     // get the value from the data service
-    this.countryService.addOne(formData).subscribe({
+    this.countryService.addOne(tocreate).subscribe({
       next: (resp) => {
         this.currentCountry = resp;
         // Add the new added item to the current list and update the table
         this.countriesList.push(resp);
         this.sortByName(this.countriesList);
         this.dataSource.data = this.countriesList;
+        this.router.navigate(["/countries/edit/", resp.id]);
       },
       error: (err) => {
         this.handleError(err);
@@ -201,7 +212,7 @@ export class CountryComponent implements OnInit, AfterViewInit {
         this.toastrService.success(
           `${this.currentCountry.name} wurde erfolgreich entfernt.`
         );
-      }
+      },
     });
   }
 

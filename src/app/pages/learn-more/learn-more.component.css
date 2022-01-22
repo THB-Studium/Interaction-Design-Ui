@@ -1,0 +1,64 @@
+body {
+  padding: 10em 5em 1em 5em;
+}
+
+#main-page-btn {
+  font-family: "ubuntu medium";
+  color: #000000;
+  font-size: 15px;
+}
+
+.travel-info-header {
+  margin-top: 2em;
+}
+
+.travel-info-header mat-card {
+  margin-top: 1em;
+  min-height: 600px;
+
+  background-repeat: no-repeat !important;
+  background-size: 100% 100% !important;
+}
+
+.travel-info-header mat-card p {
+  font-family: "ubuntu bold" !important;
+  letter-spacing: 0.5px !important;
+  margin-right: 0 !important;
+}
+
+button {
+  color: #FFFFFF;
+}
+
+.highlight-contents,
+.fakten-check-contents
+{
+  margin-top: 5em;
+}
+
+.highlight-contents h2,
+fakten-check-contents h2
+{
+  margin-bottom: 1em;
+}
+
+.highlight-contents mat-card {
+  min-width: 300px;
+}
+
+.highlight-contents .mat-card-image {
+  /*height: 50%;*/
+  /*height: 600px;*/
+}
+
+.fakten-check-contents {
+
+}
+
+/*.landInfos-contents mat-expansion-panel {*/
+/*  font-family: "ubuntu bold";*/
+/*}*/
+
+.landInfos-contents mat-panel-title {
+  font-family: "ubuntu bold";
+}

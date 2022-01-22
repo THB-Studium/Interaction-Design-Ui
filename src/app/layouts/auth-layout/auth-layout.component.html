@@ -1,5 +1,5 @@
 <!-- header -->
-<header>
+<header [ngStyle]="headerBgColor">
   <app-navbar-guest></app-navbar-guest>
 </header>
 <!--Content -->
@@ -7,6 +7,6 @@
   <router-outlet></router-outlet>
 </main>
 <!--footer-->
-<footer class="footer">
-  <app-footer></app-footer>
+<footer class="footer" [ngStyle]="footerBgColor">
+  <app-footer [btnColor]="footerBtnColor"></app-footer>
 </footer>

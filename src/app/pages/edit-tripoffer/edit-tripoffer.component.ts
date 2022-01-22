@@ -2,6 +2,9 @@ import { AfterViewInit, Component, OnInit } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { DomSanitizer } from "@angular/platform-browser";
+import { MatChipInputEvent } from "@angular/material/chips";
+import { formatDate } from "@angular/common";
 
 import { BookingClassService } from "src/app/services/booking-class/booking-class.service";
 import { CountryService } from "src/app/services/country/country.service";
@@ -14,8 +17,6 @@ import { BookingClass } from "src/app/models/bookingClass";
 import { Country } from "src/app/models/country";
 import { Expectation } from "src/app/models/expectation";
 import { TripOffer } from "src/app/models/tripOffer";
-import { DomSanitizer } from "@angular/platform-browser";
-import { MatChipInputEvent } from "@angular/material/chips";
 
 @Component({
   selector: "app-edit-tripoffer",
@@ -46,6 +47,7 @@ export class EditTripofferComponent implements OnInit, AfterViewInit {
   // Defines selectedCountry
   public selectedCountry: FormControl = new FormControl();
 
+  // tripoffer form
   tripofferForm = new FormGroup({
     // title
     title: new FormControl("", [Validators.required]),
@@ -67,6 +69,38 @@ export class EditTripofferComponent implements OnInit, AfterViewInit {
     note: new FormControl("", [Validators.required]),
     // othernote
     anothernote: new FormControl("", [Validators.required]),
+  });
+
+  // expectation form
+  expectationForm = new FormGroup({
+    adventure: new FormControl("", [
+      Validators.min(0),
+      Validators.max(100),
+    ]),
+    comfort: new FormControl("", [
+      Validators.min(0),
+      Validators.max(100),
+    ]),
+    deceleration: new FormControl("", [
+      Validators.min(0),
+      Validators.max(100),
+    ]),
+    road: new FormControl("", [
+      Validators.min(0),
+      Validators.max(100),
+    ]),
+    safety: new FormControl("", [
+      Validators.min(0),
+      Validators.max(100),
+    ]),
+    sun_beach: new FormControl("", [
+      Validators.min(0),
+      Validators.max(100),
+    ]),
+    sustainability: new FormControl("", [
+      Validators.min(0),
+      Validators.max(100),
+    ])
   });
 
   // Defines serviceArray
@@ -94,6 +128,14 @@ export class EditTripofferComponent implements OnInit, AfterViewInit {
   };
   // Defines isValid
   isValid = false;
+  // Defines isModalValid
+  isModalValid = false;
+  // Defines selectedStartDate
+  selectedStartDate: any;
+  // Defines selectedEndDate
+  selectedEndDate: any;
+  // Defines selectedDeadlineDate
+  selectedDeadlineDate: any;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -138,10 +180,28 @@ export class EditTripofferComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.getAllCountries();
-
-    this.sharedDataService.currentExpectation.subscribe((expectation) => {
-      this.currentExpectation = expectation;
+    this.expectationForm.valueChanges.subscribe(() => {
+      // if one of the value is bigger than 100, then disable the savee button
+      if (
+        this.expectationForm.value.adventure > 100 ||
+        this.expectationForm.value.adventure === null ||
+        this.expectationForm.value.comfort > 100 ||
+        this.expectationForm.value.comfort === null ||
+        this.expectationForm.value.deceleration > 100 ||
+        this.expectationForm.value.deceleration === null ||
+        this.expectationForm.value.safety > 100 ||
+        this.expectationForm.value.safety === null ||
+        this.expectationForm.value.road > 100 ||
+        this.expectationForm.value.road === null ||
+        this.expectationForm.value.sustainability > 100 ||
+        this.expectationForm.value.sustainability === null ||
+        this.expectationForm.value.sun_beach > 100 ||
+        this.expectationForm.value.sun_beach === null
+      ) {
+        this.isValid = false;
+      } else {
+        this.isValid = true;
+      }
     });
 
     this.sharedDataService.currentBookingclass.subscribe(
@@ -158,11 +218,12 @@ export class EditTripofferComponent implements OnInit, AfterViewInit {
         // Get the tripoffer from the api
         this.tripofferService.getOne(this.currentTripofferId).subscribe({
           next: (resp) => {
-            console.log(resp);
             //convert image
             let objectURL = "data:image/png;base64," + resp.startbild;
             resp.realImage = this.sanitizer.bypassSecurityTrustUrl(objectURL);
             this.currentTripoffer = resp;
+            // Get the default selected country
+            this.getAllCountries();
           },
           error: () =>
             this.toastrService.error(
@@ -171,14 +232,26 @@ export class EditTripofferComponent implements OnInit, AfterViewInit {
             ),
           complete: () => {
             this.setcurrentTripofferForm(this.currentTripoffer);
-            // The trip offer is valid
-            this.isValid = true;
+            this.initExpectationForm(this.currentTripoffer.erwartungenReadListTO);
             this.isImgSelected = true;
           },
         });
       } else {
         this.currentTripofferId = null;
       }
+    });
+  }
+
+  private initExpectationForm(expectation: Expectation): void {
+    this.currentExpectation = expectation;
+    this.expectationForm.setValue({
+      adventure: expectation?.abenteuer ?? 0,
+      comfort: expectation?.konfort ?? 0,
+      deceleration: expectation?.entschleunigung ?? 0,
+      road: expectation?.road ?? 0,
+      safety: expectation?.sicherheit ?? 0,
+      sun_beach: expectation?.sonne_strand ?? 0,
+      sustainability: expectation?.nachhaltigkeit ?? 0
     });
   }
 
@@ -193,29 +266,12 @@ export class EditTripofferComponent implements OnInit, AfterViewInit {
       this.authorizedtotravelArray.add(value)
     );
 
-    // TO DO: Date is not working well.
-    let startdate = new Date(
-      new Date(tripoffer.startDatum).getFullYear(),
-      new Date(tripoffer.startDatum).getMonth(),
-      new Date(tripoffer.startDatum).getDate() - 1
-    );
-    let enddate = new Date(
-      new Date(tripoffer.endDatum).getFullYear(),
-      new Date(tripoffer.endDatum).getMonth(),
-      new Date(tripoffer.endDatum).getDate() - 1
-    );
-    let deadlinedate = new Date(
-      new Date(tripoffer.anmeldungsFrist).getFullYear(),
-      new Date(tripoffer.anmeldungsFrist).getMonth(),
-      new Date(tripoffer.anmeldungsFrist).getDate() - 1
-    );
-
     this.tripofferForm.setValue({
       title: tripoffer.titel,
       image: "",
-      startdate: startdate,
-      enddate: enddate,
-      deadline: deadlinedate,
+      startdate: tripoffer.startDatum,
+      enddate: tripoffer.endDatum,
+      deadline: tripoffer.anmeldungsFrist,
       totalplace: tripoffer.plaetze,
       // The values will be loaded from the service array
       services: "",
@@ -224,6 +280,9 @@ export class EditTripofferComponent implements OnInit, AfterViewInit {
       note: tripoffer.hinweise,
       anothernote: tripoffer.sonstigeHinweise,
     });
+
+    // Get and display the expectation
+    this.sharedDataService.changeCurrentExpectation(tripoffer.erwartungenReadListTO);
   }
 
   // Dialog configurations
@@ -235,18 +294,24 @@ export class EditTripofferComponent implements OnInit, AfterViewInit {
   getAllCountries() {
     this.countryService.getAll().subscribe({
       next: (countries) => (this.countriesList = countries),
-      error: () =>
+      error: () => {
         this.toastrService.error(
           "Die Länder konnten nicht zugegriefen werden",
           "Fehler"
-        ),
+        );
+      },
+      complete: () => {
+        if (this.currentTripoffer.landId) {
+          this.getCountryById(this.currentTripoffer.landId);
+        }
+      },
     });
   }
 
-  getCountryById(id: string): Country {
-    const country = this.countriesList.find((x) => x.id === id);
-    this.currentTripoffer.landId = country.id;
-    return country;
+  getCountryById(id: string) {
+    // Get the default country from the countries list
+    const idx = this.countriesList.findIndex((x) => x.id === id);
+    this.selectedCountry.setValue(this.countriesList[idx]);
   }
 
   // Adds new selected service into the list of services
@@ -326,21 +391,28 @@ export class EditTripofferComponent implements OnInit, AfterViewInit {
 
   private onTripofferFormValueChamges() {
     this.tripofferForm.valueChanges.subscribe({
-      next: (value) => {
-        console.log(value);
-        this.isTripofferFormValid();
-      },
+      next: () => this.isTripofferFormValid(),
     });
   }
 
   /**Saves new expectation and update the list */
   private saveExpectation(): Promise<Expectation> {
     return new Promise((resolve) => {
-      // set the value of the reiseangebot
-      this.currentExpectation.reiseAngebotId = this.currentTripoffer.id;
+      // set the current value of the expectation to be saved
+      const tobesaved: Expectation = {
+        abenteuer: this.expectationForm.value.adventure,
+        konfort: this.expectationForm.value.comfort,
+        entschleunigung: this.expectationForm.value.deceleration,
+        sicherheit: this.expectationForm.value.safety,
+        road: this.expectationForm.value.road,
+        nachhaltigkeit: this.expectationForm.value.sustainability,
+        sonne_strand: this.expectationForm.value.sun_beach,
+        reiseAngebotId: this.currentTripoffer.id,
+        id: this.currentExpectation?.id,
+      }
       // check whether it is an add or not. If the id is equal than null, than it is an add
-      if (!this.currentExpectation.id) {
-        this.expectationService.addOne(this.currentExpectation).subscribe({
+      if (!this.currentExpectation?.id) {
+        this.expectationService.addOne(tobesaved).subscribe({
           next: (resp) => resolve(resp),
           error: () => {
             this.expectationSaved = false;
@@ -352,7 +424,7 @@ export class EditTripofferComponent implements OnInit, AfterViewInit {
           complete: () => (this.expectationSaved = true),
         });
       } else {
-        this.expectationService.updateOne(this.currentExpectation).subscribe({
+        this.expectationService.updateOne(tobesaved).subscribe({
           next: (resp) => resolve(resp),
           error: () => {
             this.expectationSaved = false;
@@ -367,17 +439,20 @@ export class EditTripofferComponent implements OnInit, AfterViewInit {
     });
   }
 
+  isModalFormValid(value: boolean) {
+    this.isModalValid = value;
+  }
+
   /** Updates current trip offer */
   saveTripoffer() {
     // first save the expectations
     this.saveExpectation().then((expectation) => {
       if (expectation) {
-        // The module returns the selected date - 1day, so we need to add 1day to the selected date before save it
-        let startdate = this.tripofferForm.get("startdate").value;
-        let enddate = this.tripofferForm.get("enddate").value;
-        let deadlinedate = this.tripofferForm.get("deadline").value;
         // Check if the dates are valid
-        if (startdate === enddate && startdate === deadlinedate) {
+        if (
+          this.selectedStartDate === this.selectedEndDate &&
+          this.selectedStartDate === this.selectedDeadlineDate
+        ) {
           this.tripofferForm.get("enddate").setErrors({ valid: false });
         }
 
@@ -388,9 +463,9 @@ export class EditTripofferComponent implements OnInit, AfterViewInit {
           id: this.currentTripofferId,
           startbild: this.isImgSelected ? this.fileInputByte : currentImg,
           titel: this.tripofferForm.get("title").value,
-          startDatum: startdate.setDate(startdate.getDate() + 1),
-          endDatum: enddate.setDate(enddate.getDate() + 1),
-          anmeldungsFrist: deadlinedate.setDate(deadlinedate.getDate() + 1),
+          startDatum: this.selectedStartDate,
+          endDatum: this.selectedEndDate,
+          anmeldungsFrist: this.selectedDeadlineDate,
           plaetze: this.tripofferForm.get("totalplace").value,
           freiPlaetze: this.tripofferForm.get("totalplace").value,
           interessiert: 0,
@@ -419,6 +494,8 @@ export class EditTripofferComponent implements OnInit, AfterViewInit {
                 "Es wurde für dieses Reiseangebot keines Ziel (Land) zugewiesen"
               );
             }
+
+            this.navigateToTripoffersList();
           },
         });
       }
@@ -465,6 +542,8 @@ export class EditTripofferComponent implements OnInit, AfterViewInit {
         complete: () => this.updateSuccess(),
       });
     }
+
+    this.isModalValid = false;
   }
 
   editBookingclass(bc: BookingClass, dialogForm: any) {
@@ -561,56 +640,65 @@ export class EditTripofferComponent implements OnInit, AfterViewInit {
   }
 
   /**This method will not compare the time*/
-  compareDates(date1: Date, date2: Date): number {
-    const d1 = new Date(date1.getFullYear(), date1.getMonth(), date1.getDate());
-    const d2 = new Date(date2.getFullYear(), date2.getMonth(), date2.getDate());
-
-    if (d1 < d2) return -1;
-    else if (d1 > d2) return 1;
+  compareDates(date1: string, date2: string): number {
+    if (date1 < date2) return -1;
+    else if (date1 > date2) return 1;
     return 0;
   }
 
   onStartDateSelected(selectedDate) {
     const selecteddate = selectedDate.target.value;
-    const diff = this.compareDates(selecteddate, new Date());
+
+    this.selectedStartDate =
+      selecteddate !== ""
+        ? formatDate(selecteddate, "yyyy-MM-dd", "en_US")
+        : formatDate(null, "yyyy-MM-dd", "en_US");
+    const today = formatDate(new Date(), "yyyy-MM-dd", "en_US");
+
+    const diff = this.compareDates(this.selectedStartDate, today);
     // Check whether the selected date is valid or not
     if (diff === -1) {
       this.errors.startdate = "Die Eingabe stimmt nicht.";
-    } else {
-      // check whether the form is valid or not
-      this.isTripofferFormValid();
     }
   }
 
   onEndDateSelected(selectedDate) {
     const selecteddate = selectedDate.target.value;
-    const startdate = new Date(this.tripofferForm.value.startdate);
 
-    const diff = this.compareDates(selecteddate, startdate);
+    this.selectedEndDate =
+      selecteddate !== ""
+        ? formatDate(selecteddate, "yyyy-MM-dd", "en_US")
+        : formatDate(null, "yyyy-MM-dd", "en_US");
+
+    const diff = this.compareDates(
+      this.selectedEndDate,
+      this.selectedStartDate
+    );
     // Check whether the selected date is valid or not
     if (diff === -1) {
       this.errors.enddate =
         "Die Eingabe stimmt nicht. Das Startdatum mal schauen.";
-    } else {
-      // check whether the form is valid or not
-      this.isTripofferFormValid();
     }
   }
 
   onDeadlineDateSelected(selectedDate) {
     const selecteddate = selectedDate.target.value;
-    //
-    const startdate = new Date(this.tripofferForm.value.startdate);
-    const enddate = new Date(this.tripofferForm.value.enddate);
+    this.selectedDeadlineDate =
+      selecteddate !== ""
+        ? formatDate(selecteddate, "yyyy-MM-dd", "en_US")
+        : formatDate(null, "yyyy-MM-dd", "en_US");
     // Check whether the selected date is valid or not
-    const diff1 = this.compareDates(selecteddate, startdate);
-    const diff2 = this.compareDates(selecteddate, enddate);
+    const diff1 = this.compareDates(
+      this.selectedDeadlineDate,
+      this.selectedStartDate
+    );
+    const diff2 = this.compareDates(
+      this.selectedDeadlineDate,
+      this.selectedEndDate
+    );
     if (diff1 === -1 || diff2 === 1) {
       this.errors.deadlinedate =
         "Die Eingabe stimmt nicht. Das Start-&Enddatum mal schauen";
-    } else {
-      // check whether the form is valid or not
-      this.isTripofferFormValid();
     }
   }
 
@@ -624,5 +712,9 @@ export class EditTripofferComponent implements OnInit, AfterViewInit {
 
   clearDeadlineDateError() {
     this.errors.deadlinedate = "";
+  }
+
+  resetSaveModalButton() {
+    this.isModalValid = false;
   }
 }

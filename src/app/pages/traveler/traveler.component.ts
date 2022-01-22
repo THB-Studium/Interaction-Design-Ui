@@ -153,11 +153,10 @@ export class TravelerComponent implements OnInit, AfterViewInit {
 
   // Gets object of type date and return a string
   convertDateToString(date: string) {
-    if (date != null && date.includes("T")) {
-      const dob = date?.split("T")[0];
-      const day = parseInt(dob.split("-")[2]);
-      const month = parseInt(dob.split("-")[1]);
-      const year = parseInt(dob.split("-")[0]);
+    if (date  && date.includes("-")) {
+      const day = parseInt(date.split("-")[2]);
+      const month = parseInt(date.split("-")[1]);
+      const year = parseInt(date.split("-")[0]);
       return `${day} ${Calendar.months[month - 1]} ${year}`;
     }
     return "";
@@ -328,5 +327,9 @@ export class TravelerComponent implements OnInit, AfterViewInit {
   // Sets the status of the form to not valid
   resetFormStatus() {
     this.valid = false;
+  }
+
+  getPhoneNumber(traveler: Traveler): string {
+    return `+${traveler.telefonnummer}`;
   }
 }
