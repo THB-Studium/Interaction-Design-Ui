@@ -1,7 +1,7 @@
 import { NgModule } from "@angular/core";
 import { HttpClientModule } from "@angular/common/http";
 import { RouterModule } from "@angular/router";
-import { CommonModule } from "@angular/common";
+import { CommonModule, HashLocationStrategy, LocationStrategy } from "@angular/common";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 
 import { ClipboardModule } from "ngx-clipboard";
@@ -30,6 +30,7 @@ import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatProgressBarModule } from "@angular/material/progress-bar";
 import { MatListModule } from "@angular/material/list";
 import { MatExpansionModule } from "@angular/material/expansion";
+import { MatChipsModule } from '@angular/material/chips';
 
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { ComponentsModule } from "src/app/components/components.module";
@@ -78,7 +79,8 @@ import { UserProfileComponent } from "../../pages/user-profile/user-profile.comp
     MatToolbarModule,
     MatProgressBarModule,
     MatListModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatChipsModule
   ],
   declarations: [
     AdminComponent,
@@ -90,6 +92,10 @@ import { UserProfileComponent } from "../../pages/user-profile/user-profile.comp
     TravelerComponent,
     TripofferComponent,
     UserProfileComponent,
+  ],
+  providers: [
+    //{ provide: HTTP_INTERCEPTORS, useClass: AppHttpInterceptor, multi: true },
+    {provide: LocationStrategy, useClass: HashLocationStrategy}
   ],
 })
 export class AdminLayoutModule {}

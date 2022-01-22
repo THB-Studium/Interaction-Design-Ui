@@ -16,6 +16,7 @@ import { ToastrService } from "ngx-toastr";
 import { TripOfferService } from "src/app/services/trip-offer/trip-offer.service";
 
 import { TripOffer } from "src/app/models/tripOffer";
+import { DomSanitizer } from "@angular/platform-browser";
 
 @Component({
   selector: "app-tripoffer-form",
@@ -65,7 +66,8 @@ export class TripofferFormComponent implements OnInit, AfterViewInit {
   // Defines currentTripofferId
   currentTripofferId: string;
   // Defines selectedFile
-  selectedFile?: FileList;
+  selectedFile?: any;
+  fileInputByte: any;
   // Defines selectedFileNames
   selectedFileName: string[] = [];
   // Defines isImgSelected
@@ -81,7 +83,8 @@ export class TripofferFormComponent implements OnInit, AfterViewInit {
     private activatedRoute: ActivatedRoute,
     private sharedDataService: SharedDataService,
     private toastrService: ToastrService,
-    private tripofferService: TripOfferService
+    private tripofferService: TripOfferService,
+    private sanitizer: DomSanitizer
   ) {
     this.note = "";
     this.anothernote = "";
@@ -102,7 +105,14 @@ export class TripofferFormComponent implements OnInit, AfterViewInit {
         this.currentTripofferId = param.id;
         // read the tripoffer from the api
         this.tripofferService.getOne(this.currentTripofferId).subscribe({
-          next: (resp) => (this.currentTripoffer = resp),
+          next: (resp) => {
+            
+            //convert image
+            let objectURL = 'data:image/png;base64,' + resp.startbild;
+            resp.realImage = this.sanitizer.bypassSecurityTrustUrl(objectURL);
+            
+            this.currentTripoffer = resp;
+          },
           error: () =>
             this.toastrService.error(
               "Die Daten konnten nicht geladen werden.",
@@ -169,7 +179,7 @@ export class TripofferFormComponent implements OnInit, AfterViewInit {
     });
 
     // Since there is already an attached image, we set image selected flag to true.
-    this.isImgSelected = true;
+    //this.isImgSelected = true;
   }
 
   // Adds new selected service into the list of services
@@ -216,7 +226,8 @@ export class TripofferFormComponent implements OnInit, AfterViewInit {
   }
 
   private isFormValid(): void {
-    if (
+
+    if(
       this.tripofferForm.get("title").valid &&
       this.tripofferForm.get("startdate").valid &&
       this.tripofferForm.get("enddate").valid &&
@@ -226,7 +237,7 @@ export class TripofferFormComponent implements OnInit, AfterViewInit {
       this.serviceArray.size > 0 &&
       this.authorizedtotravelArray.size > 0 &&
       this.tripofferForm.get("note").valid &&
-      this.tripofferForm.get("anothernote").valid
+      this.tripofferForm.get("anothernote").valid 
     ) {
       // The module returns the selected date - 1day, so we need to add 1day to the selected date before save it
       let startdate = this.tripofferForm.get("startdate").value;
@@ -235,7 +246,7 @@ export class TripofferFormComponent implements OnInit, AfterViewInit {
 
       this.currentTripoffer = {
         id: this.currentTripofferId,
-        startbild: this.selectedFile?.item(0),
+        startbild: this.fileInputByte,
         titel: this.tripofferForm.get("title").value,
         startDatum: startdate.setDate(startdate.getDate() + 1),
         endDatum: enddate.setDate(enddate.getDate() + 1),
@@ -249,8 +260,10 @@ export class TripofferFormComponent implements OnInit, AfterViewInit {
         sonstigeHinweise: this.tripofferForm.get("anothernote").value,
         erwartungenReadListTO: null,
         landId: null,
-        buchungsklassenReadListTO: null,
+        buchungsklassenReadListTO: null
       };
+
+      console.log('form_valid',this.currentTripoffer)
 
       this.sharedDataService.changeCurrentTripOffer(this.currentTripoffer);
       // Check if the dates are valid
@@ -272,15 +285,24 @@ export class TripofferFormComponent implements OnInit, AfterViewInit {
     this.selectedFileName = [];
     this.selectedFile = event.target.files;
     if (this.selectedFile && this.selectedFile.item(0)) {
-      this.isImgSelected = true;
+      //this.isImgSelected = true;
       this.selectedFileName.push(this.selectedFile.item(0).name);
       // set the value of the input
       this.tripofferForm.value.image = this.selectedFileName[0];
+      // check whether the form is valid or not
+      this.isFormValid();
+      const file = event.target.files[0];
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        this.fileInputByte = reader.result;
+      };
+
+      this.isImgSelected = true;
     } else {
       this.isImgSelected = false;
     }
-    // check whether the form is valid or not
-    this.isFormValid();
+
   }
 
   /**This method will not compare the time*/

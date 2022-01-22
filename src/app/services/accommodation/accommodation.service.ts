@@ -27,18 +27,18 @@ export class AccommodationService {
   }
 
   // POST
-  addOne(formData: FormData): Observable<Accommodation> {
+  addOne(form: any): Observable<Accommodation> {
     return this.httpClient.post<Accommodation>(
       this.ACCOMMODATIONS_URL,
-      formData
+      form
     );
   }
 
   // PUT
-  updateOne(accommodation: Accommodation): Observable<Accommodation> {
+  updateOne(form: any): Observable<Accommodation> {
     return this.httpClient.put<Accommodation>(
       this.ACCOMMODATIONS_URL,
-      accommodation,
+      form,
       {
         headers: this.headers,
       }

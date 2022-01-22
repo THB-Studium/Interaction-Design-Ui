@@ -65,7 +65,7 @@
             <!-- Phone -->
             <mat-form-field class="col-md-12" appearance="standard">
                 <mat-label>Handy</mat-label>
-                <input matInput formControlName="mobile" placeholder="010000000000"
+                <input matInput formControlName="mobile" placeholder="+491000000000"
                     (click)="notifyOnDateOfBirthInvalid()" required>
                 <mat-error *ngIf="travelerForm.get('mobile').errors && travelerForm.get('mobile').hasError('required')">
                     Die Nummer ist <strong>erforderlich</strong>.

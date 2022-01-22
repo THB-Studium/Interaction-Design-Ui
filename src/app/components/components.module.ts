@@ -43,6 +43,7 @@ import { AccommodationFormComponent } from './forms/accommodation-form/accommoda
 import { CountryInformationFormComponent } from './forms/country-information-form/country-information-form.component';
 import { NavbarGuestComponent } from './navbar-guest/navbar-guest.component';
 import { BookingFormComponent } from './forms/booking-form/booking-form.component';
+import { FeedbackFormComponent } from './forms/feedback-form/feedback-form.component';
 
 @NgModule({
   imports: [
@@ -91,6 +92,7 @@ import { BookingFormComponent } from './forms/booking-form/booking-form.componen
     AccommodationFormComponent,
     CountryInformationFormComponent,
     NavbarGuestComponent,
+    FeedbackFormComponent,
     BookingFormComponent
   ],
   exports: [
@@ -107,6 +109,7 @@ import { BookingFormComponent } from './forms/booking-form/booking-form.componen
     AccommodationFormComponent,
     CountryInformationFormComponent,
     NavbarGuestComponent,
+    FeedbackFormComponent,
     BookingFormComponent
   ],
 })

@@ -4,4 +4,5 @@ export class Highlight {
   public description: string;
   public bild: File;
   public landId: string;
+  public realImage?: any;
 }

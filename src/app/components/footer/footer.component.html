@@ -1,30 +1,65 @@
-<div class="container-fluid">
-  <div class="row align-items-center justify-content-xl-between">
-    <div class="col-xl-6">
-      <div class="copyright text-center text-xl-left text-muted">
+<div class="container-fluid footer">
+  <div class="row ">
+    <div class="col-4">
+      <div class="copyright ml-5 text-muted">
         <h3 class="text-white">Kontakt</h3>
         <p class="text-white">Julia Schnitzer</p>
         <p class="text-white">post@university-travel-club.org</p>
-        &copy; {{ test | date: "yyyy" }}
-        <a href="https://www.creative-tim.com?ref=ada-footer-auth-layout" class="font-weight-bold ml-1 text-white"
-          target="_blank">UNIVERSITY TRAVEL CLUB</a>
       </div>
     </div>
-    <div class="col-xl-4">
-      <h3 class="text-white">Newsletter abonnieren</h3>
-      <Input type="text" placeholder="E-mail Adresse..." />
-      <button class="submit">ABONNIEREN</button>
+    <div class="col-4">
+      <div class="text-abo">
+        <h3 class="text-white">Newsletter abonnieren</h3>
+      <div class="row">
+        <div class="col-6 input-form">
+          <form [formGroup]="emailForm" class="example-form">
+            <mat-form-field class="example-full-width" appearance="fill">
+              <mat-label>Email Address *</mat-label>
+              <input matInput type="email" formControlName="email" placeholder="E-Mail Address" required>
+              <mat-icon matSuffix>mail_outline</mat-icon>
+              <mat-hint>Input the fully qualified email address</mat-hint>
+              <mat-error *ngIf="(emailForm.get('email')).errors?.required">Email is required</mat-error>
+              <mat-error *ngIf="(emailForm.get('email')).errors?.pattern">Please enter valid email</mat-error>
+            </mat-form-field>
+          </form>
+        </div>
+        <div class="col-6">
+          <!-- <button class="submit" [ngStyle]="btnColor">ABONNIEREN</button> -->
+          <button type="button" (click)="abonnieren()" class="btn btn-outline-light btn-lg">ABONNIEREN</button>
+        </div>
+      </div>
+      </div>
     </div>
-    <div class="col-xl-2">
-      <a href="https://www.facebook.com/universitytravelclub" class="text-white"><i class="bi bi-facebook">facebook</i></a>
-      <br />
-      <a href="https://www.instagram.com/utcgermany/" class="text-white">
-        <i class="bi bi-instagram">Instagram</i></a>
-      <br />
-      <a href="" class="text-white">Impressum und DatenSchutz</a>
-      <br />
-      <br />
-      <a hre="" class="text-white"><i class="bi bi-arrow-up-circle-fill"></i></a>
+    <div class="col-4">
+      <p class="box-icons">
+        <a href="https://www.facebook.com/universitytravelclub" class="text-white">
+          <i class="bi bi-facebook"><span class="text-icon">facebook</span></i>
+        </a>
+      </p>
+      <p class="box-icons">
+        <a href="https://www.instagram.com/utcgermany/" class="text-white">
+          <i class="bi bi-instagram"><span class="text-icon">Instagram</span></i>
+        </a>
+      </p>
+      
+    </div>
+  </div>
+  <div class="row footer-copy-r">
+    <div class="col-4">
+      <p class="ml-5 text-white">&copy; COPYRIGHT {{ currentDate | date: "yyyy" }} - UNIVERSITY TRAVEL CLUB</p>
+    </div>
+    <div class="col-4"></div>
+    <div class="col-4">
+      <div class=" box-icons-impressum">
+        <a href="" class="text-white">Impressum</a>
+
+        <a href="" class="text-white">DatenSchutz</a>
+
+        <a hre="#" class="text-white" data-bs-toggle="tooltip" data-bs-placement="top" title="Back to top">
+          <title>Back to Top</title>
+          <i class="bi bi-arrow-up-circle-fill"></i>  
+        </a>
+      </div>
     </div>
   </div>
 </div>

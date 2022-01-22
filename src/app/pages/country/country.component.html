@@ -96,7 +96,6 @@
                 Die Liste ist leer!
             </p>
         </div>
-        <img [src]='image' alt="" />
     </div>
 </div>
 
@@ -108,11 +107,11 @@
         <app-country-form (notifyFormIsValid)="isModalFormValid($event)"></app-country-form>
     </div>
     <mat-divider></mat-divider>
-    <div mat-dialog-actions>
+    <div class="justify-content-end" mat-dialog-actions>
         <button mat-raised-button color="primary" mat-dialog-close [disabled]="!isValid" (click)="saveNewCountry()">
             Speichern
         </button>
-        <button mat-raised-button color="accent" mat-dialog-close>
+        <button mat-button color="accent" mat-dialog-close>
             Abbrechen
         </button>
     </div>

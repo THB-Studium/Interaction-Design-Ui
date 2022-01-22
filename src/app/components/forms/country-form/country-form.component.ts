@@ -3,7 +3,7 @@ import {
   Component,
   OnInit,
   Output,
-  EventEmitter
+  EventEmitter,
 } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { MatChipInputEvent } from "@angular/material/chips";
@@ -14,6 +14,7 @@ import { SharedDataService } from "src/app/services/sharedData/shared-data.servi
 import { Country } from "src/app/models/country";
 import { CountryService } from "src/app/services/country/country.service";
 import { ToastrService } from "ngx-toastr";
+import { DomSanitizer } from "@angular/platform-browser";
 
 @Component({
   selector: "app-country-form",
@@ -33,7 +34,7 @@ export class CountryFormComponent implements OnInit, AfterViewInit {
     // text
     accommodation_text: new FormControl("", [Validators.required]),
     // image
-    image: new FormControl("", [Validators.required])
+    image: new FormControl(""),
   });
 
   // Defines currentCountry. Contains complet current country information.
@@ -47,7 +48,8 @@ export class CountryFormComponent implements OnInit, AfterViewInit {
   // Defines selectedFileName
   selectedFileName: string;
   // Defines selectedFile
-  selectedFile?: FileList;
+  selectedFile?: any;
+  fileInputByte: any;
   // Defines isAnAdd
   isAnAdd = false;
   // Defines isValid
@@ -57,20 +59,21 @@ export class CountryFormComponent implements OnInit, AfterViewInit {
     private activatedRoute: ActivatedRoute,
     private countryService: CountryService,
     private sharedDataService: SharedDataService,
-    private toastrService: ToastrService
-  ) { }
+    private toastrService: ToastrService,
+    private sanitizer: DomSanitizer
+  ) {}
 
   ngOnInit(): void {
     this.initForm();
     this.currentCountry = {
       id: null,
-      name: '',
+      name: "",
       flughafen: [],
-      unterkunft_text: '',
+      unterkunft_text: "",
       karte_bild: null,
       highlights: [],
       landInfo: [],
-      unterkunft: []
+      unterkunft: [],
     };
   }
 
@@ -79,14 +82,24 @@ export class CountryFormComponent implements OnInit, AfterViewInit {
   }
 
   private initForm() {
-    this.activatedRoute.params.subscribe(param => {
+    this.activatedRoute.params.subscribe((param) => {
       if (param.id) {
         // it is an edit
         this.countryService.getOne(param.id).subscribe({
-          next: (country) => this.currentCountry = country,
-          error: () => this.toastrService.error('Die Daten konnten nicht geladen werden', 'Fehler'),
-          complete: () => this.setCountryForm(this.currentCountry)
-        })
+          next: (country) => {
+            //convert image
+            let objectURL = "data:image/png;base64," + country.karte_bild;
+            country.realImage =
+              this.sanitizer.bypassSecurityTrustUrl(objectURL);
+            this.currentCountry = country;
+          },
+          error: () =>
+            this.toastrService.error(
+              "Die Daten konnten nicht geladen werden",
+              "Fehler"
+            ),
+          complete: () => this.setCountryForm(this.currentCountry),
+        });
       } else {
         this.currentCountry = null;
       }
@@ -95,14 +108,14 @@ export class CountryFormComponent implements OnInit, AfterViewInit {
 
   private setCountryForm(country: Country) {
     this.airportsArray.clear();
-    country.flughafen?.forEach(value => this.airportsArray.add(value));
+    country.flughafen?.forEach((value) => this.airportsArray.add(value));
 
     this.countryForm.setValue({
       name: country.name,
       accommodation_text: country.unterkunft_text,
       airports: [],
       // Todo: convert image and add his name to this input
-      image: ''
+      image: "",
     });
     // Since there is already an attached image, set the img selected to true
     this.isImgSelected = true;
@@ -126,17 +139,27 @@ export class CountryFormComponent implements OnInit, AfterViewInit {
   }
 
   selectFile(event: any) {
+    let name = [];
     this.selectedFile = event.target.files;
     if (this.selectedFile && this.selectedFile.item(0)) {
       this.isImgSelected = true;
-      this.selectedFileName = this.selectedFile.item(0).name;
-      // display the name
-      this.countryForm.value.image = this.selectedFileName;
+      // set the value of the input
+      name.push(this.selectedFile.item(0).name);
+      //this.countryForm.value.image = name[0];
+      // check whether the form is valid or not
+      this.isFormValid();
+      const file = event.target.files[0];
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        this.fileInputByte = reader.result;
+      };
+      this.selectedFileName = name[0];
+      this.countryForm.get("image").setErrors(null);
     } else {
       this.isImgSelected = false;
+      this.countryForm.get("image").setErrors({ valid: false });
     }
-    // check whether the form is valid or not
-    this.isFormValid();
   }
 
   private onFormValuesChanged(): void {
@@ -147,10 +170,11 @@ export class CountryFormComponent implements OnInit, AfterViewInit {
 
   private isFormValid(): void {
     if (
-      this.countryForm.get("name").valid && this.isImgSelected &&
-      this.countryForm.get("accommodation_text").valid && this.airportsArray.size > 0
+      this.countryForm.get("name").valid &&
+      this.isImgSelected &&
+      this.airportsArray.size > 0 &&
+      this.countryForm.get("accommodation_text").valid
     ) {
-
       var id = null;
       if (!this.isAnAdd) {
         id = this.currentCountryId;
@@ -158,13 +182,19 @@ export class CountryFormComponent implements OnInit, AfterViewInit {
 
       this.currentCountry = {
         id: id,
-        name: this.countryForm.get('name').value,
+        name: this.countryForm.get("name").value,
         flughafen: Array.from(this.airportsArray),
-        unterkunft_text: this.countryForm.get('accommodation_text').value,
-        karte_bild: this.selectedFile?.item(0) ? this.selectedFile.item(0) : this.currentCountry.karte_bild,
-        highlights: this.currentCountry.highlights ? this.currentCountry.highlights : [],
-        landInfo: this.currentCountry.landInfo ? this.currentCountry.landInfo : [],
-        unterkunft: this.currentCountry.unterkunft ? this.currentCountry.unterkunft : []
+        unterkunft_text: this.countryForm.get("accommodation_text").value,
+        karte_bild: this.fileInputByte,
+        highlights: this.currentCountry.highlights
+          ? this.currentCountry.highlights
+          : [],
+        landInfo: this.currentCountry.landInfo
+          ? this.currentCountry.landInfo
+          : [],
+        unterkunft: this.currentCountry.unterkunft
+          ? this.currentCountry.unterkunft
+          : [],
       };
 
       this.sharedDataService.changeCurrentCountry(this.currentCountry);
