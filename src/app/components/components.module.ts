@@ -42,6 +42,7 @@ import { AccommodationFormComponent } from "./forms/accommodation-form/accommoda
 import { CountryInformationFormComponent } from "./forms/country-information-form/country-information-form.component";
 import { NavbarGuestComponent } from "./navbar-guest/navbar-guest.component";
 import { FeedbackFormComponent } from "./forms/feedback-form/feedback-form.component";
+import { AboutusComponent } from "../pages/aboutus/aboutus.component";
 
 @NgModule({
   imports: [
@@ -90,6 +91,7 @@ import { FeedbackFormComponent } from "./forms/feedback-form/feedback-form.compo
     CountryInformationFormComponent,
     NavbarGuestComponent,
     FeedbackFormComponent,
+    AboutusComponent,
   ],
   exports: [
     FooterComponent,
@@ -106,6 +108,7 @@ import { FeedbackFormComponent } from "./forms/feedback-form/feedback-form.compo
     CountryInformationFormComponent,
     NavbarGuestComponent,
     FeedbackFormComponent,
+    AboutusComponent,
   ],
 })
 export class ComponentsModule {}
