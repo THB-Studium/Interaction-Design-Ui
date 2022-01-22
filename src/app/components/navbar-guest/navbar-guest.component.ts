@@ -32,7 +32,8 @@ export class NavbarGuestComponent implements OnInit {
 
     if (
       this.title.toLowerCase().includes("login") ||
-      this.title.toLowerCase().includes("register")
+      this.title.toLowerCase().includes("register") ||
+      this.title.toLowerCase().includes("aboutus")
     ) {
       this.isAuth = true;
     } else {
