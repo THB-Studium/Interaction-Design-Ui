@@ -169,13 +169,16 @@ export class TravelerFormComponent implements OnInit, AfterViewInit {
   // Checks whether the selected date of birth is valid or not
   onDateSelected(selectedDate) {
     const dob = selectedDate.target.value;
-    this.selectedDate = dob !== "" ? formatDate(dob, "yyyy-MM-dd", "en_US") : formatDate(null, "yyyy-MM-dd", "en_US");
+    this.selectedDate =
+      dob !== ""
+        ? formatDate(dob, "yyyy-MM-dd", "en_US")
+        : formatDate(null, "yyyy-MM-dd", "en_US");
     const today = formatDate(new Date(), "yyyy-MM-dd", "en_US");
-     // The user should not be older than 1940
-     const maxDate = formatDate(new Date(1940, 1, 1), "yyyy-MM-dd", "en_US");
-     // If is an adult.
-     const minDate = formatDate(new Date(2003, 1, 1), "yyyy-MM-dd", "en_US");
- 
+    // The user should not be older than 1940
+    const maxDate = formatDate(new Date(1940, 1, 1), "yyyy-MM-dd", "en_US");
+    // If is an adult.
+    const minDate = formatDate(new Date(2003, 1, 1), "yyyy-MM-dd", "en_US");
+
     // Check whether the selected date is valid or not
     if (
       this.selectedDate > today ||

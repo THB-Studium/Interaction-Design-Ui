@@ -16,7 +16,7 @@
           <form [formGroup]="emailForm" class="example-form">
             <mat-form-field class="example-full-width" appearance="fill">
               <mat-label>Email Address *</mat-label>
-              <input matInput type="email" formControlName="email" placeholder="E-Mail Address">
+              <input matInput type="email" formControlName="email" placeholder="E-Mail Address" required>
               <mat-icon matSuffix>mail_outline</mat-icon>
               <mat-hint>Input the fully qualified email address</mat-hint>
               <mat-error *ngIf="(emailForm.get('email')).errors?.required">Email is required</mat-error>
