@@ -23,15 +23,7 @@
   </div>
   <!--Image uploader-->
   <div class="form-row">
-    <div class="col-2"></div>
-    <div class="form-group col-md-8 text-center">
-      <img *ngIf="currentTripoffer?.realImage" [src]="currentTripoffer?.realImage" width="auto" height="185px" alt="">
-    </div>
-    <div class="col-2"></div>
-  </div>
-  <div class="form-row">
-    <div class="col-2"></div>
-    <div class="form-group col-8 text-center">
+    <div class="form-group col-md-10 text-center">
       <mat-form-field class="col-md-12">
         <mat-label>Hintergrundbild</mat-label>
         <mat-toolbar class="mb-1">
@@ -51,7 +43,9 @@
         </mat-error>
       </mat-form-field>
     </div>
-    <div class="col-2"></div>
+    <div class="form-group col-md-2 text-center">
+      <img *ngIf="currentTripoffer?.realImage" [src]="currentTripoffer?.realImage" class="col-md-10" width="auto" height="185px" alt="">
+    </div>
   </div>
   <div class="form-row">
     <!-- start date -->
@@ -134,7 +128,7 @@
               <mat-icon>cancel</mat-icon>
             </button>
           </mat-chip>
-          <input placeholder="Neue Leistung..." formControlName="services" [matChipInputFor]="serviceList"
+          <input placeholder="Neue Leistung and Enter drücken..." formControlName="services" [matChipInputFor]="serviceList"
             (matChipInputTokenEnd)="addServiceFromInput($event)">
         </mat-chip-list>
         <mat-error *ngIf="tripofferForm.get('services').invalid">
@@ -156,7 +150,7 @@
               <mat-icon>cancel</mat-icon>
             </button>
           </mat-chip>
-          <input placeholder="Neue..." formControlName="authorizedtotravel" [matChipInputFor]="authorizationList"
+          <input placeholder="Neue Berechtigung and Enter drücken..." formControlName="authorizedtotravel" [matChipInputFor]="authorizationList"
             (matChipInputTokenEnd)="addAuthorizationFromInput($event)">
         </mat-chip-list>
         <mat-error *ngIf="tripofferForm.get('authorizedtotravel').invalid">

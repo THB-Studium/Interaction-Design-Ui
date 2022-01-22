@@ -59,13 +59,33 @@ export class TripofferComponent implements OnInit, AfterViewInit {
     private sanitizer: DomSanitizer
   ) {
     this.dialogConfiguration();
+    this.currentTripOffer = {
+      id: "",
+      titel: "",
+      anmeldungsFrist: new Date(),
+      startDatum: new Date(),
+      endDatum: new Date(),
+      startbild: null,
+      plaetze: 0,
+      freiPlaetze: 0,
+      interessiert: 0,
+      leistungen: [],
+      mitReiserBerechtigt: [],
+      hinweise: "",
+      sonstigeHinweise: "",
+      landId: "",
+      buchungsklassenReadListTO: null,
+      erwartungenReadListTO: null,
+      erwartungen: null,
+      buchungsklassen: null,
+    };
   }
 
   ngOnInit(): void {
     // Datasource initialization. This is needed to set paginator and items size
     this.dataSource = new MatTableDataSource([
       {
-        id: "1",
+        id: "",
         titel: "",
         anmeldungsFrist: null,
         startDatum: null,
@@ -81,6 +101,8 @@ export class TripofferComponent implements OnInit, AfterViewInit {
         landId: "",
         buchungsklassenReadListTO: null,
         erwartungenReadListTO: null,
+        erwartungen: null,
+        buchungsklassen: null,
       },
     ]);
 
@@ -124,17 +146,15 @@ export class TripofferComponent implements OnInit, AfterViewInit {
   private getTripoffers() {
     this.tripOfferService.getAll().subscribe({
       next: (offers) => {
-
         this.tripOfferList = offers;
         this.sortByTitle(this.tripOfferList);
-        this.dataSource.data = this.tripOfferList.map(tripOffer => {
-            //convert image
-            let objectURL = 'data:image/png;base64,' + tripOffer.startbild;
-            tripOffer.realImage = this.sanitizer.bypassSecurityTrustUrl(objectURL);
-            return tripOffer;
+        this.dataSource.data = this.tripOfferList.map((tripOffer) => {
+          //convert image
+          let objectURL = "data:image/png;base64," + tripOffer.startbild;
+          tripOffer.realImage =
+            this.sanitizer.bypassSecurityTrustUrl(objectURL);
+          return tripOffer;
         });
-
-        console.log(this.dataSource.data)
       },
       error: (error) => {
         this.handleError(error);
@@ -154,25 +174,6 @@ export class TripofferComponent implements OnInit, AfterViewInit {
   addOffersDialog(dialogForm: any) {
     // Notify the sharedataservice that it is an add
     this.sharedDataService.isAddBtnClicked = true;
-    this.currentTripOffer = {
-      id: "",
-      titel: "",
-      anmeldungsFrist: new Date(),
-      startDatum: new Date(),
-      endDatum: new Date(),
-      startbild: null,
-      plaetze: 0,
-      freiPlaetze: 0,
-      interessiert: 0,
-      leistungen: [],
-      mitReiserBerechtigt: [],
-      hinweise: "",
-      sonstigeHinweise: "",
-      landId: "",
-      buchungsklassenReadListTO: null,
-      erwartungenReadListTO: null,
-    };
-
     // set the value of the offer into the service
     this.sharedDataService.changeCurrentTripOffer(this.currentTripOffer);
     // Open the add traveler dialog
@@ -184,8 +185,6 @@ export class TripofferComponent implements OnInit, AfterViewInit {
     this.sharedDataService.currenttripOfferSource
       .subscribe({
         next: (tripoffer) => {
-          // Build formdata to pass as value to be saved
-
           let tocreate = {
             id: tripoffer.id,
             titel: tripoffer.titel,
@@ -202,10 +201,8 @@ export class TripofferComponent implements OnInit, AfterViewInit {
             erwartungenReadListTO: tripoffer.erwartungenReadListTO,
             buchungsklassenReadListTO: tripoffer.buchungsklassenReadListTO,
             landId: tripoffer.landId,
-            startbild: tripoffer.startbild
-          }
-
-          console.log('to create', tocreate);
+            startbild: tripoffer.startbild,
+          };
 
           this.tripOfferService.addOne(tocreate).subscribe({
             next: (res: TripOffer) => {
@@ -214,7 +211,13 @@ export class TripofferComponent implements OnInit, AfterViewInit {
               // Add the new added item to the current list and update the table
               this.tripOfferList.push(res);
               this.sortByTitle(this.tripOfferList);
-              this.dataSource.data = this.tripOfferList;
+              this.dataSource.data = this.tripOfferList.map((tripOffer) => {
+                //convert image
+                let objectURL = "data:image/png;base64," + tripOffer.startbild;
+                tripOffer.realImage =
+                  this.sanitizer.bypassSecurityTrustUrl(objectURL);
+                return tripOffer;
+              });
             },
             error: (err) => {
               this.handleError(err);
@@ -241,7 +244,6 @@ export class TripofferComponent implements OnInit, AfterViewInit {
     this.sharedDataService.isAddBtnClicked = false;
     // update current Traveler information
     this.currentTripOffer = tripoffer;
-    this.sharedDataService.changeCurrentTripOffer(tripoffer);
     // navigate to the edit page
     this.router.navigate([`edit/${tripoffer.id}`], {
       relativeTo: this.activatedRoute,
@@ -294,11 +296,10 @@ export class TripofferComponent implements OnInit, AfterViewInit {
   }
 
   convertDateToString(date: string) {
-    if (date != null && date.includes("T")) {
-      const dob = date?.split("T")[0];
-      const day = parseInt(dob.split("-")[2]);
-      const month = parseInt(dob.split("-")[1]);
-      const year = parseInt(dob.split("-")[0]);
+    if (date && date.includes("-")) {
+      const day = parseInt(date.split("-")[2]);
+      const month = parseInt(date.split("-")[1]);
+      const year = parseInt(date.split("-")[0]);
       return `${day} ${Calendar.months[month - 1]} ${year}`;
     }
     return "";

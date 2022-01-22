@@ -1,4 +1,3 @@
-/**Todo: convert image array to file, before passing to the form. Add the image name to the form*/
 import {
   AfterViewInit,
   Component,
@@ -7,16 +6,12 @@ import {
   EventEmitter,
 } from "@angular/core";
 import { MatChipInputEvent } from "@angular/material/chips";
-import { ActivatedRoute } from "@angular/router";
-
 import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { formatDate } from "@angular/common";
 
 import { SharedDataService } from "src/app/services/sharedData/shared-data.service";
-import { ToastrService } from "ngx-toastr";
-import { TripOfferService } from "src/app/services/trip-offer/trip-offer.service";
 
 import { TripOffer } from "src/app/models/tripOffer";
-import { DomSanitizer } from "@angular/platform-browser";
 
 @Component({
   selector: "app-tripoffer-form",
@@ -78,14 +73,14 @@ export class TripofferFormComponent implements OnInit, AfterViewInit {
     enddate: "",
     deadlinedate: "",
   };
+  // Defines selectedStartDate
+  selectedStartDate: any;
+  // Defines selectedEndDate
+  selectedEndDate: any;
+  // Defines selectedDeadlineDate
+  selectedDeadlineDate: any;
 
-  constructor(
-    private activatedRoute: ActivatedRoute,
-    private sharedDataService: SharedDataService,
-    private toastrService: ToastrService,
-    private tripofferService: TripOfferService,
-    private sanitizer: DomSanitizer
-  ) {
+  constructor(private sharedDataService: SharedDataService) {
     this.note = "";
     this.anothernote = "";
   }
@@ -99,87 +94,26 @@ export class TripofferFormComponent implements OnInit, AfterViewInit {
   }
 
   private initForm() {
-    // Check whether it is an edit or add. If there is id as key from the url, than it is an edit
-    this.activatedRoute.params.subscribe((param) => {
-      if (param.id) {
-        this.currentTripofferId = param.id;
-        // read the tripoffer from the api
-        this.tripofferService.getOne(this.currentTripofferId).subscribe({
-          next: (resp) => {
-            
-            //convert image
-            let objectURL = 'data:image/png;base64,' + resp.startbild;
-            resp.realImage = this.sanitizer.bypassSecurityTrustUrl(objectURL);
-            
-            this.currentTripoffer = resp;
-          },
-          error: () =>
-            this.toastrService.error(
-              "Die Daten konnten nicht geladen werden.",
-              "Fehler"
-            ),
-          complete: () => {
-            this.setcurrentTripofferForm(this.currentTripoffer);
-            // change the value of the tripoffer into dataservice
-            this.sharedDataService.changeCurrentTripOffer(
-              this.currentTripoffer
-            );
-            // emit form valid
-            this.notifyFormIsValid.emit(true);
-          },
-        });
-      } else {
-        this.currentTripoffer = null;
-        this.currentTripofferId = null;
-        this.notifyFormIsValid.emit(false);
-      }
-    });
-  }
-
-  private setcurrentTripofferForm(tripoffer: TripOffer) {
-    // service array
-    this.serviceArray.clear();
-    tripoffer.leistungen?.forEach((value) => this.serviceArray.add(value));
-
-    // authorization array
-    this.authorizedtotravelArray.clear();
-    tripoffer.mitReiserBerechtigt?.forEach((value) =>
-      this.authorizedtotravelArray.add(value)
-    );
-
-    // In order to display the really value of the date, we need to remove 1day from the date. Since the datepicker module display the given date + 1day
-    let startdate = new Date(
-      new Date(tripoffer.startDatum).getFullYear(),
-      new Date(tripoffer.startDatum).getMonth(),
-      new Date(tripoffer.startDatum).getDate() - 1
-    );
-    let enddate = new Date(
-      new Date(tripoffer.endDatum).getFullYear(),
-      new Date(tripoffer.endDatum).getMonth(),
-      new Date(tripoffer.endDatum).getDate() - 1
-    );
-    let deadlinedate = new Date(
-      new Date(tripoffer.anmeldungsFrist).getFullYear(),
-      new Date(tripoffer.anmeldungsFrist).getMonth(),
-      new Date(tripoffer.anmeldungsFrist).getDate() - 1
-    );
-
-    this.tripofferForm.setValue({
-      title: tripoffer.titel,
-      image: "", // todo: add image name here
-      startdate: startdate,
-      enddate: enddate,
-      deadline: deadlinedate,
-      totalplace: tripoffer.plaetze,
-      // The value will be readed from the array
-      services: "",
-      authorizedtotravel: "",
-      note: tripoffer.hinweise,
-      anothernote: tripoffer.sonstigeHinweise,
-    });
-
-    // Since there is already an attached image, we set image selected flag to true.
-    //this.isImgSelected = true;
+    this.currentTripoffer = {
+      id: "",
+      titel: "",
+      anmeldungsFrist: new Date(),
+      startDatum: new Date(),
+      endDatum: new Date(),
+      startbild: null,
+      plaetze: 0,
+      freiPlaetze: 0,
+      interessiert: 0,
+      leistungen: [],
+      mitReiserBerechtigt: [],
+      hinweise: "",
+      sonstigeHinweise: "",
+      landId: "",
+      buchungsklassenReadListTO: null,
+      erwartungenReadListTO: null,
+      erwartungen: null,
+      buchungsklassen: null,
+    };
   }
 
   // Adds new selected service into the list of services
@@ -226,8 +160,7 @@ export class TripofferFormComponent implements OnInit, AfterViewInit {
   }
 
   private isFormValid(): void {
-
-    if(
+    if (
       this.tripofferForm.get("title").valid &&
       this.tripofferForm.get("startdate").valid &&
       this.tripofferForm.get("enddate").valid &&
@@ -237,20 +170,15 @@ export class TripofferFormComponent implements OnInit, AfterViewInit {
       this.serviceArray.size > 0 &&
       this.authorizedtotravelArray.size > 0 &&
       this.tripofferForm.get("note").valid &&
-      this.tripofferForm.get("anothernote").valid 
+      this.tripofferForm.get("anothernote").valid
     ) {
-      // The module returns the selected date - 1day, so we need to add 1day to the selected date before save it
-      let startdate = this.tripofferForm.get("startdate").value;
-      let enddate = this.tripofferForm.get("enddate").value;
-      let deadlinedate = this.tripofferForm.get("deadline").value;
-
       this.currentTripoffer = {
         id: this.currentTripofferId,
         startbild: this.fileInputByte,
         titel: this.tripofferForm.get("title").value,
-        startDatum: startdate.setDate(startdate.getDate() + 1),
-        endDatum: enddate.setDate(enddate.getDate() + 1),
-        anmeldungsFrist: deadlinedate.setDate(deadlinedate.getDate() + 1),
+        startDatum: this.selectedStartDate,
+        endDatum: this.selectedEndDate,
+        anmeldungsFrist: this.selectedDeadlineDate,
         plaetze: this.tripofferForm.get("totalplace").value,
         freiPlaetze: this.tripofferForm.get("totalplace").value,
         interessiert: 0,
@@ -260,15 +188,18 @@ export class TripofferFormComponent implements OnInit, AfterViewInit {
         sonstigeHinweise: this.tripofferForm.get("anothernote").value,
         erwartungenReadListTO: null,
         landId: null,
-        buchungsklassenReadListTO: null
+        buchungsklassenReadListTO: null,
+        erwartungen: null,
+        buchungsklassen: null,
       };
-
-      console.log('form_valid',this.currentTripoffer)
 
       this.sharedDataService.changeCurrentTripOffer(this.currentTripoffer);
       // Check if the dates are valid
-      if (startdate === enddate && startdate === deadlinedate) {
-        this.tripofferForm.get("enddate").setErrors({'valid': false});
+      if (
+        this.selectedStartDate === this.selectedEndDate &&
+        this.selectedStartDate === this.selectedDeadlineDate
+      ) {
+        this.tripofferForm.get("enddate").setErrors({ valid: false });
         // notify the parent
         this.notifyFormIsValid.emit(false);
       } else {
@@ -299,25 +230,30 @@ export class TripofferFormComponent implements OnInit, AfterViewInit {
       };
 
       this.isImgSelected = true;
+      this.tripofferForm.get("image").setErrors(null);
     } else {
       this.isImgSelected = false;
+      this.tripofferForm.get("image").setErrors({ valid: false });
     }
-
   }
 
   /**This method will not compare the time*/
-  compareDates(date1: Date, date2: Date): number {
-    const d1 = new Date(date1.getFullYear(), date1.getMonth(), date1.getDate());
-    const d2 = new Date(date2.getFullYear(), date2.getMonth(), date2.getDate());
-
-    if (d1 < d2) return -1;
-    else if (d1 > d2) return 1;
+  compareDates(date1: string, date2: string): number {
+    if (date1 < date2) return -1;
+    else if (date1 > date2) return 1;
     return 0;
   }
 
   onStartDateSelected(selectedDate) {
     const selecteddate = selectedDate.target.value;
-    const diff = this.compareDates(selecteddate, new Date());
+
+    this.selectedStartDate =
+      selecteddate !== ""
+        ? formatDate(selecteddate, "yyyy-MM-dd", "en_US")
+        : formatDate(null, "yyyy-MM-dd", "en_US");
+    const today = formatDate(new Date(), "yyyy-MM-dd", "en_US");
+
+    const diff = this.compareDates(this.selectedStartDate, today);
     // Check whether the selected date is valid or not
     if (diff === -1) {
       this.errors.startdate = "Die Eingabe stimmt nicht.";
@@ -331,9 +267,16 @@ export class TripofferFormComponent implements OnInit, AfterViewInit {
 
   onEndDateSelected(selectedDate) {
     const selecteddate = selectedDate.target.value;
-    const startdate = new Date(this.tripofferForm.value.startdate);
 
-    const diff = this.compareDates(selecteddate, startdate);
+    this.selectedEndDate =
+      selecteddate !== ""
+        ? formatDate(selecteddate, "yyyy-MM-dd", "en_US")
+        : formatDate(null, "yyyy-MM-dd", "en_US");
+
+    const diff = this.compareDates(
+      this.selectedEndDate,
+      this.selectedStartDate
+    );
     // Check whether the selected date is valid or not
     if (diff === -1) {
       this.errors.enddate =
@@ -348,12 +291,19 @@ export class TripofferFormComponent implements OnInit, AfterViewInit {
 
   onDeadlineDateSelected(selectedDate) {
     const selecteddate = selectedDate.target.value;
-    //
-    const startdate = new Date(this.tripofferForm.value.startdate);
-    const enddate = new Date(this.tripofferForm.value.enddate);
+    this.selectedDeadlineDate =
+      selecteddate !== ""
+        ? formatDate(selecteddate, "yyyy-MM-dd", "en_US")
+        : formatDate(null, "yyyy-MM-dd", "en_US");
     // Check whether the selected date is valid or not
-    const diff1 = this.compareDates(selecteddate, startdate);
-    const diff2 = this.compareDates(selecteddate, enddate);
+    const diff1 = this.compareDates(
+      this.selectedDeadlineDate,
+      this.selectedStartDate
+    );
+    const diff2 = this.compareDates(
+      this.selectedDeadlineDate,
+      this.selectedEndDate
+    );
     if (diff1 === -1 || diff2 === 1) {
       this.errors.deadlinedate =
         "Die Eingabe stimmt nicht. Das Start-&Enddatum mal schauen";
