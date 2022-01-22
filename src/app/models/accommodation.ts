@@ -9,5 +9,3 @@ export class Accommodation {
   public landId: string;
   public realImages?: any;
 }
-
-// Bilder array of array ? : rename adresse to addresse

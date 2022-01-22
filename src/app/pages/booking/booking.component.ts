@@ -1,38 +1,37 @@
 import { Component, OnInit, AfterViewInit, ViewChild } from "@angular/core";
-import { OnCommit } from "src/app/interfaces/OnCommit";
 
 import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
 import { MatTableDataSource } from "@angular/material/table";
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 
-import { ToastrService } from "ngx-toastr";
 import { BookingService } from "src/app/services/booking/booking.service";
+import { BookingClassService } from "src/app/services/booking-class/booking-class.service";
+import { CountryService } from "src/app/services/country/country.service";
 import { SharedDataService } from "src/app/services/sharedData/shared-data.service";
+import { ToastrService } from "ngx-toastr";
+import { TravelerService } from "src/app/services/traveler/traveler.service";
+import { TripOfferService } from "src/app/services/trip-offer/trip-offer.service";
 
 import { Booking } from "src/app/models/booking";
+import { BookingClass } from "src/app/models/bookingClass";
+import { Country } from "src/app/models/country";
+import { Calendar } from "src/app/variables/calendar";
+import { Traveler } from "src/app/models/traveler";
+import { TripOffer } from "src/app/models/tripOffer";
 
 @Component({
   selector: "app-booking",
   templateUrl: "./booking.component.html",
   styleUrls: ["./booking.component.css"],
 })
-export class BookingComponent implements OnInit, AfterViewInit, OnCommit {
+export class BookingComponent implements OnInit, AfterViewInit {
   // Defines paginator
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
   // Defines sort
   @ViewChild(MatSort, { static: false }) sort: MatSort;
   // Defines displayedColumns
-  displayedColumns: string[] = [
-    "date",
-    "traveler",
-    "cotraveler",
-    "airport",
-    "bookingclass",
-    "handluggage",
-    "suitcase",
-    "paymentmethod",
-  ];
+  displayedColumns: string[] = ["date", "airport", "paymentmethod", "action"];
   // Defines dataSource
   dataSource: MatTableDataSource<Booking>;
   // Defines bookingList
@@ -45,16 +44,32 @@ export class BookingComponent implements OnInit, AfterViewInit, OnCommit {
   };
   // Defines currentBooking
   currentBooking: Booking;
+  // Defines country
+  country: Country;
+  // Defines bookingclass
+  bookingclass: BookingClass;
+  // Defines traveler
+  traveler: Traveler;
+  //Defines coTraveler
+  cotraveler: Traveler;
+  // Defines tripoffer
+  tripoffer: TripOffer;
   // Defines valid. The value is true if the form is valid.
   valid: boolean = false;
   // Defines dialogConfig
   dialogConfig = new MatDialogConfig();
+  // Defines isAdd
+  isAdd = true;
 
   constructor(
     private bookingService: BookingService,
     private sharedDataService: SharedDataService,
     private dialog: MatDialog,
-    private toastrService: ToastrService
+    private toastrService: ToastrService,
+    private bookingclassService: BookingClassService,
+    private travelerService: TravelerService,
+    private tripofferService: TripOfferService,
+    private countryService: CountryService
   ) {
     this.dialogConfiguration();
   }
@@ -66,12 +81,13 @@ export class BookingComponent implements OnInit, AfterViewInit, OnCommit {
         id: "",
         buchungsklasseId: "",
         datum: "",
-        flugHafen: "",
+        flughafen: "",
         handGepaeck: "",
         koffer: "",
         mitReiser: null,
         reiser: null,
-        zahlungsMethode: "",
+        zahlungMethod: null,
+        reiseAngebotId: "",
       },
     ]);
 
@@ -79,8 +95,8 @@ export class BookingComponent implements OnInit, AfterViewInit, OnCommit {
     this.bookingList = this.dataSource.data;
 
     // read bookings from the api
-    this.getBookingList().then((admins) => {
-      this.setDataSource(admins);
+    this.getBookingList().then((booking) => {
+      this.setDataSource(booking);
     });
   }
 
@@ -88,10 +104,6 @@ export class BookingComponent implements OnInit, AfterViewInit, OnCommit {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
-
-  beforeSave(): void {}
-
-  beforeUpdate(): void {}
 
   // Filters that get and display the entered value if found.
   applyFilter(event: Event) {
@@ -141,8 +153,157 @@ export class BookingComponent implements OnInit, AfterViewInit, OnCommit {
     this.dataSource.data = this.bookingList;
   }
 
-   // On error
-   private handleError(error: any) {
+  addBookingDialog(dialogForm: any) {
+    // Notify the sharedataservice that it is an add
+    this.sharedDataService.isAddBtnClicked = true;
+    this.isAdd = true;
+    this.valid = false;
+    this.sharedDataService.changeCurrentBooking(this.currentBooking);
+    // Open the add admin dialog
+    this.dialog.open(dialogForm, this.dialogConfig);
+  }
+
+  /** Calls to save or update a booking */
+  saveBooking() {
+    this.sharedDataService.currentBooking
+      .subscribe((booking) => {
+        if (!booking.id) {
+          this.bookingService.addOne(booking).subscribe({
+            next: (savedValue) => {
+              this.sharedDataService.changeCurrentBooking(savedValue);
+              this.currentBooking = savedValue;
+              this.bookingList.push(savedValue);
+              this.sortByDate(this.bookingList);
+              this.dataSource.data = this.bookingList;
+            },
+            error: () =>
+              this.toastrService.error(
+                "Die Buchung konnte nicht gespeichert werden",
+                "Fehler"
+              ),
+            complete: () =>
+              this.toastrService.success("Die Buchung wurde gespeichert"),
+          });
+        } else {
+          this.bookingService.updateOne(booking).subscribe({
+            next: (savedValue) => {
+              this.sharedDataService.changeCurrentBooking(savedValue);
+              this.currentBooking = savedValue;
+              const idx = this.bookingList.findIndex(
+                (x) => x.id === savedValue.id
+              );
+              this.bookingList[idx] = savedValue;
+              this.sortByDate(this.bookingList);
+              this.dataSource.data = this.bookingList;
+            },
+            error: () => {
+              this.toastrService.error(
+                "Die Buchung konnte nicht gespeichert werden",
+                "Fehler"
+              );
+            },
+            complete: () =>
+              this.toastrService.success("Die Buchung wurde gespeichert"),
+          });
+        }
+      })
+      .unsubscribe();
+  }
+
+  detailsDialog(booking, dialogForm: any) {
+    this.currentBooking = booking;
+    this.tripofferService.getOne(booking.reiseAngebotId).subscribe({
+      next: (tripoffer) => (this.tripoffer = tripoffer),
+      error: () =>
+        this.toastrService.error("Etwas ist schief gelaufen.", "Fehler"),
+      complete: () => {
+        // Get country information
+        const countryId = this.tripoffer.landId;
+        this.countryService.getOne(countryId).subscribe({
+          next: (country) => (this.country = country),
+          error: () =>
+            this.toastrService.error("Etwas ist schief gelaufen.", "Fehler"),
+          complete: () => {
+            // get the traveler information
+            this.travelerService.getOne(booking.reiserId).subscribe({
+              next: (traveler) => (this.traveler = traveler),
+              error: () => {
+                this.toastrService.error(
+                  "Etwas ist schief gelaufen.",
+                  "Fehler"
+                );
+              },
+              complete: () => {
+                if (booking.mitReiserId) {
+                  this.travelerService.getOne(booking.mitReiserId).subscribe({
+                    next: (traveler) => (this.cotraveler = traveler),
+                    error: () => {
+                      this.toastrService.error(
+                        "Etwas ist schief gelaufen.",
+                        "Fehler"
+                      );
+                    },
+                  });
+                }
+                // get the booking class
+                let bookigclassId = booking.buchungsklasseId;
+                this.bookingclassService.getOne(bookigclassId).subscribe({
+                  next: (bc) => (this.bookingclass = bc),
+                  error: () => {
+                    this.toastrService.error(
+                      "Etwas ist schief gelaufen.",
+                      "Fehler"
+                    );
+                  },
+                  complete: () =>
+                    this.dialog.open(dialogForm, this.dialogConfig),
+                });
+              },
+            });
+          },
+        });
+      },
+    });
+  }
+
+  editDialog(booking: Booking, dialogForm: any) {
+    this.sharedDataService.isAddBtnClicked = false;
+    this.isAdd = false;
+    this.currentBooking = booking;
+    this.sharedDataService.changeCurrentBooking(booking);
+    // Open the add admin dialog
+    this.dialog.open(dialogForm, this.dialogConfig);
+  }
+
+  deleteDialog(booking: Booking, dialogForm: any) {
+    this.currentBooking = booking;
+    // Open the add admin dialog
+    this.dialog.open(dialogForm, this.dialogConfig);
+  }
+
+  /** Delete a Booking */
+  deleteBooking() {
+    this.bookingService.deleteOne(this.currentBooking.id).subscribe({
+      next: () => {
+        const idx = this.bookingList.findIndex(
+          (x) => x.id === this.currentBooking.id
+        );
+        this.bookingList.splice(idx, 1);
+        this.dataSource.data = this.bookingList;
+      },
+      error: () => {
+        this.toastrService.error(
+          "Die Buchung konnte nicht gelöscht werden.",
+          "Fehler"
+        );
+      },
+      complete: () =>
+        this.toastrService.success("Die Buchung wurde erfolgreich gelöscht."),
+    });
+  }
+
+  // On error
+  private handleError(error: any) {
     if (error?.message) {
       this.errors.errorMessage = error?.message;
     }
@@ -151,5 +312,24 @@ export class BookingComponent implements OnInit, AfterViewInit, OnCommit {
   // Sets the status of the form to not valid
   resetFormStatus() {
     this.valid = false;
+  }
+
+  isFormValid(event: any) {
+    this.valid = event;
+  }
+
+  /** Converts object of type date to string */
+  convertDateToString(date: string) {
+    if (date && date.includes("-")) {
+      const day = parseInt(date.split("-")[2]);
+      const month = parseInt(date.split("-")[1]);
+      const year = parseInt(date.split("-")[0]);
+      return `${day} ${Calendar.months[month - 1]} ${year}`;
+    }
+    return "";
+  }
+
+  getPhoneNumber(phone: string): string {
+    return phone ? `+${phone}` : "";
   }
 }

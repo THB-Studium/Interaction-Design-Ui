@@ -73,34 +73,16 @@ export class EditTripofferComponent implements OnInit, AfterViewInit {
 
   // expectation form
   expectationForm = new FormGroup({
-    adventure: new FormControl("", [
-      Validators.min(0),
-      Validators.max(100),
-    ]),
-    comfort: new FormControl("", [
-      Validators.min(0),
-      Validators.max(100),
-    ]),
-    deceleration: new FormControl("", [
-      Validators.min(0),
-      Validators.max(100),
-    ]),
-    road: new FormControl("", [
-      Validators.min(0),
-      Validators.max(100),
-    ]),
-    safety: new FormControl("", [
-      Validators.min(0),
-      Validators.max(100),
-    ]),
-    sun_beach: new FormControl("", [
-      Validators.min(0),
-      Validators.max(100),
-    ]),
+    adventure: new FormControl("", [Validators.min(0), Validators.max(100)]),
+    comfort: new FormControl("", [Validators.min(0), Validators.max(100)]),
+    deceleration: new FormControl("", [Validators.min(0), Validators.max(100)]),
+    road: new FormControl("", [Validators.min(0), Validators.max(100)]),
+    safety: new FormControl("", [Validators.min(0), Validators.max(100)]),
+    sun_beach: new FormControl("", [Validators.min(0), Validators.max(100)]),
     sustainability: new FormControl("", [
       Validators.min(0),
       Validators.max(100),
-    ])
+    ]),
   });
 
   // Defines serviceArray
@@ -232,7 +214,9 @@ export class EditTripofferComponent implements OnInit, AfterViewInit {
             ),
           complete: () => {
             this.setcurrentTripofferForm(this.currentTripoffer);
-            this.initExpectationForm(this.currentTripoffer.erwartungenReadListTO);
+            this.initExpectationForm(
+              this.currentTripoffer.erwartungenReadListTO
+            );
             this.isImgSelected = true;
           },
         });
@@ -251,7 +235,7 @@ export class EditTripofferComponent implements OnInit, AfterViewInit {
       road: expectation?.road ?? 0,
       safety: expectation?.sicherheit ?? 0,
       sun_beach: expectation?.sonne_strand ?? 0,
-      sustainability: expectation?.nachhaltigkeit ?? 0
+      sustainability: expectation?.nachhaltigkeit ?? 0,
     });
   }
 
@@ -282,7 +266,9 @@ export class EditTripofferComponent implements OnInit, AfterViewInit {
     });
 
     // Get and display the expectation
-    this.sharedDataService.changeCurrentExpectation(tripoffer.erwartungenReadListTO);
+    this.sharedDataService.changeCurrentExpectation(
+      tripoffer.erwartungenReadListTO
+    );
   }
 
   // Dialog configurations
@@ -409,7 +395,7 @@ export class EditTripofferComponent implements OnInit, AfterViewInit {
         sonne_strand: this.expectationForm.value.sun_beach,
         reiseAngebotId: this.currentTripoffer.id,
         id: this.currentExpectation?.id,
-      }
+      };
       // check whether it is an add or not. If the id is equal than null, than it is an add
       if (!this.currentExpectation?.id) {
         this.expectationService.addOne(tobesaved).subscribe({

@@ -230,6 +230,8 @@ export class TripofferComponent implements OnInit, AfterViewInit {
               this.toastrService.success(
                 `${this.currentTripOffer.titel} wurde erfolgreich hinzugefuegt.`
               );
+
+              this.router.navigate(['/tripoffers/edit', this.currentTripOffer.id]);
             },
           });
         },
