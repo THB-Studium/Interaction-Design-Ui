@@ -55,8 +55,8 @@ ngb-carousel {
 }
 
 .carousel-caption h1 {
-  font-size: 80px !important;
-  margin-top: 20px;
+  font-size: 50px;
+  margin: 15px 20px;
   color: #fff;
 }
 
@@ -67,7 +67,18 @@ ngb-carousel {
   text-align: left;
   width: 25em;
 }
-
+@media screen and (min-width: 992px) {
+  .carousel-caption h1 {
+    line-height: 1.3;
+    margin: 20px;
+  }
+}
+@media screen and (max-width: 760px) {
+  .carousel-caption h1 {
+    line-height: 1;
+    margin: 20px;
+  }
+}
 
 /*######## Reiseangebot ########*/
 
@@ -101,7 +112,6 @@ mat-card {
   cursor: pointer;
 }
 
-
 /*######## Feedback ########*/
 
 #feedback-title {
@@ -109,7 +119,7 @@ mat-card {
 }
 
 #addFeedback {
-  background-color: #2D92AB !important;
+  background-color: #2d92ab !important;
 }
 
 #feedback-pic {
@@ -144,7 +154,6 @@ mat-card {
 }
 
 .feedback-contents mat-icon {
-  color: #2D92AB !important;
+  color: #2d92ab !important;
   cursor: pointer;
 }
-
