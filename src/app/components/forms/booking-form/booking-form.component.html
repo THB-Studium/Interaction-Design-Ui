@@ -25,7 +25,8 @@
                         <ngx-mat-select-search [formControl]="bookingclassFilteringCtrl" [searching]="searching">
                         </ngx-mat-select-search>
                     </mat-option>
-                    <mat-option *ngIf="bookingForm.get('bookingClass').value" [value]="bookingForm.get('bookingClass').value" selected>
+                    <mat-option *ngIf="bookingForm.get('bookingClass').value"
+                        [value]="bookingForm.get('bookingClass').value" selected>
                         {{bookingForm.get('bookingClass').value.type}}
                     </mat-option>
                     <mat-option *ngFor="let bookingClass of filteredBookingclass | async" [value]="bookingClass">
@@ -45,9 +46,6 @@
                 <mat-label>Zahlungsmethode</mat-label>
                 <mat-select formControlName="paymentMethod" required>
                     <mat-option disabled>auswählen</mat-option>
-                    <mat-option *ngIf="currentBooking.zahlungMethod" [value]="currentBooking.zahlungMethod" selected>
-                        {{currentBooking.zahlungMethod}}
-                    </mat-option>
                     <mat-option *ngFor="let method of paymentMethodArray" [value]="method">
                         {{method}}
                     </mat-option>
@@ -67,7 +65,8 @@
                         <ngx-mat-select-search [formControl]="tripofferFilteringCtrl" [searching]="searching">
                         </ngx-mat-select-search>
                     </mat-option>
-                    <mat-option *ngIf="bookingForm.get('tripoffer').value" [value]="bookingForm.get('tripoffer').value" selected>
+                    <mat-option *ngIf="bookingForm.get('tripoffer').value" [value]="bookingForm.get('tripoffer').value"
+                        selected>
                         {{bookingForm.get('tripoffer').value.titel}}
                     </mat-option>
                     <mat-option *ngFor="let tripoffer of filteredTripoffers | async" [value]="tripoffer">
@@ -87,9 +86,6 @@
                 <mat-label>Flughafen</mat-label>
                 <mat-select formControlName="airport" required>
                     <mat-option disabled>auswählen</mat-option>
-                    <mat-option *ngIf="defaultAirport" [value]="defaultAirport" selected>
-                        {{defaultAirport}}
-                    </mat-option>
                     <mat-option *ngFor="let airport of airportArray" [value]="airport">
                         {{airport}}
                     </mat-option>
@@ -110,7 +106,8 @@
                         <ngx-mat-select-search [formControl]="travelerFilteringCtrl" [searching]="searching">
                         </ngx-mat-select-search>
                     </mat-option>
-                    <mat-option *ngIf="bookingForm.get('traveler').value" [value]="bookingForm.get('traveler').value" selected>
+                    <mat-option *ngIf="bookingForm.get('traveler').value" [value]="bookingForm.get('traveler').value"
+                        selected>
                         {{bookingForm.get('traveler').value.email}}
                     </mat-option>
                     <mat-option *ngFor="let traveler of filteredTravelers | async" [value]="traveler">
@@ -134,7 +131,8 @@
                         </ngx-mat-select-search>
                     </mat-option>
                     <mat-option [value]="null" selected>Keine</mat-option>
-                    <mat-option *ngIf="bookingForm.get('coTraveler').value" [value]="bookingForm.get('coTraveler').value" selected>
+                    <mat-option *ngIf="bookingForm.get('coTraveler').value"
+                        [value]="bookingForm.get('coTraveler').value" selected>
                         {{bookingForm.get('coTraveler').value.email}}
                     </mat-option>
                     <mat-option *ngFor="let traveler of filteredTravelers | async" [value]="traveler">

@@ -58,6 +58,8 @@ export class BookingComponent implements OnInit, AfterViewInit {
   valid: boolean = false;
   // Defines dialogConfig
   dialogConfig = new MatDialogConfig();
+  // Defines isAdd
+  isAdd = true;
 
   constructor(
     private bookingService: BookingService,
@@ -154,6 +156,8 @@ export class BookingComponent implements OnInit, AfterViewInit {
   addBookingDialog(dialogForm: any) {
     // Notify the sharedataservice that it is an add
     this.sharedDataService.isAddBtnClicked = true;
+    this.isAdd = true;
+    this.valid = false;
     this.sharedDataService.changeCurrentBooking(this.currentBooking);
     // Open the add admin dialog
     this.dialog.open(dialogForm, this.dialogConfig);
@@ -161,47 +165,49 @@ export class BookingComponent implements OnInit, AfterViewInit {
 
   /** Calls to save or update a booking */
   saveBooking() {
-    this.sharedDataService.currentBooking.subscribe((booking) => {
-      console.log(booking);
-      if (!booking.id) {
-        this.bookingService.addOne(booking).subscribe({
-          next: (savedValue) => {
-            this.sharedDataService.changeCurrentBooking(savedValue);
-            this.currentBooking = savedValue;
-            this.bookingList.push(savedValue);
-            this.sortByDate(this.bookingList);
-            this.dataSource.data = this.bookingList;
-          },
-          error: () =>
-            this.toastrService.error(
-              "Die Buchung konnte nicht gespeichert werden",
-              "Fehler"
-            ),
-          complete: () =>
-            this.toastrService.success("Die Buchung wurde gespeichert"),
-        });
-      } else {
-        this.bookingService.updateOne(booking).subscribe({
-          next: (savedValue) => {
-            this.sharedDataService.changeCurrentBooking(savedValue);
-            this.currentBooking = savedValue;
-            const idx = this.bookingList.findIndex(
-              (x) => x.id === savedValue.id
-            );
-            this.bookingList[idx] = savedValue;
-            this.sortByDate(this.bookingList);
-            this.dataSource.data = this.bookingList;
-          },
-          error: () =>
-            this.toastrService.error(
-              "Die Buchung konnte nicht gespeichert werden",
-              "Fehler"
-            ),
-          complete: () =>
-            this.toastrService.success("Die Buchung wurde gespeichert"),
-        });
-      }
-    }).unsubscribe();
+    this.sharedDataService.currentBooking
+      .subscribe((booking) => {
+        if (!booking.id) {
+          this.bookingService.addOne(booking).subscribe({
+            next: (savedValue) => {
+              this.sharedDataService.changeCurrentBooking(savedValue);
+              this.currentBooking = savedValue;
+              this.bookingList.push(savedValue);
+              this.sortByDate(this.bookingList);
+              this.dataSource.data = this.bookingList;
+            },
+            error: () =>
+              this.toastrService.error(
+                "Die Buchung konnte nicht gespeichert werden",
+                "Fehler"
+              ),
+            complete: () =>
+              this.toastrService.success("Die Buchung wurde gespeichert"),
+          });
+        } else {
+          this.bookingService.updateOne(booking).subscribe({
+            next: (savedValue) => {
+              this.sharedDataService.changeCurrentBooking(savedValue);
+              this.currentBooking = savedValue;
+              const idx = this.bookingList.findIndex(
+                (x) => x.id === savedValue.id
+              );
+              this.bookingList[idx] = savedValue;
+              this.sortByDate(this.bookingList);
+              this.dataSource.data = this.bookingList;
+            },
+            error: () => {
+              this.toastrService.error(
+                "Die Buchung konnte nicht gespeichert werden",
+                "Fehler"
+              );
+            },
+            complete: () =>
+              this.toastrService.success("Die Buchung wurde gespeichert"),
+          });
+        }
+      })
+      .unsubscribe();
   }
 
   detailsDialog(booking, dialogForm: any) {
@@ -211,51 +217,46 @@ export class BookingComponent implements OnInit, AfterViewInit {
       error: () =>
         this.toastrService.error("Etwas ist schief gelaufen.", "Fehler"),
       complete: () => {
-        console.log(this.tripoffer);
         // Get country information
-        const countryId = this.tripoffer.landId ?? "3c70b1b2-e937-4af4-ad61-95f9c0c6d67c"; // Todo
+        const countryId = this.tripoffer.landId;
         this.countryService.getOne(countryId).subscribe({
           next: (country) => (this.country = country),
           error: () =>
             this.toastrService.error("Etwas ist schief gelaufen.", "Fehler"),
           complete: () => {
-            console.log(this.country);
             // get the traveler information
             this.travelerService.getOne(booking.reiserId).subscribe({
               next: (traveler) => (this.traveler = traveler),
-              error: () =>
+              error: () => {
                 this.toastrService.error(
                   "Etwas ist schief gelaufen.",
                   "Fehler"
-                ),
+                );
+              },
               complete: () => {
-                console.log(this.traveler);
                 if (booking.mitReiserId) {
                   this.travelerService.getOne(booking.mitReiserId).subscribe({
                     next: (traveler) => (this.cotraveler = traveler),
-                    error: () =>
+                    error: () => {
                       this.toastrService.error(
                         "Etwas ist schief gelaufen.",
                         "Fehler"
-                      ),
+                      );
+                    },
                   });
                 }
                 // get the booking class
-                let bookigclassId =
-                  booking.buchungsklasseId ??
-                  "983e2be2-5915-44e8-a8aa-d1464de16954"; // todo
+                let bookigclassId = booking.buchungsklasseId;
                 this.bookingclassService.getOne(bookigclassId).subscribe({
                   next: (bc) => (this.bookingclass = bc),
-                  error: () =>
+                  error: () => {
                     this.toastrService.error(
                       "Etwas ist schief gelaufen.",
                       "Fehler"
-                    ),
-                  complete: () => {
-                    console.log(this.bookingclass);
-                    // Open the add admin dialog
-                    this.dialog.open(dialogForm, this.dialogConfig);
+                    );
                   },
+                  complete: () =>
+                    this.dialog.open(dialogForm, this.dialogConfig),
                 });
               },
             });
@@ -267,6 +268,7 @@ export class BookingComponent implements OnInit, AfterViewInit {
 
   editDialog(booking: Booking, dialogForm: any) {
     this.sharedDataService.isAddBtnClicked = false;
+    this.isAdd = false;
     this.currentBooking = booking;
     this.sharedDataService.changeCurrentBooking(booking);
     // Open the add admin dialog
@@ -289,11 +291,12 @@ export class BookingComponent implements OnInit, AfterViewInit {
         this.bookingList.splice(idx, 1);
         this.dataSource.data = this.bookingList;
       },
-      error: () =>
+      error: () => {
         this.toastrService.error(
           "Die Buchung konnte nicht gelöscht werden.",
           "Fehler"
-        ),
+        );
+      },
       complete: () =>
         this.toastrService.success("Die Buchung wurde erfolgreich gelöscht."),
     });
@@ -317,13 +320,16 @@ export class BookingComponent implements OnInit, AfterViewInit {
 
   /** Converts object of type date to string */
   convertDateToString(date: string) {
-    if (date != null && date.includes("T")) {
-      const dob = date?.split("T")[0];
-      const day = parseInt(dob.split("-")[2]);
-      const month = parseInt(dob.split("-")[1]);
-      const year = parseInt(dob.split("-")[0]);
+    if (date && date.includes("-")) {
+      const day = parseInt(date.split("-")[2]);
+      const month = parseInt(date.split("-")[1]);
+      const year = parseInt(date.split("-")[0]);
       return `${day} ${Calendar.months[month - 1]} ${year}`;
     }
     return "";
+  }
+
+  getPhoneNumber(phone: string): string {
+    return phone ? `+${phone}` : "";
   }
 }

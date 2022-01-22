@@ -37,7 +37,7 @@
                 <table mat-table [dataSource]="dataSource" matSort aria-describedby="date">
                     <!-- Date Column -->
                     <ng-container matColumnDef="date">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header scope="col">DATUM</th>
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header scope="col">BUCHUNGSDATUM</th>
                         <td mat-cell *matCellDef="let row"> {{ convertDateToString(row?.datum) }} </td>
                     </ng-container>
 
@@ -90,7 +90,7 @@
 </div>
 
 <ng-template #bookingDialog>
-    <h1 mat-dialog-title>Eine neue Buchung hinzufügen</h1>
+    <h1 mat-dialog-title>{{isAdd ? 'Neue Buchung hinzufügen' : 'Buchungsinformationen ändern'}}</h1>
     <mat-divider></mat-divider>
     <div mat-dialog-content>
         <app-booking-form (notifyFormIsValid)="isFormValid($event)"></app-booking-form>
@@ -101,7 +101,7 @@
             mat-dialog-close>
             Speichern
         </button>
-        <button mat-raised-button color="accent" mat-dialog-close>
+        <button mat-button color="accent" mat-dialog-close>
             Abbrechen
         </button>
     </div>
@@ -149,7 +149,7 @@
                         <div class="form-group col-md-6 mb-0">
                             <mat-form-field class="col-md-12" appearance="standard">
                                 <mat-label>Freiplätze</mat-label>
-                                <input matInput [value]="tripoffer.freiplaetze" disabled>
+                                <input matInput [value]="tripoffer.freiplaetze ?? tripoffer.plaetze" disabled>
                             </mat-form-field>
                         </div>
                     </div>
@@ -255,7 +255,7 @@
                         <div class="form-group col-md-6 mb-0">
                             <mat-form-field class="col-md-12" appearance="standard">
                                 <mat-label>Handy</mat-label>
-                                <input matInput [value]="cotraveler.telefonnummer" disabled>
+                                <input matInput [value]="getPhoneNumber(cotraveler.telefonnummer)" disabled>
                             </mat-form-field>
                         </div>
                     </div>
@@ -273,7 +273,7 @@
     </div>
     <mat-divider></mat-divider>
     <div class="justify-content-end" mat-dialog-actions>
-        <button mat-button mat-dialog-close>
+        <button mat-raised-button mat-dialog-close>
             Ok
         </button>
     </div>

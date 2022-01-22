@@ -16,20 +16,21 @@ import {
   map,
   takeUntil,
 } from "rxjs/operators";
+import { formatDate } from "@angular/common";
 
 import { SharedDataService } from "src/app/services/sharedData/shared-data.service";
 import { ToastrService } from "ngx-toastr";
+import { TravelerService } from "src/app/services/traveler/traveler.service";
+import { BookingClassService } from "src/app/services/booking-class/booking-class.service";
+import { TripOfferService } from "src/app/services/trip-offer/trip-offer.service";
+import { CountryService } from "src/app/services/country/country.service";
 
 import { Booking } from "src/app/models/booking";
 import { TripOffer } from "src/app/models/tripOffer";
-import { TripOfferService } from "src/app/services/trip-offer/trip-offer.service";
-import { CountryService } from "src/app/services/country/country.service";
-import { formatDate } from "@angular/common";
 import { Traveler } from "src/app/models/traveler";
 import { BookingClass } from "src/app/models/bookingClass";
-import { TravelerService } from "src/app/services/traveler/traveler.service";
-import { BookingClassService } from "src/app/services/booking-class/booking-class.service";
 import { PaymentMethod } from "src/app/enums/paymentMethod";
+import { Calendar } from "src/app/variables/calendar";
 
 @Component({
   selector: "app-booking-form",
@@ -181,6 +182,38 @@ export class BookingFormComponent implements OnInit, AfterViewInit, OnDestroy {
         this.dateValid = true;
       }
     });
+
+    this.bookingForm
+      .get("tripoffer")
+      .valueChanges.subscribe((tripoffer: TripOffer) => {
+        const startdate = formatDate(
+          tripoffer.startDatum,
+          "yyyy-MM-dd",
+          "en_US"
+        );
+        const enddate = formatDate(tripoffer.endDatum, "yyyy-MM-dd", "en_US");
+        const deadlineDate = formatDate(
+          tripoffer.anmeldungsFrist,
+          "yyyy-MM-dd",
+          "en_US"
+        );
+
+        if (this.selectedDate > deadlineDate && this.selectedDate < enddate) {
+          this.dateError = `Eingabe ist falsch. Für dieses Angebot ist die frist ${this.convertDateToString(
+            deadlineDate
+          )} abgelaufen.`;
+          this.dateValid = false;
+        }
+        if (this.selectedDate > enddate) {
+          this.dateError = `Eingabe ist falsch. Das Angebot ist von ${this.convertDateToString(
+            startdate
+          )} bis zum ${this.convertDateToString(enddate)} gültig.`;
+          this.dateValid = false;
+        } else {
+          this.dateError = "";
+          this.dateValid = true;
+        }
+      });
   }
 
   ngOnDestroy() {
@@ -195,16 +228,13 @@ export class BookingFormComponent implements OnInit, AfterViewInit, OnDestroy {
       this.sharedDataService.currentBooking
         .subscribe({
           next: (booking) => {
-            // booking is for type 
             const value: any = booking;
             this.currentBooking.id = value.id;
-            this.defaultAirport = value.flugHafen ?? 'Berlin'; //todo
+            this.defaultAirport = value.flughafen;
             this.currentBooking.datum = value.datum;
             this.currentBooking.handGepaeck = value.handGepaeck;
             this.currentBooking.koffer = value.koffer;
             this.currentBooking.zahlungMethod = value.zahlungMethod;
-
-            console.log(value);
 
             // Get the tripoffer
             this.tripofferService.getOne(value.reiseAngebotId).subscribe({
@@ -212,10 +242,11 @@ export class BookingFormComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.bookingForm.get("tripoffer").setValue(offer);
                 this.currentBooking.reiseAngebotId = offer.id;
               },
-              error: () =>
+              error: () => {
                 this.toastrService.error(
                   "Die Reiseangebot Informationen konnten nicht geladen werden"
-                ),
+                );
+              },
               complete: () => {
                 // Get the traveler information
                 this.travelerService.getOne(value.reiserId).subscribe({
@@ -223,10 +254,11 @@ export class BookingFormComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.currentBooking.reiser = traveler;
                     this.bookingForm.get("traveler").setValue(traveler);
                   },
-                  error: () =>
+                  error: () => {
                     this.toastrService.error(
                       "Die Reisende Informationen konnten nicht geladen werden"
-                    ),
+                    );
+                  },
                   complete: () => {
                     // if cotraveler exists, than get his information
                     if (value.mitReiserId) {
@@ -235,29 +267,27 @@ export class BookingFormComponent implements OnInit, AfterViewInit, OnDestroy {
                           this.currentBooking.mitReiser = traveler;
                           this.bookingForm.get("coTraveler").setValue(traveler);
                         },
-                        error: () =>
+                        error: () => {
                           this.toastrService.error(
                             "Die Mitreisende Informationen konnten nicht geladen werden"
-                          ),
+                          );
+                        },
                       });
                     }
                     // Get the bookingclass information
-                    const bcId =
-                      value.buchungsKlasseId ??
-                      "983e2be2-5915-44e8-a8aa-d1464de16954"; // Todo
+                    const bcId = value.buchungsklasseId;
                     this.bookingclassService.getOne(bcId).subscribe({
                       next: (bc) => {
                         this.bookingForm.get("bookingClass").setValue(bc);
                         this.currentBooking.buchungsklasseId = bc.id;
                       },
-                      error: () =>
+                      error: () => {
                         this.toastrService.error(
                           "Die Buchungsklasse Informationen konnten nicht geladen werden"
-                        ),
-                      complete: () => {
-                        // init the form
-                        this.setFormDefaultValue(this.currentBooking);
+                        );
                       },
+                      complete: () =>
+                        this.setFormDefaultValue(this.currentBooking),
                     });
                   },
                 });
@@ -272,6 +302,20 @@ export class BookingFormComponent implements OnInit, AfterViewInit, OnDestroy {
           },
         })
         .unsubscribe();
+    } else {
+      this.selectedDate = formatDate(new Date(), "yyyy-MM-dd", "en_US");
+      this.dateValid = true;
+      this.bookingForm.setValue({
+        date: this.selectedDate,
+        tripoffer: null,
+        airport: "",
+        bookingClass: null,
+        traveler: null,
+        coTraveler: null,
+        handLuggage: "",
+        suitcase: "",
+        paymentMethod: "",
+      });
     }
   }
 
@@ -311,7 +355,7 @@ export class BookingFormComponent implements OnInit, AfterViewInit, OnDestroy {
       this.bookingForm.get("paymentMethod").valid &&
       this.bookingForm.get("tripoffer").valid
     ) {
-      var id = this.isAnAdd ? null :  this.currentBooking.id;
+      var id = this.isAnAdd ? null : this.currentBooking.id;
 
       this.currentBooking = {
         id: id,
@@ -337,11 +381,12 @@ export class BookingFormComponent implements OnInit, AfterViewInit, OnDestroy {
   private getAllTripOffers() {
     this.tripofferService.getAll().subscribe({
       next: (trip) => (this.tripoffers = trip),
-      error: () =>
+      error: () => {
         this.toastrService.error(
           "Die Reiseangebote konnten nicht geladen werden",
           "Fehler"
-        ),
+        );
+      },
       complete: () => this.onTripOfferValueChanges(),
     });
   }
@@ -381,23 +426,25 @@ export class BookingFormComponent implements OnInit, AfterViewInit, OnDestroy {
     this.tripofferService.getOne(tripOfferId).subscribe({
       next: (_tripoffer) => {
         tripoffer = _tripoffer;
-        landId = _tripoffer.landId ?? "3c70b1b2-e937-4af4-ad61-95f9c0c6d67c"; //todo: tripoffer.landId;
+        landId = _tripoffer.landId;
       },
-      error: () =>
+      error: () => {
         this.toastrService.error(
           "Etwas ist schief gelaufen. Die Flughafen konnten nicht geladen werden",
           "Fehler"
-        ),
+        );
+      },
       complete: () => {
         // get the list of airport
         if (landId) {
           this.countryService.getOne(landId).subscribe({
             next: (country) => (this.airportArray = country.flughafen),
-            error: () =>
+            error: () => {
               this.toastrService.error(
                 "Die  Flughafen konnten nicht geladet werden",
                 "Fehler"
-              ),
+              );
+            },
           });
         } else {
           if (!tripoffer.landId) {
@@ -405,6 +452,8 @@ export class BookingFormComponent implements OnInit, AfterViewInit, OnDestroy {
               "Das Angebot hat noch kein Ziel zugewiesen.",
               "Fehler"
             );
+            this.airportArray = [];
+            this.notifyFormIsValid.emit(false);
           } else {
             this.toastrService.error("Etwas ist schief gelaufen.", "Fehler");
           }
@@ -416,11 +465,12 @@ export class BookingFormComponent implements OnInit, AfterViewInit, OnDestroy {
   private getAllCustomers() {
     this.travelerService.getAll().subscribe({
       next: (travelers) => (this.travelers = travelers),
-      error: () =>
+      error: () => {
         this.toastrService.error(
           "Die Liste von Reisende konnten nicht geladen werden",
           "Fehler"
-        ),
+        );
+      },
       complete: () => this.onTravelerValueChanges(),
     });
   }
@@ -455,11 +505,12 @@ export class BookingFormComponent implements OnInit, AfterViewInit, OnDestroy {
   private getAllBookingClass() {
     this.bookingclassService.getAll().subscribe({
       next: (bc) => (this.bookingclass = bc),
-      error: () =>
+      error: () => {
         this.toastrService.error(
           "Die Liste von Buchungenklassen konnten nicht geladen werden",
           "Fehler"
-        ),
+        );
+      },
       complete: () => this.onBookingclassValueChanges(),
     });
   }
@@ -489,5 +540,15 @@ export class BookingFormComponent implements OnInit, AfterViewInit, OnDestroy {
         },
         error: () => (this.searching = false),
       });
+  }
+
+  private convertDateToString(date: string) {
+    if (date && date.includes("-")) {
+      const day = parseInt(date.split("-")[2]);
+      const month = parseInt(date.split("-")[1]);
+      const year = parseInt(date.split("-")[0]);
+      return `${day} ${Calendar.months[month - 1]} ${year}`;
+    }
+    return "";
   }
 }
