@@ -137,11 +137,11 @@
     <div mat-dialog-content>
         <app-tripoffer-form (notifyFormIsValid)="isFormValid($event)"></app-tripoffer-form>
     </div>
-    <div mat-dialog-actions>
+    <div class="justify-content-end" mat-dialog-actions>
         <button mat-raised-button color="primary" mat-dialog-close (click)="commitChanges()" [disabled]="!valid">
             Speichern
         </button>
-        <button mat-raised-button color="accent" mat-dialog-close (click)="resetFormStatus()">
+        <button mat-button color="accent" mat-dialog-close (click)="resetFormStatus()">
             Abbrechen
         </button>
     </div>
@@ -156,7 +156,7 @@
             Wollen Sie wirklich <strong>{{ currentTripOffer?.titel }}</strong> löschen?
         </p>
     </div>
-    <div mat-dialog-actions>
+    <div class="justify-content-end" mat-dialog-actions>
         <button mat-raised-button color="primary" mat-dialog-close (click)="deleteTripOffer()">Ja</button>
         <button mat-raised-button color="accent" mat-dialog-close>Nein</button>
     </div>

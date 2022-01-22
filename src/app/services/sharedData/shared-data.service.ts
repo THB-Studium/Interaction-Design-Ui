@@ -87,6 +87,8 @@ export class SharedDataService {
     landId: "",
     buchungsklassenReadListTO: null,
     erwartungenReadListTO: null,
+    erwartungen: null,
+    buchungsklassen: null
   };
 
   private tripOfferSource = new BehaviorSubject<TripOffer>(this.tripoffer);
