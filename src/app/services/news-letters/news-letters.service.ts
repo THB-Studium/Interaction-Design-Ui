@@ -9,7 +9,7 @@ import { Server } from 'src/app/variables/server';
 })
 export class NewsLettersService {
 
-  readonly NEWSLETTERS_URL: string = `${Server.API_URL}/newLetters`;
+  readonly NEWSLETTERS_URL: string = `${Server.API_URL}/newsletters`;
   headers = new HttpHeaders({ "Content-Type": "application/json" });
 
   constructor(private httpClient: HttpClient) {}

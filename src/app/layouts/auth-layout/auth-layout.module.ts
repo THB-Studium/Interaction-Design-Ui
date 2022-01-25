@@ -25,7 +25,7 @@ import { MatPaginatorModule } from "@angular/material/paginator";
 import { MatSortModule } from "@angular/material/sort";
 import { MatDialogModule } from "@angular/material/dialog";
 import { MatDatepickerModule } from "@angular/material/datepicker";
-import { MatNativeDateModule } from "@angular/material/core";
+import { MatNativeDateModule, MAT_DATE_FORMATS } from "@angular/material/core";
 
 import { LoginComponent } from "../../pages/login/login.component";
 import { RegisterComponent } from "../../pages/register/register.component";
@@ -71,6 +71,20 @@ import { MatExpansionModule } from "@angular/material/expansion";
   providers: [
     //{ provide: HTTP_INTERCEPTORS, useClass: AppHttpInterceptor, multi: true },
     { provide: LocationStrategy, useClass: HashLocationStrategy },
+    {
+      provide: MAT_DATE_FORMATS,
+      useValue: {
+        parse: {
+          dateInput: 'YYYY-MM-DD',
+        },
+        display: {
+          dateInput: 'DD MMM, YYYY',
+          monthYearLabel: 'MMMM YYYY',
+          dateA11yLabel: 'LL',
+          monthYearA11yLabel: 'MMMM YYYY',
+        },
+      },
+    },
   ],
 })
 export class AuthLayoutModule {}
