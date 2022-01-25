@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Country } from "../../models/country";
-import { Countries } from "../../shared/datas/countries";
-import { SlideList } from "../../shared/datas/slideList";
 import { Slide } from "../../models/slide";
 import { format } from 'date-fns';
 import { Feedback } from "../../models/feedback";
-import { Feedbacks } from "../../shared/datas/feedbacks";
-import { TripOffers } from "../../shared/datas/trip-offers";
 import { Router } from "@angular/router";
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
+import { SlideList } from 'src/app/shared/datas/slideList';
+import { Countries } from 'src/app/shared/datas/countries';
+import { TripOffers } from 'src/app/shared/datas/trip-offers';
+import { Feedbacks } from 'src/app/shared/datas/feedbacks';
 
 @Component({
   selector: 'app-home',

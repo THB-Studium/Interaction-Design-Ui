@@ -1,1 +1,57 @@
-<p>feedback-form works!</p>
+<form [formGroup]="feedbackForm">
+    <div class="form-row">
+        <div class="form-group col-12 text-center">
+            <mat-form-field class="col-md-12">
+                <mat-label>Hintergrundbild</mat-label>
+                <mat-toolbar class="mb-1">
+                    <input disabled matInput [value]="selectedFileName?.length ? selectedFileName : 'Bild auswählen'"
+                        formControlName="image" required />
+                </mat-toolbar>
+                <div class="input-file-container">
+                    <div class="js text-center">
+                        <input type="file" class="input-file ml-5" id="fileInput" name="fileInput" accept="image/*"
+                            (change)="selectFile($event)" />
+                        <label tabindex="0" for="fileInput" class="input-file-trigger">Bild auswählen...</label>
+                    </div>
+                </div>
+                <mat-error *ngIf="!isImgSelected">
+                    Die Eingabe ist <strong>erforderlich</strong>.
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <div class="col-2"></div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-12">
+            <mat-form-field class="col-12" appearance="fill">
+                <mat-label>Ihr Name:</mat-label>
+                <input matInput type="text" formControlName="name" placeholder="Autor Name" required>
+                <mat-icon matSuffix>supervised_user_circle</mat-icon>
+                <mat-hint>Geben Sie Ihren Namen ein.</mat-hint>
+                <mat-error *ngIf="(feedbackForm.get('name')).errors?.required">Die Eingabe ist <strong>erforderlich</strong>.</mat-error>
+            </mat-form-field>
+        </div>
+        <div class="form-group col-12">
+            <mat-form-field class="col-12" appearance="fill">
+                <mat-label>Ihres Feedback:</mat-label>
+                <textarea matInput type="text" formControlName="feedback" placeholder="Text"
+                    required> </textarea>
+                <mat-hint>Geben Sie Ihres Feedback eingeben.</mat-hint>
+                <mat-error *ngIf="(feedbackForm.get('feedback')).errors?.required">
+                    Die Eingabe ist <strong>erforderlich</strong> (mindestens 6 Zeichen).
+                </mat-error>
+            </mat-form-field>
+        </div>
+    </div>
+    <mat-divider></mat-divider>
+    <div mat-dialog-actions>
+        <div class="set-content-right">
+            <button mat-raised-button mat-dialog-close>
+                ABBRECHEN
+            </button>
+            <button (click)="sendFeedback()" [disabled]="!feedbackForm.valid" mat-raised-button class="primary-colors" mat-dialog-close>
+                SENDEN
+            </button>
+        </div>
+    </div>
+</form>

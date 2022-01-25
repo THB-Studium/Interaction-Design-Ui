@@ -28,7 +28,7 @@ export class FeedbackService {
   }
 
   // POST
-  addOne(feedback: Feedback): Observable<Feedback> {
+  addOne(feedback: any): Observable<any> {
     return this.httpClient.post<Feedback>(this.FEEDBACK_URL, feedback);
   }
 
