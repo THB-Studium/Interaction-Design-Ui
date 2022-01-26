@@ -6,9 +6,9 @@ export class TripOffer {
   public id: string;
   public titel: string;
   public startbild: any;
-  public startDatum: Date;
-  public endDatum: Date;
-  public anmeldungsFrist: Date;
+  public startDatum: string;
+  public endDatum: string;
+  public anmeldungsFrist: string;
   public plaetze: number;
   public freiPlaetze: number;
   public leistungen: Array<string>;

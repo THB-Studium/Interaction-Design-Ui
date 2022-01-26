@@ -97,9 +97,9 @@ export class TripofferFormComponent implements OnInit, AfterViewInit {
     this.currentTripoffer = {
       id: "",
       titel: "",
-      anmeldungsFrist: new Date(),
-      startDatum: new Date(),
-      endDatum: new Date(),
+      anmeldungsFrist: '',
+      startDatum: '',
+      endDatum: '',
       startbild: null,
       plaetze: 0,
       freiPlaetze: 0,
