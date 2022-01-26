@@ -11,13 +11,13 @@ export const ROUTES: RouteInfo[] = [
   {
     path: "/verwaltung",
     title: "Dashboard",
-    icon: "ni-tv-2 text-primary",
+    icon: "ni-tv-2 text-black-50",
     class: "",
   },
   {
     path: "/users",
     title: "Benutzer",
-    icon: "fa fa-users text-black-50",
+    icon: "fa fa-users text-primary",
     class: "",
   },
   {
@@ -33,6 +33,12 @@ export const ROUTES: RouteInfo[] = [
     class: "",
   },
   {
+    path: "/feedbacks",
+    title: "Feedbacks",
+    icon: "far fa-comment-alt text-red",
+    class: "",
+  },
+  {
     path: "/countries",
     title: "Länder",
     icon: "fas fa-globe text-green",
@@ -41,7 +47,7 @@ export const ROUTES: RouteInfo[] = [
   {
     path: "/tripoffers",
     title: "Reiseangebote",
-    icon: "fas fa-plane-departure text-black",
+    icon: "fas fa-plane-departure text-info",
     class: "",
   },
   {
