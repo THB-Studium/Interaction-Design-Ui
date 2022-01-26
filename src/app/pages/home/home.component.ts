@@ -74,11 +74,11 @@ export class HomeComponent implements OnInit {
 
   feedbackAktion(action: string) {
     if(action == 'next') {
-      this.currentIndex + 1 < this.feedbacks.length ? this.currentIndex++ : this.currentIndex = 0
+      this.currentIndex = this.currentIndex + 1 < this.feedbacks.length ? this.currentIndex++ : 0;
     }
 
     else if(action == 'prev') {
-      this.currentIndex > 0 ? this.currentIndex-- : this.currentIndex = this.feedbacks.length - 1
+      this.currentIndex = this.currentIndex > 0 ? this.currentIndex-- : this.feedbacks.length - 1;
     }
 
     this.currentFb = this.feedbacks[this.currentIndex]

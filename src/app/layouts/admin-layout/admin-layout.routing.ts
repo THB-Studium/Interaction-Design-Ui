@@ -10,6 +10,7 @@ import { EditCountryComponent } from "src/app/pages/edit-country/edit-country.co
 import { TravelerComponent } from "src/app/pages/traveler/traveler.component";
 import { TripofferComponent } from "src/app/pages/tripoffer/tripoffer.component";
 import { UserProfileComponent } from "../../pages/user-profile/user-profile.component";
+import { FeedbackComponent } from "src/app/pages/feedback/feedback.component";
 
 export const AdminLayoutRoutes: Routes = [
   { path: "verwaltung", component: DashboardComponent, canActivate: [AuthorizationGuard] },
@@ -23,4 +24,5 @@ export const AdminLayoutRoutes: Routes = [
   { path: "countries", component: CountryComponent, canActivate: [AuthorizationGuard] },
   { path: "countries/edit/:id", component: EditCountryComponent, canActivate: [AuthorizationGuard] },
   //#endregion country
+  { path: "feedbacks", component: FeedbackComponent, canActivate: [AuthorizationGuard] },
 ];
