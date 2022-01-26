@@ -6,7 +6,7 @@ export class BookingClassen {
   public static readonly daten: Array<BookingClass> = [
     {
       id: uuid_v4(),
-      type: 'studenten-tarif',
+      type: 'studenten-tarif*',
       preis: 1195,
       description: 'Unterkunft im (gemischten) Mehrbettzimmer mit Gemeinschaftsbad\n' +
         '(nur für die Reisegruppe, Hygienemaßnahmen werden eingehalten)',

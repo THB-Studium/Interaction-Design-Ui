@@ -46,8 +46,12 @@ fakten-check-contents h2
   min-width: 300px;
 }
 
-.highlight-contents .mat-card-image {
-  /*height: 50%;*/
+.flex-even {
+  flex: 1;
+}
+
+.mat-card-img {
+  height: 50%;
   /*height: 600px;*/
 }
 
@@ -55,10 +59,29 @@ fakten-check-contents h2
 
 }
 
+.fakten-check-contents mat-card {
+  padding: 2em;
+}
+
+.buchungsklassen div {
+  width: 70%;
+}
+
+
+.fakten-check-contents h3 {
+  font-family: "ubuntu" !important;
+}
+
+.buchungsklassen ul li {
+  font-family: "american typewriter";
+}
+
 /*.landInfos-contents mat-expansion-panel {*/
 /*  font-family: "ubuntu bold";*/
 /*}*/
 
-.landInfos-contents mat-panel-title {
+.landInfos-contents mat-panel-title,
+.buchungsklassen h4
+{
   font-family: "ubuntu bold";
 }

@@ -3,13 +3,14 @@ import { ActivatedRoute } from "@angular/router";
 
 import {Countries} from "../../shared/datas/countries";
 import {TripOffers} from "../../shared/datas/trip-offers";
-import {TripOffer} from "../../models/tripOffer";
 
 import {CountriesColors} from "../../shared/datas/countries-colors";
 import {SharedDataService} from "../../services/sharedData/shared-data.service";
 import {Highlights} from "../../shared/datas/highlights";
 import { MatDialog } from '@angular/material/dialog';
 import { BookingFormComponent } from 'src/app/components/forms/booking-form/booking-form.component';
+import {BookingClassen} from "../../shared/datas/bookingClassen";
+import {BookingClass} from "../../models/bookingClass";
 import { TripOfferService } from 'src/app/services/trip-offer/trip-offer.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { CountryService } from 'src/app/services/country/country.service';
@@ -24,9 +25,10 @@ export class LearnMoreComponent implements OnInit {
   tripOffers: Array<any> = []
   countryColors: Array<any> = []
   highlights: Array<any> = []
+  bookingClassen: Array<BookingClass> = []
 
   currentLand: any
-  currentTripOffer: TripOffer
+  currentTripOffer: any
 
   backgroundColor: any
   fontColor: any
@@ -50,14 +52,39 @@ export class LearnMoreComponent implements OnInit {
     this.tripOffers = TripOffers.data
     this.countryColors = CountriesColors.data
     this.highlights = Highlights.daten
+    this.bookingClassen = BookingClassen.daten
   }
 
   ngOnInit(): void {
     this.setCurrentLandAndTO();
   }
 
+  // dateFormat(date: Date, type: string): string {
+  //   if(type === 'startDate') {
+  //     const dateToString = format(date, 'dd.MMM.yyyy').split('.')
+  //     return dateToString[0] + '.' + dateToString[1] + ' - '
+  //   }
+  //
+  //   else if(type === 'endDate') {
+  //     return format(date, 'dd.MMM.yyyy')
+  //   }
+  //   this.setCurrentLandAndTO();
+  // }
+
   checkIfExpanded(index: number): boolean {
     return index === 0
+  }
+
+  bookingFormDialog() {
+    const dialog = this.dialog.open(BookingFormComponent, {
+      width: '750px',
+      height: '800px',
+      disableClose : true,
+      autoFocus : true
+    });
+
+    dialog.componentInstance.land = this.currentLand;
+    dialog.componentInstance.currentTripOffer = this.currentTripOffer;
   }
 
   private setCurrentLandAndTO(): void {
@@ -105,18 +132,6 @@ export class LearnMoreComponent implements OnInit {
       bodyAndFooter: { background: currentBgColor?.bodyBgColor },
     }
     this.sharedDataService.changeCurrentBackgroundColor(sharedBgColor)
-  }
-
-  bookingFormDialog() {
-    const dialog = this.dialog.open(BookingFormComponent, {
-      width: '750px',
-      height: '800px',
-      disableClose : true,
-      autoFocus : true
-    });
-
-    dialog.componentInstance.land = this.currentLand;
-    dialog.componentInstance.currentTripOffer = this.currentTripOffer;
   }
 
 }

@@ -4,9 +4,13 @@
   <!-- Rise Info und Map -->
   <div class="travel-info-header">
     <h2>{{currentTripOffer?.titel}}</h2>
+<!--    <p>-->
+<!--      {{setDate(currentTripOffer?.startDatum, 'startDatum')}}-->
+<!--      {{setDate(currentTripOffer?.endDatum, 'endDatum')}}-->
+<!--    </p>-->
     <p>
-      {{currentTripOffer?.startDatum}}
-      {{currentTripOffer?.endDatum}}
+      {{currentTripOffer?.startDatum | date: 'dd.MMM.yyyy'}}
+      {{currentTripOffer?.endDatum | date: 'dd.MMM.yyyy'}}
     </p>
 
     <p>Freie Plätze:
@@ -56,17 +60,45 @@
           </div>
 
           <!--      BUCHUNGSKLASSEN      -->
-          <div>
+          <div class="buchungsklassen">
             <h3>BUCHUNGSKLASSEN</h3>
-            <h4></h4>
-            <p></p>
+
+            <div *ngFor="let item of bookingClassen">
+              <h4 [ngStyle]="fontColor">{{item.type | uppercase}}</h4>
+              <ul>
+                <li>{{item.description}}</li>
+              </ul>
+            </div>
+
+            <p>
+              <b>WICHTIGER HINWEIS:</b> du möchtest lieber nur mit deinem Geschlecht in einem Zimmer schlafen, bist
+              nachtaktiv, bist geräuschempfindlich (ein Schnarcher!), geruchsempfindlich (Käsefüße!) oder hast
+              Eigenheiten (ich schlafe gern bei offenem Fenster, ich muss immer die Heizung auf höchster Stufe
+              haben etc.) oder hast sonstige Eigenheiten … <b>wenn auch nur einer dieser Punkte auf dich zutrifft,
+              buche bitte ein Doppelzimmer mit eine*m Gleichgesinnten oder ein Einzelzimmer!</b>
+            </p>
+
+            <p>
+              <b>*Hinweis STUDENTEN-TARIF:</b>
+              gültig für immatrikulierte Studierende sowie Absolventen, die unter die Einkommensgrenze der geringfügigen
+              Beschäftigung fallen, z.B. Praktikanten, Mini- und Midijobs sowie Arbeitslosigkeit.
+            </p>
           </div>
 
           <!--      WER DARF MIT?      -->
           <div>
             <h3>WER DARF MIT?</h3>
-            <h4></h4>
-            <p></p>
+            <h5>Mitreiseberechtigt sind:</h5>
+
+            <ul>
+              <li>Studenten*innen (aktuelle Immatrikulation bei Anmeldung vorweisen)</li>
+              <li>Hochschulmitarbeiter*innen</li>
+              <li>Personen, die auf der Reise eine Funktion innehaben (Tourguide, Workshop-Leiter, etc.)</li>
+              <li>Alumni, die zu Studentenzeiten bereits auf einer Reise dabei waren.</li>
+            </ul>
+
+            <p>Bitte hab Verständnis dafür, dass nicht-immatrikulierte Partner, Verwandte und Freunde
+              deshalb nicht dabei sein können.</p>
           </div>
 
         </mat-card-content>
