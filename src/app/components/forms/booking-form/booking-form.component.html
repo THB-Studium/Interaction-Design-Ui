@@ -105,7 +105,7 @@
     <div class="form-row">
         <div class="form-group col-md-12">
             <mat-form-field class="col-md-12" appearance="standard">
-                <mat-label>Mitreisender? Dann bitte aus der Liste auswählen</mat-label>
+                <mat-label>Mitreisender (Optional)</mat-label>
                 <mat-select formControlName="coTraveler" placeholder="Search by email" #singleSelect [required]="false">
                     <mat-option>
                         <ngx-mat-select-search [formControl]="travelerFilteringCtrl" [searching]="searching">
@@ -120,6 +120,7 @@
                         {{traveler.email}}
                     </mat-option>
                 </mat-select>
+                <mat-hint>Falls vorhanden. Dann bitte aus der Liste auswählen.</mat-hint>
                 <mat-error *ngIf="bookingForm.get('coTraveler').invalid">
                     Die Eingabe ist <strong>erforderlich</strong>.
                 </mat-error>

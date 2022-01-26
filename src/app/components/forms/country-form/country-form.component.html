@@ -13,13 +13,6 @@
     </div>
   </div>
   <!--image-->
-  <!--div class="form-row">
-    <div class="col-2"></div>
-    <div class="form-group col-md-8 text-center">
-      <img *ngIf="currentCountry?.realImage" [src]="currentCountry?.realImage" width="230px" height="185px" alt="">
-    </div>
-    <div class="col-2"></div>
-  </div-->
   <div class="form-row">
     <div class="form-group col-12 text-center">
       <mat-form-field class="col-md-12">
@@ -46,7 +39,7 @@
   <div class="form-row">
     <div class="form-group col-md-12">
       <mat-form-field class="col-md-12" appearance="standard">
-        <mat-label>Flughäfen <small>(Beim mehrere Eingaben bitte diese mit der Enter Taste trennen)</small></mat-label>
+        <mat-label>Flughäfen:</mat-label>
         <mat-chip-list #airportsList aria-label="Flughäfen" multiple required>
           <mat-chip *ngFor="let airport of airportsArray" [selected]="airport" [value]="airport"
             (removed)="removeAirport(airport)">
@@ -55,6 +48,7 @@
           <input placeholder="Neuer Flughafen and Enter drücken.." formControlName="airports" [matChipInputFor]="airportsList"
             (matChipInputTokenEnd)="addAirportFromInput($event)">
         </mat-chip-list>
+        <mat-hint>Beim mehrere Eingaben bitte diese mit der Enter Taste trennen.</mat-hint>
         <mat-error *ngIf="countryForm.get('airports').invalid">
           Die Eingabe ist <strong>erforderlich</strong>.
         </mat-error>

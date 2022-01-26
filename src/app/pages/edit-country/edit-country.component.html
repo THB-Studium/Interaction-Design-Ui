@@ -44,14 +44,14 @@
             <mat-form-field class="col-md-12">
               <mat-label>Hintergrundbild</mat-label>
               <mat-toolbar class="mb-1">
-                <input matInput [value]="selectedFileName?.length ? selectedFileName : 'Bild auswählen'"
-                  formControlName="image" required />
+                <input matInput [value]="selectedFileName?.length ? selectedFileName : 'Bild auswählen'" required
+                  disabled />
               </mat-toolbar>
               <div class="input-file-container">
                 <div class="js text-center">
                   <input type="file" class="input-file ml-5" id="fileInput" name="fileInput" accept="image/*"
                     (change)="selectFile($event)" />
-                  <label tabindex="0" for="fileInput" class="input-file-trigger">Select a file...</label>
+                  <label tabindex="0" for="fileInput" class="input-file-trigger">Bild auswählen...</label>
                 </div>
               </div>
               <mat-error *ngIf="!isImgSelected">
@@ -179,7 +179,7 @@
             <h2>{{item.name}}</h2>
             <p><small class="text-primary">{{item.link}}</small></p>
             <p>{{getDescription(item.beschreibung)}}</p>
-            <p>{{item.addresse}}</p>
+            <p>{{item.adresse}}</p>
           </mat-card-content>
           <mat-card-actions>
             <label class="mr-3" matTooltip="Mehr" matTooltipHideDelay="{{toolTipDuration}}"
@@ -234,25 +234,18 @@
   <h1 mat-dialog-title>Weitere Informationen über {{highlightForm.name}}</h1>
   <mat-divider></mat-divider>
   <div mat-dialog-content>
-    <div class="form-row">
-      <div class="form-group col-md-8">
-        <div class="col-md-12">
-          <h3>Name:</h3> {{highlightForm.name}}
-        </div>
-        <div class="col-md-12">
-          <h3>Beschreibung:</h3> {{highlightForm.description}}
-        </div>
-      </div>
-      <div class="form-group col-md-4">
-        <img [src]="highlightForm.realImage" width="150px" height="150px" alt="Bild für {{highlightForm.name}}" />
-      </div>
-    </div>
-  </div>
-  <mat-divider></mat-divider>
-  <div class="justify-content-end" mat-dialog-actions>
-    <button mat-raised-button mat-dialog-close>
-      Ok
-    </button>
+    <mat-card class="col-md-12">
+      <img mat-card-image [src]="highlightForm.realImage" alt="img" class="col-12 img-thumbnail mx-auto d-block">
+      <mat-card-content>
+        <p class="font-weight-600">Name: {{highlightForm.name}}</p>
+        <p class="font-weight-600 text-underline">Beschreibung:</p>
+        <p>{{highlightForm.description}}</p>
+      </mat-card-content>
+      <mat-divider inside></mat-divider>
+      <mat-card-actions align="end">
+        <button mat-raised-button mat-dialog-close>Ok</button>
+      </mat-card-actions>
+    </mat-card>
   </div>
 </ng-template>
 
@@ -279,25 +272,37 @@
   <h1 mat-dialog-title>Weitere Informationen über {{accommodationForm.name}}</h1>
   <mat-divider></mat-divider>
   <div mat-dialog-content>
-    <div class="form-row">
+    <div class="form-row mt-2">
       <div class="form-group col-md-6">
         <div class="col-md-12">
-          <h3>Name:</h3> {{accommodationForm.name}}
+          <mat-form-field class="col-md-12" appearance="fill">
+            <mat-label>Name:</mat-label>
+            <input matInput [value]="accommodationForm.name" disabled>
+          </mat-form-field>
         </div>
         <div class="col-md-12">
-          <h3>Link:</h3> {{accommodationForm.link}}
+          <mat-form-field class="col-md-12" appearance="fill">
+            <mat-label>Link:</mat-label>
+            <input matInput [value]="accommodationForm.link" disabled>
+          </mat-form-field>
         </div>
         <div class="col-md-12">
-          <h3>Addresse:</h3> {{accommodationForm.addresse}}
+          <mat-form-field class="col-md-12" appearance="fill">
+            <mat-label>Anschrift:</mat-label>
+            <input matInput [value]="accommodationForm.adresse" disabled>
+          </mat-form-field>
         </div>
         <div class="col-md-12">
-          <h3>Beschreibung:</h3> {{accommodationForm.beschreibung}}
+          <mat-form-field class="col-md-12" appearance="fill">
+            <mat-label>Beschreibung:</mat-label>
+            <textarea matInput [value]="accommodationForm.beschreibung" disabled></textarea>
+          </mat-form-field>
         </div>
       </div>
       <div class="form-group col-md-6">
         <div class="row mt-5">
           <div class="col-md-4" *ngFor="let image of attachedImages; let i = index">
-            <img [src]="image" class="col-md-12 mb-4" alt="Bild {{i+1}} von {{accommodationForm.name}}" />
+            <img [src]="image" class="rounded mx-auto d-block col-12 mb-4" alt="Bild {{i+1}} von {{accommodationForm.name}}" />
           </div>
         </div>
       </div>
@@ -305,9 +310,7 @@
   </div>
   <mat-divider></mat-divider>
   <div class="justify-content-end" mat-dialog-actions>
-    <button mat-raised-button mat-dialog-close>
-      Ok
-    </button>
+    <button mat-raised-button mat-dialog-close>Ok</button>
   </div>
 </ng-template>
 
