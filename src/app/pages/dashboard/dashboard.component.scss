@@ -1,9 +1,17 @@
 .bg-gradient-blue {
-    background-color: #2D92AB;
+  background-color: #2d92ab;
+}
+
+.table-responsive {
+  min-height: 52vh;
+}
+
+.table td .progress {
+  width: 90px;
 }
 
 .color-gradient-blue {
-    color: #2D92AB;
+  color: #2d92ab;
 }
 
 h1 {
@@ -16,4 +24,9 @@ h2 {
 
 h3 {
   font-size: 20px !important;
+}
+
+.icon-shape em,
+.icon-shape svg {
+  font-size: 1.25rem;
 }

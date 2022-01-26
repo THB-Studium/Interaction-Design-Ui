@@ -73,9 +73,9 @@ export class SharedDataService {
   private tripoffer: TripOffer = {
     id: "",
     titel: "",
-    anmeldungsFrist: new Date(),
-    startDatum: new Date(),
-    endDatum: new Date(),
+    anmeldungsFrist: '',
+    startDatum: '',
+    endDatum: '',
     startbild: null,
     plaetze: 0,
     freiPlaetze: 0,
@@ -138,7 +138,7 @@ export class SharedDataService {
     this.expectationSource.next(expectation);
   }
   //#endregion bookinclass
- 
+
   //#region country
   private country: Country = {
     id: '',
