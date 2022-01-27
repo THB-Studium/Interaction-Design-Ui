@@ -117,10 +117,12 @@
           },
           "configurations": {
             "prod": {
-              "browserTarget": "argon-dashboard-angular:build:prod"
+              "browserTarget": "argon-dashboard-angular:build:prod",
+              "sourceMap": true
             },
             "dev": {
-              "browserTarget": "argon-dashboard-angular:build:dev"
+              "browserTarget": "argon-dashboard-angular:build:dev",
+              "sourceMap": true
             },
             "test": {
               "browserTarget": "argon-dashboard-angular:build:test"

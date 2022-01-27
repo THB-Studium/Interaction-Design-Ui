@@ -55,3 +55,9 @@ h3 {
   font-style: normal;
   font-weight: normal;
 }
+
+.mat-input-element:disabled,
+.mat-form-field-type-mat-native-select.mat-form-field-disabled
+  .mat-form-field-infix::after {
+  color: rgba(0, 0, 0, 0.8);
+}

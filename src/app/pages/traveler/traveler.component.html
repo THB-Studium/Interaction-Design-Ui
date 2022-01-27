@@ -163,42 +163,42 @@
 
 <!--Details-->
 <ng-template #moreDetailsDialog>
-    <h1 mat-dialog-title class="text-info">Weitere Informationen über <strong>{{currentTraveler.name}}</strong></h1>
+    <h1 mat-dialog-title>Informationen über <strong>{{currentTraveler.name}}</strong></h1>
     <mat-divider></mat-divider>
     <div mat-dialog-content>
-        <form class="col-md-12">
+        <form class="col-md-12 pt-2">
             <div class="form-row">
-                <mat-form-field class="col-md-12" appearance="standard">
+                <mat-form-field class="col-md-12" appearance="fill">
                     <mat-label>Name:</mat-label>
                     <input matInput [value]="currentTraveler.vorname + ' ' + currentTraveler.name" disabled>
                 </mat-form-field>
             </div>
             <div class="form-row">
-                <mat-form-field class="col-md-12" appearance="standard">
+                <mat-form-field class="col-md-12" appearance="fill">
                     <mat-label>Email:</mat-label>
                     <input matInput [value]="currentTraveler.email" disabled>
                 </mat-form-field>
             </div>
             <div class="form-row">
-                <mat-form-field class="col-md-12" appearance="standard">
+                <mat-form-field class="col-md-12" appearance="fill">
                     <mat-label>Geburtsdatum:</mat-label>
                     <input matInput [value]="convertDateToString(currentTraveler.geburtsdatum)" disabled>
                 </mat-form-field>
             </div>
             <div class="form-row">
-                <mat-form-field class="col-md-12" appearance="standard">
+                <mat-form-field class="col-md-12" appearance="fill">
                     <mat-label>Addresse:</mat-label>
-                    <input matInput [value]="currentTraveler.adresse" disabled>
+                    <input matInput [value]="currentTraveler.fill" disabled>
                 </mat-form-field>
             </div>
             <div class="form-row">
-                <mat-form-field class="col-md-12" appearance="standard">
+                <mat-form-field class="col-md-12" appearance="fill">
                     <mat-label>Telefonnummer:</mat-label>
                     <input matInput [value]="getPhoneNumber(currentTraveler)" disabled>
                 </mat-form-field>
             </div>
             <div class="form-row">
-                <mat-form-field class="col-md-12" appearance="standard">
+                <mat-form-field class="col-md-12" appearance="fill">
                     <mat-label>Angestellt bei:</mat-label>
                     <input matInput [value]="currentTraveler.arbeitBei? currentTraveler.arbeitBei:'Nicht vorhanden'"
                         disabled>

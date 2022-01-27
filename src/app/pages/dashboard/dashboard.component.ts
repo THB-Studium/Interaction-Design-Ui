@@ -35,32 +35,28 @@ export class DashboardComponent implements OnInit {
     {
       'title': 'Reiseangebote',
       'total': 0,
-      'icon': 'fas fa-plane-departure',
-      'icon_bg': 'bg-gradient-blue',
+      'badge_bg': 'bg-gradient-blue',
       'text': '',
       'link': '/tripoffers'
     },
     {
       'title': 'Buchungen',
       'total': 0,
-      'icon': 'fas fa-th-list',
-      'icon_bg': 'bg-gradient-info',
+      'badge_bg': 'bg-gradient-info',
       'text': '',
       'link': '/bookings'
     },
     {
       'title': 'Reisende',
       'total': 0,
-      'icon': 'fas fa-users',
-      'icon_bg': 'bg-gradient-primary',
+      'badge_bg': 'bg-gradient-primary',
       'text': 'bereits registriert.',
       'link': '/travelers'
     },
     {
       'title': 'Feedbacks',
       'total': 0,
-      'icon': 'far fa-comment-alt',
-      'icon_bg': 'bg-gradient-danger',
+      'badge_bg': 'bg-gradient-danger',
       'text': '',
       'link': '/feedbacks'
     }
@@ -154,7 +150,7 @@ export class DashboardComponent implements OnInit {
       complete: () => {
         // filter the offer to get only the current offer
         const today = formatDate(new Date(), "yyyy-MM-dd", "en_US");
-        this.tripofferList = this.tripofferList.filter(x => x.startDatum < today && x.endDatum > today);
+        this.tripofferList = this.tripofferList.filter(x => x.startDatum < today && x.endDatum > today && x.buchungsklassen !== null);
         // amount of interested
         let interested = 0;
         this.tripofferList.forEach(x => {
@@ -190,8 +186,6 @@ export class DashboardComponent implements OnInit {
                     });
                   }
                 });
-              } else {
-                this.toastrService.info(`Das Angebot ${x.titel} hat noch kein Ziel.`);
               }
             }
           });

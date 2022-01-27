@@ -107,6 +107,12 @@ p {
   box-shadow: 1px 1px 16px 2px var(--color-blue) !important;
 }
 
+.mat-input-element:disabled,
+.mat-form-field-type-mat-native-select.mat-form-field-disabled
+  .mat-form-field-infix::after {
+  color: rgba(0, 0, 0, 0.8);
+}
+
 /*##################################### Display Screen settings ###################################*/
 @media only screen and (min-width: 1200px) {
 }

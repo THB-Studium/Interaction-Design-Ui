@@ -3,7 +3,7 @@
 }
 
 .table-responsive {
-  min-height: 52vh;
+  min-height: 50vh;
 }
 
 .table td .progress {
@@ -29,4 +29,37 @@ h3 {
 .icon-shape em,
 .icon-shape svg {
   font-size: 1.25rem;
+}
+
+.statistics a {
+  cursor: pointer;
+}
+
+/*##################################### Screen settings ###################################*/
+@media only screen and  (min-width: 1237px) and (max-width: 1290px) {
+  .mat-typography h5 {
+    font: 400 calc(12px * 0.83) / 20px Roboto, "Helvetica Neue", sans-serif !important;
+    margin: 0 0 12px;
+    margin-bottom: 12px;
+  }
+
+  h5 {
+    font: 400 calc(12px * 0.83) / 20px Roboto, "Helvetica Neue", sans-serif !important;
+    margin: 0 0 12px;
+    margin-bottom: 12px;
+  }
+}
+
+@media only screen and (min-width: 1200px) and (max-width: 1236px) {
+  .mat-typography h5 {
+    font: 400 calc(11px * 0.83) / 20px Roboto, "Helvetica Neue", sans-serif !important;
+    margin: 0 0 12px;
+    margin-bottom: 12px;
+  }
+
+  h5 {
+    font: 400 calc(11px * 0.83) / 20px Roboto, "Helvetica Neue", sans-serif !important;
+    margin: 0 0 12px;
+    margin-bottom: 12px;
+  }
 }

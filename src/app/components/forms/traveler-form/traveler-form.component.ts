@@ -20,7 +20,8 @@ import { formatDate } from "@angular/common";
 })
 export class TravelerFormComponent implements OnInit, AfterViewInit {
   // Defines notifyTravelerFormValid. Notify the parent when the form is valid
-  @Output() notifyTravelerFormValid = new EventEmitter<boolean>(false);
+  @Output()
+  notifyTravelerFormValid = new EventEmitter<boolean>(false);
 
   // Defines TravelerForm
   travelerForm = new FormGroup({
@@ -67,6 +68,8 @@ export class TravelerFormComponent implements OnInit, AfterViewInit {
   isAnAdd: boolean = true;
   // selection
   readonly chooseArray = ["Ja", "Nein"];
+  // status
+  statusArray = [];
   // Defines error
   errors = {
     dateOfBirth: "",
@@ -76,7 +79,9 @@ export class TravelerFormComponent implements OnInit, AfterViewInit {
   // Defines selectedDate
   selectedDate: any;
 
-  constructor(private sharedDataService: SharedDataService) {}
+  constructor(private sharedDataService: SharedDataService) {
+    this.statusArray = ["Student", "Alumnus", "Hochschulmitarbeiter"];
+  }
 
   ngOnInit(): void {
     this.initTravelerForm();

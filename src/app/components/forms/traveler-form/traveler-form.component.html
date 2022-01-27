@@ -161,6 +161,22 @@
             </mat-form-field>
         </div>
         <div class="form-group col-md-6">
+            <!-- status -->
+            <mat-form-field class="col-md-12" appearance="standard">
+                <mat-label>Status</mat-label>
+                <mat-select formControlName="participated" (click)="notifyOnDateOfBirthInvalid()" required>
+                    <mat-option disabled>Auswaelen</mat-option>
+                    <mat-option *ngFor="let value of statusArray" [value]="value">{{value}}
+                    </mat-option>
+                </mat-select>
+                <mat-error *ngIf="travelerForm.get('participated').invalid">
+                    Die Eingabe ist <strong>erforderlich</strong>.
+                </mat-error>
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="col-md-12">
             <!-- Workfor -->
             <mat-form-field class="col-md-12" appearance="standard">
                 <mat-label>Angestellt bei (Name der Firma)</mat-label>
