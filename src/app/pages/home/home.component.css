@@ -75,14 +75,96 @@ ngb-carousel {
 
 /*######## Reiseangebot ########*/
 .section-contents-RG {
-  margin-top: 30px;
-  padding: 6em;
+  margin-top: 0;
+  padding: 3em 2em;
+}
+
+.section-contents-RG img {
+  width: 100%;
+  max-height: 650px !important;
+  background-size: 100% 100%;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  width: auto;
+  opacity: 0;
+  transition: 0.3s ease;
+  background-color: rgba(0, 0, 0, 0.5);
+  margin: 0.8em;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.offers:hover .overlay {
+  opacity: 1;
+  display: block;
+  height: auto;
+  transition: 0.5s ease;
+  backface-visibility: hidden;
+}
+
+.offers:hover .overlay .text {
+  color: white;
+  font-size: 20px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.offers:hover .overlay em {
+  font-size: 2.6em;
+}
+
+.offers:hover .overlay .btn-link {
+  background-color: #17a2b8 !important;
+  color: #ffffff;
+  font-size: 10px;
+  display: none;
+  cursor: pointer;
+}
+
+.text-bottom-left {
+  position: absolute;
+  bottom: 8px;
+  left: 2rem;
+}
+
+.text-bottom-left h2 {
+  font-size: 3.2rem !important;
+}
+
+.text-bottom-left small {
+  font-size: 1.2rem;
+}
+
+.text-bottom-right {
+  position: absolute;
+  bottom: 8px;
+  right: 2rem;
+}
+
+.text-bottom-right .link {
+  cursor: pointer;
+  font-size: 1.3rem;
+}
+
+.text-bottom-right p:hover {
+  color: #eee !important;
 }
 
 mat-card {
   margin-top: 4em;
   min-height: 600px;
-
   background-repeat: no-repeat;
   background-size: 100% 100%;
 }
@@ -105,6 +187,11 @@ mat-card {
 }
 
 /*######## Feedback ########*/
+.display-flex {
+  display : flex;
+  flex-wrap : nowrap;
+  flex-direction: row;
+}
 
 #feedback-title {
   margin-left: 2.2em;
@@ -120,12 +207,22 @@ mat-card {
 }
 
 .section-contents-FB {
-  margin-top: 30px;
-  padding: 6em 6em 6em 0;
+  margin-top: 0;
+  margin-bottom: 8em;
+  padding: 0 2em;
 }
 
-.section-contents-FB .myRow {
-  margin-bottom: 1em;
+.prev-btn, .next-btn {
+  cursor: pointer;
+}
+
+.prev-btn:hover, .next-btn:hover {
+  color: #000000;
+}
+
+.img-feeback  {
+  width: auto;
+  max-height: 450px !important;
 }
 
 .feedback-contents .feedback-message {
@@ -152,7 +249,6 @@ mat-card {
 
 /*##################################### Display Screen settings ###################################*/
 @media screen and (min-width: 1200px) and (max-width: 1400px) {
-
   .carousel-caption h1 {
     font-size: 50px !important;
   }
@@ -193,7 +289,6 @@ mat-card {
 }
 
 @media screen and (min-width: 993px) and (max-width: 1007px) {
-
   .carousel-caption h1 {
     font-size: 42px !important;
   }
@@ -218,7 +313,6 @@ mat-card {
 }
 
 @media screen and (max-width: 778px) {
-
   .carousel-caption h1 {
     font-size: 35px !important;
   }
@@ -228,10 +322,32 @@ mat-card {
     padding-left: 0;
     margin-left: 0;
   }
+
+  .offers:hover .overlay em {
+    display: none;
+  }
+  
+  .offers:hover .overlay .btn-link {
+    top: 70%;
+    font-size: 12px;
+    padding: 15px 15px;
+    display: inline;
+  }
+
+  .text-bottom-left h2 {
+    font-size: 2rem !important;
+  }
+
+  .text-bottom-left small {
+    display: none;
+  }
+
+  .text-bottom-right .link {
+    display: none;
+  }
 }
 
 @media screen and (max-width: 767px) {
-
   .carousel-caption h1 {
     text-align: center;
   }
@@ -239,10 +355,10 @@ mat-card {
   .carousel-caption p {
     text-align: center;
   }
+  
 }
 
 @media screen and (max-width: 645px) {
-
   .carousel-caption h1 {
     font-size: 28px !important;
   }
@@ -255,7 +371,6 @@ mat-card {
 }
 
 @media screen and (max-width: 558px) {
-
   .carousel-caption h1 {
     font-size: 25px !important;
   }
@@ -268,7 +383,6 @@ mat-card {
 }
 
 @media screen and (max-width: 489px) {
-
   .carousel-caption h1 {
     font-size: 20px !important;
   }
@@ -281,7 +395,6 @@ mat-card {
 }
 
 @media screen and (max-width: 423px) {
-
   .carousel-caption h1 {
     margin: 0;
     font-size: 18px !important;
@@ -296,6 +409,17 @@ mat-card {
   }
 }
 
+@media screen and (max-width: 378px) {
+  .offers:hover .overlay .btn-link {
+    font-size: 10px;
+    padding: 15px 15px;
+  }
+
+  .text-bottom-left h2 {
+    font-size: 1.8rem !important;
+  }
+}
+
 @media screen and (max-width: 342px) {
   .carousel-caption h1 {
     font-size: 16px !important;
@@ -307,10 +431,19 @@ mat-card {
   }
 }
 
-@media screen and (max-width: 307px) {
+@media screen and (max-width: 337px) {
   .carousel-caption h1 {
     font-size: 14px !important;
     text-align: center;
+  }
+
+  .offers:hover .overlay .btn-link {
+    font-size: 10px;
+    padding: 10px 10px;
+  }
+
+  .text-bottom-left h2 {
+    font-size: 1.6rem !important;
   }
 }
 

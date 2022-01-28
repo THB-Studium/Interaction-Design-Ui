@@ -1,3 +1,7 @@
+.navbar-bg {
+  background-color: #2d92ab;
+}
+
 .navbar {
   height: auto !important;
 }
@@ -23,14 +27,6 @@
 .navbar-horizontal .navbar-brand img {
   width: 5.3em;
   height: unset;
-}
-
-.bg-home {
-  background-color: transparent;
-}
-
-.bg-auth {
-  background-color: #2d92ab;
 }
 
 img {

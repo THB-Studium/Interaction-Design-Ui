@@ -1,6 +1,7 @@
-import { Component, OnInit, HostListener, Input } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { Location } from "@angular/common";
 import { Router } from "@angular/router";
+import { BehaviorSubject, Observable } from "rxjs";
 
 @Component({
   selector: "app-navbar-guest",
@@ -8,45 +9,47 @@ import { Router } from "@angular/router";
   styleUrls: ["./navbar-guest.component.css"],
 })
 export class NavbarGuestComponent implements OnInit {
-  bgColor: string = "transparent";
 
   public listTitles: any[];
   public location: Location;
 
   public isCollapsed = true;
 
-  public isAuth = false;
+  public homepageSrc: BehaviorSubject<boolean>;
 
-  private title = "";
+  public isHomepage: Observable<boolean>;
 
   constructor(location: Location, private router: Router) {
+    // Get the current page
     this.location = location;
+
+    // Default homepage
+    /*this.homepageSrc.next(true);
+    this.isHomepage = this.homepageSrc.asObservable();*/
   }
 
   ngOnInit() {
-    this.title = this.location.prepareExternalUrl(this.location.path());
-    console.log("title: ", this.title);
-    if (this.title.charAt(0) === "#") {
-      this.title = this.title.slice(1);
-    }
-
-    if (
-      this.title.toLowerCase().includes("login") ||
-      this.title.toLowerCase().includes("register") ||
-      this.title.toLowerCase().includes("aboutus")
-    ) {
-      this.isAuth = true;
-    } else {
-      this.isAuth = false;
-    }
+    //this.getCurrentPage();
 
     this.router.events.subscribe((event) => {
       this.isCollapsed = true;
     });
   }
 
+  private getCurrentPage() {
+    const url = this.location.prepareExternalUrl(this.location.path());
+    if (url.charAt(0) === "#") {
+      const currentPage = url.slice(1);
+      if (currentPage.toLowerCase().includes('home')) {
+        this.homepageSrc.next(true);
+      }
+    } else {
+      this.homepageSrc.next(false);
+    }
+  }
+
   /**Change navbar backgroung on scroll */
-  @HostListener("window:scroll", ["$event"])
+  /*@HostListener("window:scroll", ["$event"])
   onWindowScroll(e: any) {
     if (this.title.includes("home")) {
       const element = document.querySelector(".navbar");
@@ -54,5 +57,5 @@ export class NavbarGuestComponent implements OnInit {
         ? element.classList.add("bg-auth")
         : element.classList.remove("bg-auth");
     }
-  }
+  }*/
 }
