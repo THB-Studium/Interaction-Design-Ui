@@ -38,3 +38,27 @@ img {
 img {
   max-width: 10em !important;
 }
+
+
+/*############################### Screen settings ####################################*/
+@media screen and (min-width: 992px) and (max-width: 1200px) {
+  img {
+    max-width: 2.5em !important;
+  }
+
+  .navbar-nav a {
+    font-size: 14px;
+  }
+}
+
+@media screen and (min-width: 779px) and (max-width: 991px) {
+  img {
+    max-width: 2.3em !important;
+  }
+}
+
+@media screen and (max-width: 778px) {
+  img {
+    max-width: 2em !important;
+  }
+}

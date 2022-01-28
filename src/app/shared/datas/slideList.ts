@@ -8,10 +8,10 @@ export class SlideList {
       description: 'Wir bieten Studienreisen für studierende und Hochschulmitglied an, die Bildung ' +
         'und Reiseabenteuer in Backpacker-Mentalität miteinander verbinden.'
     },
-    {
+    /*{
       image: 'ibrahim-rifath-Y6tBl0pTe-g-unsplash.jpg',
       title: '>>together around the World<<',
       description: 'Komm und erlebe wunderbare Abenteuer mit uns!!!'
-    }
+    }*/
   ];
 }
