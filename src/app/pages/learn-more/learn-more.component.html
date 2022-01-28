@@ -14,11 +14,13 @@
     </p>
     <div class="myRow" style="align-items: baseline">
       <p>Interessierte: <span class="font-weight-bold">{{currentTripOffer?.interessiert}}</span></p>
-      <button mat-raised-button class="set-content-right" [ngStyle]="backgroundColor">PLATZ RESERVIEREN ></button>
+      <h3 *ngIf = "currentTripOffer?.freiPlaetze <= 0" class="set-content-right"> Keine Plätze mehr !</h3>
+      <h3 *ngIf = "anmeldeFristVorbei" class="set-content-right"> Der Anmeldefrist ist vorbei !</h3>
+      <button mat-raised-button class="set-content-right" [ngStyle]="backgroundColor" (click)="bookingFormDialog()" [disabled]="currentTripOffer?.freiPlaetze <= 0 || anmeldeFristVorbei">PLATZ RESERVIEREN ></button>
     </div>
 
-    <mat-card class="white-color" [ngStyle]="mapBg">
-      <p class="set-content-bottom mat-card-footer">{{currentLand.name | uppercase}} - REISEROUTE</p>
+    <mat-card class="white-color" [style.background-image]="'url(' + currentLand?.realImage?.changingThisBreaksApplicationSecurity  + ')'">>
+      <p class="set-content-bottom mat-card-footer">{{currentLand?.name | uppercase}} - REISEROUTE</p>
     </mat-card>
   </div>
 
@@ -26,13 +28,13 @@
   <div class="highlight-contents">
     <h2>Die Highlights im Überblick</h2>
 
-    <div class="row" *ngIf="currentLand.highlights">
+    <div class="row" *ngIf="currentLand?.highlights">
       <div class="col-md-4" *ngFor="let item of currentLand.highlights">
         <mat-card class="col-md-11 mb-6" [ngStyle]="matCardShadowHighlight">
           <img mat-card-image src="assets/img/highlights/{{item.bild}}" alt="{{item.name}}-Bild">
           <mat-card-content>
-            <h3>{{item.name}}</h3>
-            <p>{{item.description}}</p>
+            <h3>{{item?.name}}</h3>
+            <p>{{item?.description}}</p>
           </mat-card-content>
         </mat-card>
       </div>
@@ -110,9 +112,9 @@
     <h2>Ablauf der Reise</h2>
 
     <h3>UNTERKÜNFTE</h3>
-    <p>{{currentLand.unterkunft_text}}</p>
+    <p>{{currentLand?.unterkunft_text}}</p>
 
-    <div class="row" *ngIf="currentLand.unterkunft">
+    <div class="row" *ngIf="currentLand?.unterkunft">
       <div class="col-md-12" *ngFor="let item of currentLand.unterkunft; let i=index">
         <div class="row col-md-6 mb-5">
           <h1 [ngStyle]="fontColor">{{i + 1}}</h1>
@@ -137,7 +139,7 @@
     <h2>Länderinfo | Gesundheit & Sicherheit</h2>
 
     <mat-card [ngStyle]="matCardShadow">
-      <mat-card-content *ngFor="let item of currentLand.infosLands; let i=index">
+      <mat-card-content *ngFor="let item of currentLand?.infosLands; let i=index">
         <mat-expansion-panel class="mb-2" [expanded]="checkIfExpanded(i)" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
           <mat-expansion-panel-header>
             <mat-panel-title>{{item.titel | uppercase}}</mat-panel-title>
@@ -147,5 +149,14 @@
       </mat-card-content>
     </mat-card>
   </div>
+
+  <!-- New feedback dialog -->
+<ng-template #feedbackDialog>
+  <h2 mat-dialog-title>Neues Feedback senden</h2>
+  <mat-divider></mat-divider>
+  <div mat-dialog-content>
+    <app-booking-form></app-booking-form>
+  </div>
+</ng-template>
 
 </body>

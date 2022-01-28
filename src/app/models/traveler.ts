@@ -10,4 +10,5 @@ export class Traveler {
     public geburtsdatum: Date;
     public hochschule: string;
     public schonTeilgenommen: boolean;
+    public status?: string
 }
