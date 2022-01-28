@@ -26,7 +26,7 @@ export class HomeComponent implements OnInit {
   currentFeedback: Feedback;
   currentIndex: number;
   dialogConfig = new MatDialogConfig();
-  readonly defaultFeedbackImg = "assets/img/feedback/fb-1.jpg";
+  readonly defaultFeedbackImg = "./assets/img/feedback/feedback-default-img.jpg";
 
   constructor(
     private router: Router,
@@ -72,7 +72,7 @@ export class HomeComponent implements OnInit {
       complete: () => {
         // filter the feedbacks
         const feedbacks = this.feedbacks.filter(
-          (x) => x.veroefentlich === true
+          (x) => x.veroefentlich === false
         );
         // clear the list
         this.feedbacks = [];
