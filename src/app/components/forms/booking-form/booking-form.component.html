@@ -28,7 +28,7 @@
 <form class="col-md-12">
 
     <!-- stepper begin -->
-    <mat-stepper orientation="vertical" [linear]="false" #stepper>
+    <mat-stepper orientation="vertical" [linear]="true" #stepper>
         <!-- person infos -->
         <mat-step [stepControl]="personenDatenFormGroup">
             <form [formGroup]="personenDatenFormGroup">
@@ -176,7 +176,6 @@
 
                 <div>
                     <br>
-                    <button mat-button matStepperPrevious>Zurück</button>
                     <button mat-button matStepperNext>Weiter</button>
                 </div>
             </form>
@@ -481,7 +480,8 @@
                     </div>
                     <div class="row">
                         <div class="col-6">
-                            SchonTeilgennomem: <strong>{{resier.schonTeilgennomem}}</strong>
+                            <span *ngIf="resier.schonTeilgennomem">Schon Teilgennomem: <strong>Ja</strong></span>
+                            <span *ngIf="!resier.schonTeilgennomem"> Schon Teilgennomem: <strong>Nein</strong></span>
                         </div>
                         <div class="col-6">
 
