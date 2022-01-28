@@ -1,9 +1,9 @@
-.bg-home {
-  background-color: transparent;
+.navbar {
+  height: auto !important;
 }
 
-.bg-auth {
-  background-color: #2d92ab;
+.navbar-nav {
+  text-align: center;
 }
 
 .navbar-nav a {
@@ -11,11 +11,26 @@
   text-transform: uppercase;
   font-weight: 800;
 }
-.navbar-nav {
-  text-align: center;
+
+.navbar-nav a:hover {
+  color: #FFF;
 }
+
 .nav-link {
   padding: 0.2rem 1rem;
+}
+
+.navbar-horizontal .navbar-brand img {
+  width: 5.3em;
+  height: unset;
+}
+
+.bg-home {
+  background-color: transparent;
+}
+
+.bg-auth {
+  background-color: #2d92ab;
 }
 
 img {
@@ -25,20 +40,6 @@ img {
 .fixed-top {
   position: absolute;
 }
-
-.navbar {
-  height: 10em !important;
-}
-
-.navbar-horizontal .navbar-brand img {
-  width: 5.3em;
-  height: unset;
-}
-
-img {
-  max-width: 10em !important;
-}
-
 
 /*############################### Screen settings ####################################*/
 @media screen and (min-width: 992px) and (max-width: 1200px) {
@@ -51,14 +52,52 @@ img {
   }
 }
 
-@media screen and (min-width: 779px) and (max-width: 991px) {
+@media screen and (min-width: 768px) and (max-width: 991px) {
+  .navbar-nav .nav-link {
+    font-size: 14px;
+    font-weight: 800;
+  }
+
   img {
     max-width: 2.3em !important;
   }
 }
 
-@media screen and (max-width: 778px) {
+@media screen and (max-width: 767px) {
+
+  .navbar-nav .nav-link {
+    padding: 0.875rem 0;
+    font-size: 14px;
+    font-weight: 700;
+    color: rgba(0, 0, 0, .9) !important;
+  }
+
+  .navbar-collapse ul li {
+    border-top: 1px solid rgba(0, 0, 0, .1) !important;
+  }
+
+  .navbar-collapse ul li:first-child {
+    border-top: none !important;
+  }
+
+  .navbar-collapse ul li:last-child {
+    border-bottom: 1px solid rgba(0, 0, 0, .1) !important;
+  }
+
+  .navbar-collapse ul li:hover {
+    border-left: 2px solid #007bff !important;
+  }
+
+  .navbar-collapse a:hover {
+    color: rgba(0, 0, 0, .6) !important;
+  }
+
+  .navbar-collapse .navbar-collapse-header {
+    padding-bottom: 15px !important;
+    margin-bottom: 0 !important;
+  }
+
   img {
-    max-width: 2em !important;
+    max-width: 2.3em !important;
   }
 }

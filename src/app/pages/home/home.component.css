@@ -230,6 +230,17 @@ mat-card {
   }
 }
 
+@media screen and (max-width: 767px) {
+
+  .carousel-caption h1 {
+    text-align: center;
+  }
+
+  .carousel-caption p {
+    text-align: center;
+  }
+}
+
 @media screen and (max-width: 645px) {
 
   .carousel-caption h1 {
@@ -274,7 +285,6 @@ mat-card {
   .carousel-caption h1 {
     margin: 0;
     font-size: 18px !important;
-    display: none;
   }
 
   .carousel-caption p {
@@ -282,15 +292,37 @@ mat-card {
     padding-left: 0;
     padding-top: 0;
     margin-left: 0;
+    display: none;
   }
 }
 
-@media screen and (max-width: 295px) {
+@media screen and (max-width: 342px) {
   .carousel-caption h1 {
-    display: none;
+    font-size: 16px !important;
+    text-align: center;
   }
 
   .carousel-caption p {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 307px) {
+  .carousel-caption h1 {
+    font-size: 14px !important;
+    text-align: center;
+  }
+}
+
+@media screen and (max-width: 274px) {
+  .carousel-caption h1 {
+    font-size: 12px !important;
+    text-align: center;
+  }
+}
+
+@media screen and (max-width: 240px) {
+  .carousel-caption h1 {
     display: none;
   }
 }
