@@ -60,7 +60,7 @@
                         <mat-label>Geburtsdatum (yyyy-mm-dd)</mat-label>
                         <input matInput [matDatepicker]="picker_Reiser" formControlName="geburtsdatum" required>
                         <mat-datepicker-toggle matSuffix [for]="picker_Reiser">
-                            <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+                            <mat-icon matDatepickerToggleIcon>date_range</mat-icon>
                         </mat-datepicker-toggle>
                         <mat-datepicker #picker_Reiser></mat-datepicker>
                         <mat-error *ngIf="(personenDatenFormGroup.get('geburtsdatum')).errors?.required">
@@ -176,8 +176,8 @@
 
                 <div>
                     <br>
-                    <button mat-button matStepperPrevious>Back</button>
-                    <button mat-button matStepperNext>Next</button>
+                    <button mat-button matStepperPrevious>Zurück</button>
+                    <button mat-button matStepperNext>Weiter</button>
                 </div>
             </form>
         </mat-step>
@@ -213,7 +213,7 @@
                         <mat-label>Geburtsdatum (yyyy-mm-dd)</mat-label>
                         <input matInput [matDatepicker]="picker_MiReiser" formControlName="geburtsdatum" required>
                         <mat-datepicker-toggle matSuffix [for]="picker_MiReiser">
-                            <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+                            <mat-icon matDatepickerToggleIcon>date_range</mat-icon>
                         </mat-datepicker-toggle>
                         <mat-datepicker #picker_MiReiser></mat-datepicker>
                         <mat-error *ngIf="(personenDatenFormGroupMitReiser.get('geburtsdatum')).errors?.required">
@@ -319,8 +319,8 @@
 
                 <div>
                     <br>
-                    <button mat-button matStepperPrevious>Back</button>
-                    <button mat-button matStepperNext>Next</button>
+                    <button mat-button matStepperPrevious>Zurück</button>
+                    <button mat-button matStepperNext>Weiter</button>
                 </div>
             </form>
         </mat-step>
@@ -335,7 +335,7 @@
                         <input matInput [matDatepicker]="picker_Reise" [min]="minDate" [max]="maxDate"
                             formControlName="datum" required>
                         <mat-datepicker-toggle matSuffix [for]="picker_Reise">
-                            <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+                            <mat-icon matDatepickerToggleIcon>date_range</mat-icon>
                         </mat-datepicker-toggle>
                         <mat-datepicker #picker_Reise></mat-datepicker>
                         <mat-error *ngIf="(reiseDatenFormGroup.get('datum')).errors?.required">
@@ -409,8 +409,8 @@
                 </div>
 
                 <div>
-                    <button mat-button matStepperPrevious>Back</button>
-                    <button mat-button matStepperNext (click)="getFormValues()">Next</button>
+                    <button mat-button matStepperPrevious>Zurück</button>
+                    <button mat-button matStepperNext (click)="getFormValues()">Weiter</button>
                 </div>
             </form>
         </mat-step>
@@ -426,8 +426,8 @@
                     </div>
                 </div>
                 <div>
-                    <button mat-button matStepperPrevious>Back</button>
-                    <button mat-button [disabled]="agbFormGroup.invalid" matStepperNext>Next</button>
+                    <button mat-button matStepperPrevious>Zurück</button>
+                    <button mat-button [disabled]="agbFormGroup.invalid" matStepperNext>Weiter</button>
                 </div>
             </form>
         </mat-step>
@@ -444,7 +444,7 @@
                             Vorname: <strong>{{resier.vorname}}</strong>
                         </div>
                         <div class="col-6">
-                            nachname: <strong>{{resier.nachname}}</strong>
+                            Nachname: <strong>{{resier.nachname}}</strong>
                         </div>
                     </div>
                     <div class="row">
@@ -500,37 +500,37 @@
                             Datum: <strong>{{reise?.datum}}</strong>
                         </div>
                         <div class="col-6">
-                            flughafen: <strong>{{reise?.flughafen}}</strong>
+                            Flughafen: <strong>{{reise?.flughafen}}</strong>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-6">
-                            buchungsklasse: <strong>{{selectedBookingClass?.type}}</strong>
+                            Buchungsklasse: <strong>{{selectedBookingClass?.type}}</strong>
                         </div>
                         <div class="col-6">
-                            zahlungsmethod: <strong>{{reise?.zahlungsmethod}}</strong>
+                            Zahlungsmethode: <strong>{{reise?.zahlungsmethod}}</strong>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-6">
-                            koffer: <strong>{{reise?.koffer}}</strong>
+                            Koffer: <strong>{{reise?.koffer}}</strong>
                         </div>
                         <div class="col-6">
-                            handgepaeck: <strong>{{reise?.handgepaeck}}</strong>
+                            Handgepäck: <strong>{{reise?.handgepaeck}}</strong>
                         </div>
                     </div>
                 </div>
             </div><br>
             <div>
-                <button mat-button matStepperPrevious>Back</button>
-                <button mat-button matStepperNext>Next</button>
+                <button mat-button matStepperPrevious>Zurück</button>
+                <button mat-button matStepperNext>Weiter</button>
             </div>
         </mat-step>
         <mat-step>
             <ng-template matStepLabel>Done</ng-template>
             <p>Sind alle Informationen Richtig ?</p>
             <div>
-                <button mat-button matStepperPrevious>Back</button>
+                <button mat-button matStepperPrevious>Zurück</button>
                 <button mat-button color="primary" (click)="buchen()">Ja, Buchen</button>
             </div>
         </mat-step>
