@@ -1,7 +1,9 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+
 import { ToastrService } from "ngx-toastr";
 import { NewsLettersService } from "src/app/services/news-letters/news-letters.service";
+
 import { Pattern } from "src/app/variables/pattern";
 
 @Component({

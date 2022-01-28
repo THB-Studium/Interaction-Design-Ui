@@ -35,7 +35,7 @@ export class FeedbackComponent implements OnInit, AfterViewInit {
   toolTipDuration = 300;
   // Defines header-img
   readonly headerImg = "assets/img/brand/utc.PNG";
-  readonly defaultFeedbackImg = "assets/img/feedback/fb-1.jpg";
+  readonly defaultFeedbackImg = "./assets/img/feedback/feedback-default-img.jpg";
 
   constructor(
     private dialog: MatDialog,

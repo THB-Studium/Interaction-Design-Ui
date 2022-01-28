@@ -1,77 +1,90 @@
 <!-- Carousel-Header -->
-<ngb-carousel [showNavigationArrows]="true" [showNavigationIndicators]="true" interval="{{slideList.length > 1 ? 5000 : 0}}"
-  [keyboard]="true" [pauseOnHover]="true" [wrap]="true" [activeId]="'secondSlide'">
+<ngb-carousel [showNavigationArrows]="true" [showNavigationIndicators]="true"
+  interval="{{slideList.length > 1 ? 5000 : 0}}" [keyboard]="true" [pauseOnHover]="true" [wrap]="true"
+  [activeId]="'secondSlide'">
   <ng-template *ngFor="let slide of slideList; let i = index" ngbSlide>
     <div class="picsum-img-wrapper">
-      <img src="./assets/img/carousel/{{slide.image}}" alt="Slide {{i+1}}"/>
+      <img class="img-fluid fit-img" src="./assets/img/carousel/{{slide.image}}" alt="Slide {{i+1}}" />
     </div>
     <div class="carousel-caption">
       <h1>{{slide.title}}</h1>
-      <p>{{slide.description}}</p>
+      <p class="col-sm-12 col-md-6">{{slide.description}}</p>
     </div>
   </ng-template>
 </ngb-carousel>
 
-
-<!-- Reiseangebot -->
-<div class="section-contents-RG">
-  <h2 class="black-color">Reiseangebot</h2>
-
-  <div  *ngFor="let gebot of tripOffers">
-    <mat-card class="card-shadow white-color" [style.background-image]="'url(' + gebot.realImage.changingThisBreaksApplicationSecurity  + ')'">
-      <div class="set-content-bottom">
-        <h2 class="white-color">{{gebot.titel | uppercase}}</h2>
-        <p>
-          {{gebot.startDatum}}
-          {{gebot.endDatum}}
-        </p>
-
-        <div class="myRow">
-          <p>Freie Plätze:
-            <span class="font-weight-bold">
-              {{gebot.freiPlaetze}}/{{gebot.plaetze}}
-            </span>
-          </p>
-          <p class="mehrErfahren set-content-right" (click)="routeToLearnMore(gebot.id)">MEHR ERFAHREN ></p>
+<div class="container-fluid">
+  <!-- Reiseangebot -->
+  <div class="section-contents-RG col-md-12">
+    <h2 class="black-color mb-5">Reiseangebote</h2>
+    <div class="row mb-5" *ngFor="let gebot of tripOffers">
+      <div class="col-md-12 mx-auto d-block offers">
+        <img [src]="gebot.realImage.changingThisBreaksApplicationSecurity" class="card-shadow img-fluid"
+          alt="cover_image">
+        <div class="overlay">
+          <div class="text">
+            <em class="fas fa-plane-departure text-white"></em>
+            <p class="btn-link" (click)="routeToLearnMore(gebot.id)">MEHER ERFAHREN</p>
+          </div>
         </div>
-        <p>Interessierte:
-          <span class="font-weight-bold">{{gebot.interessiert}}</span>
-        </p>
-
+        <div class="row">
+          <div class="text-bottom-left text-white">
+            <div class="col-sm-12 col-md-12">
+              <h2 class="text-white">{{gebot.titel | uppercase}}</h2>
+              <p class="mt--1">
+                <small class="mr-2">{{gebot.startDatum}}</small>
+                <small>{{gebot.endDatum}}</small>
+              </p>
+              <p class="mb--1">
+                <small class="mr-2">Freie Plätze:</small>
+                <small class="font-weight-bold">{{gebot.freiPlaetze}}/{{gebot.plaetze}}</small>
+              </p>
+              <p>
+                <small class="mr-2">Interessierte:</small>
+                <small class="font-weight-bold">{{gebot.interessiert}}</small>
+              </p>
+            </div>
+          </div>
+          <div class="col-sm-12 col-md-12">
+            <div class="text-bottom-right text-white">
+              <p class="link font-weight-600" (click)="routeToLearnMore(gebot.id)">MEHR ERFAHREN ></p>
+            </div>
+          </div>
+        </div>
       </div>
-    </mat-card>
-  </div>
-</div>
-
-
-<!-- Feedback -->
-<div class="section-contents-FB">
-  <div class="myRow">
-    <h2 class="black-color" id="feedback-title">Feedback</h2>
-
-    <button style="float: right !important;" mat-mini-fab aria-label="add icon" class="set-content-right"
-            matTooltip="Feedback teilen" (click)="feedbackTeilenDialog(feedbackDialog)" id="addFeedback">
-      <mat-icon>add</mat-icon>
-    </button>
+    </div>
   </div>
 
-  <div class="feedback-contents myRow">
-    <img src="./assets/img/feedback/{{currentFb.bild}}"
-        alt="FeebackBild-{{currentIndex + 1}}" id="feedback-pic">
-
-    <div class="feedback-message">
-      <img src="./assets/img/anführungszeichnen.PNG" alt="Anführungszeichnen" id="quotation-mark">
-      <p class="message">{{currentFb.description}}</p>
-      <p class="autor">{{currentFb.autor}}</p>
-      <p>
-        <b>{{currentIndex + 1}} / {{feedbacks.length}}</b>
-        <mat-icon class="margin-left margin-bottom" (click)="feedbackAktion('prev')">keyboard_arrow_left</mat-icon>
-        <mat-icon class="margin-bottom" (click)="feedbackAktion('next')">keyboard_arrow_right</mat-icon>
-      </p>
+  <!-- Feedback -->
+  <div class="section-contents-FB col-md-12">
+    <div class="row">
+      <div class="col-10">
+        <h2 class="black-color mb-5">Feedback</h2>
+      </div>
+      <div class="float-right justify-content-end text-right">
+        <button class="ml-1 align-self-end" mat-mini-fab aria-label="add icon"
+          matTooltip="Feedback teilen" matTooltipHideDelay="2000" (click)="feedbackTeilenDialog(feedbackDialog)" id="addFeedback">
+          <mat-icon>add</mat-icon>
+        </button>
+      </div>
+    </div>
+    <div class="row" *ngIf="feedbacks.length > 0">
+      <div class="col-md-12 col-lg-6">
+        <img [src]="currentFeedback?.bild" alt="FeebackBild-{{currentIndex + 1}}" class="img-feeback img-fluid">
+      </div>
+      <div class="col-md-12 col-lg-6">
+        <img src="./assets/img/anführungszeichnen.PNG" alt="Anführungszeichnen" class="img-fluid">
+        <p class="message">{{currentFeedback?.description}}</p>
+        <p class="autor font-weight-bold">{{currentFeedback?.autor}}</p>
+        <p class="display-flex">
+          <strong>{{currentIndex + 1}} / {{feedbacks.length}}</strong>
+          <mat-icon class="ml-2 prev-btn" (click)="feedbackAktion('prev')">keyboard_arrow_left</mat-icon>
+          <mat-icon class="next-btn" (click)="feedbackAktion('next')">keyboard_arrow_right</mat-icon>
+        </p>
+      </div>
     </div>
   </div>
 </div>
-
 
 <!-- New feedback dialog -->
 <ng-template #feedbackDialog>
