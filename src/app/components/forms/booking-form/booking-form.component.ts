@@ -1,145 +1,70 @@
 import {
-  AfterViewInit,
   Component,
   OnInit,
-  Output,
-  EventEmitter,
-  OnDestroy,
+  Input,
 } from "@angular/core";
-import { FormControl, FormGroup, Validators } from "@angular/forms";
-import { ReplaySubject, Subject } from "rxjs";
-import {
-  debounceTime,
-  delay,
-  tap,
-  filter,
-  map,
-  takeUntil,
-} from "rxjs/operators";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+
 import { formatDate } from "@angular/common";
 
-import { SharedDataService } from "src/app/services/sharedData/shared-data.service";
 import { ToastrService } from "ngx-toastr";
-import { TravelerService } from "src/app/services/traveler/traveler.service";
 import { BookingClassService } from "src/app/services/booking-class/booking-class.service";
-import { TripOfferService } from "src/app/services/trip-offer/trip-offer.service";
-import { CountryService } from "src/app/services/country/country.service";
 
 import { Booking } from "src/app/models/booking";
 import { TripOffer } from "src/app/models/tripOffer";
-import { Traveler } from "src/app/models/traveler";
-import { BookingClass } from "src/app/models/bookingClass";
+
 import { PaymentMethod } from "src/app/enums/paymentMethod";
-import { Calendar } from "src/app/variables/calendar";
+import { BookingService } from "src/app/services/booking/booking.service";
+import { MatDialog } from "@angular/material/dialog";
+import { Pattern } from "src/app/variables/pattern";
 
 @Component({
   selector: "app-booking-form",
   templateUrl: "./booking-form.component.html",
   styleUrls: ["./booking-form.component.css"],
 })
-export class BookingFormComponent implements OnInit, AfterViewInit, OnDestroy {
-  // Defines notifyFormIsValid. Notify the parent when the form is valid
-  @Output() notifyFormIsValid = new EventEmitter<boolean>(false);
-
-  // Defines bookingForm
-  bookingForm = new FormGroup({
-    // tripoffer
-    tripoffer: new FormControl("", [Validators.required]),
-    // airport
-    airport: new FormControl("", [Validators.required]),
-    // date
-    date: new FormControl("", [Validators.required]),
-    // traveler
-    traveler: new FormControl("", [Validators.required]),
-    // cotraveler
-    coTraveler: new FormControl(null, []),
-    // handLuggage
-    handLuggage: new FormControl("", []),
-    // suitcase
-    suitcase: new FormControl("", []),
-    // bookigclass
-    bookingClass: new FormControl("", [Validators.required]),
-    // paymentMethod
-    paymentMethod: new FormControl("", [Validators.required]),
-  });
+export class BookingFormComponent implements OnInit {
 
   /** list of tripoffers */
   protected tripoffers: TripOffer[];
 
-  public tripofferFilteringCtrl: FormControl = new FormControl();
+  isLinear = false;
+  personenDatenFormGroup: FormGroup;
+  personenDatenFormGroupMitReiser: FormGroup;
+  reiseDatenFormGroup: FormGroup;
+  agbFormGroup: FormGroup;
+  fazitFormGroup: FormGroup;
 
-  /** indicate search operation is in progress */
-  public searching = false;
+  @Input()
+  land: any;
 
-  /** list of banks filtered after simulating server side search */
-  public filteredTripoffers: ReplaySubject<TripOffer[]> = new ReplaySubject<
-    TripOffer[]
-  >(1);
+  @Input()
+  currentTripOffer: TripOffer;
 
-  /** list of travelers */
-  protected travelers: Traveler[];
+  mitreiserForm = false;
 
-  public travelerFilteringCtrl: FormControl = new FormControl();
+  bookingclasses: any[];
 
-  /** list of banks filtered after simulating server side search */
-  public filteredTravelers: ReplaySubject<Traveler[]> = new ReplaySubject<
-    Traveler[]
-  >(1);
+  reseinde: any;
+  reisendeArray: any[] = [];
 
-  /** list of bookingclass */
-  protected bookingclass: BookingClass[];
+  reise: any;
+  reiseArray: any[] = [];
 
-  /** list of banks filtered after simulating server side search */
-  public filteredBookingclass: ReplaySubject<BookingClass[]> =
-    new ReplaySubject<BookingClass[]>(1);
+  selectedBookingClass: any;
+  paymentMethodArray: PaymentMethod[];
 
-  /** Subject that emits when the component has been destroyed. */
-  protected _onDestroy = new Subject<void>();
-
-  // Defines currentBooking.
-  currentBooking: Booking;
-  // Defines currentBookingId.
-  currentBookingId: string = "";
-  // Defines currentTripofferId
-  currentTripofferId = "";
-  // Defines isAdd. Flags to know if it is an add / edit process.
-  isAnAdd: boolean = true;
-  // defines airportArray
-  airportArray: string[];
-  // Defines bookingclassArray
-  bookingclassArray: BookingClass[];
-  // Defines paymentMethodArray
-  paymentMethodArray: string[];
-  // Defines dateError
-  dateError: string;
-  // Defines dateValid
-  dateValid: boolean = false;
-  // Defines defaultAirport
-  defaultAirport: string;
-  // Defines selectedDate
-  selectedDate: any;
+  minDate: Date;
+  maxDate: Date;
 
   constructor(
-    private sharedDataService: SharedDataService,
-    private toastrService: ToastrService,
-    private tripofferService: TripOfferService,
-    private countryService: CountryService,
-    private travelerService: TravelerService,
-    private bookingclassService: BookingClassService
+    private bookingclassService: BookingClassService,
+    private _formBuilder: FormBuilder,
+    private buchungService: BookingService,
+    private toaster: ToastrService,
+    private dialog: MatDialog,
   ) {
-    this.currentBooking = {
-      buchungsklasseId: "",
-      datum: "",
-      flughafen: "",
-      handGepaeck: "",
-      id: "",
-      koffer: "",
-      mitReiser: null,
-      reiseAngebotId: "",
-      reiser: null,
-      zahlungMethod: null,
-    };
-    this.dateError = "";
+
     this.paymentMethodArray = [
       PaymentMethod.EINMAL,
       PaymentMethod.GUTHABEN,
@@ -150,373 +75,143 @@ export class BookingFormComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.initForm();
-    // get the list of all offers
-    this.getAllTripOffers();
-    // get the list of all travelers
-    this.getAllCustomers();
-  }
 
-  ngAfterViewInit(): void {
-    this.onFormValuesChanged();
-    // on tripoffer value changes, we read and save the attached airports
-    this.bookingForm.get("tripoffer").valueChanges.subscribe((tripoffer) => {
-      this.initAttachedInformation(tripoffer.id);
+    this.minDate = new Date(this.currentTripOffer.startDatum);
+    this.maxDate = new Date(this.currentTripOffer.endDatum);
+
+    this.personenDatenFormGroup = this._formBuilder.group({
+      vorname: ['', Validators.required],
+      nachname: ['', Validators.required],
+      geburtsdatum: ['', Validators.required],
+      postanschrift: ['', Validators.compose([Validators.required, Validators.pattern(Pattern.street)])],
+      handynummer: ['', Validators.compose([Validators.required, Validators.pattern(Pattern.mobile)])],
+      email: ['', Validators.required],
+      studiengang: ['', Validators.required],
+      status: ['', Validators.required],
+      arbeitet: ['', Validators.required],
+      schonTeilgennomem: ['', Validators.required],
+      hochschule: ['', Validators.required],
+      mitMitreiser: ['', Validators.required],
     });
 
-    // On date value changes check whether it is valide or not.
-    this.bookingForm.get("date").valueChanges.subscribe((date) => {
-      this.selectedDate =
-        date !== ""
-          ? formatDate(date, "yyyy-MM-dd", "en_US")
-          : formatDate(null, "yyyy-MM-dd", "en_US");
-      const now = formatDate(new Date(), "yyyy-MM-dd", "en_US");
+    this.personenDatenFormGroupMitReiser = this._formBuilder.group({
+      vorname: ['', Validators.required],
+      nachname: ['', Validators.required],
+      geburtsdatum: ['', Validators.required],
+      postanschrift: ['', Validators.compose([Validators.required, Validators.pattern(Pattern.street)])],
+      handynummer: ['', Validators.compose([Validators.required, Validators.pattern(Pattern.mobile)])],
+      email: ['', Validators.required],
+      studiengang: ['', Validators.required],
+      status: ['', Validators.required],
+      arbeitet: ['', Validators.required],
+      schonTeilgennomem: ['', Validators.required],
+      hochschule: ['', Validators.required],
+    });
 
-      if (this.selectedDate < now) {
-        this.dateError = "Die Eingabe bitte mal prüfen.";
-        this.dateValid = false;
-      } else {
-        this.dateError = "";
-        this.dateValid = true;
+    this.reiseDatenFormGroup = this._formBuilder.group({
+      buchungsklasseId: ['', Validators.required],
+      datum: ['', Validators.required],
+      flughafen: ['', Validators.required],
+      handgepaeck: ['', Validators.required],
+      zahlungsmethod: ['', Validators.required],
+      koffer: ['', Validators.required],
+    });
+
+    this.agbFormGroup = this._formBuilder.group({
+      agb: ['', Validators.requiredTrue],
+    });
+
+    this.bookingclasses = this.currentTripOffer.buchungsklassenReadListTO;
+  }
+
+  getFormValues() {
+    this.reisendeArray = [];
+    this.reise = this.reiseDatenFormGroup.value;
+    this.reise.datum = formatDate(this.reise.datum, "yyyy-MM-dd", "en_US");
+    this.reisendeArray.push(this.personenDatenFormGroup.value);
+    if(this.mitreiserForm) {
+      this.reisendeArray.push(this.personenDatenFormGroupMitReiser.value);
+    }
+    this.selectedBookingClass =this.getBuchungsKlasse(this.reiseDatenFormGroup.get('buchungsklasseId').value);
+
+    this.reisendeArray = this.reisendeArray.map((reiser) => {
+      reiser.geburtsdatum = formatDate(reiser.geburtsdatum, "yyyy-MM-dd", "en_US");
+      return reiser;
+    });
+  }
+
+  getBuchungsKlasse(id: string): any {
+    this.bookingclassService.getOne(id).subscribe({
+      next: (resp) => {
+        this.selectedBookingClass = resp;
       }
     });
-
-    this.bookingForm
-      .get("tripoffer")
-      .valueChanges.subscribe((tripoffer: TripOffer) => {
-        const startdate = formatDate(
-          tripoffer.startDatum,
-          "yyyy-MM-dd",
-          "en_US"
-        );
-        const enddate = formatDate(tripoffer.endDatum, "yyyy-MM-dd", "en_US");
-        const deadlineDate = formatDate(
-          tripoffer.anmeldungsFrist,
-          "yyyy-MM-dd",
-          "en_US"
-        );
-
-        if (this.selectedDate > deadlineDate && this.selectedDate < enddate) {
-          this.dateError = `Eingabe ist falsch. Für dieses Angebot ist die frist ${this.convertDateToString(
-            deadlineDate
-          )} abgelaufen.`;
-          this.dateValid = false;
-        }
-        if (this.selectedDate > enddate) {
-          this.dateError = `Eingabe ist falsch. Das Angebot ist von ${this.convertDateToString(
-            startdate
-          )} bis zum ${this.convertDateToString(enddate)} gültig.`;
-          this.dateValid = false;
-        } else {
-          this.dateError = "";
-          this.dateValid = true;
-        }
-      });
   }
 
-  ngOnDestroy() {
-    this._onDestroy.next();
-    this._onDestroy.complete();
+  setFormMitReiser(choice: boolean) {
+    this.mitreiserForm = choice;
   }
 
-  private initForm(): void {
-    this.isAnAdd = this.sharedDataService.isAddBtnClicked;
-    // If it is not an add
-    if (!this.isAnAdd) {
-      this.sharedDataService.currentBooking
-        .subscribe({
-          next: (booking) => {
-            const value: any = booking;
-            this.currentBooking.id = value.id;
-            this.defaultAirport = value.flughafen;
-            this.currentBooking.datum = value.datum;
-            this.currentBooking.handGepaeck = value.handGepaeck;
-            this.currentBooking.koffer = value.koffer;
-            this.currentBooking.zahlungMethod = value.zahlungMethod;
+  buchen() {
 
-            // Get the tripoffer
-            this.tripofferService.getOne(value.reiseAngebotId).subscribe({
-              next: (offer) => {
-                this.bookingForm.get("tripoffer").setValue(offer);
-                this.currentBooking.reiseAngebotId = offer.id;
-                // set booking class list
-                this.bookingclassArray = offer.buchungsklassenReadListTO;
-              },
-              error: () => {
-                this.toastrService.error(
-                  "Die Reiseangebot Informationen konnten nicht geladen werden"
-                );
-              },
-              complete: () => {
-                // Get the traveler information
-                this.travelerService.getOne(value.reiserId).subscribe({
-                  next: (traveler) => {
-                    this.currentBooking.reiser = traveler;
-                    this.bookingForm.get("traveler").setValue(traveler);
-                  },
-                  error: () => {
-                    this.toastrService.error(
-                      "Die Reisende Informationen konnten nicht geladen werden"
-                    );
-                  },
-                  complete: () => {
-                    // if cotraveler exists, than get his information
-                    if (value.mitReiserId) {
-                      this.travelerService.getOne(value.mitReiserId).subscribe({
-                        next: (traveler) => {
-                          this.currentBooking.mitReiser = traveler;
-                          this.bookingForm.get("coTraveler").setValue(traveler);
-                        },
-                        error: () => {
-                          this.toastrService.error(
-                            "Die Mitreisende Informationen konnten nicht geladen werden"
-                          );
-                        },
-                      });
-                    }
-                    // Get the bookingclass information
-                    const bcId = value.buchungsklasseId;
-                    this.bookingclassService.getOne(bcId).subscribe({
-                      next: (bc) => {
-                        const idx = this.bookingclassArray.findIndex(x => x.id === bc.id);
-                        this.bookingForm.get("bookingClass").setValue(this.bookingclassArray[idx]);
-                        //this.bookingclassArray.splice(idx, 1);
-                        // set the value of the current booking class in current booking 
-                        this.currentBooking.buchungsklasseId = bc.id;
-                      },
-                      error: () => {
-                        this.toastrService.error(
-                          "Die Buchungsklasse Informationen konnten nicht geladen werden"
-                        );
-                      },
-                      complete: () =>
-                        this.setFormDefaultValue(this.currentBooking),
-                    });
-                  },
-                });
-              },
-            });
-          },
-          error: () => {
-            this.toastrService.error(
-              "Die daten konnte nicht geladen werden.",
-              "Fehler"
-            );
-          },
-        })
-        .unsubscribe();
-    } else {
-      this.selectedDate = formatDate(new Date(), "yyyy-MM-dd", "en_US");
-      this.dateValid = true;
-      this.bookingForm.setValue({
-        date: this.selectedDate,
-        tripoffer: null,
-        airport: "",
-        bookingClass: null,
-        traveler: null,
-        coTraveler: null,
-        handLuggage: "",
-        suitcase: "",
-        paymentMethod: "",
-      });
+    let reiserForm = this.personenDatenFormGroup.value;
+    let mitReiserForm = this.personenDatenFormGroupMitReiser.value;
+
+    let buchungsObjekt: Booking = {
+      id: null,
+      buchungsklasseId: this.selectedBookingClass.id,
+      datum: this.reise.datum,
+      flughafen: this.reise.flughafen,
+      handGepaeck: this.reise.handgepaeck,
+      koffer: this.reise.koffer,
+      reiseAngebotId: this.currentTripOffer.id,
+      zahlungMethod: this.reise.zahlungsmethod,
+
+      reiser: {
+        id: null,
+        adresse: reiserForm.postanschrift,
+        arbeitBei: reiserForm.arbeitet,
+        email: reiserForm.email,
+        geburtsdatum: reiserForm.geburtsdatum,
+        hochschule: reiserForm.hochschule,
+        name: reiserForm.nachname,
+        vorname: reiserForm.vorname,
+        schonTeilgenommen: reiserForm.schonTeilgennomem,
+        studiengang: reiserForm.studiengang,
+        telefonnummer: reiserForm.handynummer,
+        status: reiserForm.status
+      },
+
+      mitReiser: this.mitreiserForm ? {
+        id: null,
+        adresse: mitReiserForm.postanschrift,
+        arbeitBei: mitReiserForm.arbeitet,
+        email: mitReiserForm.email,
+        geburtsdatum: mitReiserForm.geburtsdatum,
+        hochschule: mitReiserForm.hochschule,
+        name: mitReiserForm.nachname,
+        vorname: mitReiserForm.vorname,
+        schonTeilgenommen: mitReiserForm.schonTeilgennomem,
+        studiengang: mitReiserForm.studiengang,
+        telefonnummer: mitReiserForm.handynummer,
+        status: mitReiserForm.status
+      } : null
     }
-  }
 
-  private setFormDefaultValue(booking: Booking): void {
-    this.bookingForm.setValue({
-      date: booking.datum,
-      tripoffer: this.bookingForm.get("tripoffer").value,
-      airport: this.defaultAirport,
-      bookingClass: this.bookingForm.get("bookingClass").value,
-      traveler: this.bookingForm.get("traveler").value,
-      coTraveler: this.bookingForm.get("coTraveler").value,
-      handLuggage: booking.handGepaeck,
-      suitcase: booking.koffer,
-      paymentMethod: booking.zahlungMethod,
-    });
-  }
+    console.log(buchungsObjekt);
 
-  private onFormValuesChanged(): void {
-    this.bookingForm.valueChanges.subscribe({
-      next: () => {
-        // check whether the form is valid or not
-        this.isFormValid();
-      },
-    });
-  }
-
-  private isFormValid(): void {
-    if (
-      this.bookingForm.get("bookingClass").valid &&
-      this.bookingForm.get("airport").valid &&
-      this.bookingForm.get("date").valid &&
-      this.dateValid &&
-      this.bookingForm.get("traveler").valid &&
-      this.bookingForm.get("coTraveler").valid &&
-      this.bookingForm.get("handLuggage").valid &&
-      this.bookingForm.get("suitcase").valid &&
-      this.bookingForm.get("paymentMethod").valid &&
-      this.bookingForm.get("tripoffer").valid
-    ) {
-      var id = this.isAnAdd ? null : this.currentBooking.id;
-
-      this.currentBooking = {
-        id: id,
-        buchungsklasseId: this.bookingForm.get("bookingClass").value.id,
-        flughafen: this.bookingForm.get("airport").value,
-        datum: this.selectedDate,
-        reiser: this.bookingForm.get("traveler").value,
-        mitReiser: this.bookingForm.get("coTraveler").value,
-        handGepaeck: this.bookingForm.get("handLuggage").value,
-        koffer: this.bookingForm.get("suitcase").value,
-        zahlungMethod: this.bookingForm.get("paymentMethod").value,
-        reiseAngebotId: this.bookingForm.get("tripoffer").value.id,
-      };
-
-      this.sharedDataService.changeCurrentBooking(this.currentBooking);
-      // notify the parent
-      this.notifyFormIsValid.emit(true);
-    } else {
-      this.notifyFormIsValid.emit(false);
-    }
-  }
-
-  private getAllTripOffers() {
-    this.tripofferService.getAll().subscribe({
-      next: (trip) => (this.tripoffers = trip),
-      error: () => {
-        this.toastrService.error(
-          "Die Reiseangebote konnten nicht geladen werden",
-          "Fehler"
-        );
-      },
-      complete: () => this.onTripOfferValueChanges(),
-    });
-  }
-
-  /**On country select */
-  private onTripOfferValueChanges() {
-    this.tripofferFilteringCtrl.valueChanges
-      .pipe(
-        filter((search) => !!search),
-        tap(() => (this.searching = true)),
-        takeUntil(this._onDestroy),
-        debounceTime(200),
-        map((search) => {
-          if (!this.tripoffers) {
-            return [];
-          }
-          return this.tripoffers.filter(
-            (x) => x.titel.toLowerCase().indexOf(search) > -1
-          );
-        }),
-        delay(500),
-        takeUntil(this._onDestroy)
-      )
-      .subscribe({
-        next: (filteredTripoffer) => {
-          this.searching = false;
-          this.filteredTripoffers.next(filteredTripoffer);
-        },
-        error: () => (this.searching = false),
-      });
-  }
-
-  /**Initializes the list of airports base of the selected coutry */
-  private initAttachedInformation(tripOfferId: string) {
-    let landId = null;
-    let tripoffer: TripOffer = null;
-    this.tripofferService.getOne(tripOfferId).subscribe({
-      next: (_tripoffer) => {
-        tripoffer = _tripoffer;
-        landId = _tripoffer.landId;
-        this.bookingclassArray = tripoffer.buchungsklassenReadListTO;
-      },
-      error: () => {
-        this.toastrService.error(
-          "Etwas ist schief gelaufen. Die Flughafen konnten nicht geladen werden",
-          "Fehler"
-        );
+    this.buchungService.addOne(buchungsObjekt).subscribe({
+      next: (resp) => {
+        console.log(resp);
       },
       complete: () => {
-        // get the list of airport
-        if (landId) {
-          this.countryService.getOne(landId).subscribe({
-            next: (country) => (this.airportArray = country.flughafen),
-            error: () => {
-              this.toastrService.error(
-                "Die  Flughafen konnten nicht geladet werden",
-                "Fehler"
-              );
-            },
-          });
-        } else {
-          if (!tripoffer.landId) {
-            this.toastrService.error(
-              "Das Angebot hat noch kein Ziel zugewiesen.",
-              "Fehler"
-            );
-            this.airportArray = [];
-            this.notifyFormIsValid.emit(false);
-          } else {
-            this.toastrService.error("Etwas ist schief gelaufen.", "Fehler");
-          }
-        }
+        this.toaster.success('erfolgreich gebucht', 'Erfolgreich');
+        this.dialog.closeAll();
       },
+      error: (error) => {
+        console.log(error)
+        this.toaster.error('Die Buchung konnte nicht durchgeführt werden', 'Fehler');
+      }
     });
-  }
-
-  private getAllCustomers() {
-    this.travelerService.getAll().subscribe({
-      next: (travelers) => (this.travelers = travelers),
-      error: () => {
-        this.toastrService.error(
-          "Die Liste von Reisende konnten nicht geladen werden",
-          "Fehler"
-        );
-      },
-      complete: () => this.onTravelerValueChanges(),
-    });
-  }
-
-  private onTravelerValueChanges() {
-    this.travelerFilteringCtrl.valueChanges
-      .pipe(
-        filter((search) => !!search),
-        tap(() => (this.searching = true)),
-        takeUntil(this._onDestroy),
-        debounceTime(200),
-        map((search) => {
-          if (!this.travelers) {
-            return [];
-          }
-          return this.travelers.filter(
-            (x) => x.email.toLowerCase().indexOf(search) > -1
-          );
-        }),
-        delay(500),
-        takeUntil(this._onDestroy)
-      )
-      .subscribe({
-        next: (filteredTraveler) => {
-          this.searching = false;
-          this.filteredTravelers.next(filteredTraveler);
-        },
-        error: () => (this.searching = false),
-      });
-  }
-
-  getBookingclassArray(bc:BookingClass[]) {
-    return bc?.filter(x => x.id !== this.bookingForm.get('bookingClass').value.id);
-  }
-
-  private convertDateToString(date: string) {
-    if (date && date.includes("-")) {
-      const day = parseInt(date.split("-")[2]);
-      const month = parseInt(date.split("-")[1]);
-      const year = parseInt(date.split("-")[0]);
-      return `${day} ${Calendar.months[month - 1]} ${year}`;
-    }
-    return "";
   }
 }

@@ -17,25 +17,25 @@
 <div class="section-contents-RG">
   <h2 class="black-color">Reiseangebot</h2>
 
-  <div  *ngFor="let gebot of reiseAngebot">
-    <mat-card class="card-shadow white-color" [style]= setBackground(gebot.id)>
+  <div  *ngFor="let gebot of tripOffers">
+    <mat-card class="card-shadow white-color" [style.background-image]="'url(' + gebot.realImage.changingThisBreaksApplicationSecurity  + ')'">
       <div class="set-content-bottom">
-        <h2 class="white-color">{{gebot.name | uppercase}}</h2>
+        <h2 class="white-color">{{gebot.titel | uppercase}}</h2>
         <p>
-          {{setDate(gebot.id, 'startDate')}}
-          {{setDate(gebot.id, 'endDate')}}
+          {{gebot.startDatum}}
+          {{gebot.endDatum}}
         </p>
 
         <div class="myRow">
           <p>Freie Plätze:
             <span class="font-weight-bold">
-              {{getTripOffer(gebot.id).freiPlaetze}}/{{getTripOffer(gebot.id).plaetze}}
+              {{gebot.freiPlaetze}}/{{gebot.plaetze}}
             </span>
           </p>
           <p class="mehrErfahren set-content-right" (click)="routeToLearnMore(gebot.id)">MEHR ERFAHREN ></p>
         </div>
         <p>Interessierte:
-          <span class="font-weight-bold">{{getTripOffer(gebot.id).interessiert}}</span>
+          <span class="font-weight-bold">{{gebot.interessiert}}</span>
         </p>
 
       </div>
@@ -57,10 +57,10 @@
 
   <div class="feedback-contents myRow">
     <img src="./assets/img/feedback/{{currentFb.bild}}"
-         alt="FeebackBild-{{currentIndex + 1}}" id="feedback-pic">
+        alt="FeebackBild-{{currentIndex + 1}}" id="feedback-pic">
 
     <div class="feedback-message">
-      <img src="../../../assets/img/anführungszeichnen.PNG" alt="Anführungszeichnen" id="quotation-mark">
+      <img src="./assets/img/anführungszeichnen.PNG" alt="Anführungszeichnen" id="quotation-mark">
       <p class="message">{{currentFb.description}}</p>
       <p class="autor">{{currentFb.autor}}</p>
       <p>
