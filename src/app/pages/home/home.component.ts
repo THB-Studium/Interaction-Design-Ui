@@ -70,9 +70,9 @@ export class HomeComponent implements OnInit {
         this.toastrService.info("Die Feedbacks werden bald wieder angezeigt");
       },
       complete: () => {
-        // filter the feedbacks
+        // filter only feedbacks that are public.
         const feedbacks = this.feedbacks.filter(
-          (x) => x.veroefentlich === false
+          (x) => x.veroefentlich === true
         );
         // clear the list
         this.feedbacks = [];
