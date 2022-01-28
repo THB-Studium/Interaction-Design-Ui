@@ -3,13 +3,15 @@
 <br>
 <!-- header -->
 <div class="row">
-    <div class="col-6">
+    <div class="col-xs-6 col-md-6 col-lg-6">
         <h4>Studienreise ''Fire & Ice'' - {{land?.name}} im Winter </h4>
 
         {{currentTripOffer?.startDatum}}
         {{currentTripOffer.endDatum}}
+        <br>
+        <br>
     </div>
-    <div class="col-6">
+    <div class="col-xs-6 col-md-6 col-lg-6">
         <h4 class="text-danger">Die Anmeldung ist vollständig wenn:</h4>
         <p>
         <ol>
@@ -28,7 +30,7 @@
 <form class="col-md-12">
 
     <!-- stepper begin -->
-    <mat-stepper orientation="vertical" [linear]="false" #stepper>
+    <mat-stepper orientation="vertical" [linear]="true" #stepper>
         <!-- person infos -->
         <mat-step [stepControl]="personenDatenFormGroup">
             <form [formGroup]="personenDatenFormGroup">
@@ -176,7 +178,6 @@
 
                 <div>
                     <br>
-                    <button mat-button matStepperPrevious>Zurück</button>
                     <button mat-button matStepperNext>Weiter</button>
                 </div>
             </form>
@@ -457,7 +458,7 @@
                     </div>
                     <div class="row">
                         <div class="col-6">
-                            Handynummer: <strong>+{{resier.handynummer}}</strong>
+                            Handynummer: <strong>{{resier.handynummer}}</strong>
                         </div>
                         <div class="col-6">
                             Email: <strong>{{resier.email}}</strong>
@@ -481,7 +482,8 @@
                     </div>
                     <div class="row">
                         <div class="col-6">
-                            SchonTeilgennomem: <strong>{{resier.schonTeilgennomem}}</strong>
+                            <span *ngIf="resier.schonTeilgennomem">Schon Teilgennomem: <strong>Ja</strong></span>
+                            <span *ngIf="!resier.schonTeilgennomem"> Schon Teilgennomem: <strong>Nein</strong></span>
                         </div>
                         <div class="col-6">
 

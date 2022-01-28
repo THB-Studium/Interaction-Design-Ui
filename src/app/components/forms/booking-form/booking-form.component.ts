@@ -136,8 +136,10 @@ export class BookingFormComponent implements OnInit {
 
     this.reisendeArray = this.reisendeArray.map((reiser) => {
       reiser.geburtsdatum = formatDate(reiser.geburtsdatum, "yyyy-MM-dd", "en_US");
+      reiser.schonTeilgennomem = this.personenDatenFormGroup.get('schonTeilgennomem').value == 'true' ? true : false;
       return reiser;
     });
+
   }
 
   getBuchungsKlasse(id: string): any {
