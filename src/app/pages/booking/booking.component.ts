@@ -1,9 +1,10 @@
 import { Component, OnInit, AfterViewInit, ViewChild } from "@angular/core";
-
+import { FormControl } from "@angular/forms";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
 import { MatTableDataSource } from "@angular/material/table";
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
+import { formatDate } from "@angular/common";
 
 import { BookingService } from "src/app/services/booking/booking.service";
 import { BookingClassService } from "src/app/services/booking-class/booking-class.service";
@@ -20,6 +21,8 @@ import { Calendar } from "src/app/variables/calendar";
 import { Traveler } from "src/app/models/traveler";
 import { TripOffer } from "src/app/models/tripOffer";
 
+import { BookingFormComponent } from "src/app/components/forms/booking-form/booking-form.component";
+
 @Component({
   selector: "app-booking",
   templateUrl: "./booking.component.html",
@@ -32,6 +35,8 @@ export class BookingComponent implements OnInit, AfterViewInit {
   @ViewChild(MatSort, { static: false }) sort: MatSort;
   // Defines displayedColumns
   displayedColumns: string[] = ["date", "airport", "paymentmethod", "action"];
+  // Defines selectedOffer
+  public selectedOffer: FormControl;
   // Defines dataSource
   dataSource: MatTableDataSource<Booking>;
   // Defines bookingList
@@ -60,6 +65,8 @@ export class BookingComponent implements OnInit, AfterViewInit {
   dialogConfig = new MatDialogConfig();
   // Defines isAdd
   isAdd = true;
+  // Defines currentOffers
+  currentOffers: TripOffer[];
 
   constructor(
     private bookingService: BookingService,
@@ -72,6 +79,8 @@ export class BookingComponent implements OnInit, AfterViewInit {
     private countryService: CountryService
   ) {
     this.dialogConfiguration();
+    this.selectedOffer = new FormControl();
+    this.currentOffers = [];
   }
 
   ngOnInit(): void {
@@ -154,13 +163,49 @@ export class BookingComponent implements OnInit, AfterViewInit {
   }
 
   addBookingDialog(dialogForm: any) {
-    // Notify the sharedataservice that it is an add
-    this.sharedDataService.isAddBtnClicked = true;
-    this.isAdd = true;
-    this.valid = false;
-    this.sharedDataService.changeCurrentBooking(this.currentBooking);
-    // Open the add admin dialog
-    this.dialog.open(dialogForm, this.dialogConfig);
+    // The template need it to validate the input
+    this.selectedOffer.setValue('');
+    // Get the list of the current offers
+    this.tripofferService.getAll().subscribe({
+      next: (result: TripOffer[]) => {
+        // only current and valid offers are needed
+        const today = formatDate(new Date(), "yyyy-MM-dd", "en_US");
+        this.currentOffers = result.filter(x => x.endDatum > today && x.landId != null);
+      },
+      error: () => {
+        this.toastrService.error('Die Liste von Reiseangebote konnten nicht geladen werden.');
+      },
+      complete: () => this.dialog.open(dialogForm, this.dialogConfig)
+    });
+  }
+
+  startBookingProcess() {
+    // Get all information about the selected offer
+    this.tripofferService.getOne(this.selectedOffer.value.id).subscribe({
+      next: (result) => this.selectedOffer.setValue(result),
+      complete: () => {
+        // Get also the country information
+        let country = null;
+        this.countryService.getOne(this.selectedOffer.value.landId).subscribe({
+          next: (result) => country = result,
+          complete: () => {
+            const dialog = this.dialog.open(BookingFormComponent, {
+              width: '750px',
+              height: '800px',
+              disableClose : true,
+              autoFocus : true
+            });
+            // Set need values
+            dialog.componentInstance.land = country;
+            dialog.componentInstance.currentTripOffer = this.selectedOffer.value;
+          }
+        });
+        // Update the list
+        this.getBookingList().then((booking) => {
+          this.setDataSource(booking);
+        });
+      }
+    });
   }
 
   /** Calls to save or update a booking */
@@ -185,7 +230,21 @@ export class BookingComponent implements OnInit, AfterViewInit {
               this.toastrService.success("Die Buchung wurde gespeichert"),
           });
         } else {
-          this.bookingService.updateOne(booking).subscribe({
+          console.log(booking)
+          // for the update just id for traveler and cotraveler are needed
+          const toUpdate = {
+            id: booking.id,
+            buchungsklasseId: booking.buchungsklasseId,
+            datum: booking.datum,
+            flughafen: booking.flughafen,
+            handGepaeck: booking.handGepaeck,
+            koffer: booking.koffer,
+            mitReiserId: booking.mitReiser ? booking.mitReiser.id : null,
+            reiserId: booking.reiser.id,
+            zahlungMethod: booking.zahlungMethod,
+            reiseAngebotId: booking.reiseAngebotId
+          };
+          this.bookingService.updateOne(toUpdate).subscribe({
             next: (savedValue) => {
               this.sharedDataService.changeCurrentBooking(savedValue);
               this.currentBooking = savedValue;

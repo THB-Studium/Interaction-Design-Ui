@@ -285,6 +285,10 @@ export class TripofferComponent implements OnInit, AfterViewInit {
     });
   }
 
+  viewOffer(row: TripOffer) {
+    this.router.navigate(['tripoffer/view', row.id]);
+  }
+
   // On error
   private handleError(error: any) {
     if (error?.message) {

@@ -34,7 +34,7 @@
                 <div class="spinner-container" *ngIf="dataSource.loading$ | async">
                     <mat-spinner></mat-spinner>
                 </div>
-                <table mat-table [dataSource]="dataSource" matSort aria-describedby="img">
+                <table mat-table [dataSource]="dataSource" matSort aria-describedby="img" class="shadow">
                     <!-- Image Column -->
                     <ng-container matColumnDef="img">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header scope="col">
@@ -95,6 +95,10 @@
                                     <em class="fas fa-ellipsis-v"></em>
                                 </a>
                                 <div ngbDropdownMenu class="dropdown-menu-right dropdown-menu-arrow">
+                                    <label class="dropdown-item mr-3" matTooltip="Ansehen"
+                                        matTooltipHideDelay="{{ toolTipDuration }}" (click)="viewOffer(row)">
+                                        <em class="fa fa-eye text-primary mr-2"></em>Ansehen
+                                    </label>
                                     <label class="dropdown-item mr-3" matTooltip="Editieren"
                                         matTooltipHideDelay="{{ toolTipDuration }}" (click)="editTripofferDialog(row)">
                                         <em class="fa fa-pen text-info mr-2"></em>Editieren

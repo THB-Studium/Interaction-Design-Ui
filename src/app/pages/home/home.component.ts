@@ -20,7 +20,6 @@ import { TripOffer } from "src/app/models/tripOffer";
 })
 export class HomeComponent implements OnInit {
   slideList: Array<Slide> = [];
-  //reiseAngebot: Array<Country> = [];
   tripOffers: Array<TripOffer> = [];
   feedbacks: Array<Feedback> = [];
   currentFeedback: Feedback;
@@ -76,7 +75,7 @@ export class HomeComponent implements OnInit {
         );
         // clear the list
         this.feedbacks = [];
-        // get each feedback by in oder to retrieve the attached image
+        // get each feedback by id in oder to retrieve the attached image
         feedbacks.forEach((x) => {
           this.feedbackService.getOne(x.id).subscribe({
             next: (result: Feedback) => {

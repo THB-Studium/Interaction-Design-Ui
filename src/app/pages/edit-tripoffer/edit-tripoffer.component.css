@@ -55,3 +55,7 @@ h3 {
   font-style: normal;
   font-weight: normal;
 }
+
+.border-secondary {
+  border: 1px solid #6c757d !important;
+}

@@ -33,7 +33,7 @@
         <div class="spinner-container" *ngIf="dataSource.loading$ | async">
           <mat-spinner></mat-spinner>
         </div>
-        <table mat-table [dataSource]="dataSource" matSort aria-describedby="email and name">
+        <table mat-table [dataSource]="dataSource" matSort aria-describedby="email and name" class="shadow">
           <!-- FirstName Column -->
           <ng-container matColumnDef="firstname">
             <th mat-header-cell *matHeaderCellDef mat-sort-header scope="col">VORNAME</th>

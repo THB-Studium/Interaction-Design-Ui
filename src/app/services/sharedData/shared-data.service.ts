@@ -52,13 +52,14 @@ export class SharedDataService {
     name: "",
     vorname: "",
     studiengang: "",
-    telefonnummer: 0,
+    telefonnummer: "",
     adresse: "",
     arbeitBei: "",
     email: "",
     geburtsdatum: new Date(),
     hochschule: "",
     schonTeilgenommen: false,
+    status: ''
   };
 
   private travelerSource = new BehaviorSubject<Traveler>(this.traveler);

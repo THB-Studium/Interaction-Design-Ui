@@ -165,19 +165,19 @@ export class EditTripofferComponent implements OnInit, AfterViewInit {
     this.expectationForm.valueChanges.subscribe(() => {
       // if one of the value is bigger than 100, then disable the savee button
       if (
-        this.expectationForm.value.adventure > 100 ||
+        this.expectationForm.value.adventure > 100 || this.expectationForm.value.adventure < 0 || 
         this.expectationForm.value.adventure === null ||
-        this.expectationForm.value.comfort > 100 ||
+        this.expectationForm.value.comfort > 100 ||  this.expectationForm.value.comfort < 0 ||
         this.expectationForm.value.comfort === null ||
-        this.expectationForm.value.deceleration > 100 ||
+        this.expectationForm.value.deceleration > 100 || this.expectationForm.value.deceleration < 0 ||
         this.expectationForm.value.deceleration === null ||
-        this.expectationForm.value.safety > 100 ||
+        this.expectationForm.value.safety > 100 || this.expectationForm.value.safety < 0 ||
         this.expectationForm.value.safety === null ||
-        this.expectationForm.value.road > 100 ||
+        this.expectationForm.value.road > 100 || this.expectationForm.value.road < 0 ||
         this.expectationForm.value.road === null ||
-        this.expectationForm.value.sustainability > 100 ||
+        this.expectationForm.value.sustainability > 100 || this.expectationForm.value.sustainability < 0 ||
         this.expectationForm.value.sustainability === null ||
-        this.expectationForm.value.sun_beach > 100 ||
+        this.expectationForm.value.sun_beach > 100 || this.expectationForm.value.sun_beach < 0 ||
         this.expectationForm.value.sun_beach === null
       ) {
         this.isValid = false;

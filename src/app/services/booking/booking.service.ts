@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Observable } from "rxjs";
 
 import { Server } from 'src/app/variables/server';
-import { Booking } from 'src/app/models/booking';
+import { Booking, BookingUpdate } from 'src/app/models/booking';
 
 @Injectable({
   providedIn: 'root'
@@ -32,7 +32,7 @@ export class BookingService {
   }
 
   // PUT
-  updateOne(booking: Booking): Observable<Booking> {
+  updateOne(booking: BookingUpdate): Observable<Booking> {
     return this.httpClient.put<Booking>(this.BOOKING_URL, booking, {
       headers: this.headers,
     });

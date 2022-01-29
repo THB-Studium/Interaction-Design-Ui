@@ -61,3 +61,15 @@ h3 {
   .mat-form-field-infix::after {
   color: rgba(0, 0, 0, 0.8);
 }
+
+.border-primary {
+  border: 1px solid #007bff !important;
+}
+
+.border-info {
+  border: 1px solid #17a2b8 !important;
+}
+
+.border-secondary {
+  border: 1px solid #6c757d !important;
+}
