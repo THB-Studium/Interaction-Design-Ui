@@ -102,7 +102,7 @@ export class AccommodationFormComponent implements OnInit, AfterViewInit {
   private setFormDefaultValue(accommodation: Accommodation): void {
     this.accommodationForm.setValue({
       name: accommodation.name,
-      address: "",
+      address: accommodation.adresse,
       web: accommodation.link,
       description: accommodation.beschreibung,
       images: "",

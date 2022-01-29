@@ -41,11 +41,11 @@ import { BookingComponent } from "../../pages/booking/booking.component";
 import { CountryComponent } from "src/app/pages/country/country.component";
 import { DashboardComponent } from "../../pages/dashboard/dashboard.component";
 import { EditCountryComponent } from "src/app//pages/edit-country/edit-country.component";
+import { EditTripofferComponent } from 'src/app/pages/edit-tripoffer/edit-tripoffer.component';
+import { FeedbackComponent } from 'src/app/pages/feedback/feedback.component';
 import { TravelerComponent } from "../../pages/traveler/traveler.component";
 import { TripofferComponent } from 'src/app/pages/tripoffer/tripoffer.component';
-import { EditTripofferComponent } from 'src/app/pages/edit-tripoffer/edit-tripoffer.component';
 import { UserProfileComponent } from "../../pages/user-profile/user-profile.component";
-import { FeedbackComponent } from 'src/app/pages/feedback/feedback.component';
 
 @NgModule({
   imports: [
@@ -86,14 +86,14 @@ import { FeedbackComponent } from 'src/app/pages/feedback/feedback.component';
   declarations: [
     AdminComponent,
     BookingComponent,
-    EditTripofferComponent,
     CountryComponent,
     DashboardComponent,
     EditCountryComponent,
+    EditTripofferComponent,
+    FeedbackComponent,    
     TravelerComponent,
     TripofferComponent,
-    UserProfileComponent,
-    FeedbackComponent
+    UserProfileComponent
   ],
   providers: [
     //{ provide: HTTP_INTERCEPTORS, useClass: AppHttpInterceptor, multi: true },

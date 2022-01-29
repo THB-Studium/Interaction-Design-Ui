@@ -150,7 +150,7 @@ export class DashboardComponent implements OnInit {
       complete: () => {
         // filter the offer to get only the current offer
         const today = formatDate(new Date(), "yyyy-MM-dd", "en_US");
-        this.tripofferList = this.tripofferList.filter(x => x.startDatum < today && x.endDatum > today && x.buchungsklassen !== null);
+        this.tripofferList = this.tripofferList.filter(x => x.endDatum > today && x.landId !== null);
         // amount of interested
         let interested = 0;
         this.tripofferList.forEach(x => {

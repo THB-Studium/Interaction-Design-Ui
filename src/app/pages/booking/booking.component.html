@@ -25,7 +25,7 @@
         <!--Add Button-->
         <div class="col-12">
             <button mat-mini-fab color="primary" aria-label="add icon" matTooltip="Booking Hinzufügen"
-                matTooltipHideDelay="{{toolTipDuration}}" (click)="addBookingDialog(bookingDialog)">
+                matTooltipHideDelay="{{toolTipDuration}}" (click)="addBookingDialog(addBkDialog)">
                 <mat-icon>add</mat-icon>
             </button>
         </div>
@@ -34,7 +34,7 @@
                 <div class="spinner-container" *ngIf="dataSource.loading$ | async">
                     <mat-spinner></mat-spinner>
                 </div>
-                <table mat-table [dataSource]="dataSource" matSort aria-describedby="date">
+                <table mat-table [dataSource]="dataSource" matSort aria-describedby="date" class="shadow">
                     <!-- Date Column -->
                     <ng-container matColumnDef="date">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header scope="col">BUCHUNGSDATUM</th>
@@ -89,11 +89,44 @@
     </div>
 </div>
 
-<ng-template #bookingDialog>
-    <h1 mat-dialog-title>{{isAdd ? 'Neue Buchung hinzufügen' : 'Buchungsinformationen ändern'}}</h1>
+
+<ng-template #addBkDialog>
+    <h1 mat-dialog-title>Das Angebot auswählen</h1>
     <mat-divider></mat-divider>
     <div mat-dialog-content>
-        <app-booking-form (notifyFormIsValid)="isFormValid($event)"></app-booking-form>
+        <div class="form-row">
+            <mat-form-field class="col-md-12" appearance="standard">
+                <mat-label>Reiseangebote.</mat-label>
+                <mat-select [formControl]="selectedOffer" required>
+                    <mat-option disabled>Auswaelen</mat-option>
+                    <mat-option *ngFor="let offer of currentOffers" [value]="offer">
+                        {{offer.titel}}
+                    </mat-option>
+                </mat-select>
+                <mat-hint>Ein Angebot aussuchen und bestätigen.</mat-hint>
+                <mat-error *ngIf="selectedOffer.invalid">
+                    Die Eingabe ist <strong>erforderlich</strong>.
+                </mat-error>
+            </mat-form-field>
+        </div>
+    </div>
+    <mat-divider></mat-divider>
+    <div class="justify-content-end" mat-dialog-actions>
+        <button class="ms-auto" (click)="startBookingProcess()" [disabled]="selectedOffer.invalid" mat-raised-button color="primary"
+            mat-dialog-close>
+            Ok
+        </button>
+        <button mat-button color="accent" mat-dialog-close>
+            Abbrechen
+        </button>
+    </div>
+</ng-template>
+
+<ng-template #bookingDialog>
+    <h1 mat-dialog-title>Buchungsinformationen ändern</h1>
+    <mat-divider></mat-divider>
+    <div mat-dialog-content>
+        <app-edit-booking-form (notifyFormIsValid)="isFormValid($event)"></app-edit-booking-form>
     </div>
     <mat-divider></mat-divider>
     <div class="justify-content-end" mat-dialog-actions>
@@ -188,7 +221,7 @@
                 </div>
                 <!--Traveler-->
                 <div class="col-md-12">
-                    <h4>Reisenden:</h4>
+                    <h4>Reisenden</h4>
                     <mat-divider class="mb-2"></mat-divider>
                     <div class="form-row pt-2 m-0">
                         <div class="form-group col-md-6 mb-0">
@@ -199,7 +232,7 @@
                         </div>
                         <div class="form-group col-md-6 mb-0">
                             <mat-form-field class="col-md-12" appearance="fill">
-                                <mat-label>Nachname</mat-label>
+                                <mat-label>Nachname:</mat-label>
                                 <input matInput [value]="traveler.name" disabled>
                             </mat-form-field>
                         </div>
@@ -213,15 +246,21 @@
                         </div>
                         <div class="form-group col-md-6 mb-0">
                             <mat-form-field class="col-md-12" appearance="fill">
-                                <mat-label>Handy</mat-label>
+                                <mat-label>Handynummer:</mat-label>
                                 <input matInput [value]="traveler.telefonnummer" disabled>
                             </mat-form-field>
                         </div>
                     </div>
                     <div class="form-row">
-                        <div class="form-group col-md-12 mb-0">
+                        <div class="form-group col-md-6 mb-0">
                             <mat-form-field class="col-md-12" appearance="fill">
-                                <mat-label>Adresse</mat-label>
+                                <mat-label>Status:</mat-label>
+                                <input matInput [value]="traveler.status" disabled>
+                            </mat-form-field>
+                        </div>
+                        <div class="form-group col-md-6 mb-0">
+                            <mat-form-field class="col-md-12" appearance="fill">
+                                <mat-label>Adresse:</mat-label>
                                 <input matInput [value]="traveler.adresse" disabled>
                             </mat-form-field>
                         </div>
@@ -229,7 +268,7 @@
                 </div>
                 <!--Co traveler-->
                 <div *ngIf="cotraveler" class="col-md-12">
-                    <h4>Mitreisenden:</h4>
+                    <h4>Mitreisenden</h4>
                     <mat-divider class="mb-0"></mat-divider>
                     <div class="form-row m-0 pt-2">
                         <div class="form-group col-md-6 mb-0">
@@ -240,7 +279,7 @@
                         </div>
                         <div class="form-group col-md-6 mb-0">
                             <mat-form-field class="col-md-12" appearance="fill">
-                                <mat-label>Nachname</mat-label>
+                                <mat-label>Nachname:</mat-label>
                                 <input matInput [value]="cotraveler.name" disabled>
                             </mat-form-field>
                         </div>
@@ -254,15 +293,21 @@
                         </div>
                         <div class="form-group col-md-6 mb-0">
                             <mat-form-field class="col-md-12" appearance="fill">
-                                <mat-label>Handy</mat-label>
+                                <mat-label>Handynummer:</mat-label>
                                 <input matInput [value]="getPhoneNumber(cotraveler.telefonnummer)" disabled>
                             </mat-form-field>
                         </div>
                     </div>
                     <div class="form-row">
-                        <div class="form-group col-md-12 mb-0">
+                        <div class="form-group col-md-6 mb-0">
                             <mat-form-field class="col-md-12" appearance="fill">
-                                <mat-label>Adresse</mat-label>
+                                <mat-label>Status:</mat-label>
+                                <input matInput [value]="traveler.status" disabled>
+                            </mat-form-field>
+                        </div>
+                        <div class="form-group col-md-6 mb-0">
+                            <mat-form-field class="col-md-12" appearance="fill">
+                                <mat-label>Adresse:</mat-label>
                                 <input matInput [value]="cotraveler.adresse" disabled>
                             </mat-form-field>
                         </div>

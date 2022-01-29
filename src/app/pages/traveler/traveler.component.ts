@@ -71,7 +71,8 @@ export class TravelerComponent implements OnInit, AfterViewInit {
         hochschule: "",
         schonTeilgenommen: false,
         studiengang: "",
-        telefonnummer: 0,
+        telefonnummer: "",
+        status: "",
       },
     ]);
 
@@ -153,7 +154,7 @@ export class TravelerComponent implements OnInit, AfterViewInit {
 
   // Gets object of type date and return a string
   convertDateToString(date: string) {
-    if (date  && date.includes("-")) {
+    if (date && date.includes("-")) {
       const day = parseInt(date.split("-")[2]);
       const month = parseInt(date.split("-")[1]);
       const year = parseInt(date.split("-")[0]);
@@ -185,13 +186,14 @@ export class TravelerComponent implements OnInit, AfterViewInit {
       name: "",
       vorname: "",
       studiengang: "",
-      telefonnummer: 0,
+      telefonnummer: "",
       adresse: "",
       arbeitBei: "",
       email: "",
       geburtsdatum: null,
       hochschule: "",
       schonTeilgenommen: false,
+      status: "",
     };
     // set the value of the traveler into the service
     this.sharedDataService.changeCurrentTraveler(this.currentTraveler);
@@ -230,11 +232,18 @@ export class TravelerComponent implements OnInit, AfterViewInit {
     // Notify the sharedataservice that it is an add
     this.sharedDataService.isAddBtnClicked = false;
     // update current Traveler information
-    this.currentTraveler = row;
-    // set the value of the Traveler into the service
-    this.sharedDataService.changeCurrentTraveler(this.currentTraveler);
-    // Open the edit Traveler dialog
-    this.dialog.open(dialogForm, this.dialogConfig);
+    this.travelerService.getOne(row.id).subscribe({
+      next: (result) => {
+        this.currentTraveler = result;
+      },
+      error: () => (this.currentTraveler = row),
+      complete: () => {
+        // set the value of the Traveler into the service
+        this.sharedDataService.changeCurrentTraveler(this.currentTraveler);
+        // Open the edit Traveler dialog
+        this.dialog.open(dialogForm, this.dialogConfig);
+      },
+    });
   }
 
   // Saves the value of the to be updated Traveler.
@@ -255,6 +264,7 @@ export class TravelerComponent implements OnInit, AfterViewInit {
         this.travelerList[itemIndex].studiengang = res.studiengang;
         this.travelerList[itemIndex].telefonnummer = res.telefonnummer;
         this.travelerList[itemIndex].schonTeilgenommen = res.schonTeilgenommen;
+        this.travelerList[itemIndex].status = res.status;
 
         // Update the view
         this.sortByFirstname(this.travelerList);
@@ -312,9 +322,18 @@ export class TravelerComponent implements OnInit, AfterViewInit {
   }
 
   dialogDetails(row: Traveler, dialogForm: any) {
-    this.currentTraveler = row;
-    // Open the details dialog
-    this.dialog.open(dialogForm, this.dialogConfig);
+    this.travelerService.getOne(row.id).subscribe({
+      next: (result) => {
+        this.currentTraveler = result;
+      },
+      error: () => (this.currentTraveler = row),
+      complete: () => {
+        // set the value of the Traveler into the service
+        this.sharedDataService.changeCurrentTraveler(this.currentTraveler);
+        // Open the edit Traveler dialog
+        this.dialog.open(dialogForm, this.dialogConfig);
+      },
+    });
   }
 
   // On error
@@ -330,6 +349,6 @@ export class TravelerComponent implements OnInit, AfterViewInit {
   }
 
   getPhoneNumber(traveler: Traveler): string {
-    return `+${traveler.telefonnummer}`;
+    return !traveler.telefonnummer.includes("+") ? `+${traveler.telefonnummer}` : `${traveler.telefonnummer}`;
   }
 }

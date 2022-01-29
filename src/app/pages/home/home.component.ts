@@ -21,7 +21,6 @@ import { BehaviorSubject, Subject } from "rxjs";
 })
 export class HomeComponent implements OnInit {
   slideList: Array<Slide> = [];
-  //reiseAngebot: Array<Country> = [];
   tripOffers: Array<TripOffer> = [];
   feedbacks: Array<Feedback> = [];
   currentFeedback: Feedback;
@@ -69,7 +68,7 @@ export class HomeComponent implements OnInit {
         this.tripOffers = bg
           .map((tripOffer) => {
             this.interrested = JSON.parse(localStorage.getItem("ids"));
-            if (this.interrested.indexOf(tripOffer.id) != -1) {
+            if (this.interrested?.indexOf(tripOffer.id) != -1) {
               tripOffer.isfavorite = true;
             } else {
               tripOffer.isfavorite = false;
@@ -98,7 +97,7 @@ export class HomeComponent implements OnInit {
         );
         // clear the list
         this.feedbacks = [];
-        // get each feedback by in oder to retrieve the attached image
+        // get each feedback by id in oder to retrieve the attached image
         feedbacks.forEach((x) => {
           this.feedbackService.getOne(x.id).subscribe({
             next: (result: Feedback) => {
@@ -206,7 +205,7 @@ export class HomeComponent implements OnInit {
   }
 
   addId(target, source) {
-    source.forEach((v) => {
+    source?.forEach((v) => {
       var p = target.indexOf(v);
       if (p === -1) {
         target.push(v);

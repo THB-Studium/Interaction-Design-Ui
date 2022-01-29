@@ -127,10 +127,6 @@ export class CountryComponent implements OnInit, AfterViewInit {
     this.isValid = value;
   }
 
-  displayTheNFirstCharacter(text: string, n: number): string {
-    return text.length >= n ? `${text.slice(0, n - 1)}...` : text;
-  }
-
   AddNewCountryDialog(dialogForm: any) {
     this.sharedDataService.isAddBtnClicked = true;
     // set the value of the country into the service
@@ -214,6 +210,10 @@ export class CountryComponent implements OnInit, AfterViewInit {
         );
       },
     });
+  }
+
+  getDescription(description: string) {
+    return description.length > 14 ? `${description.substring(0, 15)}...` : description;
   }
 
   // On error

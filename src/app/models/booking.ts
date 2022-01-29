@@ -13,3 +13,16 @@ export class Booking {
     public zahlungMethod: PaymentMethod;
     public reiseAngebotId: string;
 }
+
+export class BookingUpdate {
+    public id: string;
+    public buchungsklasseId: string;
+    public datum: string;
+    public flughafen: string;
+    public handGepaeck: string;
+    public koffer: string;
+    public mitReiserId: string;
+    public reiserId: string;
+    public zahlungMethod: PaymentMethod;
+    public reiseAngebotId: string;
+}

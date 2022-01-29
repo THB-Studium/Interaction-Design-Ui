@@ -12,203 +12,216 @@
 </div>
 <!-- Page content -->
 <div class="container-fluid mt-3 mb-5">
-  <div class="col-md-12">
-    <div class="row">
-      <button class="mb-2" mat-mini-fab color="primary" aria-label="back icon" matTooltip="Zurück zur Liste"
-        matTooltipHideDelay="{{ toolTipDuration }}" (click)="navigateToCountriesList()">
-        <mat-icon>arrow_back</mat-icon>
-      </button>
-    </div>
-    <!--country-->
-    <div class="row">
-      <h1 class="mt-2">Land</h1>
-      <form [formGroup]="countryForm" class="col-md-12 m-0 p-0">
-        <!-- Name -->
-        <div class="form-row">
-          <div class="form-group col-md-12">
-            <mat-form-field class="col-md-12" appearance="standard">
-              <mat-label>Name des Landes</mat-label>
-              <input matInput formControlName="name" placeholder="Name des Landes" required>
-              <mat-error *ngIf="countryForm.get('name').invalid">
-                Der Name ist <strong>erforderlich</strong>.
-              </mat-error>
-            </mat-form-field>
+  <mat-card class="col-md-12 card-shadow">
+    <mat-card-header>
+      <div mat-card-avatar>
+        <button class="mb-2" mat-mini-fab color="primary" aria-label="back icon" matTooltip="Zurück zur Liste"
+          matTooltipHideDelay="{{ toolTipDuration }}" (click)="navigateToCountriesList()">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+      </div>
+    </mat-card-header>
+    <mat-divider inside class="mt-2"></mat-divider>
+    <mat-card-content class="col-md-12">
+      <div class="row mt-3">
+        <h1 class="col-12">Land</h1>
+        <form [formGroup]="countryForm" class="col-md-12 m-0 p-0">
+          <!-- Name -->
+          <div class="form-row">
+            <div class="form-group col-md-12">
+              <mat-form-field class="col-md-12" appearance="standard">
+                <mat-label>Name des Landes</mat-label>
+                <input matInput formControlName="name" placeholder="Name des Landes" required>
+                <mat-error *ngIf="countryForm.get('name').invalid">
+                  Der Name ist <strong>erforderlich</strong>.
+                </mat-error>
+              </mat-form-field>
+            </div>
           </div>
-        </div>
-        <!--image-->
-        <div class="form-row">
-          <div class="form-group col-md-4">
-            <img *ngIf="country?.realImage" [src]="country?.realImage" class="col-md-12" alt="attached_image">
-          </div>
-          <div class="form-group col-md-8">
-            <mat-form-field class="col-md-12">
-              <mat-label>Hintergrundbild</mat-label>
-              <mat-toolbar class="mb-1">
-                <input matInput [value]="selectedFileName?.length ? selectedFileName : 'Bild auswählen'" required
-                  disabled />
-              </mat-toolbar>
-              <div class="input-file-container">
-                <div class="js text-center">
-                  <input type="file" class="input-file ml-5" id="fileInput" name="fileInput" accept="image/*"
-                    (change)="selectFile($event)" />
-                  <label tabindex="0" for="fileInput" class="input-file-trigger">Bild auswählen...</label>
+          <!--image-->
+          <div class="form-row">
+            <div class="form-group col-md-4">
+              <img *ngIf="country?.realImage" [src]="country?.realImage" class="col-md-12" alt="attached_image">
+            </div>
+            <div class="form-group col-md-8">
+              <mat-form-field class="col-md-12">
+                <mat-label>Hintergrundbild</mat-label>
+                <mat-toolbar class="mb-1">
+                  <input matInput [value]="selectedFileName?.length ? selectedFileName : 'Bild auswählen'" required
+                    disabled />
+                </mat-toolbar>
+                <div class="input-file-container">
+                  <div class="js text-center">
+                    <input type="file" class="input-file ml-5" id="fileInput" name="fileInput" accept="image/*"
+                      (change)="selectFile($event)" />
+                    <label tabindex="0" for="fileInput" class="input-file-trigger">Bild auswählen...</label>
+                  </div>
                 </div>
-              </div>
-              <mat-error *ngIf="!isImgSelected">
-                Die Eingabe ist <strong>erforderlich</strong>.
-              </mat-error>
-            </mat-form-field>
+                <mat-error *ngIf="!isImgSelected">
+                  Die Eingabe ist <strong>erforderlich</strong>.
+                </mat-error>
+              </mat-form-field>
+            </div>
           </div>
-        </div>
-        <!--Airport-->
-        <div class="form-row">
-          <div class="form-group col-md-12">
-            <mat-form-field class="col-md-12" appearance="standard">
-              <mat-label>Flughäfen</mat-label>
-              <mat-chip-list #airportsList aria-label="Flughäfen" multiple required>
-                <mat-chip *ngFor="let airport of airportsArray" [selected]="airport" [value]="airport"
-                  (removed)="removeAirport(airport)">
-                  {{airport}}
-                </mat-chip>
-                <input placeholder="Neuer Flughafen und Enter drücken..." formControlName="airports"
-                  [matChipInputFor]="airportsList" (matChipInputTokenEnd)="addAirportFromInput($event)">
-              </mat-chip-list>
-              <mat-error *ngIf="countryForm.get('airports').invalid">
-                Die Eingabe ist <strong>erforderlich</strong>.
-              </mat-error>
-            </mat-form-field>
+          <!--Airport-->
+          <div class="form-row">
+            <div class="form-group col-md-12">
+              <mat-form-field class="col-md-12" appearance="standard">
+                <mat-label>Flughäfen</mat-label>
+                <mat-chip-list #airportsList aria-label="Flughäfen" multiple required>
+                  <mat-chip *ngFor="let airport of airportsArray" [selected]="airport" [value]="airport"
+                    (removed)="removeAirport(airport)">
+                    {{airport}}
+                  </mat-chip>
+                  <input placeholder="Neuer Flughafen und Enter drücken..." formControlName="airports"
+                    [matChipInputFor]="airportsList" (matChipInputTokenEnd)="addAirportFromInput($event)">
+                </mat-chip-list>
+                <mat-hint>Für mehr Eingaben, drücken sie die Taste Enter, um eine neue Eingabe zu erfassen.</mat-hint>
+                <mat-error *ngIf="countryForm.get('airports').invalid">
+                  Die Eingabe ist <strong>erforderlich</strong>.
+                </mat-error>
+              </mat-form-field>
+            </div>
           </div>
-        </div>
-        <!--text-->
-        <div class="form-row">
-          <div class="form-group col-md-12">
-            <mat-form-field class="col-md-12" appearance="standard">
-              <mat-label>Text für die Unterkunft</mat-label>
-              <textarea matInput formControlName="accommodation_text" required></textarea>
-              <mat-error *ngIf="countryForm.get('accommodation_text').invalid">
-                Die Eingabe ist <strong>erforderlich</strong>.
-              </mat-error>
-            </mat-form-field>
+          <!--text-->
+          <div class="form-row">
+            <div class="form-group col-md-12">
+              <mat-form-field class="col-md-12" appearance="standard">
+                <mat-label>Text für die Unterkunft</mat-label>
+                <textarea matInput formControlName="accommodation_text" required></textarea>
+                <mat-error *ngIf="countryForm.get('accommodation_text').invalid">
+                  Die Eingabe ist <strong>erforderlich</strong>.
+                </mat-error>
+              </mat-form-field>
+            </div>
           </div>
+        </form>
+      </div>
+      <!--Country info-->
+      <div class="row mt-2">
+        <div class="col-10">
+          <h1>Informationen</h1>
         </div>
-      </form>
-    </div>
-    <!--Country info-->
-    <div class="row mt-5">
-      <div class="col-10">
-        <h1>Informationen</h1>
+        <button class="ml-1" mat-mini-fab color="primary" aria-label="add icon" matTooltip="Neue Info hinzufügen"
+          matTooltipHideDelay="{{ toolTipDuration }}" (click)="addCountryInfoDialog(countryInfoDialog)">
+          <mat-icon>add</mat-icon>
+        </button>
       </div>
-      <button class="ml-1" mat-mini-fab color="primary" aria-label="add icon" matTooltip="Neue Info hinzufügen"
-        matTooltipHideDelay="{{ toolTipDuration }}" (click)="addCountryInfoDialog(countryInfoDialog)">
-        <mat-icon>add</mat-icon>
-      </button>
-    </div>
+      <mat-divider inside></mat-divider>
+      <!--Info list-->
+      <div class="row mt-2" *ngIf="countryInfos">
+        <mat-accordion class="col-md-12 p-0" multi>
+          <mat-expansion-panel *ngFor="let info of countryInfos">
+            <mat-expansion-panel-header>
+              <mat-panel-title class="font-weight-600">
+                {{info.titel.toUpperCase()}}
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <ng-template class="font-weight-500" matExpansionPanelContent>
+              {{info.description}}
+            </ng-template>
+            <mat-action-row class="justify-content-end">
+              <button mat-button color="primary" (click)="editCountryInfo(info, countryInfoDialog)">Editieren</button>
+              <button mat-button color="accent"
+                (click)="confirmCountryInfoDeletion(info, deleteCountryInfoDialog)">Löschen</button>
+            </mat-action-row>
+          </mat-expansion-panel>
+        </mat-accordion>
+      </div>
+      <!--Highlights-->
+      <div class="row mt-5">
+        <div class="col-10">
+          <h1>Highlights</h1>
+        </div>
+        <button mat-mini-fab color="primary" aria-label="add icon" matTooltip="Neues Highlight hinzufügen"
+          matTooltipHideDelay="{{ toolTipDuration }}" (click)="addHighlightDialog(highlightDialog)"
+          class="justify-content-end">
+          <mat-icon>add</mat-icon>
+        </button>
+      </div>
+      <mat-divider inside></mat-divider>
+      <!--Highlights list-->
+      <div class="row mt-2" *ngIf="highlights">
+        <div class="col-sm-12 col-md-4" *ngFor="let item of highlights">
+          <mat-card class="col-md-12 mb-2 border-info">
+            <mat-card-content>
+              <h2>{{item.name}}</h2>
+              <mat-divider inside></mat-divider>
+              <p class="pt-3">{{getDescription(item.description)}}</p>
+            </mat-card-content>
+            <mat-divider inside></mat-divider>
+            <mat-card-actions>
+              <label class="mr-3" matTooltip="Mehr" matTooltipHideDelay="{{toolTipDuration}}"
+                (click)="highlightDetails(item, highlightDetailDialog)">
+                <em class="fa fa-eye text-info"></em>
+              </label>
+              <label class="mr-3" matTooltip="Editieren" matTooltipHideDelay="{{toolTipDuration}}"
+                (click)="editHighlight(item, highlightDialog)">
+                <em class="fa fa-pen text-primary"></em>
+              </label>
+              <label matTooltip="Entfernen" matTooltipHideDelay="{{toolTipDuration}}"
+                (click)="deleteHeighlightDialog(item, deleteHighlightDialog)">
+                <em class="fa fa-trash text-red"></em>
+              </label>
+            </mat-card-actions>
+          </mat-card>
+        </div>
+      </div>
+      <!--accommodation-->
+      <div class="row mt-4">
+        <div class="col-10">
+          <h1>Unterkünfte</h1>
+        </div>
+        <button class="ml-1" mat-mini-fab color="primary" aria-label="add icon" matTooltip="Neue Unterkunft hinzufügen"
+          matTooltipHideDelay="{{ toolTipDuration }}" (click)="addAccommodationDialog(accommodationDialog)">
+          <mat-icon>add</mat-icon>
+        </button>
+      </div>
+      <!--accommodations list-->
+      <div class="row mt-3" *ngIf="accommodations">
+        <div class="col-sm-12 col-md-4" *ngFor="let item of accommodations">
+          <mat-card class="col-md-12 mb-2 shadow border-secondary">
+            <mat-card-content>
+              <h2>{{item.name}}</h2>
+              <mat-divider inside></mat-divider>
+              <p class="pt-2"><a href="{{item.link}}" target="_blank"><small
+                    class="text-primary">{{item.link}}</small></a></p>
+              <mat-divider inside></mat-divider>
+              <p class="pt-2">{{getDescription(item.beschreibung)}}</p>
+              <mat-divider inside></mat-divider>
+              <p class="pt-2">{{item.adresse}}</p>
+            </mat-card-content>
+            <mat-divider inside></mat-divider>
+            <mat-card-actions>
+              <label class="mr-3" matTooltip="Mehr" matTooltipHideDelay="{{toolTipDuration}}"
+                (click)="accommodationDetails(item, accommodationDetailDialog)">
+                <em class="fa fa-eye text-info"></em>
+              </label>
+              <label class="mr-3" matTooltip="Editieren" matTooltipHideDelay="{{toolTipDuration}}"
+                (click)="editAccommodation(item, accommodationDialog)">
+                <em class="fa fa-pen text-primary"></em>
+              </label>
+              <label matTooltip="Entfernen" matTooltipHideDelay="{{toolTipDuration}}"
+                (click)="deleteAccommodationDialog(item, deleteaccommodationDialog)">
+                <em class="fa fa-trash text-red"></em>
+              </label>
+            </mat-card-actions>
+          </mat-card>
+        </div>
+      </div>
+    </mat-card-content>
     <mat-divider inside></mat-divider>
-    <!--Info list-->
-    <div class="row mt-2" *ngIf="countryInfos">
-      <mat-accordion class="col-md-12 p-0" multi>
-        <mat-expansion-panel *ngFor="let info of countryInfos">
-          <mat-expansion-panel-header>
-            <mat-panel-title class="font-weight-600">
-              {{info.titel.toUpperCase()}}
-            </mat-panel-title>
-          </mat-expansion-panel-header>
-          <ng-template class="font-weight-500" matExpansionPanelContent>
-            {{info.description}}
-          </ng-template>
-          <mat-action-row class="justify-content-end">
-            <button mat-button color="primary" (click)="editCountryInfo(info, countryInfoDialog)">Editieren</button>
-            <button mat-button color="accent"
-              (click)="confirmCountryInfoDeletion(info, deleteCountryInfoDialog)">Löschen</button>
-          </mat-action-row>
-        </mat-expansion-panel>
-      </mat-accordion>
-    </div>
-    <!--Highlights-->
-    <div class="row mt-5">
-      <div class="col-10">
-        <h1>Highlights</h1>
+    <mat-card-actions>
+      <div class="row justify-content-end">
+        <button class="mt-1" color="primary" mat-raised-button (click)="updateCountry()" [disabled]="!isValid">
+          Speichern
+        </button>
+        <button class="mt-1" color="accent" mat-button (click)=" navigateToCountriesList()">
+          Abbrechen
+        </button>
       </div>
-      <button mat-mini-fab color="primary" aria-label="add icon" matTooltip="Neues Highlight hinzufügen"
-        matTooltipHideDelay="{{ toolTipDuration }}" (click)="addHighlightDialog(highlightDialog)"
-        class="justify-content-end">
-        <mat-icon>add</mat-icon>
-      </button>
-    </div>
-    <mat-divider inside></mat-divider>
-    <!--Highlights list-->
-    <div class="row mt-2" *ngIf="highlights">
-      <div class="col-md-3" *ngFor="let item of highlights">
-        <mat-card class="col-md-12 mb-2">
-          <mat-card-content>
-            <h2>{{item.name}}</h2>
-            <p>{{getDescription(item.description)}}</p>
-          </mat-card-content>
-          <mat-card-actions>
-            <label class="mr-3" matTooltip="Mehr" matTooltipHideDelay="{{toolTipDuration}}"
-              (click)="highlightDetails(item, highlightDetailDialog)">
-              <em class="fa fa-eye text-info"></em>
-            </label>
-            <label class="mr-3" matTooltip="Editieren" matTooltipHideDelay="{{toolTipDuration}}"
-              (click)="editHighlight(item, highlightDialog)">
-              <em class="fa fa-pen text-primary"></em>
-            </label>
-            <label matTooltip="Entfernen" matTooltipHideDelay="{{toolTipDuration}}"
-              (click)="deleteHeighlightDialog(item, deleteHighlightDialog)">
-              <em class="fa fa-trash text-red"></em>
-            </label>
-          </mat-card-actions>
-        </mat-card>
-      </div>
-    </div>
-    <!--accommodation-->
-    <div class="row mt-5">
-      <div class="col-10">
-        <h1>Unterkünfte</h1>
-      </div>
-      <button class="ml-1" mat-mini-fab color="primary" aria-label="add icon" matTooltip="Neue Unterkunft hinzufügen"
-        matTooltipHideDelay="{{ toolTipDuration }}" (click)="addAccommodationDialog(accommodationDialog)">
-        <mat-icon>add</mat-icon>
-      </button>
-    </div>
-    <!--accommodations list-->
-    <div class="row mt-3" *ngIf="accommodations">
-      <div class="col-md-3" *ngFor="let item of accommodations">
-        <mat-card class="col-md-12 mb-2">
-          <mat-card-content>
-            <h2>{{item.name}}</h2>
-            <p><small class="text-primary">{{item.link}}</small></p>
-            <p>{{getDescription(item.beschreibung)}}</p>
-            <p>{{item.adresse}}</p>
-          </mat-card-content>
-          <mat-card-actions>
-            <label class="mr-3" matTooltip="Mehr" matTooltipHideDelay="{{toolTipDuration}}"
-              (click)="accommodationDetails(item, accommodationDetailDialog)">
-              <em class="fa fa-eye text-info"></em>
-            </label>
-            <label class="mr-3" matTooltip="Editieren" matTooltipHideDelay="{{toolTipDuration}}"
-              (click)="editAccommodation(item, accommodationDialog)">
-              <em class="fa fa-pen text-primary"></em>
-            </label>
-            <label matTooltip="Entfernen" matTooltipHideDelay="{{toolTipDuration}}"
-              (click)="deleteAccommodationDialog(item, deleteaccommodationDialog)">
-              <em class="fa fa-trash text-red"></em>
-            </label>
-          </mat-card-actions>
-        </mat-card>
-      </div>
-    </div>
-    <!--Save button-->
-    <mat-divider inside></mat-divider>
-    <div class="row justify-content-end">
-      <button class="mt-4" color="primary" mat-raised-button (click)="updateCountry()" [disabled]="!isValid">
-        Speichern
-      </button>
-      <button class="mt-4" color="accent" mat-button (click)=" navigateToCountriesList()">
-        Abbrechen
-      </button>
-    </div>
-  </div>
+    </mat-card-actions>
+  </mat-card>
 </div>
 
 <!-- Add Highligth modal-->
@@ -302,7 +315,8 @@
       <div class="form-group col-md-6">
         <div class="row mt-5">
           <div class="col-md-4" *ngFor="let image of attachedImages; let i = index">
-            <img [src]="image" class="rounded mx-auto d-block col-12 mb-4" alt="Bild {{i+1}} von {{accommodationForm.name}}" />
+            <img [src]="image" class="rounded mx-auto d-block col-12 mb-4"
+              alt="Bild {{i+1}} von {{accommodationForm.name}}" />
           </div>
         </div>
       </div>

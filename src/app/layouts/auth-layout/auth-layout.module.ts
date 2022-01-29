@@ -33,6 +33,7 @@ import { HomeComponent } from "src/app/pages/home/home.component";
 import { LearnMoreComponent } from "../../pages/learn-more/learn-more.component";
 import { ComponentsModule } from "../../components/components.module";
 import { MatExpansionModule } from "@angular/material/expansion";
+import { AboutusComponent } from "src/app/pages/aboutus/aboutus.component";
 
 @NgModule({
   imports: [
@@ -67,6 +68,7 @@ import { MatExpansionModule } from "@angular/material/expansion";
     LearnMoreComponent,
     LoginComponent,
     RegisterComponent,
+    AboutusComponent
   ],
   providers: [
     //{ provide: HTTP_INTERCEPTORS, useClass: AppHttpInterceptor, multi: true },

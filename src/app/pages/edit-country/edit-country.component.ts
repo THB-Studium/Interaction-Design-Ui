@@ -438,12 +438,14 @@ export class EditCountryComponent implements OnInit, AfterViewInit {
     this.isAdd = false;
     this.sharedDataService.isAddBtnClicked = false;
     this.accommodationService.getOne(accommodation.id).subscribe({
-      next: (response) =>
-        this.sharedDataService.changeCurrentAccommodation(response),
-      error: () =>
+      next: (response) => {
+        this.sharedDataService.changeCurrentAccommodation(response);
+      },
+      error: () => {
         this.toastrService.error(
           "Die Informationen konnten nicht geladet werden"
-        ),
+        );
+      },
       complete: () => this.dialog.open(dialogForm, this.dialogConfig),
     });
   }
@@ -547,7 +549,7 @@ export class EditCountryComponent implements OnInit, AfterViewInit {
   }
 
   getDescription(description: string) {
-    return description.substring(0, 40);
+    return description.length > 39 ? `${description.substring(0, 40)}...` : description;
   }
 
   setValidation(value: boolean) {
