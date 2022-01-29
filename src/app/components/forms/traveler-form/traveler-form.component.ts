@@ -58,6 +58,8 @@ export class TravelerFormComponent implements OnInit, AfterViewInit {
     participated: new FormControl("", [Validators.required]),
     // workfor
     workfor: new FormControl(),
+    // status
+    status: new FormControl("", [Validators.required]),
   });
 
   // Defines currentTraveler. Contains complet current traveler information.
@@ -137,6 +139,9 @@ export class TravelerFormComponent implements OnInit, AfterViewInit {
         }
       }
     }
+    // get the status
+    const statusIdx = this.statusArray.findIndex(x => x.toLowerCase() === traveler.status?.toLowerCase());
+
     this.travelerForm.setValue({
       lastname: traveler.name,
       firstname: traveler.vorname,
@@ -145,13 +150,14 @@ export class TravelerFormComponent implements OnInit, AfterViewInit {
       street: street,
       postal: postal,
       city: city,
-      mobile: `+${traveler.telefonnummer}`, // Since number has been saved without the 0 before (int)
+      mobile: `${traveler.telefonnummer}`,
       university: traveler.hochschule,
       faculty: traveler.studiengang,
       participated: traveler.schonTeilgenommen
         ? this.chooseArray[0]
         : this.chooseArray[1],
       workfor: traveler.arbeitBei,
+      status: statusIdx >= 0 ? this.statusArray[statusIdx] : traveler.status
     });
   }
 
@@ -230,7 +236,8 @@ export class TravelerFormComponent implements OnInit, AfterViewInit {
       this.travelerForm.get("city").valid &&
       this.travelerForm.get("university").valid &&
       this.travelerForm.get("faculty").valid &&
-      this.travelerForm.get("participated").valid
+      this.travelerForm.get("participated").valid &&
+      this.travelerForm.get("status")
     ) {
       var id = null;
       if (!this.isAnAdd) {
@@ -248,7 +255,7 @@ export class TravelerFormComponent implements OnInit, AfterViewInit {
         )}, ${this.travelerForm.value.postal} ${this.firstCharacterToUpper(
           this.travelerForm.value.city
         )}`,
-        telefonnummer: parseInt(this.travelerForm.value.mobile),
+        telefonnummer: this.travelerForm.value.mobile,
         hochschule: this.firstCharacterToUpper(
           this.travelerForm.value.university
         ),
@@ -258,6 +265,7 @@ export class TravelerFormComponent implements OnInit, AfterViewInit {
         schonTeilgenommen:
           this.travelerForm.value.participated === this.chooseArray[0],
         arbeitBei: this.firstCharacterToUpper(this.travelerForm.value.workfor),
+        status: this.travelerForm.value.status
       };
 
       this.sharedDataService.changeCurrentTraveler(this.currentTraveler);
