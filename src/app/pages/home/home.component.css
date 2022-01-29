@@ -139,6 +139,12 @@ ngb-carousel {
   left: 2rem;
 }
 
+.text-top-right {
+  position: absolute;
+  bottom: 90%;
+  left: 94%;
+}
+
 .text-bottom-left h2 {
   font-size: 3.2rem !important;
 }
