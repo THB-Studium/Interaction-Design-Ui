@@ -68,7 +68,7 @@ export class HomeComponent implements OnInit {
         this.tripOffers = bg
           .map((tripOffer) => {
             this.interrested = JSON.parse(localStorage.getItem("ids"));
-            if (this.interrested.indexOf(tripOffer.id) != -1) {
+            if (this.interrested?.indexOf(tripOffer.id) != -1) {
               tripOffer.isfavorite = true;
             } else {
               tripOffer.isfavorite = false;
@@ -205,7 +205,7 @@ export class HomeComponent implements OnInit {
   }
 
   addId(target, source) {
-    source.forEach((v) => {
+    source?.forEach((v) => {
       var p = target.indexOf(v);
       if (p === -1) {
         target.push(v);
