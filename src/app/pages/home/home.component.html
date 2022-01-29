@@ -28,9 +28,16 @@
           </div>
         </div>
         <div class="row">
+          <div class="text-top-right">
+            <button class="ml-1 align-self-end" mat-mini-fab aria-label="add icon" matTooltip="ich bin interessiert"
+                matTooltipHideDelay="2000"  id="addFeedback">
+                <mat-icon *ngIf="!gebot.isfavorite" (click)="interessiert(gebot.id, 'add')">favorite</mat-icon>
+                <mat-icon *ngIf="gebot.isfavorite" color="accent" (click)="interessiert(gebot.id, 'remove')">favorite</mat-icon>
+            </button>
+          </div>
           <div class="text-bottom-left text-white">
             <div class="col-sm-12 col-md-12">
-              <h2 class="text-white">{{gebot.titel | uppercase}}</h2>
+              <h2 class="text-white">{{gebot.titel | uppercase}}</h2>              
               <p class="mt--1">
                 <small class="mr-2">{{gebot.startDatum}}</small>
                 <small>{{gebot.endDatum}}</small>
@@ -62,8 +69,8 @@
         <h2 class="black-color mb-5">Feedback</h2>
       </div>
       <div class="float-right justify-content-end text-right">
-        <button class="ml-1 align-self-end" mat-mini-fab aria-label="add icon"
-          matTooltip="Feedback teilen" matTooltipHideDelay="2000" (click)="feedbackTeilenDialog(feedbackDialog)" id="addFeedback">
+        <button class="ml-1 align-self-end" mat-mini-fab aria-label="add icon" matTooltip="Feedback teilen"
+          matTooltipHideDelay="2000" (click)="feedbackTeilenDialog(feedbackDialog)" id="addFeedback">
           <mat-icon>add</mat-icon>
         </button>
       </div>

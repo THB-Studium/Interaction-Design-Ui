@@ -45,4 +45,24 @@ export class TripOfferService {
       responseType: "text",
     });
   }
+
+  // Post
+  interessiert(id: string): Observable<any> {
+    let headers = new HttpHeaders({ "responseType": "text" });
+    let tosend = {};
+    const tripoffertoberead_url = `${this.TRIPOFFERS_URL}/addInteressiert/${id}`;
+    return this.httpClient.post<any>(tripoffertoberead_url, tosend, {
+      headers: headers
+    });
+  }
+
+  // Post
+  uninteressiert(id: string): Observable<any> {
+    let headers = new HttpHeaders({ "responseType": "text" });
+    let tosend = {};
+    const tripoffertoberead_url = `${this.TRIPOFFERS_URL}/resetInteressiert/${id}`;
+    return this.httpClient.post<any>(tripoffertoberead_url, tosend, {
+      headers: headers
+    });
+  }
 }
