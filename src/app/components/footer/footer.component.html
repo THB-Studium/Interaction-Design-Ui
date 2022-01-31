@@ -1,4 +1,4 @@
-<div class="container-fluid footer">
+<div class="container-fluid footer" [ngStyle]="footerBgColor">
   <div class="row ">
     <div class="col-4">
       <div class="copyright ml-5 text-muted">
@@ -24,7 +24,7 @@
           </form>
         </div>
         <div class="col-6">
-          <button type="button" (click)="abonnieren()" class="btn btn-outline-light btn-lg">ABONNIEREN</button>
+          <button type="button" (click)="abonnieren()" class="btn btn-outline-light btn-lg" [ngStyle]="btnColor">ABONNIEREN</button>
         </div>
       </div>
       </div>
@@ -40,7 +40,7 @@
           <i class="bi bi-instagram"><span class="text-icon">Instagram</span></i>
         </a>
       </p>
-      
+
     </div>
   </div>
   <div class="row footer-copy-r">
@@ -56,7 +56,7 @@
 
         <a href="#" class="text-white" data-bs-toggle="tooltip" data-bs-placement="top" title="Back to top">
           <title>Back to Top</title>
-          <i class="bi bi-arrow-up-circle-fill"></i>  
+          <i class="bi bi-arrow-up-circle-fill"></i>
         </a>
       </div>
     </div>

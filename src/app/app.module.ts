@@ -1,5 +1,5 @@
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { NgModule } from "@angular/core";
+import {LOCALE_ID, NgModule} from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { HttpClientModule } from "@angular/common/http";
 import { RouterModule } from "@angular/router";
@@ -14,7 +14,11 @@ import { NgxWebstorageModule } from "ngx-webstorage";
 
 import { AppRoutingModule } from "./app.routing";
 import { ComponentsModule } from "./components/components.module";
-import { HashLocationStrategy, LocationStrategy } from "@angular/common";
+import localeDe from '@angular/common/locales/de';
+import localeDeExtra from '@angular/common/locales/extra/de';
+import { HashLocationStrategy, LocationStrategy, registerLocaleData } from "@angular/common";
+
+registerLocaleData(localeDe, localeDeExtra);
 
 @NgModule({
   imports: [
@@ -35,6 +39,7 @@ import { HashLocationStrategy, LocationStrategy } from "@angular/common";
   providers: [
     //{ provide: HTTP_INTERCEPTORS, useClass: AppHttpInterceptor, multi: true },
     { provide: LocationStrategy, useClass: HashLocationStrategy },
+    { provide: LOCALE_ID, useValue: 'de' },
   ],
   bootstrap: [AppComponent],
 })

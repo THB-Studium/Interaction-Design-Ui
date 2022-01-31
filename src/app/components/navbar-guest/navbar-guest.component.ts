@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import {Component, Input, OnInit} from "@angular/core";
 import { Location } from "@angular/common";
 import { Router } from "@angular/router";
 import { BehaviorSubject, Observable } from "rxjs";
@@ -9,6 +9,7 @@ import { BehaviorSubject, Observable } from "rxjs";
   styleUrls: ["./navbar-guest.component.css"],
 })
 export class NavbarGuestComponent implements OnInit {
+  @Input() headerBgColor: any
 
   public listTitles: any[];
   public location: Location;

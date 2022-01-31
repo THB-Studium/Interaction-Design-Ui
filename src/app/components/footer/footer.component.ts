@@ -13,6 +13,7 @@ import { Pattern } from "src/app/variables/pattern";
 })
 export class FooterComponent implements OnInit {
   @Input() btnColor: any;
+  @Input() footerBgColor: any;
   currentDate: Date = new Date();
 
   emailForm: FormGroup;

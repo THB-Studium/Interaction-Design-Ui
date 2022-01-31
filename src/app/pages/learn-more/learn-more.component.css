@@ -3,13 +3,23 @@ body {
 }
 
 #main-page-btn {
-  font-family: "ubuntu medium";
-  color: #000000;
+  font-family: "ubuntu";
   font-size: 15px;
 }
 
 .travel-info-header {
-  margin-top: 2em;
+  margin-top: 3em;
+}
+
+#main-page-btn,
+.travel-info-header h2,
+.travel-info-header p {
+  color: #000000;
+}
+
+.travel-info-header .myRow {
+  align-items: baseline;
+  margin-top: -2px;
 }
 
 .travel-info-header mat-card {
@@ -24,6 +34,7 @@ body {
   font-family: "ubuntu bold" !important;
   letter-spacing: 0.5px !important;
   margin-right: 0 !important;
+  color: #fff;
 }
 
 button {
@@ -31,28 +42,32 @@ button {
 }
 
 .highlight-contents,
-.fakten-check-contents
+.fakten-check-contents,
+.ablauf-contents,
+.landInfos-contents
 {
   margin-top: 5em;
 }
 
 .highlight-contents h2,
-fakten-check-contents h2
+.fakten-check-contents h2,
+.ablauf-contents h2,
+.landInfos-contents h2
 {
-  margin-bottom: 1em;
+  margin-bottom: 1em !important;
+  color: #000000;
 }
 
 .highlight-contents mat-card {
   min-width: 300px;
 }
 
-.flex-even {
-  flex: 1;
+.highlight-contents mat-card h3 {
+  color: #000000;
 }
 
 .mat-card-img {
   height: 50%;
-  /*height: 600px;*/
 }
 
 .fakten-check-contents {
@@ -61,19 +76,31 @@ fakten-check-contents h2
 
 .fakten-check-contents mat-card {
   padding: 2em;
+  min-height: 1300px;
 }
 
-.buchungsklassen div {
+#mat-card-group-1 {
+  padding-right: 4em;
+}
+
+.buchungsklassen .klassen {
   width: 70%;
 }
 
 
-.fakten-check-contents h3 {
-  font-family: "ubuntu" !important;
+.fakten-check-contents h3,
+.fakten-check-contents h4,
+.ablauf-contents h3 {
+  font-family: "ubuntu bold" !important;
+  color: #000000;
 }
 
 .buchungsklassen ul li {
   font-family: "american typewriter";
+}
+
+.wer-darf-mit h4 {
+  font-family: "american typewriter bold" !important;
 }
 
 /*.landInfos-contents mat-expansion-panel {*/
@@ -84,4 +111,37 @@ fakten-check-contents h2
 .buchungsklassen h4
 {
   font-family: "ubuntu bold";
+}
+
+.reisezeitraum, .buchungsklassen, .wer-darf-mit,
+.kosten, .inkludierte-leistung, .anmeldefrist {
+  margin-bottom: 4em;
+}
+
+.kosten table, .erwartungen table {
+  width: 100%;
+  height: 100%;
+}
+
+.kosten table th {
+  color: #FFFFFF;
+  font-family: "ubuntu bold";
+  font-size: 18px;
+}
+
+.frist, #index {
+  font-family: "ubuntu bold" !important;
+}
+
+.ablauf-contents h3 {
+  margin-bottom: -0.5px;
+}
+
+.unterkünfte-text {
+  margin-top: 1em;
+  margin-bottom: 3em;
+}
+
+#index {
+  font-size: 60px !important;
 }

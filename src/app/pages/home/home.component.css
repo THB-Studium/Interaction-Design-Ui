@@ -79,7 +79,7 @@ ngb-carousel {
   padding: 3em 2em;
 }
 
-.section-contents-RG img {
+.section-contents-RG .offers img {
   width: 100%;
   max-height: 650px !important;
   background-size: 100% 100%;

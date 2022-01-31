@@ -17,49 +17,59 @@
   <!-- Reiseangebot -->
   <div class="section-contents-RG col-md-12">
     <h2 class="black-color mb-5">Reiseangebote</h2>
-    <div class="row mb-5" *ngFor="let gebot of tripOffers">
-      <div class="col-md-12 mx-auto d-block offers">
-        <img [src]="gebot.realImage.changingThisBreaksApplicationSecurity" class="card-shadow img-fluid"
-          alt="cover_image">
-        <div class="overlay">
-          <div class="text">
-            <em class="fas fa-plane-departure text-white"></em>
-            <p class="btn-link" (click)="routeToLearnMore(gebot.id)">MEHER ERFAHREN</p>
-          </div>
-        </div>
-        <div class="row">
-          <div class="text-top-right">
-            <button class="ml-1 align-self-end" mat-mini-fab aria-label="add icon" [matTooltip]="gebot.isfavorite ? 'nicht mehr interessiert' : 'interessiert'"
-                matTooltipHideDelay="2000" id="addFeedback">
-                <mat-icon *ngIf="!gebot.isfavorite" (click)="interessiert(gebot.id, 'add')">favorite</mat-icon>
-                <mat-icon *ngIf="gebot.isfavorite" class="isFavorite" (click)="interessiert(gebot.id, 'remove')">favorite</mat-icon>
-            </button>
-          </div>
-          <div class="text-bottom-left text-white">
-            <div class="col-sm-12 col-md-12">
-              <h2 class="text-white">{{gebot.titel | uppercase}}</h2>              
-              <p class="mt--1">
-                <small class="mr-2">{{gebot.startDatum | date: 'dd.MMM'}}</small>
-                - &nbsp;
-                <small>{{gebot.endDatum | date: 'dd.MMM.yyyy'}}</small>
-              </p>
-              <p class="mb--1">
-                <small class="mr-2">Freie Plätze:</small>
-                <small class="font-weight-bold">{{gebot.freiPlaetze}}/{{gebot.plaetze}}</small>
-              </p>
-              <p>
-                <small class="mr-2">Interessierte:</small>
-                <small class="font-weight-bold">{{gebot.interessiert}}</small>
-              </p>
+
+    <!--  Spinner  -->
+    <app-spinner [dataName]="'Reiseangebote'" *ngIf="!loadReiseangeboteFinished"></app-spinner>
+
+    <div *ngIf="loadReiseangeboteFinished && tripOffers.length > 0">
+      <div class="row mb-5" *ngFor="let gebot of tripOffers">
+        <div class="col-md-12 mx-auto d-block offers">
+          <img [src]="gebot.realImage.changingThisBreaksApplicationSecurity" class="card-shadow img-fluid"
+               alt="cover_image">
+          <div class="overlay">
+            <div class="text">
+              <em class="fas fa-plane-departure text-white"></em>
+              <p class="btn-link" (click)="routeToLearnMore(gebot.id)">MEHER ERFAHREN</p>
             </div>
           </div>
-          <div class="col-sm-12 col-md-12">
-            <div class="text-bottom-right text-white">
-              <p class="link font-weight-600 mehrErfahren" (click)="routeToLearnMore(gebot.id)">MEHR ERFAHREN ></p>
+          <div class="row">
+            <div class="text-top-right">
+              <button class="ml-1 align-self-end" mat-mini-fab aria-label="add icon" matTooltip="ich bin interessiert"
+                      matTooltipHideDelay="2000"  id="addInterest">
+                <mat-icon *ngIf="!gebot.isfavorite" (click)="interessiert(gebot.id, 'add')">favorite</mat-icon>
+                <mat-icon *ngIf="gebot.isfavorite" class="isFavorite" (click)="interessiert(gebot.id, 'remove')">favorite</mat-icon>
+              </button>
+            </div>
+            <div class="text-bottom-left text-white">
+              <div class="col-sm-12 col-md-12">
+                <h2 class="text-white">{{getCountryName(gebot.landId) | uppercase}}</h2>
+                <p class="mt--1">
+                  <small class="mr-2">{{gebot.startDatum | date: 'dd. MMM'}}</small>
+                  - &nbsp;
+                  <small>{{gebot.endDatum | date: 'dd. MMM yyyy'}}</small>
+                </p>
+                <p class="mb--1">
+                  <small class="mr-2">Freie Plätze:</small>
+                  <small class="font-weight-bold">{{gebot.freiPlaetze}}/{{gebot.plaetze}}</small>
+                </p>
+                <p>
+                  <small class="mr-2">Interessierte:</small>
+                  <small class="font-weight-bold">{{gebot.interessiert}}</small>
+                </p>
+              </div>
+            </div>
+            <div class="col-sm-12 col-md-12">
+              <div class="text-bottom-right text-white">
+                <p class="link font-weight-600 mehrErfahren" (click)="routeToLearnMore(gebot.id)">MEHR ERFAHREN ></p>
+              </div>
             </div>
           </div>
         </div>
       </div>
+    </div>
+
+    <div *ngIf="loadReiseangeboteFinished && tripOffers.length === 0">
+      <p>Keine Reiseangebote vorhanden!</p>
     </div>
   </div>
 
@@ -70,26 +80,34 @@
         <h2 class="black-color mb-5">Feedback</h2>
       </div>
       <div class="set-content-right">
-        <button class="ml-1" mat-mini-fab aria-label="add icon"
+        <button class="ml-1" mat-mini-fab aria-label="add icon" matTooltip="Neus Feedback teilen"
           matTooltipHideDelay="2000" (click)="feedbackTeilenDialog(feedbackDialog)" id="addFeedback">
           <mat-icon>add</mat-icon>
         </button>
       </div>
     </div>
-    <div class="row" *ngIf="feedbacks.length > 0">
+
+    <!--  Spinner  -->
+    <app-spinner [dataName]="'Feedbacks'" *ngIf="!loadFeedBacksFinished"></app-spinner>
+
+    <div class="row" *ngIf="loadFeedBacksFinished && feedbacks.length > 0">
       <div class="col-md-12 col-lg-6">
         <img [src]="currentFeedback?.bild" alt="FeebackBild-{{currentIndex + 1}}" class="img-feedback img-fluid">
       </div>
-      <div class="col-md-12 col-lg-6">
+
+      <div class="col-md-12 col-lg-6" *ngIf="loadFeedBacksFinished">
         <img src="./assets/img/anführungszeichnen.PNG" alt="Anführungszeichnen" class="img-fluid">
         <p class="message">{{currentFeedback?.description}}</p>
         <p class="autor font-weight-bold">{{currentFeedback?.autor}}</p>
-        <p class="display-flex">
+        <p class="display-flex set-content-bottom">
           <strong>{{currentIndex + 1}} / {{feedbacks.length}}</strong>
           <mat-icon class="ml-2 prev-btn" (click)="feedbackAktion('prev')">keyboard_arrow_left</mat-icon>
           <mat-icon class="next-btn" (click)="feedbackAktion('next')">keyboard_arrow_right</mat-icon>
         </p>
       </div>
+    </div>
+    <div class="row" *ngIf="loadFeedBacksFinished && feedbacks.length === 0">
+      <p>Kein Feedback vorhanden!</p>
     </div>
   </div>
 </div>

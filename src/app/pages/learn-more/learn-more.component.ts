@@ -1,19 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from "@angular/router";
 
-import {Countries} from "../../shared/datas/countries";
-import {TripOffers} from "../../shared/datas/trip-offers";
-
-import {CountriesColors} from "../../shared/datas/countries-colors";
-import {SharedDataService} from "../../services/sharedData/shared-data.service";
-import {Highlights} from "../../shared/datas/highlights";
+import { CountriesColors } from "../../shared/datas/countries-colors";
+import { SharedDataService } from "../../services/sharedData/shared-data.service";
+import { Highlights } from "../../shared/datas/highlights";
 import { MatDialog } from '@angular/material/dialog';
 import { BookingFormComponent } from 'src/app/components/forms/booking-form/booking-form.component';
-import {BookingClassen} from "../../shared/datas/bookingClassen";
-import {BookingClass} from "../../models/bookingClass";
+import { BookingClassen } from "../../shared/datas/bookingClassen";
+import { BookingClass } from "../../models/bookingClass";
 import { TripOfferService } from 'src/app/services/trip-offer/trip-offer.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { CountryService } from 'src/app/services/country/country.service';
+import { TripOffer } from "../../models/tripOffer";
+import { MatTableDataSource } from "@angular/material/table";
+import { Country } from "../../models/country";
 
 @Component({
   selector: 'app-learn-more',
@@ -25,10 +25,10 @@ export class LearnMoreComponent implements OnInit {
   tripOffers: Array<any> = []
   countryColors: Array<any> = []
   highlights: Array<any> = []
-  bookingClassen: Array<BookingClass> = []
+  bookingClasses: Array<BookingClass> = []
 
-  currentLand: any
-  currentTripOffer: any
+  currentLand: Country
+  currentTripOffer: TripOffer
 
   backgroundColor: any
   fontColor: any
@@ -39,6 +39,10 @@ export class LearnMoreComponent implements OnInit {
   panelOpenState = false;
 
   anmeldeFristVorbei = false;
+  loadFinished: boolean = true
+
+  displayedColumns: string[] = ['tarife', 'preise'];
+  bookingClassesDataSource: MatTableDataSource<BookingClass>;
 
   constructor(
     private route: ActivatedRoute,
@@ -48,28 +52,14 @@ export class LearnMoreComponent implements OnInit {
     private countriesService: CountryService,
     private sanitizer: DomSanitizer
   ) {
-    this.countries = Countries.data
-    this.tripOffers = TripOffers.data
     this.countryColors = CountriesColors.data
     this.highlights = Highlights.daten
-    this.bookingClassen = BookingClassen.daten
+    this.bookingClasses = BookingClassen.daten
   }
 
   ngOnInit(): void {
     this.setCurrentLandAndTO();
   }
-
-  // dateFormat(date: Date, type: string): string {
-  //   if(type === 'startDate') {
-  //     const dateToString = format(date, 'dd.MMM.yyyy').split('.')
-  //     return dateToString[0] + '.' + dateToString[1] + ' - '
-  //   }
-  //
-  //   else if(type === 'endDate') {
-  //     return format(date, 'dd.MMM.yyyy')
-  //   }
-  //   this.setCurrentLandAndTO();
-  // }
 
   checkIfExpanded(index: number): boolean {
     return index === 0
@@ -87,25 +77,45 @@ export class LearnMoreComponent implements OnInit {
     dialog.componentInstance.currentTripOffer = this.currentTripOffer;
   }
 
+  getNumberOfDays(): number {
+    let numberOfDay = 0
+    if (this.currentTripOffer?.id) {
+      const diff = Math.abs(new Date(this.currentTripOffer.endDatum).getTime() - new Date(this.currentTripOffer.startDatum).getTime());
+      numberOfDay = Math.ceil(diff / (1000 * 3600 * 24));
+    }
+    return numberOfDay
+  }
+
+  checkIfStudentenTarif(): boolean {
+    return this.currentTripOffer?.buchungsklassenReadListTO
+      .map(item => item.type)
+      .filter(type => type.toLowerCase().includes('studenten-tarif' || 'studenten tarif' || 'studententarif')).length > 0
+  }
+
   private setCurrentLandAndTO(): void {
+    this.loadFinished = false
     this.route.params.subscribe(params => {
-      //console.log(params.landId)
       if (params.landId) {
 
         this.reiseAngebotsService.getOne(params.landId).subscribe({
-          next: (current) => {
+          next: (current: TripOffer) => {
             this.currentTripOffer = current;
-            console.log('tripf', this.currentTripOffer);
+            console.log('trip-Off: ', this.currentTripOffer);
+
+            if(this.currentTripOffer?.id) {
+              this.bookingClasses = this.currentTripOffer.buchungsklassenReadListTO
+              this.bookingClassesDataSource = new MatTableDataSource(this.bookingClasses)
+            }
 
             this.anmeldeFristVorbei = (new Date(this.currentTripOffer.anmeldungsFrist) < new Date()) ? true : false;
 
             this.countriesService.getOne(this.currentTripOffer.landId).subscribe({
-              next: (land) => {
+              next: (land: Country) => {
 
                 let objectURL = "data:image/png;base64," + land.karte_bild;
                 land.realImage = this.sanitizer.bypassSecurityTrustUrl(objectURL);
                 this.currentLand = land;
-                //console.log('land', this.currentLand)
+                console.log('land', this.currentLand)
 
                 this.mapBg = {background: "url('assets/img/" + this.currentLand.karte_bild + "')"}
 
@@ -122,16 +132,19 @@ export class LearnMoreComponent implements OnInit {
     const currentBgColor = this.countryColors.filter(item =>
       item.landName.toLowerCase().includes(this.currentLand.name.toLowerCase().split(' ')[0]))[0]
 
-    this.backgroundColor = { background: '#E88113' }
+    this.backgroundColor = { background: currentBgColor?.bodyBgColor }
     this.fontColor = { color: currentBgColor?.bodyBgColor }
     this.matCardShadow = { 'box-shadow': '1px 1px 14px 2px ' + currentBgColor?.bodyBgColor }
     this.matCardShadowHighlight = { 'box-shadow': '1px 1px 5px 1px ' + currentBgColor?.bodyBgColor }
 
+    // To transfer standard colours to other components
     const sharedBgColor = {
       header: { background: currentBgColor?.headerBgColor },
       bodyAndFooter: { background: currentBgColor?.bodyBgColor },
     }
     this.sharedDataService.changeCurrentBackgroundColor(sharedBgColor)
+
+    this.loadFinished = true
   }
 
 }
