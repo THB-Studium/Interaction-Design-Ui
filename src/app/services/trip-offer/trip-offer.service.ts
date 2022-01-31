@@ -65,4 +65,14 @@ export class TripOfferService {
       headers: headers
     });
   }
+
+  // Post
+  resetInteressiert(id: string): Observable<any> {
+    let headers = new HttpHeaders({ "responseType": "text" });
+    let tosend = {};
+    const tripoffertoberead_url = `${this.TRIPOFFERS_URL}/resetInteressiert/${id}`;
+    return this.httpClient.put<any>(tripoffertoberead_url, tosend, {
+      headers: headers
+    });
+  }
 }
