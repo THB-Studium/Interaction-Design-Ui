@@ -51,7 +51,7 @@ export class TripOfferService {
     let headers = new HttpHeaders({ "responseType": "text" });
     let tosend = {};
     const tripoffertoberead_url = `${this.TRIPOFFERS_URL}/addInteressiert/${id}`;
-    return this.httpClient.post<any>(tripoffertoberead_url, tosend, {
+    return this.httpClient.put<any>(tripoffertoberead_url, tosend, {
       headers: headers
     });
   }
@@ -60,8 +60,8 @@ export class TripOfferService {
   uninteressiert(id: string): Observable<any> {
     let headers = new HttpHeaders({ "responseType": "text" });
     let tosend = {};
-    const tripoffertoberead_url = `${this.TRIPOFFERS_URL}/resetInteressiert/${id}`;
-    return this.httpClient.post<any>(tripoffertoberead_url, tosend, {
+    const tripoffertoberead_url = `${this.TRIPOFFERS_URL}/uninteressiert/${id}`;
+    return this.httpClient.put<any>(tripoffertoberead_url, tosend, {
       headers: headers
     });
   }

@@ -146,7 +146,7 @@ export class HomeComponent implements OnInit {
     if(action === 'add') {
       this.reiseAngebotsService.interessiert(id).subscribe({
         error: (error) => {
-          //console.log(error.error.text);
+          console.log(error.error.text);
           if (error.error.text === "Successfully added") {
             if (localStorage.getItem("ids") == null) {
               //this.interrested.push(id);
@@ -162,24 +162,22 @@ export class HomeComponent implements OnInit {
               localStorage.setItem("ids", JSON.stringify(this.interrested));
               this.interessiertIds.next(this.interrested);
             }
+            this.toastrService.success(
+              "Reiseangebot zu Favorits hinzugefügt",
+              "Erfolgreich"
+            );
           } else {
             this.toastrService.error("Fehler", "Fehler");
           }
-        },
-        complete: () => {
-          this.toastrService.success(
-            "Reiseangebot zu Favorits hinzugefügt",
-            "Erfolgreich"
-          );
-        },
+        }
       });
     }
 
     if(action === 'remove') {
       this.reiseAngebotsService.uninteressiert(id).subscribe({
         error: (error) => {
-          //console.log(error.error.text);
-          if (error.error.text === "Successfully reset") {
+          console.log(error.error.text);
+          if (error.error.text === "Successfully updated") {
 
             this.interrested = JSON.parse(localStorage.getItem("ids"));
             //this.interrested.push(id);
@@ -190,16 +188,14 @@ export class HomeComponent implements OnInit {
             localStorage.setItem("ids", JSON.stringify(this.interrested));
             this.interessiertIds.next(this.interrested);
             
+            this.toastrService.info(
+              "Reiseangebot von Favorits gelöscht",
+              "Erfolgreich"
+            );
           } else {
             this.toastrService.error("Fehler", "Fehler");
           }
-        },
-        complete: () => {
-          this.toastrService.success(
-            "Reiseangebot von Favorits gelöscht",
-            "Erfolgreich"
-          );
-        },
+        }
       });
     }
   }
