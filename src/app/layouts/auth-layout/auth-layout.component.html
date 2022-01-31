@@ -3,10 +3,12 @@
   <app-navbar-guest [headerBgColor]="headerBgColor"></app-navbar-guest>
 </header>
 <!--Content -->
-<main>
-  <router-outlet></router-outlet>
-</main>
-<!--footer-->
-<footer class="footer" [ngStyle]="footerBgColor">
-  <app-footer [btnColor]="footerBtnColor"></app-footer>
-</footer>
+<div class="main-content">
+  <main>
+    <router-outlet></router-outlet>
+  </main>
+  <!--footer-->
+  <footer class="footer" [ngStyle]="footerBgColor">
+    <app-footer [btnColor]="footerBtnColor"></app-footer>
+  </footer>
+</div>

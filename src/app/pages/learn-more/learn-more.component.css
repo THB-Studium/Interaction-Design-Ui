@@ -1,5 +1,6 @@
 body {
   padding: 10em 5em 1em 5em;
+  min-height: calc(100vh - 230px);
 }
 
 #main-page-btn {
@@ -11,10 +12,38 @@ body {
   margin-top: 3em;
 }
 
-#main-page-btn,
 .travel-info-header h2,
-.travel-info-header p {
+.travel-info-header p,
+.highlight-contents h2,
+.highlight-contents mat-card h3,
+.ablauf-contents h2,
+.ablauf-contents h3,
+.landInfos-contents h2,
+.fakten-check-contents h2,
+.fakten-check-contents h3,
+.fakten-check-contents h4,
+#main-page-btn
+{
   color: #000000;
+}
+
+button,
+.travel-info-header mat-card p,
+.kosten table th
+{
+  color: #FFFFFF;
+}
+
+.fakten-check-contents h3,
+.fakten-check-contents h4,
+.ablauf-contents h3,
+.travel-info-header mat-card p,
+.landInfos-contents mat-panel-title,
+.buchungsklassen h4,
+.kosten table th,
+.frist, #index
+{
+  font-family: "ubuntu bold" !important;
 }
 
 .travel-info-header .myRow {
@@ -31,14 +60,8 @@ body {
 }
 
 .travel-info-header mat-card p {
-  font-family: "ubuntu bold" !important;
   letter-spacing: 0.5px !important;
   margin-right: 0 !important;
-  color: #fff;
-}
-
-button {
-  color: #FFFFFF;
 }
 
 .highlight-contents,
@@ -55,28 +78,19 @@ button {
 .landInfos-contents h2
 {
   margin-bottom: 1em !important;
-  color: #000000;
 }
 
 .highlight-contents mat-card {
   min-width: 300px;
 }
 
-.highlight-contents mat-card h3 {
-  color: #000000;
-}
-
 .mat-card-img {
   height: 50%;
 }
 
-.fakten-check-contents {
-
-}
-
 .fakten-check-contents mat-card {
   padding: 2em;
-  min-height: 1300px;
+  min-height: 1400px;
 }
 
 #mat-card-group-1 {
@@ -87,30 +101,12 @@ button {
   width: 70%;
 }
 
-
-.fakten-check-contents h3,
-.fakten-check-contents h4,
-.ablauf-contents h3 {
-  font-family: "ubuntu bold" !important;
-  color: #000000;
-}
-
 .buchungsklassen ul li {
   font-family: "american typewriter";
 }
 
 .wer-darf-mit h4 {
   font-family: "american typewriter bold" !important;
-}
-
-/*.landInfos-contents mat-expansion-panel {*/
-/*  font-family: "ubuntu bold";*/
-/*}*/
-
-.landInfos-contents mat-panel-title,
-.buchungsklassen h4
-{
-  font-family: "ubuntu bold";
 }
 
 .reisezeitraum, .buchungsklassen, .wer-darf-mit,
@@ -124,13 +120,7 @@ button {
 }
 
 .kosten table th {
-  color: #FFFFFF;
-  font-family: "ubuntu bold";
   font-size: 18px;
-}
-
-.frist, #index {
-  font-family: "ubuntu bold" !important;
 }
 
 .ablauf-contents h3 {

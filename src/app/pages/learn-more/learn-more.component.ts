@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {AfterViewChecked, AfterViewInit, Component, OnInit} from '@angular/core';
 import { ActivatedRoute } from "@angular/router";
 
 import { CountriesColors } from "../../shared/datas/countries-colors";
@@ -20,27 +20,24 @@ import { Country } from "../../models/country";
   templateUrl: './learn-more.component.html',
   styleUrls: ['./learn-more.component.css']
 })
-export class LearnMoreComponent implements OnInit {
+export class LearnMoreComponent implements OnInit, AfterViewChecked {
   countries: Array<any> = []
   tripOffers: Array<any> = []
-  countryColors: Array<any> = []
-  highlights: Array<any> = []
-  bookingClasses: Array<BookingClass> = []
-
   currentLand: Country
   currentTripOffer: TripOffer
 
+  // for style and view setting:
   backgroundColor: any
   fontColor: any
   matCardShadow: any
   matCardShadowHighlight: any
-  mapBg: any
+  matCardHeight: any
 
   panelOpenState = false;
-
   anmeldeFristVorbei = false;
   loadFinished: boolean = true
 
+  // about Kosten table
   displayedColumns: string[] = ['tarife', 'preise'];
   bookingClassesDataSource: MatTableDataSource<BookingClass>;
 
@@ -51,14 +48,20 @@ export class LearnMoreComponent implements OnInit {
     private reiseAngebotsService: TripOfferService,
     private countriesService: CountryService,
     private sanitizer: DomSanitizer
-  ) {
-    this.countryColors = CountriesColors.data
-    this.highlights = Highlights.daten
-    this.bookingClasses = BookingClassen.daten
-  }
+  ) { }
+
 
   ngOnInit(): void {
     this.setCurrentLandAndTO();
+  }
+
+  ngAfterViewChecked(): void {
+    const height1 = document.getElementById('mat-card-group-1')?.getBoundingClientRect()?.height
+    const height2 = document.getElementById('mat-card-group-2')?.getBoundingClientRect()?.height
+
+    if (height1 && height2) {
+      this.matCardHeight = height1 > height2 ? { 'height.px': height1 } : { 'height.px': height2 }
+    }
   }
 
   checkIfExpanded(index: number): boolean {
@@ -86,12 +89,6 @@ export class LearnMoreComponent implements OnInit {
     return numberOfDay
   }
 
-  checkIfStudentenTarif(): boolean {
-    return this.currentTripOffer?.buchungsklassenReadListTO
-      .map(item => item.type)
-      .filter(type => type.toLowerCase().includes('studenten-tarif' || 'studenten tarif' || 'studententarif')).length > 0
-  }
-
   private setCurrentLandAndTO(): void {
     this.loadFinished = false
     this.route.params.subscribe(params => {
@@ -100,11 +97,10 @@ export class LearnMoreComponent implements OnInit {
         this.reiseAngebotsService.getOne(params.landId).subscribe({
           next: (current: TripOffer) => {
             this.currentTripOffer = current;
-            console.log('trip-Off: ', this.currentTripOffer);
+            console.log('LearnMoreComponent::trip-Offers: ', this.currentTripOffer);
 
             if(this.currentTripOffer?.id) {
-              this.bookingClasses = this.currentTripOffer.buchungsklassenReadListTO
-              this.bookingClassesDataSource = new MatTableDataSource(this.bookingClasses)
+              this.bookingClassesDataSource = new MatTableDataSource(this.currentTripOffer.buchungsklassenReadListTO)
             }
 
             this.anmeldeFristVorbei = (new Date(this.currentTripOffer.anmeldungsFrist) < new Date()) ? true : false;
@@ -115,9 +111,7 @@ export class LearnMoreComponent implements OnInit {
                 let objectURL = "data:image/png;base64," + land.karte_bild;
                 land.realImage = this.sanitizer.bypassSecurityTrustUrl(objectURL);
                 this.currentLand = land;
-                console.log('land', this.currentLand)
-
-                this.mapBg = {background: "url('assets/img/" + this.currentLand.karte_bild + "')"}
+                console.log('LearnMoreComponent::land', this.currentLand)
 
                 this.setStandardColors();
               }
@@ -129,7 +123,7 @@ export class LearnMoreComponent implements OnInit {
   }
 
   private setStandardColors(): void {
-    const currentBgColor = this.countryColors.filter(item =>
+    const currentBgColor = CountriesColors.data.filter(item =>
       item.landName.toLowerCase().includes(this.currentLand.name.toLowerCase().split(' ')[0]))[0]
 
     this.backgroundColor = { background: currentBgColor?.bodyBgColor }
