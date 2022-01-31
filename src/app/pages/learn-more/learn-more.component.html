@@ -40,7 +40,7 @@
       <div class="row" *ngIf="currentLand?.highlights?.length > 0">
         <div class="col-md-4" *ngFor="let item of currentLand.highlights">
           <mat-card class="col-md-11 mb-6" [ngStyle]="matCardShadowHighlight">
-            <img mat-card-image src="assets/img/highlights/{{item.bild}}" alt="{{item.name}}-Bild">
+            <img mat-card-image [src]="item.realImage?.changingThisBreaksApplicationSecurity" alt="{{item.name}}-Bild">
             <mat-card-content>
               <h3>{{item?.name}}</h3>
               <p>{{item?.description}}</p>
@@ -58,213 +58,216 @@
       <h2>Fakten-Check</h2>
 
       <div class="row col-md-12">
-        <mat-card id="mat-card-group-1" class="col-md-7 mb-5" [ngStyle]="matCardShadow">
-          <mat-card-content>
-            <!--      REISEZEITRAUM      -->
-            <div class="reisezeitraum">
-              <h3>REISEZEITRAUM</h3>
-              <h4 [style]="fontColor">
-                <span class="mr-2">{{currentTripOffer?.startDatum | date: 'dd. MMMM' | uppercase}}</span>
-                - &nbsp;
-                <span>{{currentTripOffer?.endDatum | date: 'dd. MMMM yyyy' | uppercase}}</span>
-                / {{getNumberOfDays()}} TAGE BZW. {{getNumberOfDays() - 2}} ÜBERNACHTUNGEN
-              </h4>
-              <p>
-                Der Abflug findet wahlweise von den Flughäfen
-                <b>Berlin</b>, <b>Düsseldorf</b>, <b>Frankfurt</b> und <b>München</b> statt.
-                Weitere Flughäfen können auf Anfrage gerne auch gebucht werden.
-              </p>
-            </div>
-
-            <!--      BUCHUNGSKLASSEN      -->
-            <div class="buchungsklassen">
-              <h3>BUCHUNGSKLASSEN</h3>
-
-              <div class="klassen" *ngFor="let item of currentTripOffer?.buchungsklassenReadListTO">
-                <h4 [ngStyle]="fontColor">
-                  {{item.type | uppercase}}
-                  <span *ngIf="item.type.toLowerCase().includes('studenten-tarif' || 'studenten tarif' || 'studententarif')">*</span>
+        <div class="col-md-7 mr-8 mb-5">
+          <mat-card id="mat-card-group-1" class="col-md-12" [ngStyle]="matCardShadow">
+            <mat-card-content>
+              <!--      REISEZEITRAUM      -->
+              <div class="reisezeitraum">
+                <h3>REISEZEITRAUM</h3>
+                <h4 [style]="fontColor">
+                  <span class="mr-2">{{currentTripOffer?.startDatum | date: 'dd. MMMM' | uppercase}}</span>
+                  - &nbsp;
+                  <span>{{currentTripOffer?.endDatum | date: 'dd. MMMM yyyy' | uppercase}}</span>
+                  / {{getNumberOfDays()}} TAGE BZW. {{getNumberOfDays() - 2}} ÜBERNACHTUNGEN
                 </h4>
+                <p>
+                  Der Abflug findet wahlweise von den Flughäfen
+                  <b>Berlin</b>, <b>Düsseldorf</b>, <b>Frankfurt</b> und <b>München</b> statt.
+                  Weitere Flughäfen können auf Anfrage gerne auch gebucht werden.
+                </p>
+              </div>
+
+              <!--      BUCHUNGSKLASSEN      -->
+              <div class="buchungsklassen">
+                <h3>BUCHUNGSKLASSEN</h3>
+
+                <div class="klassen" *ngFor="let item of currentTripOffer?.buchungsklassenReadListTO">
+                  <h4 [ngStyle]="fontColor">
+                    {{item.type | uppercase}}
+                    <span *ngIf="item.type.toLowerCase().includes('studenten-tarif' || 'studenten tarif' || 'studententarif')">*</span>
+                  </h4>
+                  <ul>
+                    <li>{{item.description}}</li>
+                  </ul>
+                </div>
+
+                <div>
+                  <p>
+                    <span class="font-weight-bold">WICHTIGER HINWEIS:</span>  {{currentTripOffer?.hinweise}}
+                  </p>
+
+                  <small [ngStyle]="fontColor" *ngIf="currentTripOffer?.sonstigeHinweise">
+                    <span class="font-weight-bold">{{currentTripOffer?.sonstigeHinweise.split(':')[0] | uppercase}}: </span>
+                    <br>{{currentTripOffer.sonstigeHinweise.split(':')[1] | uppercase}}
+                  </small>
+                </div>
+
+              </div>
+
+              <!--      WER DARF MIT?      -->
+              <div class="wer-darf-mit">
+                <h3>WER DARF MIT?</h3>
+                <h4>Mitreiseberechtigt sind:</h4>
+
                 <ul>
-                  <li>{{item.description}}</li>
+                  <li *ngFor="let person of currentTripOffer.mitReiserBerechtigt">{{person}}</li>
+                </ul>
+
+                <p>Bitte hab Verständnis dafür, dass nicht-immatrikulierte Partner, Verwandte und Freunde
+                  deshalb nicht dabei sein können.</p>
+              </div>
+
+            </mat-card-content>
+          </mat-card>
+        </div>
+        <div class="col-md-4">
+          <mat-card id="mat-card-group-2" class="col-md-12" [ngStyle]="matCardShadow">
+            <mat-card-content>
+              <!--      KOSTEN      -->
+              <div class="kosten">
+                <h3>KOSTEN</h3>
+                <table mat-table [dataSource]="bookingClassesDataSource">
+                  <!-- TARIFE Column -->
+                  <ng-container matColumnDef="tarife">
+                    <th mat-header-cell *matHeaderCellDef [ngStyle]="backgroundColor">TARIFE</th>
+                    <td mat-cell *matCellDef="let element"
+                        [style]="element.type.toLowerCase().includes('studenten-tarif' || 'studenten tarif' || 'studententarif') ? fontColor : null">
+                      {{element.type | uppercase}}
+                      <span *ngIf="element.type.toLowerCase().includes('studenten-tarif' || 'studenten tarif' || 'studententarif')">*</span>
+                    </td>
+                  </ng-container>
+
+                  <!-- PREISE Column -->
+                  <ng-container matColumnDef="preise">
+                    <th mat-header-cell *matHeaderCellDef [ngStyle]="backgroundColor">PREISE</th>
+                    <td mat-cell *matCellDef="let element"
+                        [style]="element.type.toLowerCase().includes('studenten-tarif' || 'studenten tarif' || 'studententarif') ? fontColor : null">
+                      {{element.preis}}.-</td>
+                  </ng-container>
+
+                  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+
+                <h4></h4>
+                <p></p>
+              </div>
+
+              <!--      INKLUDIERTE LEISTUNGEN      -->
+              <div class="inkludierte-leistung">
+                <h3>INKLUDIERTE LEISTUNGEN</h3>
+                <ul>
+                  <li *ngFor="let leistung of currentTripOffer?.leistungen">{{leistung}}</li>
                 </ul>
               </div>
 
-              <div>
+              <!--      ANMELDEFRIST      -->
+              <div class="anmeldefrist">
+                <h3>ANMELDEFRIST</h3>
+                <p class="frist" [ngStyle]="fontColor">{{currentTripOffer?.anmeldungsFrist | date: 'dd. MMMM yyyy'}}</p>
                 <p>
-                  <span class="font-weight-bold">WICHTIGER HINWEIS:</span>  {{currentTripOffer?.hinweise}}
+                  Es gibt
+                  <span class="font-weight-bold">{{currentTripOffer?.freiPlaetze}} freie Plätze</span> und
+                  <span class="font-weight-bold">{{currentTripOffer?.interessiert}} Interessierte</span>.
+                  <br>Anmeldung nur solange genügend Plätze da sind.
                 </p>
-
-                <small [ngStyle]="fontColor" *ngIf="currentTripOffer?.sonstigeHinweise">
-                  <span class="font-weight-bold">{{currentTripOffer?.sonstigeHinweise.split(':')[0] | uppercase}}: </span>
-                  <br>{{currentTripOffer.sonstigeHinweise.split(':')[1] | uppercase}}
-                </small>
               </div>
 
-            </div>
-
-            <!--      WER DARF MIT?      -->
-            <div class="wer-darf-mit">
-              <h3>WER DARF MIT?</h3>
-              <h4>Mitreiseberechtigt sind:</h4>
-
-              <ul>
-                <li *ngFor="let person of currentTripOffer.mitReiserBerechtigt">{{person}}</li>
-              </ul>
-
-              <p>Bitte hab Verständnis dafür, dass nicht-immatrikulierte Partner, Verwandte und Freunde
-                deshalb nicht dabei sein können.</p>
-            </div>
-
-          </mat-card-content>
-        </mat-card>
-
-        <mat-card id="mat-card-group-2" class="col-md-4 mb-5 set-content-right" [ngStyle]="matCardShadow">
-          <mat-card-content>
-            <!--      KOSTEN      -->
-            <div class="kosten">
-              <h3>KOSTEN</h3>
-              <table mat-table [dataSource]="bookingClassesDataSource">
-                <!-- TARIFE Column -->
-                <ng-container matColumnDef="tarife">
-                  <th mat-header-cell *matHeaderCellDef [ngStyle]="backgroundColor">TARIFE</th>
-                  <td mat-cell *matCellDef="let element"
-                      [style]="element.type.toLowerCase().includes('studenten-tarif' || 'studenten tarif' || 'studententarif') ? fontColor : null">
-                    {{element.type | uppercase}}
-                    <span *ngIf="element.type.toLowerCase().includes('studenten-tarif' || 'studenten tarif' || 'studententarif')">*</span>
-                  </td>
-                </ng-container>
-
-                <!-- PREISE Column -->
-                <ng-container matColumnDef="preise">
-                  <th mat-header-cell *matHeaderCellDef [ngStyle]="backgroundColor">PREISE</th>
-                  <td mat-cell *matCellDef="let element"
-                      [style]="element.type.toLowerCase().includes('studenten-tarif' || 'studenten tarif' || 'studententarif') ? fontColor : null">
-                    {{element.preis}}.-</td>
-                </ng-container>
-
-                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-              </table>
-
-              <h4></h4>
-              <p></p>
-            </div>
-
-            <!--      INKLUDIERTE LEISTUNGEN      -->
-            <div class="inkludierte-leistung">
-              <h3>INKLUDIERTE LEISTUNGEN</h3>
-              <ul>
-                <li *ngFor="let leistung of currentTripOffer?.leistungen">{{leistung}}</li>
-              </ul>
-            </div>
-
-            <!--      ANMELDEFRIST      -->
-            <div class="anmeldefrist">
-              <h3>ANMELDEFRIST</h3>
-              <p class="frist" [ngStyle]="fontColor">{{currentTripOffer?.anmeldungsFrist | date: 'dd. MMMM yyyy'}}</p>
-              <p>
-                Es gibt
-                <span class="font-weight-bold">{{currentTripOffer?.freiPlaetze}} freie Plätze</span> und
-                <span class="font-weight-bold">{{currentTripOffer?.interessiert}} Interessierte</span>.
-                <br>Anmeldung nur solange genügend Plätze da sind.
-              </p>
-            </div>
-
-            <!--      ERWARTUNGEN      -->
-            <div class="erwartungen">
-              <h3>ERWARTUNGEN</h3>
-              <table class="erwartungen-table">
-                <tr>
-                  <td>
-                    ABENTEUER:
-                    <span class="stars">
+              <!--      ERWARTUNGEN      -->
+              <div class="erwartungen">
+                <h3>ERWARTUNGEN</h3>
+                <table class="erwartungen-table">
+                  <tr>
+                    <td>
+                      ABENTEUER:
+                      <span class="stars">
                       <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.abenteuer > 0">star</mat-icon>
                       <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.abenteuer > 20">star</mat-icon>
                       <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.abenteuer > 40">star</mat-icon>
                       <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.abenteuer > 60">star</mat-icon>
                       <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.abenteuer > 80">star</mat-icon>
                     </span>
-                  </td>
+                    </td>
 
-                  <td>
-                    ENTSCHLEUNIGUNG:
-                    <span class="stars">
+                    <td>
+                      ENTSCHLEUNIGUNG:
+                      <span class="stars">
                       <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.entschleunigung > 0">star</mat-icon>
                       <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.entschleunigung > 20">star</mat-icon>
                       <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.entschleunigung > 40">star</mat-icon>
                       <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.entschleunigung > 60">star</mat-icon>
                       <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.entschleunigung > 80">star</mat-icon>
                     </span>
-                  </td>
-                </tr>
+                    </td>
+                  </tr>
 
-                <tr>
-                  <td>
-                    KOMFORT:
-                    <span class="stars">
+                  <tr>
+                    <td>
+                      KOMFORT:
+                      <span class="stars">
                       <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.konfort > 0">star</mat-icon>
                       <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.konfort > 20">star</mat-icon>
                       <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.konfort > 40">star</mat-icon>
                       <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.konfort > 60">star</mat-icon>
                       <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.konfort > 80">star</mat-icon>
                     </span>
-                  </td>
+                    </td>
 
-                  <td>
-                    NACHHALTLIGKEIT:
-                    <span class="stars">
+                    <td>
+                      NACHHALTLIGKEIT:
+                      <span class="stars">
                       <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.nachhaltigkeit > 0">star</mat-icon>
                       <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.nachhaltigkeit > 20">star</mat-icon>
                       <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.nachhaltigkeit > 40">star</mat-icon>
                       <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.nachhaltigkeit > 60">star</mat-icon>
                       <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.nachhaltigkeit > 80">star</mat-icon>
                     </span>
-                  </td>
-                </tr>
+                    </td>
+                  </tr>
 
-                <tr>
-                  <td>
-                    SONNE & STRAND:
-                    <span class="stars">
+                  <tr>
+                    <td>
+                      SONNE & STRAND:
+                      <span class="stars">
                       <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.sonne_strand > 0">star</mat-icon>
                       <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.sonne_strand > 20">star</mat-icon>
                       <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.sonne_strand > 40">star</mat-icon>
                       <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.sonne_strand > 60">star</mat-icon>
                       <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.sonne_strand > 80">star</mat-icon>
                     </span>
-                  </td>
+                    </td>
 
-                  <td>
-                    SICHERHEIT:
-                    <span class="stars">
+                    <td>
+                      SICHERHEIT:
+                      <span class="stars">
                       <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.sicherheit > 0">star</mat-icon>
                       <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.sicherheit > 20">star</mat-icon>
                       <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.sicherheit > 40">star</mat-icon>
                       <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.sicherheit > 60">star</mat-icon>
                       <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.sicherheit > 80">star</mat-icon>
                     </span>
-                  </td>
-                </tr>
+                    </td>
+                  </tr>
 
-                <tr>
-                  <td>
-                    ON THE ROAD:
-                    <span class="stars">
+                  <tr>
+                    <td>
+                      ON THE ROAD:
+                      <span class="stars">
                       <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.road > 0">star</mat-icon>
                       <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.road > 20">star</mat-icon>
                       <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.road > 40">star</mat-icon>
                       <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.road > 60">star</mat-icon>
                       <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.road > 80">star</mat-icon>
                     </span>
-                  </td>
-                </tr>
+                    </td>
+                  </tr>
 
-              </table>
-            </div>
+                </table>
+              </div>
 
-          </mat-card-content>
-        </mat-card>
+            </mat-card-content>
+          </mat-card>
+        </div>
       </div>
     </div>
 

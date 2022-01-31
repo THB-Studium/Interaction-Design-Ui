@@ -9,7 +9,7 @@ import { BookingFormComponent } from 'src/app/components/forms/booking-form/book
 import { BookingClassen } from "../../shared/datas/bookingClassen";
 import { BookingClass } from "../../models/bookingClass";
 import { TripOfferService } from 'src/app/services/trip-offer/trip-offer.service';
-import { DomSanitizer } from '@angular/platform-browser';
+import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
 import { CountryService } from 'src/app/services/country/country.service';
 import { TripOffer } from "../../models/tripOffer";
 import { MatTableDataSource } from "@angular/material/table";
@@ -139,6 +139,11 @@ export class LearnMoreComponent implements OnInit, AfterViewChecked {
     this.sharedDataService.changeCurrentBackgroundColor(sharedBgColor)
 
     this.loadFinished = true
+  }
+
+  private convertByteToImage(bytearray: string): SafeUrl {
+    const objectURL = `data:image/png;base64,${bytearray}`;
+    return this.sanitizer.bypassSecurityTrustUrl(objectURL);
   }
 
 }

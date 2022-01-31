@@ -227,6 +227,7 @@ export class HomeComponent implements OnInit {
             complete: () => (this.currentFeedback = this.feedbacks[0]),
           });
         });
+
         this.loadFeedBacksFinished = true
       },
     });

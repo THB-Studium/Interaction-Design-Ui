@@ -1,6 +1,7 @@
 body {
   padding: 10em 5em 1em 5em;
   min-height: calc(100vh - 230px);
+  margin-bottom: 3em;
 }
 
 #main-page-btn {
@@ -53,7 +54,7 @@ button,
 
 .travel-info-header mat-card {
   margin-top: 1em;
-  min-height: 600px;
+  height: 600px;
 
   background-repeat: no-repeat !important;
   background-size: 100% 100% !important;
@@ -90,7 +91,7 @@ button,
 
 .fakten-check-contents mat-card {
   padding: 2em;
-  min-height: 1400px;
+  min-width: 400px;
 }
 
 #mat-card-group-1 {
