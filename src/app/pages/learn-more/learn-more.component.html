@@ -290,16 +290,10 @@
 
               <p>{{item.beschreibung}}</p>
             </div>
-            <div class="row col-md-4 mb-5">
-              <img class="col-md-6" src="assets/img/accommodation/{{i+1}}-a.jpg" alt="Bild-Bild-{{i+1}}a">
-              <img class="col-md-6" src="assets/img/accommodation/{{i+1}}-b.jpg" alt="Bild-Bild-{{i+1}}a">
+            <div class="row col-md-4 mb-5" *ngFor="let bild of item.bilder">
+              <img class="col-md-6 img-fluid" [src]="getImage(bild)" alt="Bild-Bild-{{i+1}}a">
             </div>
           </div>
-<!--          <div class="row col-md-3 mb-5" *ngFor="let bild of item.bilder">-->
-<!--          <div class="row col-md-4 mb-5">-->
-<!--            <img class="col-md-2" src="assets/img/accommodation/{{i+1}}-a.jpg" alt="Bild-Bild-{{i+1}}a">-->
-<!--            <img class="col-md-2" src="assets/img/accommodation/{{i+1}}-b.jpg" alt="Bild-Bild-{{i+1}}a">-->
-<!--          </div>-->
         </div>
       </div>
     </div>

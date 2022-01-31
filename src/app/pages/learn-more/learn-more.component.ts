@@ -89,6 +89,10 @@ export class LearnMoreComponent implements OnInit, AfterViewChecked {
     return numberOfDay
   }
 
+  getImage(bild: any): any {
+    return this.sanitizer.bypassSecurityTrustUrl("data:image/png;base64," + bild);
+  }
+
   private setCurrentLandAndTO(): void {
     this.loadFinished = false
     this.route.params.subscribe(params => {
@@ -97,7 +101,6 @@ export class LearnMoreComponent implements OnInit, AfterViewChecked {
         this.reiseAngebotsService.getOne(params.landId).subscribe({
           next: (current: TripOffer) => {
             this.currentTripOffer = current;
-            //this.currentTripOffer
             console.log('LearnMoreComponent::trip-Offers: ', this.currentTripOffer);
 
             if(this.currentTripOffer?.id) {
@@ -114,9 +117,8 @@ export class LearnMoreComponent implements OnInit, AfterViewChecked {
                 this.currentLand = land;
                 console.log('LearnMoreComponent::land', this.currentLand)
 
-                land.highlights.map(highligh => {
-                  let objectURL = "data:image/png;base64," + land.karte_bild;
-                  return highligh.realImage = this.sanitizer.bypassSecurityTrustUrl(objectURL);
+                land.highlights.map(highlight => {
+                  return highlight.realImage = this.getImage(highlight.bild);
                 });
 
                 this.setStandardColors();
