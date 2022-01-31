@@ -166,6 +166,7 @@ export class HomeComponent implements OnInit {
               "Reiseangebot zu Favorits hinzugefügt",
               "Erfolgreich"
             );
+            this.ngOnInit();
           } else {
             this.toastrService.error("Fehler", "Fehler");
           }
@@ -192,6 +193,8 @@ export class HomeComponent implements OnInit {
               "Reiseangebot von Favorits gelöscht",
               "Erfolgreich"
             );
+
+            this.ngOnInit();
           } else {
             this.toastrService.error("Fehler", "Fehler");
           }
