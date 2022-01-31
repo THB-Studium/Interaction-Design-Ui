@@ -5,6 +5,4 @@ export class User {
     public email: string;
     public role: string;
     public password: string;
-    public creationDate: Date;
-    public updateDate: Date;
 }

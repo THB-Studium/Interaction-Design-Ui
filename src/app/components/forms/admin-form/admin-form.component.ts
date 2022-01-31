@@ -84,12 +84,10 @@ export class AdminFormComponent implements OnInit, AfterViewInit {
     this.adminForm.valueChanges.subscribe(() => {
 
       let id = null;
-      let updateddate = null;
       let password = this.adminForm.value.pwd.trim();
 
       if (!this.isAdd) {
         id = this.currentAdminId;
-        updateddate = new Date();
         // if any key is null the value will not be updated in backend
         password = null;
       }
@@ -101,9 +99,7 @@ export class AdminFormComponent implements OnInit, AfterViewInit {
         email: this.adminForm.value.email.trim(),
         password: password,
         // the role is automatically added in backend
-        role: null,
-        creationDate: new Date(),
-        updateDate: updateddate
+        role: null
       };
 
       // First check what process is be done to know how and when to notify others components.

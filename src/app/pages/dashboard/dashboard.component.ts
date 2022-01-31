@@ -1,70 +1,68 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit } from "@angular/core";
+import { Router } from "@angular/router";
 
-import { BookingService } from 'src/app/services/booking/booking.service';
-import { CountryService } from 'src/app/services/country/country.service';
-import { FeedbackService } from 'src/app/services/feedback/feedback.service';
-import { ToastrService } from 'ngx-toastr';
-import { TravelerService } from 'src/app/services/traveler/traveler.service';
-import { TripOfferService } from 'src/app/services/trip-offer/trip-offer.service';
+import { BookingService } from "src/app/services/booking/booking.service";
+import { CountryService } from "src/app/services/country/country.service";
+import { FeedbackService } from "src/app/services/feedback/feedback.service";
+import { ToastrService } from "ngx-toastr";
+import { TravelerService } from "src/app/services/traveler/traveler.service";
+import { TripOfferService } from "src/app/services/trip-offer/trip-offer.service";
 
-import { Booking } from 'src/app/models/booking';
-import { Country } from 'src/app/models/country';
-import { TripOffer } from 'src/app/models/tripOffer';
+import { Booking } from "src/app/models/booking";
+import { Country } from "src/app/models/country";
+import { TripOffer } from "src/app/models/tripOffer";
 
-import { Calendar } from 'src/app/variables/calendar';
-import { formatDate } from '@angular/common';
+import { Calendar } from "src/app/variables/calendar";
+import { formatDate } from "@angular/common";
 
 interface CurrentOffer {
   name: string;
   destination: string;
   interestAmount: number;
-  rate: number,
+  rate: number;
   totalplace: number;
   freeplace: number;
-  reservation: number
+  reservation: number;
 }
 @Component({
-  selector: 'app-dashboard',
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss']
+  selector: "app-dashboard",
+  templateUrl: "./dashboard.component.html",
+  styleUrls: ["./dashboard.component.scss"],
 })
 export class DashboardComponent implements OnInit {
-
   public statistics = [
     {
-      'title': 'Reiseangebote',
-      'total': 0,
-      'badge_bg': 'bg-gradient-blue',
-      'text': '',
-      'link': '/tripoffers'
+      title: "Reiseangebote",
+      total: 0,
+      badge_bg: "bg-gradient-blue",
+      text: "Seit dem ..",
+      link: "/tripoffers",
     },
     {
-      'title': 'Buchungen',
-      'total': 0,
-      'badge_bg': 'bg-gradient-info',
-      'text': '',
-      'link': '/bookings'
+      title: "Buchungen",
+      total: 0,
+      badge_bg: "bg-gradient-info",
+      text: "Seit dem ...",
+      link: "/bookings",
     },
     {
-      'title': 'Reisende',
-      'total': 0,
-      'badge_bg': 'bg-gradient-primary',
-      'text': 'bereits registriert.',
-      'link': '/travelers'
+      title: "Reisende",
+      total: 0,
+      badge_bg: "bg-gradient-primary",
+      text: "bereits registriert.",
+      link: "/travelers",
     },
     {
-      'title': 'Feedbacks',
-      'total': 0,
-      'badge_bg': 'bg-gradient-danger',
-      'text': '',
-      'link': '/feedbacks'
-    }
+      title: "Feedbacks",
+      total: 0,
+      badge_bg: "bg-gradient-danger",
+      text: "",
+      link: "/feedbacks",
+    },
   ];
 
   public tripofferList: TripOffer[];
   public currentTripoffers: CurrentOffer[];
-
 
   constructor(
     private bookingService: BookingService,
@@ -93,42 +91,65 @@ export class DashboardComponent implements OnInit {
   private bookingStatsInitialization() {
     this.bookingService.getAll().subscribe({
       next: (result) => {
-        const idx = this.statistics.findIndex(x => x.title.toLowerCase() === 'buchungen');
-        const minDate: Booking = result.reduce((b1, b2) => b1.datum <= b2.datum ? b1 : b2);
-        // set the object
-        this.statistics[idx].total = result.length;
-        this.statistics[idx].text = `Seit dem ${this.convertDateToString(minDate.datum)}`;
+        if (result) {
+          const idx = this.statistics.findIndex(
+            (x) => x.title.toLowerCase() === "buchungen"
+          );
+          if (result.length > 0) {
+            const minDate: Booking = result?.reduce((b1, b2) =>
+              b1.datum <= b2.datum ? b1 : b2
+            );
+            // set the object
+            this.statistics[idx].total = result?.length;
+            this.statistics[idx].text = `Seit dem ${this.convertDateToString(
+              minDate.datum
+            )}`;
+          }
+        }
       },
       error: () => {
-        this.toastrService.error('Die Information über Buchungen konnte nicht geladen werden.');
-      }
+        this.toastrService.error(
+          "Die Information über Buchungen konnte nicht geladen werden."
+        );
+      },
     });
   }
 
   private feedbackStatsInitialization() {
     this.feedbackService.getAll().subscribe({
       next: (result) => {
-        const idx = this.statistics.findIndex(x => x.title.toLowerCase() === 'feedbacks');
+        const idx = this.statistics.findIndex(
+          (x) => x.title.toLowerCase() === "feedbacks"
+        );
         // set the object
         this.statistics[idx].total = result.length;
-        this.statistics[idx].text = result.length < 1 ? `${result.length} wartet auf Bestätigung.` : `${result.length} warten auf Bestätigung.`;
+        this.statistics[idx].text =
+          result.length < 1
+            ? `${result.length} wartet auf Bestätigung.`
+            : `${result.length} warten auf Bestätigung.`;
       },
       error: () => {
-        this.toastrService.error('Die Information über Feedbacks konnte nicht geladen werden.');
-      }
+        this.toastrService.error(
+          "Die Information über Feedbacks konnte nicht geladen werden."
+        );
+      },
     });
   }
 
   private travelerStatsInitialization() {
     this.travelerService.getAll().subscribe({
       next: (result) => {
-        const idx = this.statistics.findIndex(x => x.title.toLowerCase() === 'reisende');
+        const idx = this.statistics.findIndex(
+          (x) => x.title.toLowerCase() === "reisende"
+        );
         // set the object
         this.statistics[idx].total = result.length;
       },
       error: () => {
-        this.toastrService.error('Die Information über Reisende konnte nicht geladen werden.');
-      }
+        this.toastrService.error(
+          "Die Information über Reisende konnte nicht geladen werden."
+        );
+      },
     });
   }
 
@@ -138,22 +159,32 @@ export class DashboardComponent implements OnInit {
         // save all offers
         this.tripofferList = result;
         // find the offer stats into the array of the different stats.
-        const idx = this.statistics.findIndex(x => x.title.toLowerCase() === 'reiseangebote');
-        const minDate: TripOffer = result.reduce((t1, t2) => t1.startDatum <= t2.startDatum ? t1 : t2);
+        const idx = this.statistics.findIndex(
+          (x) => x.title.toLowerCase() === "reiseangebote"
+        );
+        const minDate: TripOffer = result.reduce((t1, t2) =>
+          t1.startDatum <= t2.startDatum ? t1 : t2
+        );
         // set the object
         this.statistics[idx].total = result.length;
-        this.statistics[idx].text = `Seit dem ${this.convertDateToString(minDate.startDatum)}`;
+        this.statistics[idx].text = `Seit dem ${this.convertDateToString(
+          minDate.startDatum
+        )}`;
       },
       error: () => {
-        this.toastrService.error('Die Information über Reiseangebot konnte nicht geladen werden.');
+        this.toastrService.error(
+          "Die Information über Reiseangebot konnte nicht geladen werden."
+        );
       },
       complete: () => {
         // filter the offer to get only the current offer
         const today = formatDate(new Date(), "yyyy-MM-dd", "en_US");
-        this.tripofferList = this.tripofferList.filter(x => x.endDatum > today && x.landId !== null);
+        this.tripofferList = this.tripofferList.filter(
+          (x) => x.endDatum > today && x.landId !== null
+        );
         // amount of interested
         let interested = 0;
-        this.tripofferList.forEach(x => {
+        this.tripofferList.forEach((x) => {
           interested += x.interessiert;
           // get the the offer by id
           let countryid = null;
@@ -162,16 +193,20 @@ export class DashboardComponent implements OnInit {
               countryid = offer.landId;
             },
             error: () => {
-              this.toastrService.error('Fehler beim Laden Reiseangebote Informationen');
+              this.toastrService.error(
+                "Fehler beim Laden Reiseangebote Informationen"
+              );
             },
             complete: () => {
               let country: Country = null;
               // get the country information
               if (countryid) {
                 this.countryService.getOne(countryid).subscribe({
-                  next: (result) => country = result,
+                  next: (result) => (country = result),
                   error: () => {
-                    this.toastrService.error('Fehler beim Laden Reiseangebote Informationen');
+                    this.toastrService.error(
+                      "Fehler beim Laden Reiseangebote Informationen"
+                    );
                   },
                   complete: () => {
                     // add to the list of table
@@ -179,18 +214,26 @@ export class DashboardComponent implements OnInit {
                       name: x.titel,
                       destination: country.name,
                       interestAmount: x.interessiert,
-                      rate: interested > 0 ? Math.round(x.interessiert / interested) * 100 : 0,
+                      rate:
+                        interested > 0
+                          ? Math.round(x.interessiert / interested) * 100
+                          : 0,
                       freeplace: x.freiPlaetze,
                       totalplace: x.plaetze,
-                      reservation: x.plaetze > 0 ? Math.round((x.plaetze - x.freiPlaetze) * 100 / x.plaetze) : 0
+                      reservation:
+                        x.plaetze > 0
+                          ? Math.round(
+                              ((x.plaetze - x.freiPlaetze) * 100) / x.plaetze
+                            )
+                          : 0,
                     });
-                  }
+                  },
                 });
               }
-            }
+            },
           });
         });
-      }
+      },
     });
   }
 

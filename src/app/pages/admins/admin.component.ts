@@ -145,9 +145,7 @@ export class AdminComponent implements OnInit, AfterViewInit, OnCommit {
       surname: "",
       role: "",
       email: "",
-      password: "",
-      creationDate: null,
-      updateDate: null,
+      password: ""
     };
     // set the value of the admin into the service
     this.sharedDataService.changeCurrentUser(this.currentAdmin);

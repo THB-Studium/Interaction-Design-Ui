@@ -91,7 +91,7 @@
     <app-admin-form (notifyAdminFormValid)="isFormValid($event)"></app-admin-form>
   </div>
   <mat-divider></mat-divider>
-  <div mat-dialog-actions>
+  <div class="justify-content-end" mat-dialog-actions>
     <button mat-raised-button color="primary" mat-dialog-close (click)="commitChanges()"
       [disabled]="!valid">Speichern</button>
     <button mat-raised-button color="accent" mat-dialog-close (click)="resetFormStatus()">Abbrechen</button>

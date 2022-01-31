@@ -33,9 +33,7 @@ export class SharedDataService {
     name: "",
     role: "",
     surname: "",
-    password: "",
-    creationDate: null,
-    updateDate: null,
+    password: ""
   };
   private userSource = new BehaviorSubject<User>(this.user);
   // Contains all information of the user that has been selected/edited.
