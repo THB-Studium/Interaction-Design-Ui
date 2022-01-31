@@ -32,7 +32,7 @@
             <button class="ml-1 align-self-end" mat-mini-fab aria-label="add icon" [matTooltip]="gebot.isfavorite ? 'nicht mehr interessiert' : 'interessiert'"
                 matTooltipHideDelay="2000" id="addFeedback">
                 <mat-icon *ngIf="!gebot.isfavorite" (click)="interessiert(gebot.id, 'add')">favorite</mat-icon>
-                <mat-icon *ngIf="gebot.isfavorite" color="accent" (click)="interessiert(gebot.id, 'remove')">favorite</mat-icon>
+                <mat-icon *ngIf="gebot.isfavorite" class="isFavorite" (click)="interessiert(gebot.id, 'remove')">favorite</mat-icon>
             </button>
           </div>
           <div class="text-bottom-left text-white">
