@@ -207,6 +207,10 @@ mat-card {
   background-color: #2d92ab !important;
 }
 
+.isFavorite {
+  color: #ee713F;
+}
+
 #feedback-pic {
   /*max-width: 50%;*/
   max-height: 40em;
