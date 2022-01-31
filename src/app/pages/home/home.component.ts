@@ -12,7 +12,7 @@ import { SlideList } from "src/app/shared/datas/slideList";
 
 import { Feedback } from "src/app/models/feedback";
 import { TripOffer } from "src/app/models/tripOffer";
-import { BehaviorSubject, Subject } from "rxjs";
+import { Subject } from "rxjs";
 
 @Component({
   selector: "app-home",

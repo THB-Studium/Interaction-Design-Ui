@@ -18,7 +18,7 @@
         <!-- Comfort -->
         <div class="form-group col-md-6">
             <mat-form-field class="col-md-12" appearance="standard">
-                <mat-label>Konfort</mat-label>
+                <mat-label>Komfort</mat-label>
                 <input matInput type="number" formControlName="comfort" placeholder="Wert" min="0" max="100" [required]="false">
                 <mat-error
                     *ngIf="expectationForm.get('comfort').errors && expectationForm.get('comfort').hasError('required')">
@@ -35,7 +35,7 @@
     <div class="form-row">
         <div class="form-group col-md-6">
             <mat-form-field class="col-md-12" appearance="standard">
-                <mat-label>Konfort</mat-label>
+                <mat-label>Entschleunigung</mat-label>
                 <input matInput type="number" formControlName="deceleration" placeholder="Wert" min="0" max="100" [required]="false">
                 <mat-error
                     *ngIf="expectationForm.get('deceleration').errors && expectationForm.get('deceleration').hasError('required')">
