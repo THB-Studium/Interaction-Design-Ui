@@ -50,7 +50,6 @@ export class HomeComponent implements OnInit {
     this.getAllFeedbacks();
 
     this.interessiertIds.subscribe((inte: any[]) => {
-      console.log(inte);
       this.tripOffers = this.tripOffers.map((trip) => {
         if (inte.indexOf(trip.id) != -1) {
           trip.isfavorite = true;
@@ -142,21 +141,17 @@ export class HomeComponent implements OnInit {
   }
 
   interessiert(id: string, action: string) {
-    console.log(action)
     if(action === 'add') {
       this.reiseAngebotsService.interessiert(id).subscribe({
         error: (error) => {
-          console.log(error.error.text);
           if (error.error.text === "Successfully added") {
             if (localStorage.getItem("ids") == null) {
-              //this.interrested.push(id);
               this.interrested = this.addId([id], this.interrested);
               localStorage.setItem("ids", JSON.stringify(this.interrested));
   
               this.interessiertIds.next(this.interrested);
             } else {
               this.interrested = JSON.parse(localStorage.getItem("ids"));
-              //this.interrested.push(id);
               this.interrested = this.addId([id], this.interrested);
               localStorage.removeItem("ids");
               localStorage.setItem("ids", JSON.stringify(this.interrested));
@@ -177,11 +172,9 @@ export class HomeComponent implements OnInit {
     if(action === 'remove') {
       this.reiseAngebotsService.uninteressiert(id).subscribe({
         error: (error) => {
-          console.log(error.error.text);
           if (error.error.text === "Successfully updated") {
 
             this.interrested = JSON.parse(localStorage.getItem("ids"));
-            //this.interrested.push(id);
             this.interrested = this.addId([id], this.interrested);
             let id_delete = this.interrested.indexOf(id);
             this.interrested = this.interrested.splice(id_delete, 1);
