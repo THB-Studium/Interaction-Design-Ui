@@ -75,11 +75,11 @@ ngb-carousel {
 
 /*######## Reiseangebot ########*/
 .section-contents-RG {
-  margin-top: 0;
+  margin-top: 5em;
   padding: 3em 2em;
 }
 
-.section-contents-RG img {
+.section-contents-RG .offers img {
   width: 100%;
   max-height: 650px !important;
   background-size: 100% 100%;
@@ -126,7 +126,7 @@ ngb-carousel {
 }
 
 .offers:hover .overlay .btn-link {
-  background-color: #17a2b8 !important;
+  background-color: var(--color-blue) !important;
   color: #ffffff;
   font-size: 10px;
   display: none;
@@ -189,7 +189,12 @@ mat-card {
 
 .mehrErfahren {
   font-family: "ubuntu medium" !important;
+  letter-spacing: 2px;
   cursor: pointer;
+}
+
+.mehrErfahren:hover {
+  font-size: 1.6rem !important;
 }
 
 /*######## Feedback ########*/
@@ -204,7 +209,7 @@ mat-card {
 }
 
 #addFeedback {
-  background-color: #2d92ab !important;
+  background-color: var(--color-blue) !important;
 }
 
 .isFavorite {
@@ -212,25 +217,25 @@ mat-card {
 }
 
 #feedback-pic {
-  /*max-width: 50%;*/
   max-height: 40em;
 }
 
 .section-contents-FB {
-  margin-top: 0;
+  margin-top: 4em;
   margin-bottom: 8em;
   padding: 0 2em;
 }
 
 .prev-btn, .next-btn {
   cursor: pointer;
+  color: var(--color-blue) ;
 }
 
 .prev-btn:hover, .next-btn:hover {
   color: #000000;
 }
 
-.img-feeback  {
+.img-feedback  {
   width: auto;
   max-height: 450px !important;
 }
@@ -253,7 +258,7 @@ mat-card {
 }
 
 .feedback-contents mat-icon {
-  color: #2d92ab !important;
+  color: var(--color-blue) !important;
   cursor: pointer;
 }
 
@@ -336,7 +341,7 @@ mat-card {
   .offers:hover .overlay em {
     display: none;
   }
-  
+
   .offers:hover .overlay .btn-link {
     top: 70%;
     font-size: 12px;
@@ -365,7 +370,7 @@ mat-card {
   .carousel-caption p {
     text-align: center;
   }
-  
+
 }
 
 @media screen and (max-width: 645px) {

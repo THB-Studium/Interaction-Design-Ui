@@ -73,6 +73,22 @@ p {
   height: 30px;
 }
 
+.text-muted {
+  color: #777777;
+}
+
+.img-responsive {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.center-block {
+  display: block;
+  margin-right: auto;
+  margin-left: auto;
+}
+
 .primary-colors {
   background-color: #2d92ab;
   color: #fff;

@@ -45,6 +45,7 @@ import { NavbarGuestComponent } from './navbar-guest/navbar-guest.component';
 import { BookingFormComponent } from './forms/booking-form/booking-form.component';
 import { FeedbackFormComponent } from './forms/feedback-form/feedback-form.component';
 import { EditBookingFormComponent } from './forms/edit-booking-form/edit-booking-form.component';
+import { SpinnerComponent } from './spinner/spinner.component';
 
 @NgModule({
   imports: [
@@ -96,6 +97,7 @@ import { EditBookingFormComponent } from './forms/edit-booking-form/edit-booking
     FeedbackFormComponent,
     BookingFormComponent,
     EditBookingFormComponent,
+    SpinnerComponent,
   ],
   exports: [
     FooterComponent,
@@ -113,7 +115,8 @@ import { EditBookingFormComponent } from './forms/edit-booking-form/edit-booking
     NavbarGuestComponent,
     FeedbackFormComponent,
     BookingFormComponent,
-    EditBookingFormComponent
+    EditBookingFormComponent,
+    SpinnerComponent
   ],
 })
 export class ComponentsModule {}
