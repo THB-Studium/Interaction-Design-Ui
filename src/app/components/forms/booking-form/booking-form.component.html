@@ -538,8 +538,18 @@
         </mat-step>
     </mat-stepper>
 
-    <button mat-raised-button color="warn" mat-dialog-close>
-        ABBRECHEN
-    </button>
+    <div class="row">
+        <div class="col-md-3">
+            <button mat-raised-button color="warn" mat-dialog-close>
+                ABBRECHEN
+            </button>
+        </div>
+        <div class="col-md-6"></div>
+        <div class="col-md-3">
+            <button mat-raised-button color="accent" [disabled]="!canDownloadPdf" (click)="downloadPdf()">
+                Als PDF runterladen
+            </button>
+        </div>
+    </div>
 
 </form>

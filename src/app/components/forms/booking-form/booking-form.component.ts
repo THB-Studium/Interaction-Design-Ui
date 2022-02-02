@@ -56,6 +56,8 @@ export class BookingFormComponent implements OnInit {
 
   minDate: Date;
   maxDate: Date;
+  canDownloadPdf = false;
+  currentBookingId: any;
 
   constructor(
     private bookingclassService: BookingClassService,
@@ -205,10 +207,13 @@ export class BookingFormComponent implements OnInit {
     this.buchungService.addOne(buchungsObjekt).subscribe({
       next: (resp) => {
         console.log(resp);
+        this.canDownloadPdf = true;
+        this.currentBookingId = resp.id;
+
       },
       complete: () => {
         this.toaster.success('erfolgreich gebucht', 'Erfolgreich');
-        this.dialog.closeAll();
+        //this.dialog.closeAll();
       },
       error: (error) => {
         console.log(error)
@@ -216,4 +221,9 @@ export class BookingFormComponent implements OnInit {
       }
     });
   }
+
+  downloadPdf() {
+    this.buchungService.exportPdf(this.currentBookingId);
+  }
+
 }
