@@ -141,3 +141,8 @@ button,
 #index {
   font-size: 60px !important;
 }
+
+ng-template app-booking-form {
+  max-width: 100px !important;
+  max-height: 100px !important;
+}
