@@ -70,10 +70,10 @@ export class LearnMoreComponent implements OnInit, AfterViewChecked {
 
   bookingFormDialog() {
     const dialog = this.dialog.open(BookingFormComponent, {
-      width: '750px',
-      height: '800px',
+      maxWidth: '800px',
+      maxHeight: '800px',
       disableClose : true,
-      autoFocus : true
+      // autoFocus : true
     });
 
     dialog.componentInstance.land = this.currentLand;
