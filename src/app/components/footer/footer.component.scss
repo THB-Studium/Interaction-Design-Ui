@@ -1,7 +1,7 @@
 .footer {
-  padding-top: 20px;
-  padding-left: 20px;
-  padding-right: 20px;
+  padding-top: 15px;
+  padding-left: 15px;
+
   background-color: transparent !important;
 }
 
@@ -14,7 +14,9 @@
 .footer h2 {
   font-size: 16px;
 }
-
+li {
+  list-style: none;
+}
 .footer a {
   text-decoration: none;
   font-size: 16px;
@@ -25,10 +27,9 @@
 i {
   padding: 0 15px;
 }
-
-input {
+.input {
+  width: 400px;
 }
-
 .example-form {
   min-width: 150px;
   max-width: 500px;
@@ -53,8 +54,11 @@ input {
   margin-left: 10px;
 }
 
-.box-icons {
+box-icons {
   margin-left: 33%;
+}
+.fb-cont {
+  display: flex;
 }
 
 .text-muted {
