@@ -48,6 +48,8 @@ export class TripofferComponent implements OnInit, AfterViewInit {
   valid: boolean = false;
   // Defines dialogConfig
   dialogConfig = new MatDialogConfig();
+  // Defines loading
+  loading = true;
 
   constructor(
     private tripOfferService: TripOfferService,
@@ -163,6 +165,7 @@ export class TripofferComponent implements OnInit, AfterViewInit {
           "Fehler"
         );
       },
+      complete: () => this.loading = false
     });
   }
 

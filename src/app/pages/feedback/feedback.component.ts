@@ -33,6 +33,8 @@ export class FeedbackComponent implements OnInit, AfterViewInit {
   currentFeedback: Feedback;
   // Defines toolTipDuration
   toolTipDuration = 300;
+  // Defines loading
+  loading = true;
   // Defines header-img
   readonly headerImg = "assets/img/brand/utc.PNG";
   readonly defaultFeedbackImg = "./assets/img/feedback/feedback-default-img.jpg";
@@ -93,7 +95,8 @@ export class FeedbackComponent implements OnInit, AfterViewInit {
       },
       error: () => {
         this.toastrService.error('Die Feedbacks konnten nicht geladen werden.');
-      }
+      },
+      complete: () => this.loading = false
     });
   }
 

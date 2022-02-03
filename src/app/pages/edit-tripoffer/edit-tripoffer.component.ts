@@ -118,6 +118,8 @@ export class EditTripofferComponent implements OnInit, AfterViewInit {
   selectedEndDate: any;
   // Defines selectedDeadlineDate
   selectedDeadlineDate: any;
+  isAdd = false;
+  loading = true;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -218,6 +220,7 @@ export class EditTripofferComponent implements OnInit, AfterViewInit {
               this.currentTripoffer.erwartungenReadListTO
             );
             this.isImgSelected = true;
+            this.loading = false;
           },
         });
       } else {
@@ -491,6 +494,7 @@ export class EditTripofferComponent implements OnInit, AfterViewInit {
   /**Opens dialog to add new Bookingclass */
   addBookingclassDialog(dialogForm: any) {
     this.sharedDataService.isAddBtnClicked = true;
+    this.isAdd = true;
     this.dialog.open(dialogForm, this.dialogConfig);
   }
 
@@ -534,6 +538,7 @@ export class EditTripofferComponent implements OnInit, AfterViewInit {
 
   editBookingclass(bc: BookingClass, dialogForm: any) {
     this.sharedDataService.isAddBtnClicked = false;
+    this.isAdd = false;
     // Get bookingclass information
     this.bookingclassService.getOne(bc.id).subscribe({
       next: (result) => this.sharedDataService.changeCurrentBookinclass(result),
@@ -578,6 +583,7 @@ export class EditTripofferComponent implements OnInit, AfterViewInit {
 
   editExpectation(exp: Expectation, dialogForm: any) {
     this.sharedDataService.isAddBtnClicked = false;
+    this.isAdd = false;
     this.sharedDataService.changeCurrentExpectation(exp);
     this.dialog.open(dialogForm, this.dialogConfig);
   }

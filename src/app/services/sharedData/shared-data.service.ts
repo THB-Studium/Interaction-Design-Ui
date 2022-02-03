@@ -147,7 +147,9 @@ export class SharedDataService {
     karte_bild: null,
     landInfo: [],
     highlights: [],
-    unterkunft: []
+    unterkunft: [],
+    bodyFarbe: '',
+    headerFarbe: ''
   };
 
   private countrySource = new BehaviorSubject<Country>(this.country);

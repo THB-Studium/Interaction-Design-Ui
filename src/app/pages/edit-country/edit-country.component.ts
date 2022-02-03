@@ -75,6 +75,10 @@ export class EditCountryComponent implements OnInit, AfterViewInit {
   isAdd: boolean = true;
   //
   isModalValid = false;
+  // Defines loading
+  loading = true;
+  headercolor: string;
+  footercolor: string;
 
   constructor(
     private router: Router,
@@ -89,6 +93,8 @@ export class EditCountryComponent implements OnInit, AfterViewInit {
     private sanitizer: DomSanitizer
   ) {
     this.dialogConfiguration();
+    this.headercolor = "rgb(45, 146, 171)";
+    this.footercolor = "rgb(45, 146, 171)";
   }
 
   ngOnInit(): void {
@@ -152,7 +158,11 @@ export class EditCountryComponent implements OnInit, AfterViewInit {
             "Die Daten konnten nicht geladen werden",
             "Fehler"
           ),
-        complete: () => (this.isImgSelected = true),
+        complete: () => {
+          this.isImgSelected = true;
+          // set loading flag to false
+          this.loading = false;
+        },
       });
     });
   }
@@ -168,17 +178,23 @@ export class EditCountryComponent implements OnInit, AfterViewInit {
       accommodation_text: country.unterkunft_text,
       image: country.karte_bild,
     });
+
+    this.footercolor = country.bodyFarbe;
+    this.headercolor = country.headerFarbe;
   }
 
   updateCountry() {
     let currentImg =
       this.country.realImage.changingThisBreaksApplicationSecurity;
+
     let toUpdate = {
       id: this.country.id,
       name: this.countryForm.get("name").value,
       flughafen: Array.from(this.airportsArray),
       unterkunft_text: this.countryForm.get("accommodation_text").value,
       image: this.isImgSelected ? this.fileInputByte : currentImg,
+      bodyFarbe: this.footercolor,
+      headerFarbe: this.headercolor,
     };
 
     this.countryService.updateOne(toUpdate).subscribe({
@@ -247,7 +263,7 @@ export class EditCountryComponent implements OnInit, AfterViewInit {
 
   private onFormValuesChanged(): void {
     this.countryForm.valueChanges.subscribe({
-      next: (v) => this.isFormValid(),
+      next: () => this.isFormValid(),
     });
   }
 
@@ -549,17 +565,20 @@ export class EditCountryComponent implements OnInit, AfterViewInit {
   }
 
   getDescription(description: string) {
-    return description.length > 39 ? `${description.substring(0, 40)}...` : description;
+    return description.length > 39
+      ? `${description.substring(0, 40)}...`
+      : description;
   }
 
   setValidation(value: boolean) {
     this.isModalValid = value;
   }
 
-  // On error
-  private handleError(error: any) {
-    if (error?.message) {
-      this.errors.errorMessage = error?.message;
-    }
+  setHeaderColor(color: string) {
+    this.headercolor = color;
+  }
+
+  setFooterColor(color: string) {
+    this.footercolor = color;
   }
 }

@@ -45,8 +45,8 @@
             (removed)="removeAirport(airport)">
             {{airport}}
           </mat-chip>
-          <input placeholder="Neuer Flughafen and Enter drücken.." formControlName="airports" [matChipInputFor]="airportsList"
-            (matChipInputTokenEnd)="addAirportFromInput($event)">
+          <input placeholder="Neuer Flughafen and Enter drücken.." formControlName="airports"
+            [matChipInputFor]="airportsList" (matChipInputTokenEnd)="addAirportFromInput($event)">
         </mat-chip-list>
         <mat-hint>Beim mehrere Eingaben bitte diese mit der Enter Taste trennen.</mat-hint>
         <mat-error *ngIf="countryForm.get('airports').invalid">
@@ -64,6 +64,27 @@
         <mat-error *ngIf="countryForm.get('accommodation_text').invalid">
           Die Eingabe ist <strong>erforderlich</strong>.
         </mat-error>
+      </mat-form-field>
+    </div>
+  </div>
+  <!-- Colors -->
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <mat-form-field class="col-md-12" appearance="standard">
+        <mat-label>Header-Farbe</mat-label>
+        <input matInput class="form-control" [(colorPicker)]="headercolor" [value]="headercolor" cpWidth='auto' cpHeight="60px"
+          [style.background]="headercolor" [cpOutputFormat]="'rgba'" [required]="false"
+          (colorPickerClose)="setHeaderColor(headercolor)" />
+        <mat-hint>Wählen Sie eine Farbe für das Header aus.</mat-hint>
+      </mat-form-field>
+    </div>
+    <div class="form-group col-md-6">
+      <mat-form-field class="col-md-12" appearance="standard">
+        <mat-label>Footer-Farbe</mat-label>
+        <input matInput class="form-control" [(colorPicker)]="footercolor" [value]="footercolor" cpWidth='auto'
+          cpHeight="60px" [style.background]="footercolor" [cpOutputFormat]="'rgba'" [required]="false"
+          (colorPickerClose)="setFooterColor(footercolor)" />
+        <mat-hint>Wählen Sie eine Farbe für das Footer aus.</mat-hint>
       </mat-form-field>
     </div>
   </div>
