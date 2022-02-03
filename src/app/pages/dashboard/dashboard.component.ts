@@ -64,6 +64,8 @@ export class DashboardComponent implements OnInit {
   public tripofferList: TripOffer[];
   public currentTripoffers: CurrentOffer[];
 
+  loading = true;
+
   constructor(
     private bookingService: BookingService,
     private countryService: CountryService,
@@ -227,6 +229,8 @@ export class DashboardComponent implements OnInit {
                             )
                           : 0,
                     });
+                    // set loading flag to false
+                    this.loading = false;
                   },
                 });
               }

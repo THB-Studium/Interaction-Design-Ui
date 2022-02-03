@@ -13,7 +13,7 @@
                   </div>
                   <div class="col-auto">
                     <div class="icon icon-shape {{stat.badge_bg}} text-white rounded-circle shadow">
-                     {{stat.total}}
+                      {{stat.total}}
                     </div>
                   </div>
                 </div>
@@ -28,8 +28,9 @@
     </div>
   </div>
 </div>
-<div class="container-fluid mt--6 mb-4">
-  <div class="row mt-5">
+<div class="container-fluid mb-4 {{loading ? 'mt-5' : 'mt--6'}}">
+  <app-spinner *ngIf="loading"></app-spinner>
+  <div class="row mt-5" *ngIf="!loading">
     <div class="col-xl-8 mb-5 mb-xl-0">
       <div class="card shadow">
         <div class="card-header border-0">

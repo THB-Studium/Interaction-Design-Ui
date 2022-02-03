@@ -12,7 +12,8 @@
 </div>
 <!-- Page content -->
 <div class="container-fluid mt-3 mb-5">
-  <mat-card class="col-md-12 card-shadow">
+  <app-spinner *ngIf="loading"></app-spinner>
+  <mat-card class="col-md-12 card-shadow" *ngIf="!loading">
     <mat-card-header>
       <div mat-card-avatar>
         <button class="mb-2" mat-mini-fab color="primary" aria-label="back icon" matTooltip="Zurück zur Liste"
@@ -28,18 +29,36 @@
         <form [formGroup]="countryForm" class="col-md-12 m-0 p-0">
           <!-- Name -->
           <div class="form-row">
-            <div class="form-group col-md-12">
+            <div class="form-group col-md-4">
               <mat-form-field class="col-md-12" appearance="standard">
                 <mat-label>Name des Landes</mat-label>
-                <input matInput formControlName="name" placeholder="Name des Landes" required>
+                <input matInput formControlName="name" placeholder="Name des Landes" [style.height.px]="47" required>
                 <mat-error *ngIf="countryForm.get('name').invalid">
                   Der Name ist <strong>erforderlich</strong>.
                 </mat-error>
               </mat-form-field>
             </div>
+            <div class="form-group col-md-4">
+              <mat-form-field class="col-md-12" appearance="standard">
+                <mat-label>Header-Farbe</mat-label>
+                <input matInput class="form-control" [(colorPicker)]="headercolor" [value]="headercolor" cpWidth='auto' cpHeight="60px"
+                  [style.background]="headercolor" [cpOutputFormat]="'rgba'" [required]="false"
+                  (colorPickerClose)="setHeaderColor(headercolor)" />
+                <mat-hint>Wählen Sie eine Farbe für das Header aus.</mat-hint>
+              </mat-form-field>
+            </div>
+            <div class="form-group col-md-4">
+              <mat-form-field class="col-md-12" appearance="standard">
+                <mat-label>Footer-Farbe</mat-label>
+                <input matInput class="form-control" [(colorPicker)]="footercolor" [value]="footercolor" cpWidth='auto'
+                  cpHeight="60px" [style.background]="footercolor" [cpOutputFormat]="'rgba'" [required]="false"
+                  (colorPickerClose)="setFooterColor(footercolor)" />
+                <mat-hint>Wählen Sie eine Farbe für das Footer aus.</mat-hint>
+              </mat-form-field>
+            </div>
           </div>
           <!--image-->
-          <div class="form-row">
+          <div class="form-row mt-3">
             <div class="form-group col-md-4">
               <img *ngIf="country?.realImage" [src]="country?.realImage" class="col-md-12" alt="attached_image">
             </div>
@@ -213,7 +232,7 @@
     <mat-divider inside></mat-divider>
     <mat-card-actions>
       <div class="row justify-content-end">
-        <button class="mt-1" color="primary" mat-raised-button (click)="updateCountry()" [disabled]="!isValid">
+        <button class="mt-1" color="primary" mat-raised-button (click)="updateCountry()">
           Speichern
         </button>
         <button class="mt-1" color="accent" mat-button (click)=" navigateToCountriesList()">

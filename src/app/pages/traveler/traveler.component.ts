@@ -47,6 +47,8 @@ export class TravelerComponent implements OnInit, AfterViewInit {
   valid: boolean = false;
   // Defines dialogConfig
   dialogConfig = new MatDialogConfig();
+  // Defines loading
+  loading = true;
 
   constructor(
     private travelerService: TravelerService,
@@ -136,6 +138,8 @@ export class TravelerComponent implements OnInit, AfterViewInit {
     this.travelerList = travelers;
     this.sortByFirstname(this.travelerList);
     this.dataSource.data = this.travelerList;
+    // set loading flag
+    this.loading = false;
   }
 
   // Handle the event that has been emitted by the child. Notify if the form is valid or not.

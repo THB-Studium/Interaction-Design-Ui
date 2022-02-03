@@ -28,6 +28,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatListModule } from '@angular/material/list';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import { ColorPickerModule } from 'ngx-color-picker';
 
 import { SidebarComponent } from "./sidebar/sidebar.component";
 import { NavbarComponent } from "./navbar/navbar.component";
@@ -78,7 +79,8 @@ import { SpinnerComponent } from './spinner/spinner.component';
     MatToolbarModule,
     MatProgressBarModule,
     MatListModule,
-    NgxMatSelectSearchModule
+    NgxMatSelectSearchModule,
+    ColorPickerModule
   ],
   declarations: [
     FooterComponent,
