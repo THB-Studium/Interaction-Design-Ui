@@ -101,8 +101,6 @@ export class LearnMoreComponent implements OnInit, AfterViewChecked {
         this.reiseAngebotsService.getOne(params.landId).subscribe({
           next: (current: TripOffer) => {
             this.currentTripOffer = current;
-            console.log('LearnMoreComponent::trip-Offers: ', this.currentTripOffer);
-
             if(this.currentTripOffer?.id) {
               this.bookingClassesDataSource = new MatTableDataSource(this.currentTripOffer.buchungsklassenReadListTO)
             }
@@ -115,7 +113,6 @@ export class LearnMoreComponent implements OnInit, AfterViewChecked {
                 let objectURL = "data:image/png;base64," + land.karte_bild;
                 land.realImage = this.sanitizer.bypassSecurityTrustUrl(objectURL);
                 this.currentLand = land;
-                console.log('LearnMoreComponent::land', this.currentLand)
 
                 land.highlights.map(highlight => {
                   return highlight.realImage = this.getImage(highlight.bild);

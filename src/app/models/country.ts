@@ -12,4 +12,6 @@ export class Country {
   public highlights: Highlight[];
   public unterkunft: Accommodation[];
   public realImage?: any;
+  public headerFarbe: string;
+  public bodyFarbe: string;
 }

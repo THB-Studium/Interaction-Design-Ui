@@ -67,6 +67,8 @@ export class BookingComponent implements OnInit, AfterViewInit {
   isAdd = true;
   // Defines currentOffers
   currentOffers: TripOffer[];
+  // Defines loading
+  loading = true;
 
   constructor(
     private bookingService: BookingService,
@@ -160,6 +162,8 @@ export class BookingComponent implements OnInit, AfterViewInit {
     this.bookingList = bookings;
     this.sortByDate(this.bookingList);
     this.dataSource.data = this.bookingList;
+    // set loading flag
+    this.loading = false;
   }
 
   addBookingDialog(dialogForm: any) {

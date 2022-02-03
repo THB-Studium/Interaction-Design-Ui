@@ -43,6 +43,8 @@ export class AdminComponent implements OnInit, AfterViewInit, OnCommit {
   dialogConfig = new MatDialogConfig();
   // Defines copyEmail
   copyEmail: string;
+  // Defines loading
+  loading = true;
 
   constructor(
     private adminService: AdminService,
@@ -132,6 +134,8 @@ export class AdminComponent implements OnInit, AfterViewInit, OnCommit {
     this.adminList = admins;
     this.sortByFirstName(this.adminList);
     this.dataSource.data = this.adminList;
+    // set loading flag
+    this.loading = false;
   }
 
   // Dialog to add new admin

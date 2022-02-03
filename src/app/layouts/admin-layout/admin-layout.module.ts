@@ -31,6 +31,7 @@ import { MatProgressBarModule } from "@angular/material/progress-bar";
 import { MatListModule } from "@angular/material/list";
 import { MatExpansionModule } from "@angular/material/expansion";
 import { MatChipsModule } from '@angular/material/chips';
+import { ColorPickerModule } from 'ngx-color-picker';
 
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { ComponentsModule } from "src/app/components/components.module";
@@ -81,7 +82,8 @@ import { UserProfileComponent } from "../../pages/user-profile/user-profile.comp
     MatProgressBarModule,
     MatListModule,
     MatExpansionModule,
-    MatChipsModule
+    MatChipsModule,
+    ColorPickerModule
   ],
   declarations: [
     AdminComponent,

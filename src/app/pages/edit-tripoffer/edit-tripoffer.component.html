@@ -12,7 +12,8 @@
 </div>
 <!-- Page content -->
 <div class="container-fluid mt-3 mb-5">
-  <mat-card class="m-0 card-shadow">
+  <app-spinner *ngIf="loading"></app-spinner>
+  <mat-card class="m-0 card-shadow" *ngIf="!loading">
     <mat-card-header>
       <div class="row">
         <button class="mb-2" mat-mini-fab color="primary" aria-label="back icon" matTooltip="Zurück zur Liste"
@@ -248,26 +249,26 @@
       <mat-divider inside></mat-divider>
       <!--bookingclass list-->
       <div class="row mt-2" *ngIf="currentTripoffer?.buchungsklassenReadListTO">
-        <div class="card shadow col-sm-12 col-md-4 m-1 border-secondary" *ngFor="let bc of currentTripoffer?.buchungsklassenReadListTO">
-          <div class="card-body">
-            <h1 class="card-title">{{bc.type}}</h1>
-            <mat-divider inside></mat-divider>
-            <h4 class="card-subtitle text-muted pt-3">Preis: {{bc.preis}}.-</h4>
-            <mat-divider inside></mat-divider>
-            <div class="row">
-              <div class="mt-3">
-                <label class="mr-3" matTooltip="Editieren" matTooltipHideDelay="{{toolTipDuration}}"
-                  (click)="editBookingclass(bc, bookingclassDialog)">
-                  <em class="fa fa-pen text-primary"></em>
-                </label>
-                <label matTooltip="Entfernen" matTooltipHideDelay="{{toolTipDuration}}"
-                  (click)="deleteBookingclassDialog(bc, deleteBcDialog)">
-                  <em class="fa fa-trash text-red"></em>
-                </label>
-              </div>
-            </div>
-          </div>
-        </div>
+        <mat-card class="col-sm-12 col-md-4 mb-3 border-secondary"
+          *ngFor="let bc of currentTripoffer?.buchungsklassenReadListTO">
+          <mat-card-title>{{bc.type}}</mat-card-title>
+          <mat-card-subtitle class="font-weight-400 text-info">Preis: {{bc.preis}}.-</mat-card-subtitle>
+          <mat-divider inside></mat-divider>
+          <mat-card-content>
+            <p class="pt-2">{{bc.description}}</p>
+          </mat-card-content>
+          <mat-divider inside></mat-divider>
+          <mat-card-actions align="end">
+            <button mat-button class="mr-3" matTooltip="Editieren" matTooltipHideDelay="{{toolTipDuration}}"
+              (click)="editBookingclass(bc, bookingclassDialog)">
+              Editieren
+            </button>
+            <button mat-button matTooltip="Entfernen" matTooltipHideDelay="{{toolTipDuration}}"
+              (click)="deleteBookingclassDialog(bc, deleteBcDialog)">
+              Entfernen
+            </button>
+          </mat-card-actions>
+        </mat-card>
       </div>
       <!--Expectations-->
       <div class="row">
@@ -406,7 +407,7 @@
 </div>
 
 <ng-template #bookingclassDialog>
-  <h1 mat-dialog-title>Neue Buchungsklasse hinzufügen</h1>
+  <h1 mat-dialog-title>{{isAdd ? 'Buchungsklasse hinzufügen' : 'Buchungsklasse editieren'}}</h1>
   <mat-divider></mat-divider>
   <div mat-dialog-content>
     <app-bookingclass-form (notifyFormIsValid)="isModalFormValid($event)" class="col-md-12"></app-bookingclass-form>
