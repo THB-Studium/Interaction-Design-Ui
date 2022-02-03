@@ -47,6 +47,10 @@ p {
   min-height: 60vh;
 }
 
+.cdk-overlay-container {
+  z-index: 9999 !important;
+}
+
 //.carousel-control-next-icon, .carousel-control-prev-icon {
 //  color: land-color("black-color") !important;
 //}
