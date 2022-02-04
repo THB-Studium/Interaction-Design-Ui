@@ -1,12 +1,10 @@
-import {AfterViewChecked, AfterViewInit, Component, OnInit} from '@angular/core';
+import {AfterViewChecked, Component, OnInit} from '@angular/core';
 import { ActivatedRoute } from "@angular/router";
 
 import { CountriesColors } from "../../shared/datas/countries-colors";
 import { SharedDataService } from "../../services/sharedData/shared-data.service";
-import { Highlights } from "../../shared/datas/highlights";
 import { MatDialog } from '@angular/material/dialog';
 import { BookingFormComponent } from 'src/app/components/forms/booking-form/booking-form.component';
-import { BookingClassen } from "../../shared/datas/bookingClassen";
 import { BookingClass } from "../../models/bookingClass";
 import { TripOfferService } from 'src/app/services/trip-offer/trip-offer.service';
 import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
