@@ -105,10 +105,6 @@ button,
   min-width: 300px;
 }
 
-.mat-card-img {
-  height: 50%;
-}
-
 .fakten-check-contents mat-card {
   padding: 2em;
   margin-bottom: 3em;
@@ -166,9 +162,6 @@ button,
 /*** About the responcivity ***/
 
 @media screen and (max-width: 1200px) {
-  body {
-    padding-top: 6.5em;
-  }
 }
 
 @media screen and (max-width: 900px) {
