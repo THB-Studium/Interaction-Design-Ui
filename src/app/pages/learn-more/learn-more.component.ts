@@ -24,6 +24,11 @@ export class LearnMoreComponent implements OnInit, AfterViewChecked, OnDestroy {
   currentLand: Country
   currentTripOffer: TripOffer
 
+  bilder = [
+    'blaue-lagune.jpg', 'geysir.jpg', 'joekursalon.jpg',
+    'polarlicht.jpg', 'reykjavik.jpg', 'vulkan-hekia-and-katla.jpg'
+  ]
+
   // for style and view setting:
   backgroundColor: any
   fontColor: any
