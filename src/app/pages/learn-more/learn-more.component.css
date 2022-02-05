@@ -91,7 +91,7 @@ button,
 
 .fakten-check-contents mat-card {
   padding: 2em;
-  min-width: 400px;
+  margin-bottom: 3em;
 }
 
 #mat-card-group-1 {
@@ -115,13 +115,18 @@ button,
   margin-bottom: 4em;
 }
 
-.kosten table, .erwartungen table {
+.kosten table {
   width: 100%;
   height: 100%;
 }
 
 .kosten table th {
   font-size: 18px;
+}
+
+.row app-stars {
+  position: relative;
+  top: 4px;
 }
 
 .ablauf-contents h3 {
