@@ -1,8 +1,6 @@
-export class StandardColors {
-  public static readonly data: any = {
-    transparent: 'transparent',
-    blue: '#2d92ab',
-    white: '#fff',
-    black: '#000',
-  }
-}
+export const StandardColors = {
+  Transparent: "transparent",
+  Blue: "#2d92ab",
+  White: "#fff",
+  Black: "#000",
+};

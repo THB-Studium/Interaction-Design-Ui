@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { Router } from "@angular/router";
-import { StandardColors } from "../../shared/datas/standard-colors";
+
 import { SharedDataService } from "../../services/sharedData/shared-data.service";
 
 @Component({
@@ -9,31 +9,23 @@ import { SharedDataService } from "../../services/sharedData/shared-data.service
   styleUrls: ["./auth-layout.component.scss"],
 })
 export class AuthLayoutComponent implements OnInit, OnDestroy {
-  headerBgColor: any;
-  footerBgColor: any;
-  footerBtnColor: any;
+  headerBgColor: string;
+  footerBgColor: string;
   isCollapsed = true;
 
   constructor(
     private router: Router,
     private sharedDataService: SharedDataService
   ) {
-    this.sharedDataService.currentBackgroundColor.subscribe((value) => {
-      this.headerBgColor =
-        value.header.background !== "" ? value.header : undefined;
-      this.footerBgColor =
-        value.bodyAndFooter.background !== ""
-          ? value.bodyAndFooter
-          : { background: StandardColors.data.blue };
-      this.footerBtnColor = { color: this.footerBgColor.background };
-    });
+    this.getCurrentPageComponentsBackgroundColors();
   }
 
   ngOnInit() {
     var html = document.getElementsByTagName("html")[0];
     html.classList.add("auth-layout");
     var body = document.getElementsByTagName("body")[0];
-    body.classList.add("bg-priimary");
+    body.classList.add("bg-white");
+    
     this.router.events.subscribe((event) => {
       this.isCollapsed = true;
     });
@@ -46,11 +38,10 @@ export class AuthLayoutComponent implements OnInit, OnDestroy {
     body.classList.remove("bg-primary");
   }
 
-  test() {
-    document.addEventListener("DOMContentLoaded", function () {
-      let footerheight = document.querySelector("footer").offsetHeight;
-      //document.querySelector("body").style.paddingBottom = footerheight;
+  getCurrentPageComponentsBackgroundColors() {
+    this.sharedDataService.currentBackgroundColors.subscribe((value) => {
+      this.headerBgColor = value.header;
+      this.footerBgColor = value.bodyAndFooter;
     });
   }
-
 }
