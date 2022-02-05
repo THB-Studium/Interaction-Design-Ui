@@ -1,29 +1,5 @@
-body {
-  padding-top: 3rem;
-  padding-bottom: 3rem;
-
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
-header {
-  height: auto;
-}
-
-main {
-  height: auto;
-  overflow-x: hidden;
-}
-
 footer {
   align-items: center;
   width: 100%;
-  padding: 0 10px;
-  background: rgb(45, 146, 171);
-}
-
-.wrapper {
-  flex: 1;
+  padding: 5em 3em 1em 3em;
 }

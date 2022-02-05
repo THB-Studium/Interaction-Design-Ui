@@ -1,114 +1,56 @@
-<div
-  class="container footer text-center text-md-left"
-  [ngStyle]="footerBgColor"
->
-  <div class="row text-center text-md-left">
-    <div class="col-md-4 col-lg-4 col-xl-4 mx-auto mb-3">
+<div class="container-fluid">
+  <!-- top -->
+  <div class="row">
+    <div class="col-sm-12 col-md-4 col-xl-4 mx-auto justify-content-start mb-5">
       <h3 class="text-white">Kontakt</h3>
       <p class="text-white">Julia Schnitzer</p>
       <p class="text-white">post@university-travel-club.org</p>
     </div>
-    <div class="col-md-4 col-lg-4 col-xl-4 mx-auto mb-3">
-      <h3 class="text-white">Newsletter abonnieren</h3>
-      <div class="row">
-        <div class="col-md-8">
-          <Input
-            type="text"
-            placeholder="Enter Email"
-            class="form-control input-form"
-            required
-          />
+    <div class="col-sm-12 col-md-4 col-xl-4 mx-auto mb-5">
+      <h3 class="text-white d-flex justify-content-sm-start justify-content-md-center">Newsletter abonnieren</h3>
+      <div class="row justify-content-sm-start justify-content-md-center">
+        <div class="d-flex justify-content-start mb-1">
+          <input type="text" placeholder="E-Mail Adresse" class="form-control input-form" [formControl]="emailCtrl"
+            required />
         </div>
-        <div class="col-md-4">
-          <button class="btn submit">ABONNIEREN</button>
+        <div class="d-flex justify-content-end">
+          <button class="btn btn-sm btn-white ml-3" (click)="abonnieren()">ABONNIEREN</button>
         </div>
+        <small *ngIf="emailCtrl.value.length > 5 && !emailCtrl.valid" class="text-white">
+          Geben Sie eine gültige E-Mail ein.
+        </small>
       </div>
     </div>
-
-    <!--<div class="row">
-        <div class="col-8 input-form">
-          <form [formGroup]="emailForm" class="col-md-12">
-            <mat-form-field class="col-md-12" appearance="fill">
-              <mat-label>E-mail Adresse</mat-label>
-              <div class="input">
-                <input
-                  matInput
-                  type="email"
-                  formControlName="email"
-                  placeholder="E-Mail Address"
-                  required
-                />
-                <mat-icon matSuffix>mail_outline</mat-icon>
-                <mat-hint>Input the fully qualified email address</mat-hint>
-                <mat-error *ngIf="emailForm.get('email').errors?.required"
-                  >Email is required</mat-error
-                >
-              </div>
-              <mat-error *ngIf="emailForm.get('email').errors?.pattern"
-                >Please enter valid email</mat-error
-              >
-            </mat-form-field>
-          </form>
-        </div>
-        <div class="col-4">
-          <button
-            type="button"
-            (click)="abonnieren()"
-            class="btn btn-outline-light btn-lg"
-            [ngStyle]="btnColor"
-          >
-            ABONNIEREN
-          </button>
-        </div>
-      </div>-->
-
-    <div class="col-md-4 col-lg-4 col-xl-4 mx-auto mb-3 mt-4">
-      <ul>
+    <div class="col-sm-12 col-md-4 col-xl-4 mx-auto d-flex justify-content-sm-start justify-content-md-end">
+      <ul class="icons">
         <li class="mb-4">
-          <a
-            class="box-icons"
-            href="https://www.facebook.com/universitytravelclub"
-            class="text-white"
-            ><i class="bi bi-facebook mr-3">
-              <span class="text-icon">Facebook</span>
-            </i>
+          <a class="box-icons" href="https://www.facebook.com/universitytravelclub" class="text-white">
+            <i class="fab fa-facebook-f"></i><span class="text-icon text-white ml-2">Facebook</span>
           </a>
         </li>
         <li>
           <a href="https://www.instagram.com/utcgermany/" class="text-white">
-            <i class="bi bi-instagram mr-3"
-              ><span class="text-icon">Instagram</span></i
-            >
+            <i class="fab fa-instagram"></i><span class="text-icon text-white ml-2">Instagram</span>
           </a>
         </li>
       </ul>
     </div>
-  </div>
-  <hr class="mb-4" />
-  <div class="row align-items-center">
-    <div class="col-md-7 col-lg-8">
-      <p class="mt-5 text-white footer-copy-r">
-        &copy; COPYRIGHT {{ currentDate | date: "yyyy" }} - UNIVERSITY TRAVEL
-        CLUB
-      </p>
+  </div><!--/.top-->
+  <!-- bottom -->
+  <div class="row mt-6">
+    <div class="col-md-6 d-flex justify-content-start mb-2">
+      <small class="text-white">&copy; COPYRIGHT {{ currentDate | date: "yyyy" }} - UNIVERSITY TRAVEL CLUB</small>
     </div>
-
-    <div class="col-md-5 col-lg-4 mt-5">
-      <div class="text-center text-md-rigth">
-        <a href="" class="text-white">Impressum</a>
-
-        <a href="" class="text-white">Datenschutz</a>
-
-        <a
-          href="#"
-          class="text-white"
-          data-bs-toggle="tooltip"
-          data-bs-placement="top"
-          title="Back to top"
-        >
-          <i class="bi bi-arrow-up-circle-fill"></i>
-        </a>
-      </div>
+    <div class="col-md-6 d-flex justify-content-sm-start justify-content-md-end">
+      <small class="d-flex">
+        <a href="" class="text-white">IMPRESSUM</a>
+      </small>
+      <small class="d-flex">
+        <a href="" class="text-white ml-4">DATENSCHUTZ</a>
+      </small>
     </div>
+    <a [routerLink]="['#']" target="_self" class="text-white" data-bs-toggle="tooltip" data-bs-placement="top" title="Back to top">
+      <i class="bi bi-arrow-up-circle-fill"></i>
+    </a>
   </div>
 </div>

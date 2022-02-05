@@ -1,4 +1,4 @@
-import {AfterViewChecked, Component, OnInit} from '@angular/core';
+import {AfterViewChecked, Component, OnDestroy, OnInit} from '@angular/core';
 import { ActivatedRoute } from "@angular/router";
 
 import { CountriesColors } from "../../shared/datas/countries-colors";
@@ -18,7 +18,7 @@ import { Country } from "../../models/country";
   templateUrl: './learn-more.component.html',
   styleUrls: ['./learn-more.component.css']
 })
-export class LearnMoreComponent implements OnInit, AfterViewChecked {
+export class LearnMoreComponent implements OnInit, AfterViewChecked, OnDestroy {
   countries: Array<any> = []
   tripOffers: Array<any> = []
   currentLand: Country
@@ -60,6 +60,14 @@ export class LearnMoreComponent implements OnInit, AfterViewChecked {
     if (height1 && height2) {
       this.matCardHeight = height1 > height2 ? { 'height.px': height1 } : { 'height.px': height2 }
     }
+  }
+
+  ngOnDestroy(): void {
+    // Reset the color
+    this.sharedDataService.changeCurrentBackgroundColors({
+      header: '',
+      bodyAndFooter: '',
+    });
   }
 
   checkIfExpanded(index: number): boolean {
@@ -107,7 +115,6 @@ export class LearnMoreComponent implements OnInit, AfterViewChecked {
 
             this.countriesService.getOne(this.currentTripOffer.landId).subscribe({
               next: (land: Country) => {
-
                 let objectURL = "data:image/png;base64," + land.karte_bild;
                 land.realImage = this.sanitizer.bypassSecurityTrustUrl(objectURL);
                 this.currentLand = land;
@@ -115,7 +122,9 @@ export class LearnMoreComponent implements OnInit, AfterViewChecked {
                 land.highlights.map(highlight => {
                   return highlight.realImage = this.getImage(highlight.bild);
                 });
-
+              },
+              complete: () => {
+                // set navbar and footer background
                 this.setStandardColors();
               }
             });
@@ -135,11 +144,10 @@ export class LearnMoreComponent implements OnInit, AfterViewChecked {
     this.matCardShadowHighlight = { 'box-shadow': '1px 1px 5px 1px ' + currentBgColor?.bodyBgColor }
 
     // To transfer standard colours to other components
-    const sharedBgColor = {
-      header: { background: currentBgColor?.headerBgColor },
-      bodyAndFooter: { background: currentBgColor?.bodyBgColor },
-    }
-    this.sharedDataService.changeCurrentBackgroundColor(sharedBgColor)
+    this.sharedDataService.changeCurrentBackgroundColors({
+      header: this.currentLand?.headerFarbe,
+      bodyAndFooter: this.currentLand?.bodyFarbe,
+    });
 
     this.loadFinished = true
   }

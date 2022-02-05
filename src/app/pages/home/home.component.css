@@ -1,81 +1,6 @@
-/*######## Carousel ########*/
-.fit-img {
-  height: 100vh;
-}
-
-ngb-carousel {
-  max-width: 100%;
-  z-index: 0;
-  top: 0;
-}
-
-ngb-carousel img {
-  width: 100%;
-  outline: none;
-}
-
-ngb-carousel {
-  width: inherit;
-  height: inherit;
-}
-
-.carousel-inner {
-  overflow: visible;
-}
-
-.carousel-item {
-  display: flex !important;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 1.2s ease-in-out, visibility 1.2s;
-  z-index: -1;
-  height: 100vh;
-  min-height: 300px;
-}
-
-.carousel-item.active {
-  opacity: 1;
-  visibility: visible;
-  z-index: 10;
-}
-
-.carousel-control-prev {
-  z-index: 20;
-}
-
-.carousel-control-next {
-  z-index: 20;
-}
-
-.carousel-indicators {
-  z-index: 20;
-}
-
-.carousel-caption {
-  text-align: left;
-  justify-content: left;
-  right: 5%;
-  left: 6%;
-  padding-top: 20px;
-  padding-bottom: 20px;
-  color: #fff;
-}
-
-.carousel-caption h1 {
-  color: #fff;
-}
-
-.carousel-caption p {
-  margin: 10px;
-  font-size: 1.4rem;
-  text-align: left;
-  padding-left: 0;
-  margin-left: 0;
-}
-
 /*######## Reiseangebot ########*/
 .section-contents-RG {
-  margin-top: 5em;
+  margin-top: 2em;
   padding: 3em 2em;
 }
 
@@ -262,93 +187,33 @@ mat-card {
   cursor: pointer;
 }
 
+.set-left {
+  margin-left: -3em;
+  margin-bottom: 2em;
+}
+
 /*##################################### Display Screen settings ###################################*/
-@media screen and (min-width: 1200px) and (max-width: 1400px) {
-  .carousel-caption h1 {
-    font-size: 50px !important;
-  }
-
-  .carousel-caption p {
-    font-size: 1.1rem;
-    padding-left: 0;
-    margin-left: 0;
-  }
-}
-
-@media only screen and (max-width: 1200px) {
-  .fit-img {
-    height: auto;
-  }
-
-  .carousel-caption p {
-    font-size: 1.2rem;
-    padding-left: 0;
-    margin-left: 0;
-  }
-}
-
-@media screen and (min-width: 1008px) and (max-width: 1200px) {
-  .carousel-caption {
-    bottom: 3%;
-  }
-
-  .carousel-caption h1 {
-    font-size: 47px !important;
-  }
-
-  .carousel-caption p {
-    font-size: 1.2rem;
-    padding-left: 0;
-    margin-left: 0;
-  }
-}
-
 @media screen and (min-width: 993px) and (max-width: 1007px) {
-  .carousel-caption h1 {
-    font-size: 42px !important;
-  }
-
-  .carousel-caption p {
-    font-size: 1.1rem;
-    padding-left: 0;
-    margin-left: 0;
+  .text-top-right {
+    left: 93%;
   }
 }
 
 @media screen and (max-width: 992px) {
-  .carousel-caption h1 {
-    font-size: 39px !important;
+  .text-top-right {
+    left: 90%;
+  }
+  
+  .set-content-bottom {
+    position: relative !important;
   }
 
-  .carousel-caption p {
-    font-size: 1rem;
-    padding-left: 0;
-    margin-left: 0;
+  .set-left {
+    margin-left: auto !important;
   }
 }
 
 @media screen and (max-width: 778px) {
-  .carousel-caption h1 {
-    font-size: 35px !important;
-  }
-
-  .carousel-caption p {
-    font-size: 1rem;
-    padding-left: 0;
-    margin-left: 0;
-  }
-
-  .offers:hover .overlay em {
-    display: none;
-  }
-
-  .offers:hover .overlay .btn-link {
-    top: 70%;
-    font-size: 12px;
-    padding: 15px 15px;
-    display: inline;
-  }
-
   .text-bottom-left h2 {
     font-size: 2rem !important;
   }
@@ -363,114 +228,58 @@ mat-card {
 }
 
 @media screen and (max-width: 767px) {
-  .carousel-caption h1 {
-    text-align: center;
+  .text-top-right {
+    left: 88%;
   }
-
-  .carousel-caption p {
-    text-align: center;
-  }
-
 }
 
 @media screen and (max-width: 645px) {
-  .carousel-caption h1 {
-    font-size: 28px !important;
-  }
-
-  .carousel-caption p {
-    font-size: 0.8rem;
-    padding-left: 0;
-    margin-left: 0;
-  }
-}
-
-@media screen and (max-width: 558px) {
-  .carousel-caption h1 {
-    font-size: 25px !important;
-  }
-
-  .carousel-caption p {
-    font-size: 0.7rem;
-    padding-left: 0;
-    margin-left: 0;
+  .text-top-right {
+    left: 86%;
   }
 }
 
 @media screen and (max-width: 489px) {
-  .carousel-caption h1 {
-    font-size: 20px !important;
-  }
-
-  .carousel-caption p {
-    font-size: 0.6rem;
-    padding-left: 0;
-    margin-left: 0;
+  .text-top-right {
+    left: 84%;
   }
 }
 
 @media screen and (max-width: 423px) {
-  .carousel-caption h1 {
-    margin: 0;
-    font-size: 18px !important;
-  }
-
-  .carousel-caption p {
-    font-size: 10px;
-    padding-left: 0;
-    padding-top: 0;
-    margin-left: 0;
-    display: none;
+  .text-top-right {
+    bottom: 86%;
+    left: 80%;
   }
 }
 
 @media screen and (max-width: 378px) {
-  .offers:hover .overlay .btn-link {
-    font-size: 10px;
-    padding: 15px 15px;
-  }
-
   .text-bottom-left h2 {
     font-size: 1.8rem !important;
   }
 }
 
 @media screen and (max-width: 342px) {
-  .carousel-caption h1 {
-    font-size: 16px !important;
-    text-align: center;
-  }
-
-  .carousel-caption p {
-    display: none;
+  .text-top-right {
+    bottom: 85%;
+    left: 78%;
   }
 }
 
 @media screen and (max-width: 337px) {
-  .carousel-caption h1 {
-    font-size: 14px !important;
-    text-align: center;
-  }
-
-  .offers:hover .overlay .btn-link {
-    font-size: 10px;
-    padding: 10px 10px;
-  }
-
   .text-bottom-left h2 {
     font-size: 1.6rem !important;
+  }
+
+  .text-top-right {
+    bottom: 80%;
+    left: 72%;
   }
 }
 
 @media screen and (max-width: 274px) {
-  .carousel-caption h1 {
-    font-size: 12px !important;
-    text-align: center;
+  .text-top-right {
+    bottom: 70%;
+    left: 60%;
   }
 }
 
-@media screen and (max-width: 240px) {
-  .carousel-caption h1 {
-    display: none;
-  }
-}

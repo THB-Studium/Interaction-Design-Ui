@@ -1,7 +1,3 @@
-.navbar-bg {
-  background-color: #2d92ab;
-}
-
 .navbar {
   height: auto !important;
 }
@@ -33,9 +29,6 @@ img {
   max-width: 10em !important;
 }
 
-.fixed-top {
-  position: absolute;
-}
 
 /*############################### Screen settings ####################################*/
 @media screen and (min-width: 992px) and (max-width: 1200px) {
