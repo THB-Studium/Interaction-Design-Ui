@@ -1,16 +1,17 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { AuthentificationService } from 'src/app/services/authentification/authentification.service';
 import { TokenstorageService } from 'src/app/services/tokenstorage/tokenstorage.service';
+import { SharedDataService } from "src/app/services/sharedData/shared-data.service";
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit, AfterViewInit {
+export class LoginComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // Defines loginForm
   loginForm = new FormGroup({
@@ -33,10 +34,16 @@ export class LoginComponent implements OnInit, AfterViewInit {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private authService: AuthentificationService,
-    private tokenStorageService: TokenstorageService
+    private tokenStorageService: TokenstorageService,
+    private sharedDataService: SharedDataService
   ) { }
 
   ngOnInit() {
+    // reset footer background color
+    this.sharedDataService.changeCurrentBackgroundColors({
+      header: '',
+      bodyAndFooter: '',
+    });
     // if the user is already connected and try to access the login page, then redirect to the dashboard
     if (this.isConnected()) {
       this.router.navigate([this.uri]);
@@ -47,6 +54,14 @@ export class LoginComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.onFormChanged();
+  }
+
+  ngOnDestroy(): void {
+    // Reset the color
+    this.sharedDataService.changeCurrentBackgroundColors({
+      header: '',
+      bodyAndFooter: '',
+    });
   }
 
   private initForm() {

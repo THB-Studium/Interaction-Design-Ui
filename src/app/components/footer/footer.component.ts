@@ -1,10 +1,8 @@
-import { Component, Input, OnInit } from "@angular/core";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { Component, OnInit } from "@angular/core";
+import { FormControl, Validators } from "@angular/forms";
 
 import { ToastrService } from "ngx-toastr";
 import { NewsLettersService } from "src/app/services/news-letters/news-letters.service";
-
-import { Pattern } from "src/app/variables/pattern";
 
 @Component({
   selector: "app-footer",
@@ -12,38 +10,32 @@ import { Pattern } from "src/app/variables/pattern";
   styleUrls: ["./footer.component.scss"],
 })
 export class FooterComponent implements OnInit {
-  @Input() btnColor: any;
-  @Input() footerBgColor: any;
   currentDate: Date = new Date();
 
-  emailForm: FormGroup;
+  emailCtrl: FormControl;
 
   constructor(
-    private fb: FormBuilder,
     private toastr: ToastrService,
     private newLetterService: NewsLettersService
-  ) {}
-
-  ngOnInit() {
-    this.emailForm = this.fb.group({
-      email: ["", [Validators.required, Validators.pattern(Pattern.email)]],
-    });
+  ) {
+    this.emailCtrl = new FormControl('', [Validators.email, Validators.required]);
   }
 
-  abonnieren() {
-    let subscribe = {
-      email: this.emailForm.get("email").value,
-      active: true,
-    };
+  ngOnInit() {}
 
-    this.newLetterService.subscribe(subscribe).subscribe({
-      next: () => this.toastr.success("Successfully subscribed", "Success"),
-      error: () => {
-        this.toastr.success(
-          "Error while subscribing to the newsletters!",
-          "Error"
-        )
-      }
-    });
+  abonnieren() {
+    if (this.emailCtrl.valid) {
+      let subscribe = {
+        email: this.emailCtrl.value,
+        active: true,
+      };
+
+      this.newLetterService.subscribe(subscribe).subscribe({
+        next: () => this.toastr.success("Sie sind abonniert."),
+        error: () => {
+          this.toastr.error("Ihr Abonnement ist fehlgeschlagen");
+        },
+      });
+    }
   }
 }
