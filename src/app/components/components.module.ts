@@ -47,6 +47,7 @@ import { BookingFormComponent } from './forms/booking-form/booking-form.componen
 import { FeedbackFormComponent } from './forms/feedback-form/feedback-form.component';
 import { EditBookingFormComponent } from './forms/edit-booking-form/edit-booking-form.component';
 import { SpinnerComponent } from './spinner/spinner.component';
+import { StarsComponent } from './stars/stars.component';
 
 @NgModule({
   imports: [
@@ -100,25 +101,27 @@ import { SpinnerComponent } from './spinner/spinner.component';
     BookingFormComponent,
     EditBookingFormComponent,
     SpinnerComponent,
+    StarsComponent,
   ],
-  exports: [
-    FooterComponent,
-    NavbarComponent,
-    SidebarComponent,
-    AdminFormComponent,
-    TravelerFormComponent,
-    TripofferFormComponent,
-    ExpectationFormComponent,
-    BookingclassFormComponent,
-    CountryFormComponent,
-    HighlightFormComponent,
-    AccommodationFormComponent,
-    CountryInformationFormComponent,
-    NavbarGuestComponent,
-    FeedbackFormComponent,
-    BookingFormComponent,
-    EditBookingFormComponent,
-    SpinnerComponent
-  ],
+    exports: [
+        FooterComponent,
+        NavbarComponent,
+        SidebarComponent,
+        AdminFormComponent,
+        TravelerFormComponent,
+        TripofferFormComponent,
+        ExpectationFormComponent,
+        BookingclassFormComponent,
+        CountryFormComponent,
+        HighlightFormComponent,
+        AccommodationFormComponent,
+        CountryInformationFormComponent,
+        NavbarGuestComponent,
+        FeedbackFormComponent,
+        BookingFormComponent,
+        EditBookingFormComponent,
+        SpinnerComponent,
+        StarsComponent
+    ],
 })
 export class ComponentsModule {}

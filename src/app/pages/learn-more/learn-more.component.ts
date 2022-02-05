@@ -1,12 +1,10 @@
-import {AfterViewChecked, AfterViewInit, Component, OnInit} from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { ActivatedRoute } from "@angular/router";
 
 import { CountriesColors } from "../../shared/datas/countries-colors";
 import { SharedDataService } from "../../services/sharedData/shared-data.service";
-import { Highlights } from "../../shared/datas/highlights";
 import { MatDialog } from '@angular/material/dialog';
 import { BookingFormComponent } from 'src/app/components/forms/booking-form/booking-form.component';
-import { BookingClassen } from "../../shared/datas/bookingClassen";
 import { BookingClass } from "../../models/bookingClass";
 import { TripOfferService } from 'src/app/services/trip-offer/trip-offer.service';
 import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
@@ -20,7 +18,7 @@ import { Country } from "../../models/country";
   templateUrl: './learn-more.component.html',
   styleUrls: ['./learn-more.component.css']
 })
-export class LearnMoreComponent implements OnInit, AfterViewChecked {
+export class LearnMoreComponent implements OnInit {
   countries: Array<any> = []
   tripOffers: Array<any> = []
   currentLand: Country
@@ -31,7 +29,6 @@ export class LearnMoreComponent implements OnInit, AfterViewChecked {
   fontColor: any
   matCardShadow: any
   matCardShadowHighlight: any
-  matCardHeight: any
 
   panelOpenState = false;
   anmeldeFristVorbei = false;
@@ -53,15 +50,6 @@ export class LearnMoreComponent implements OnInit, AfterViewChecked {
 
   ngOnInit(): void {
     this.setCurrentLandAndTO();
-  }
-
-  ngAfterViewChecked(): void {
-    const height1 = document.getElementById('mat-card-group-1')?.getBoundingClientRect()?.height
-    const height2 = document.getElementById('mat-card-group-2')?.getBoundingClientRect()?.height
-
-    if (height1 && height2) {
-      this.matCardHeight = height1 > height2 ? { 'height.px': height1 } : { 'height.px': height2 }
-    }
   }
 
   checkIfExpanded(index: number): boolean {
