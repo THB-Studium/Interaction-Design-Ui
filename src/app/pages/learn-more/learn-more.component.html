@@ -1,5 +1,5 @@
 <body>
-  <a id="main-page-btn" routerLinkActive="active" [routerLink]="['/dashboard']">< ZURÜCK ZUR MAINPAGE</a>
+  <a id="main-page-btn" routerLinkActive="active" [routerLink]="['/dashboard']">&lt; ZURÜCK ZUR MAINPAGE</a>
 
   <!-- Spinner -->
   <app-spinner *ngIf="!loadFinished"></app-spinner>
@@ -25,13 +25,18 @@
         </p>
         <h3 *ngIf = "currentTripOffer?.freiPlaetze <= 0" class="set-content-right"> Keine Plätze mehr !</h3>
         <h3 *ngIf = "anmeldeFristVorbei" class="set-content-right"> Der Anmeldefrist ist vorbei !</h3>
-        <button mat-raised-button class="set-content-right" [ngStyle]="backgroundColor" (click)="bookingFormDialog()" [disabled]="currentTripOffer?.freiPlaetze <= 0 || anmeldeFristVorbei">PLATZ RESERVIEREN ></button>
+        <button mat-button class="booking-btn"
+                [ngStyle]="backgroundColor" (click)="bookingFormDialog()"
+                [disabled]="currentTripOffer?.freiPlaetze <= 0 || anmeldeFristVorbei">
+          <span id="reserve-place">PLATZ RESERVIEREN ></span>
+          <span id="reserve">RESERVIEREN ></span>
+        </button>
       </div>
 
-      <!--   Map   -->
-      <mat-card class="white-color" [style.background-image]="'url(' + currentLand?.realImage?.changingThisBreaksApplicationSecurity  + ')'">>
-        <p class="set-content-bottom">{{currentLand?.name | uppercase}} - REISEROUTE</p>
-      </mat-card>
+      <div class="travel-map">
+        <img class="img-fluid" [src]="currentLand?.realImage">
+        <p>{{currentLand?.name | uppercase}} - REISEROUTE</p>
+      </div>
     </div>
 
     <!-- Highlights list -->
