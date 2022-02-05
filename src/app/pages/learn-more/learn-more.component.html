@@ -44,8 +44,8 @@
       <h2>Die Highlights im Überblick</h2>
 
       <div class="row" *ngIf="currentLand?.highlights?.length > 0">
-        <div class="col-md-4" *ngFor="let item of currentLand.highlights">
-          <mat-card class="col-md-11 mb-6" [ngStyle]="matCardShadowHighlight">
+        <div class="col-md-4 mb-6 d-flex" *ngFor="let item of currentLand.highlights; let i=index">
+          <mat-card class="col-md-12" [ngStyle]="matCardShadowHighlight">
             <img mat-card-image [src]="item?.realImage" alt="{{item?.name}}-Bild">
             <mat-card-content>
               <h3>{{item?.name}}</h3>
