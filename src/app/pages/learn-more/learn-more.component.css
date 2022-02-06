@@ -1,0 +1,206 @@
+body {
+  padding: 2em 5% 1em;
+  min-height: calc(100vh - 230px);
+  margin-bottom: 3em;
+}
+
+#main-page-btn {
+  font-family: "ubuntu";
+  font-size: 15px;
+}
+
+.travel-info-header {
+  margin-top: 3em;
+}
+
+.booking-btn {
+  margin: auto 0 auto auto;
+}
+
+.booking-btn #reserve {
+  display: none;
+}
+
+.travel-map {
+  min-width: 350px;
+  margin-top: 1.5em;
+  width: 100%;
+  text-align: center;
+}
+
+.travel-map img {
+  border-radius: 6px;
+  max-height: 65vh;
+  width: 100%;
+}
+
+.travel-map p {
+  position: relative;
+  text-align: right;
+  bottom: 3em;
+  right: 2em;
+
+  font-size: 150%;
+  color: #FFFFFF !important;
+  letter-spacing: 1px !important;
+  word-break: break-word;
+}
+
+.travel-info-header h2,
+.travel-info-header p,
+.highlight-contents h2,
+.highlight-contents mat-card h3,
+.ablauf-contents h2,
+.ablauf-contents h3,
+.landInfos-contents h2,
+.fakten-check-contents h2,
+.fakten-check-contents h3,
+.fakten-check-contents h4,
+#main-page-btn
+{
+  color: #000000;
+}
+
+button,
+.travel-info-header mat-card p,
+.kosten table th
+{
+  color: #FFFFFF;
+}
+
+.travel-map p,
+.fakten-check-contents h3,
+.fakten-check-contents h4,
+.ablauf-contents h3,
+.landInfos-contents mat-panel-title,
+.buchungsklassen h4,
+.kosten table th,
+.frist, #index
+{
+  font-family: "ubuntu bold" !important;
+}
+
+.travel-info-header .myRow {
+  align-items: baseline;
+  margin-top: -2px;
+}
+
+.highlight-contents,
+.fakten-check-contents,
+.ablauf-contents,
+.landInfos-contents
+{
+  margin-top: 2em;
+}
+
+.highlight-contents h2,
+.fakten-check-contents h2,
+.ablauf-contents h2,
+.landInfos-contents h2
+{
+  margin-bottom: 1em !important;
+}
+
+.highlight-contents mat-card {
+  min-width: 300px;
+}
+
+.fakten-check-contents mat-card {
+  padding: 2em;
+  margin-bottom: 3em;
+}
+
+#mat-card-group-1 {
+  padding-right: 4em;
+}
+
+.buchungsklassen .klassen {
+  width: 70%;
+}
+
+.buchungsklassen ul li {
+  font-family: "american typewriter";
+}
+
+.wer-darf-mit h4 {
+  font-family: "american typewriter bold" !important;
+}
+
+.reisezeitraum, .buchungsklassen, .wer-darf-mit,
+.kosten, .inkludierte-leistung, .anmeldefrist {
+  margin-bottom: 4em;
+}
+
+.kosten table {
+  width: 100%;
+  height: 100%;
+}
+
+.kosten table th {
+  font-size: 18px;
+}
+
+.row app-stars {
+  position: relative;
+  top: 4px;
+}
+
+.ablauf-contents h3 {
+  margin-bottom: -0.5px;
+}
+
+.unterkünfte-text {
+  margin-top: 1em;
+  margin-bottom: 3em;
+}
+
+#index {
+  font-size: 60px !important;
+}
+
+/*** About the responcivity ***/
+
+@media screen and (max-width: 1200px) {
+
+}
+
+@media screen and (max-width: 900px) {
+  .travel-map p {
+    width: 50%;
+    float: right;
+    bottom: 4em;
+  }
+}
+
+@media screen and (max-width: 755px) {
+  .travel-map p {
+    font-size: 110%;
+  }
+}
+
+@media screen and (max-width: 690px) {
+  .booking-btn #reserve-place {
+    display: none;
+  }
+  .booking-btn #reserve {
+    display: revert;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .travel-map p {
+    font-size: 100%;
+  }
+}
+
+@media screen and (max-width: 532px) {
+  .travel-map p {
+    font-size: 80%;
+  }
+}
+
+@media screen and (max-width: 440px) {
+  .booking-btn {
+    font-size: 11px;
+  }
+}

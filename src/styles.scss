@@ -1,19 +1,42 @@
-@import "@angular/material/prebuilt-themes/indigo-pink.css";
 @import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
+
+
+
+/*##################################### Style settings ###################################*/
+:root {
+  --color-blue: #2d92ab;
+  --color-white: #ffff;
+  --color-black: #0000;
+  --set-content-right: auto 0 auto auto;
+}
 
 html,
 body {
   height: 100%;
-  background-color: #ffffff !important;
-  background: #ffffff !important;
-}
-body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
+  overflow-x: hidden !important;
 }
 
-.bg-default {
-  background-color: #ffffff !important;
+h1, h2, h3, h4 {
+  font-family: "american typewriter bold", serif !important;
+  letter-spacing: 1px !important;
+}
+
+h1 {
+  font-size: 60px !important;
+}
+
+h2 {
+  font-size: 40px !important;
+}
+
+h3 {
+  font-size: 20px !important;
+}
+
+p {
+  font-family: "american typewriter", serif !important;
 }
 
 .header-body i,
@@ -23,6 +46,92 @@ body {
 
 .table-responsive {
   min-height: 60vh;
+}
+
+.cdk-overlay-container {
+  z-index: 9999 !important;
+}
+
+//.carousel-control-next-icon, .carousel-control-prev-icon {
+//  color: land-color("black-color") !important;
+//}
+
+.black-color {
+  color: #000000 !important;
+}
+
+.white-color {
+  color: #FFFFFF !important;
+}
+
+.myRow {
+  width: 100% !important;
+  display: flex !important;
+  flex-direction: row !important;
+}
+
+.submit {
+  background-color: #fff;
+  color: #2d92ab;
+  border: 1px solid #fff;
+  border-radius: 4px;
+  height: 30px;
+}
+
+.text-muted {
+  color: #777777;
+}
+
+.img-responsive {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.center-block {
+  display: block;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.primary-colors {
+  background-color: #2d92ab;
+  color: #fff;
+}
+
+.margin-bottom {
+  margin-bottom: 10px;
+}
+
+.margin-right {
+  margin-right: 10px;
+}
+
+.margin-left {
+  margin-left: 10px;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.set-content-bottom {
+  position: absolute;
+  bottom: 0;
+}
+
+.set-content-right {
+  margin: auto 0 auto auto !important;
+}
+
+.card-shadow {
+  box-shadow: 1px 1px 16px 2px var(--color-blue) !important;
+}
+
+.mat-input-element:disabled,
+.mat-form-field-type-mat-native-select.mat-form-field-disabled
+  .mat-form-field-infix::after {
+  color: rgba(0, 0, 0, 0.8);
 }
 
 /*##################################### Display Screen settings ###################################*/

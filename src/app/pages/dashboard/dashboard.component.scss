@@ -1,7 +1,65 @@
 .bg-gradient-blue {
-    background-color: #2D92AB;
+  background-color: #2d92ab;
+}
+
+.table-responsive {
+  min-height: 50vh;
+}
+
+.table td .progress {
+  width: 90px;
 }
 
 .color-gradient-blue {
-    color: #2D92AB;
+  color: #2d92ab;
+}
+
+h1 {
+  font-size: 30px !important;
+}
+
+h2 {
+  font-size: 26px !important;
+}
+
+h3 {
+  font-size: 20px !important;
+}
+
+.icon-shape em,
+.icon-shape svg {
+  font-size: 1.25rem;
+}
+
+.statistics a {
+  cursor: pointer;
+}
+
+/*##################################### Screen settings ###################################*/
+@media only screen and  (min-width: 1237px) and (max-width: 1290px) {
+  .mat-typography h5 {
+    font: 400 calc(12px * 0.83) / 20px Roboto, "Helvetica Neue", sans-serif !important;
+    margin: 0 0 12px;
+    margin-bottom: 12px;
+  }
+
+  h5 {
+    font: 400 calc(12px * 0.83) / 20px Roboto, "Helvetica Neue", sans-serif !important;
+    margin: 0 0 12px;
+    margin-bottom: 12px;
+  }
+}
+
+@media only screen and (min-width: 1200px) and (max-width: 1236px) {
+  .mat-typography h5 {
+    font: 400 calc(11px * 0.83) / 20px Roboto, "Helvetica Neue", sans-serif !important;
+    margin: 0 0 12px;
+    margin-bottom: 12px;
+  }
+
+  h5 {
+    font: 400 calc(11px * 0.83) / 20px Roboto, "Helvetica Neue", sans-serif !important;
+    margin: 0 0 12px;
+    margin-bottom: 12px;
+  }
 }

@@ -1,0 +1,31 @@
+.mat-stepper-vertical {
+  margin-top: 8px;
+}
+
+.mat-form-field {
+  margin-top: 16px;
+  margin-left: 10px;
+  width: 260px;
+}
+
+textarea {
+  min-height: 100px;
+}
+
+mat-dialog-content h3,
+.mat-dialog-title {
+  color: #000000 !important;
+}
+
+mat-dialog-content {
+  padding-top: 20px;
+}
+
+.action-buttons {
+  text-align: right;
+}
+
+mat-dialog-actions {
+  min-height: unset;
+  float: right;
+}

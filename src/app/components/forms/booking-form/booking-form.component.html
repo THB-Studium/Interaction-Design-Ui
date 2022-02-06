@@ -1,0 +1,566 @@
+<h2 mat-dialog-title>Eine Reise Buchen</h2>
+
+<mat-divider></mat-divider>
+
+<mat-dialog-content>
+  <!-- travel title and more infos -->
+  <div class="row">
+    <div class="col-xs-6 col-md-6 col-lg-6">
+      <h3>{{currentTripOffer?.titel}}</h3>
+
+      {{currentTripOffer?.startDatum | date: 'dd. MMM'}}
+      - &nbsp;
+      {{currentTripOffer.endDatum | date: 'dd. MMM yyyy'}}
+      <br>
+      <br>
+    </div>
+    <div class="col-xs-6 col-md-6 col-lg-6">
+      <h4 class="text-danger">Die Anmeldung ist vollständig wenn:</h4>
+      <p>
+      <ol>
+        <li>Ich euch den Eingang eurer Anmeldung schriftlich bestätigt habe, indem ihr ein Schreiben mit Nennung der
+          fälligen Gesammtsumme
+          und Zahlungsmodalitäten von mir erhalten habt.
+        </li>
+        <li>
+          Die erste Anzahlung auf unser Reisekonto eingegangen ist.
+        </li>
+      </ol>
+
+    </div>
+  </div>
+
+  <!-- Formular stepper form -->
+  <form class="col-md-12">
+    <!-- stepper begin -->
+    <mat-stepper orientation="vertical" [linear]="true" #stepper>
+
+      <!-- person infos -->
+      <mat-step [stepControl]="personenDatenFormGroup">
+        <form [formGroup]="personenDatenFormGroup">
+          <ng-template matStepLabel>Reisenden Informationen</ng-template>
+          <div class="row">
+            <mat-form-field appearance="fill">
+              <mat-label>Vorname</mat-label>
+              <input matInput placeholder="Firstname" formControlName="vorname" required>
+              <mat-icon matSuffix>account_circle</mat-icon>
+              <mat-hint>Vorname hinzufügen</mat-hint>
+              <mat-error *ngIf="(personenDatenFormGroup.get('vorname')).errors?.required">
+                Der Vorname ist <strong>erforderlich</strong>.
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+              <mat-label>Nachname</mat-label>
+              <input matInput placeholder="Lastname" formControlName="nachname" required>
+              <mat-icon matSuffix>account_circle</mat-icon>
+              <mat-hint>Nachname hinzufügen</mat-hint>
+              <mat-error *ngIf="(personenDatenFormGroup.get('nachname')).errors?.required">
+                Der Nachname ist <strong>erforderlich</strong>.
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="row">
+            <mat-form-field appearance="fill">
+              <mat-label>Geburtsdatum (yyyy-mm-dd)</mat-label>
+              <input matInput [matDatepicker]="picker_Reiser" formControlName="geburtsdatum" required>
+              <mat-datepicker-toggle matSuffix [for]="picker_Reiser">
+                <mat-icon matDatepickerToggleIcon>date_range</mat-icon>
+              </mat-datepicker-toggle>
+              <mat-datepicker #picker_Reiser></mat-datepicker>
+              <mat-error *ngIf="(personenDatenFormGroup.get('geburtsdatum')).errors?.required">
+                Das Geburtsdatum ist <strong>erforderlich</strong>.
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+              <mat-label>Postanschrift </mat-label>
+              <input matInput placeholder="Postal address" formControlName="postanschrift" required>
+              <mat-hint>Str. HNr.</mat-hint>
+              <mat-error *ngIf="(personenDatenFormGroup.get('postanschrift')).errors?.required">
+                Die Postanschrift ist <strong>erforderlich</strong>.
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="row">
+            <mat-form-field appearance="fill">
+              <mat-label>Handynummer</mat-label>
+              <input matInput placeholder="+491100000000" formControlName="handynummer" required>
+              <mat-icon matSuffix>local_phone</mat-icon>
+              <mat-hint>Mit +49 anfangen.</mat-hint>
+              <mat-error *ngIf="(personenDatenFormGroup.get('handynummer')).errors?.required">
+                Die Handynummer ist <strong>erforderlich</strong>.
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+              <mat-label>Email </mat-label>
+              <input type="email" matInput placeholder="Email" formControlName="email" required>
+              <mat-icon matSuffix>mail_outline</mat-icon>
+              <mat-hint>Geben Sie die vollständig qualifizierte E-Mail Adresse ein</mat-hint>
+              <mat-error *ngIf="(personenDatenFormGroup.get('email')).errors?.required">
+                Die Email ist <strong>erforderlich</strong>.
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="row">
+            <mat-form-field appearance="fill">
+              <mat-label>Studiengang</mat-label>
+              <input matInput placeholder="Study program" formControlName="studiengang" required>
+              <mat-icon matSuffix>school</mat-icon>
+              <mat-hint>Studiengang</mat-hint>
+              <mat-error *ngIf="(personenDatenFormGroup.get('studiengang')).errors?.required">
+                Der Studiengang ist <strong>erforderlich</strong>.
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+              <mat-select required hideRequiredMarker="true" floatLabel="true" formControlName="status">
+                <mat-option value="student">Student</mat-option>
+                <mat-option value="alumnus">Alumnus</mat-option>
+                <mat-option value="hochschulmitarbeiter">Hochschulmitarbeiter</mat-option>
+              </mat-select>
+              <mat-error *ngIf="(personenDatenFormGroup.get('status')).errors?.required">
+                Der Status ist <strong>erforderlich</strong>.
+              </mat-error>
+              <mat-label><i> Status</i></mat-label>
+            </mat-form-field>
+          </div>
+
+          <div class="row">
+            <mat-form-field appearance="fill">
+              <mat-label>Arbeitet Bei</mat-label>
+              <input required matInput placeholder="Arbeitet Bei" formControlName="arbeitet">
+              <mat-icon matSuffix>work</mat-icon>
+              <mat-hint>Arbeitetsort hinzufügen</mat-hint>
+              <mat-error *ngIf="(personenDatenFormGroup.get('arbeitet')).errors?.required">
+                Die Eingabe ist <strong>erforderlich</strong>.
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+              <mat-select required hideRequiredMarker="true" floatLabel="true"
+                          formControlName="schonTeilgennomem">
+                <mat-option value="true">ja</mat-option>
+                <mat-option value="false">Nein</mat-option>
+              </mat-select>
+              <mat-error *ngIf="(personenDatenFormGroup.get('schonTeilgennomem')).errors?.required">
+                Die Auswhal ist <strong>erforderlich</strong>.
+              </mat-error>
+              <mat-label>SchonTeilgennomem</mat-label>
+            </mat-form-field>
+          </div>
+
+          <div class="row">
+            <mat-form-field appearance="fill">
+              <mat-label>Hochschule</mat-label>
+              <input required matInput placeholder="Name der Hochschule" formControlName="hochschule">
+              <mat-icon matSuffix>school</mat-icon>
+              <mat-hint>Hochschule hinzufügen</mat-hint>
+              <mat-error *ngIf="(personenDatenFormGroup.get('hochschule')).errors?.required">
+                Die Eingabe ist <strong>erforderlich</strong>.
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="row">
+            <br>
+            <mat-form-field appearance="fill">
+              <mat-select required hideRequiredMarker="true" floatLabel="true" formControlName="mitMitreiser">
+                <mat-option value="true" (click)=setFormMitReiser(true)>ja</mat-option>
+                <mat-option value="false" (click)=setFormMitReiser(false)>Nein</mat-option>
+              </mat-select>
+              <mat-label>Sind Sie mit einem Mitreiser ?</mat-label>
+              <mat-error *ngIf="(personenDatenFormGroup.get('mitMitreiser')).errors?.required">
+                Die Eingabe ist <strong>erforderlich</strong>.
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="action-buttons">
+            <br>
+            <button color="primary" mat-button matStepperNext>Weiter</button>
+          </div>
+        </form>
+        <mat-divider></mat-divider>
+      </mat-step>
+
+      <!-- follow person infos -->
+      <mat-step *ngIf="mitreiserForm" [stepControl]="personenDatenFormGroupMitReiser">
+        <form [formGroup]="personenDatenFormGroupMitReiser">
+          <ng-template matStepLabel>Mitreisenden Informationen</ng-template>
+          <div class="row">
+            <mat-form-field appearance="fill">
+              <mat-label>Vorname</mat-label>
+              <input matInput placeholder="Firstname" formControlName="vorname" required>
+              <mat-icon matSuffix>account_circle</mat-icon>
+              <mat-hint>Vorname hinzufügen</mat-hint>
+              <mat-error *ngIf="(personenDatenFormGroupMitReiser.get('vorname')).errors?.required">
+                Der Vorname ist <strong>erforderlich</strong>.
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+              <mat-label>Nachname</mat-label>
+              <input matInput placeholder="Lastname" formControlName="nachname" required>
+              <mat-icon matSuffix>account_circle</mat-icon>
+              <mat-hint>Nachname</mat-hint>
+              <mat-error *ngIf="(personenDatenFormGroupMitReiser.get('nachname')).errors?.required">
+                Der Nachname ist <strong>erforderlich</strong>.
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="row">
+            <mat-form-field appearance="fill">
+              <mat-label>Geburtsdatum (yyyy-mm-dd)</mat-label>
+              <input matInput [matDatepicker]="picker_MiReiser" formControlName="geburtsdatum" required>
+              <mat-datepicker-toggle matSuffix [for]="picker_MiReiser">
+                <mat-icon matDatepickerToggleIcon>date_range</mat-icon>
+              </mat-datepicker-toggle>
+              <mat-datepicker #picker_MiReiser></mat-datepicker>
+              <mat-error *ngIf="(personenDatenFormGroupMitReiser.get('geburtsdatum')).errors?.required">
+                Das Geburtsdatum ist <strong>erforderlich</strong>.
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+              <mat-label>Postanschrift </mat-label>
+              <input matInput placeholder="Postal address" formControlName="postanschrift" required>
+              <mat-hint>Str. HNr.</mat-hint>
+              <mat-error *ngIf="(personenDatenFormGroupMitReiser.get('postanschrift')).errors?.required">
+                Die Postanschrift ist <strong>erforderlich</strong>.
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="row">
+            <mat-form-field appearance="fill">
+              <mat-label>Handynummer</mat-label>
+              <input matInput placeholder="+491000000000" formControlName="handynummer" required>
+              <mat-icon matSuffix>local_phone</mat-icon>
+              <mat-hint>Mit +49 anfangen.</mat-hint>
+              <mat-error *ngIf="(personenDatenFormGroupMitReiser.get('handynummer')).errors?.required">
+                Die Handynummer ist <strong>erforderlich</strong>.
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+              <mat-label>Email </mat-label>
+              <input matInput placeholder="Email" formControlName="email" required>
+              <mat-icon matSuffix>mail_outline</mat-icon>
+              <mat-hint>Geben Sie die vollständig qualifizierte E-Mail Adresse ein</mat-hint>
+              <mat-error *ngIf="(personenDatenFormGroupMitReiser.get('email')).errors?.required">
+                Die Email ist <strong>erforderlich</strong>.
+              </mat-error>
+              <mat-error *ngIf="(personenDatenFormGroupMitReiser.get('email')).errors?.pattern">
+                Bitte gültige E-Mail eingeben
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="row">
+            <mat-form-field appearance="fill">
+              <mat-label>Studiengang</mat-label>
+              <input matInput placeholder="Study program" formControlName="studiengang" required>
+              <mat-icon matSuffix>school</mat-icon>
+              <mat-hint>Studiengang hinzufügen</mat-hint>
+              <mat-error *ngIf="(personenDatenFormGroupMitReiser.get('studiengang')).errors?.required">
+                Der Studiengang ist <strong>erforderlich</strong>.
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+
+              <mat-select required hideRequiredMarker="true" floatLabel="true" formControlName="status">
+                <mat-option value="student">Student</mat-option>
+                <mat-option value="alumnus">Alumnus</mat-option>
+                <mat-option value="hochschulmitarbeiter">Hochschulmitarbeiter</mat-option>
+              </mat-select>
+              <mat-error *ngIf="(personenDatenFormGroupMitReiser.get('status')).errors?.required">
+                Der Status ist <strong>erforderlich</strong>.
+              </mat-error>
+              <mat-label><i> Status</i></mat-label>
+            </mat-form-field>
+          </div>
+
+          <div class="row">
+            <mat-form-field appearance="fill">
+              <mat-label>Arbeitet Bei</mat-label>
+              <input required matInput placeholder="Arbeitet Bei" formControlName="arbeitet">
+              <mat-icon matSuffix>work</mat-icon>
+              <mat-hint>Arbeitetsort hinzufügen</mat-hint>
+              <mat-error *ngIf="(personenDatenFormGroupMitReiser.get('arbeitet')).errors?.required">
+                Die Eingabe ist <strong>erforderlich</strong>.
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+              <mat-select required hideRequiredMarker="true" floatLabel="true"
+                          formControlName="schonTeilgennomem">
+                <mat-option value="true">ja</mat-option>
+                <mat-option value="false">Nein</mat-option>
+              </mat-select>
+              <mat-error *ngIf="(personenDatenFormGroup.get('schonTeilgennomem')).errors?.required">
+                Die Auswhal ist <strong>erforderlich</strong>.
+              </mat-error>
+              <mat-label>SchonTeilgennomem</mat-label>
+            </mat-form-field>
+          </div>
+
+          <div class="row">
+            <mat-form-field appearance="fill">
+              <mat-label>Hochschule</mat-label>
+              <input required matInput placeholder="Name der Hochschule" formControlName="hochschule">
+              <mat-icon matSuffix>school</mat-icon>
+              <mat-hint>Hochschule hinzufügen</mat-hint>
+              <mat-error *ngIf="(personenDatenFormGroupMitReiser.get('hochschule')).errors?.required">
+                Die Eingabe ist <strong>erforderlich</strong>.
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="action-buttons">
+            <br>
+            <button color="primary" mat-button matStepperPrevious>Zurück</button>
+            <button color="primary" mat-button matStepperNext>Weiter</button>
+          </div>
+        </form>
+        <mat-divider></mat-divider>
+      </mat-step>
+
+      <!-- travel infos -->
+      <mat-step [stepControl]="reiseDatenFormGroup">
+        <form [formGroup]="reiseDatenFormGroup">
+          <ng-template matStepLabel>Informationen zur Reise</ng-template>
+
+          <div class="row">
+            <mat-form-field appearance="fill">
+              <mat-label>Reisedatum (yyyy-mm-dd)</mat-label>
+              <input matInput [matDatepicker]="picker_Reise" [min]="minDate" [max]="maxDate"
+                     formControlName="datum" required>
+              <mat-datepicker-toggle matSuffix [for]="picker_Reise">
+                <mat-icon matDatepickerToggleIcon>date_range</mat-icon>
+              </mat-datepicker-toggle>
+              <mat-datepicker #picker_Reise></mat-datepicker>
+              <mat-error *ngIf="(reiseDatenFormGroup.get('datum')).errors?.required">
+                Das Reisedatum ist <strong>erforderlich</strong>.
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+              <mat-label>Buchungsklasse</mat-label>
+              <mat-select formControlName="buchungsklasseId" required>
+                <mat-option disabled>auswählen</mat-option>
+                <mat-option *ngFor="let bookingclass of bookingclasses" [value]="bookingclass.id">
+                  {{bookingclass.type}}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="(reiseDatenFormGroup.get('buchungsklasseId')).errors?.required">
+                Die Buchungsklasse ist <strong>erforderlich</strong>.
+              </mat-error>
+            </mat-form-field>
+
+          </div>
+
+          <div class="row">
+            <mat-form-field appearance="fill">
+              <mat-label>ZahlungsMethod</mat-label>
+              <mat-select formControlName="zahlungsmethod" required>
+                <mat-option disabled>auswählen</mat-option>
+                <mat-option *ngFor="let method of paymentMethodArray" [value]="method">
+                  {{method}}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="(reiseDatenFormGroup.get('zahlungsmethod')).errors?.required">
+                Die ZahlungsMethod ist <strong>erforderlich</strong>.
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+              <mat-label>Flughafen</mat-label>
+              <mat-select formControlName="flughafen" required>
+                <mat-option disabled>auswählen</mat-option>
+                <mat-option *ngFor="let flughafen of land.flughafen" [value]="flughafen">
+                  {{flughafen}}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="(reiseDatenFormGroup.get('flughafen')).errors?.required">
+                Der Flughafen ist <strong>erforderlich</strong>.
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="row">
+            <mat-form-field appearance="fill">
+              <mat-label>HandGepäck </mat-label>
+              <textarea matInput placeholder="HandGepäck" formControlName="handgepaeck" required cols="30"
+                        rows="3"></textarea>
+              <mat-hint>HandGepäck hinzufügen</mat-hint>
+              <mat-error *ngIf="(reiseDatenFormGroup.get('handgepaeck')).errors?.required">
+                Das HandGepäck ist <strong>erforderlich</strong>.
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+              <mat-label>Koffer </mat-label>
+              <textarea matInput placeholder="Koffer" formControlName="koffer" required cols="30"
+                        rows="3"></textarea>
+              <mat-hint>Koffer hinzufügen</mat-hint>
+              <mat-error *ngIf="(reiseDatenFormGroup.get('koffer')).errors?.required">
+                Das Koffer ist <strong>erforderlich</strong>.
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="action-buttons">
+            <button color="primary" mat-button matStepperPrevious>Zurück</button>
+            <button color="primary" mat-button matStepperNext (click)="getFormValues()">Weiter</button>
+          </div>
+        </form>
+        <mat-divider></mat-divider>
+      </mat-step>
+
+      <!--  AGB  -->
+      <mat-step [stepControl]="agbFormGroup">
+        <form [formGroup]="agbFormGroup">
+          <ng-template matStepLabel>Allgemeine Geschäftsbedingungen</ng-template>
+          <div class="row">
+            <div class="col-12">
+              <mat-checkbox #termsChecked formControlName="agb">
+                Ich habe die <strong>Allgemeine Geschäftsbedingungen</strong> gelesen und <strong>stimme
+                ihnen zu.</strong>
+              </mat-checkbox>
+            </div>
+          </div>
+          <div class="action-buttons">
+            <button color="primary" mat-button matStepperPrevious>Zurück</button>
+            <button color="primary" mat-button [disabled]="agbFormGroup.invalid" matStepperNext>Weiter</button>
+          </div>
+        </form>
+        <mat-divider></mat-divider>
+      </mat-step>
+
+      <!--  Conclusion   -->
+      <mat-step>
+        <ng-template matStepLabel>Fazit</ng-template>
+        <h2 class="mt-2">Reisende(n):</h2>
+        <div class="card" *ngFor="let resier of reisendeArray; let i = index">
+          <div class="card-header">
+            <h2>{{i + 1}}</h2>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-6">
+                Vorname: <strong>{{resier.vorname}}</strong>
+              </div>
+              <div class="col-6">
+                Nachname: <strong>{{resier.nachname}}</strong>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-6">
+                Geburtsdatum: <strong>{{resier.geburtsdatum}}</strong>
+              </div>
+              <div class="col-6">
+                Postanschrift: <strong>{{resier.postanschrift}}</strong>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-6">
+                Handynummer: <strong>{{resier.handynummer}}</strong>
+              </div>
+              <div class="col-6">
+                Email: <strong>{{resier.email}}</strong>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-6">
+                Studiengang: <strong>{{resier.studiengang}}</strong>
+              </div>
+              <div class="col-6">
+                Status: <strong>{{resier.status}}</strong>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-6">
+                Arbeitet Bei: <strong>{{resier.arbeitetBei}}</strong>
+              </div>
+              <div class="col-6">
+                Hochschule: <strong>{{resier.hochschule}}</strong>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-6">
+                <span *ngIf="resier.schonTeilgennomem">Schon Teilgennomem: <strong>Ja</strong></span>
+                <span *ngIf="!resier.schonTeilgennomem"> Schon Teilgennomem: <strong>Nein</strong></span>
+              </div>
+              <div class="col-6">
+
+              </div>
+            </div>
+          </div>
+        </div><br>
+
+        <div class="card">
+          <div class="card-header">
+            <h2>Reiseinformationen</h2>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-6">
+                Datum: <strong>{{reise?.datum}}</strong>
+              </div>
+              <div class="col-6">
+                Flughafen: <strong>{{reise?.flughafen}}</strong>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-6">
+                Buchungsklasse: <strong>{{selectedBookingClass?.type}}</strong>
+              </div>
+              <div class="col-6">
+                Zahlungsmethode: <strong>{{reise?.zahlungsmethod}}</strong>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-6">
+                Koffer: <strong>{{reise?.koffer}}</strong>
+              </div>
+              <div class="col-6">
+                Handgepäck: <strong>{{reise?.handgepaeck}}</strong>
+              </div>
+            </div>
+          </div>
+        </div><br>
+        <div class="action-buttons">
+          <button color="primary" mat-button matStepperPrevious>Zurück</button>
+          <button color="primary" mat-button matStepperNext>Weiter</button>
+        </div>
+        <mat-divider></mat-divider>
+      </mat-step>
+
+      <!--  Done    -->
+      <mat-step>
+        <ng-template matStepLabel>Done</ng-template>
+        <p>Sind alle Informationen Richtig ?</p>
+        <div class="action-buttons">
+          <button color="primary" mat-button matStepperPrevious>Zurück</button>
+          <button color="primary" mat-button color="primary" (click)="buchen()">Ja, Buchen</button>
+        </div>
+        <mat-divider></mat-divider>
+      </mat-step>
+
+    </mat-stepper>
+  </form>
+
+</mat-dialog-content>
+
+<mat-divider></mat-divider>
+
+<mat-dialog-actions>
+  <button color="warn" mat-button mat-dialog-close>ABBRECHEN</button>
+</mat-dialog-actions>

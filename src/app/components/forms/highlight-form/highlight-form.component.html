@@ -1,0 +1,45 @@
+<form [formGroup]="highlightForm" class="col-md-12">
+  <!-- Name -->
+  <div class="form-row">
+    <div class="form-group col-md-12">
+      <mat-form-field class="col-md-12" appearance="standard">
+        <mat-label>Name</mat-label>
+        <input matInput formControlName="name" placeholder="Name" required>
+        <mat-error *ngIf="highlightForm.get('name').invalid">
+          Der Name ist <strong>erforderlich</strong>.
+        </mat-error>
+      </mat-form-field>
+    </div>
+  </div>
+  <!--description-->
+  <div class="form-row">
+    <div class="form-group col-md-12">
+      <mat-form-field class="col-md-12" appearance="standard">
+        <mat-label>Beschreibung</mat-label>
+        <textarea matInput formControlName="description" required></textarea>
+        <mat-error *ngIf="highlightForm.get('description').invalid">
+          Die Beschreibung ist <strong>erforderlich</strong>.
+        </mat-error>
+      </mat-form-field>
+    </div>
+  </div>
+  <!--Image uploader-->
+  <div class="form-row">
+    <div class="form-group col-md-12">
+      <mat-form-field class="col-md-12">
+        <mat-toolbar class="mb-1">
+          <input matInput [value]="selectedFileName? selectedFileName : 'Bild auswählen'" required disabled/>
+        </mat-toolbar>
+        <div class="input-file-container">
+          <div class="js text-center">
+            <input type="file" id="fileInput" class="input-file ml-5" name="fileInput" accept="image/*" (change)="selectFile($event)" />
+            <label tabindex="0" for="fileInput" class="input-file-trigger">Bild auswählen...</label>
+          </div>
+        </div>
+        <mat-error *ngIf="highlightForm.get('img').invalid">
+          Die Eingabe ist <strong>erforderlich</strong>.
+        </mat-error>
+      </mat-form-field>
+    </div>
+  </div>
+</form>

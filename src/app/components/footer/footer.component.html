@@ -1,25 +1,56 @@
-<footer class="footer">
-  <div class="row align-items-center justify-content-xl-between">
-    <div class="col-xl-6">
-      <div class="copyright text-center text-xl-left text-muted">
-        &copy; {{ test | date: "yyyy" }} <a href="https://www.creative-tim.com?ref=ada-footer-admin-layout" class="font-weight-bold ml-1" target="_blank">Creative Tim</a>
+<div class="container-fluid">
+  <!-- top -->
+  <div class="row">
+    <div class="col-sm-12 col-md-4 col-xl-4 mx-auto justify-content-start mb-5">
+      <h3 class="text-white">Kontakt</h3>
+      <p class="text-white">Julia Schnitzer</p>
+      <p class="text-white">post@university-travel-club.org</p>
+    </div>
+    <div class="col-sm-12 col-md-4 col-xl-4 mx-auto mb-5">
+      <h3 class="text-white d-flex justify-content-sm-start justify-content-md-center">Newsletter abonnieren</h3>
+      <div class="row justify-content-sm-start justify-content-md-center">
+        <div class="d-flex justify-content-start mb-1">
+          <input type="text" placeholder="E-Mail Adresse" class="form-control input-form" [formControl]="emailCtrl"
+            required />
+        </div>
+        <div class="d-flex justify-content-end">
+          <button class="btn btn-sm btn-white ml-3" (click)="abonnieren()">ABONNIEREN</button>
+        </div>
+        <small *ngIf="emailCtrl.value.length > 5 && !emailCtrl.valid" class="text-white">
+          Geben Sie eine gültige E-Mail ein.
+        </small>
       </div>
     </div>
-    <div class="col-xl-6">
-      <ul class="nav nav-footer justify-content-center justify-content-xl-end">
-        <li class="nav-item">
-          <a href="https://www.creative-tim.com?ref=ada-footer-admin-layout" class="nav-link" target="_blank">Creative Tim</a>
+    <div class="col-sm-12 col-md-4 col-xl-4 mx-auto d-flex justify-content-sm-start justify-content-md-end">
+      <ul class="icons">
+        <li>
+          <a class="box-icons" href="https://www.facebook.com/universitytravelclub" target="_blank" class="text-white">
+            <i class="fab fa-facebook-f"></i><span class="text-icon text-white ml-2">Facebook</span>
+          </a>
         </li>
-        <li class="nav-item">
-          <a href="https://www.creative-tim.com/presentation?ref=ada-footer-admin-layout" class="nav-link" target="_blank">About Us</a>
-        </li>
-        <li class="nav-item">
-          <a href="http://blog.creative-tim.com?ref=ada-footer-admin-layout" class="nav-link" target="_blank">Blog</a>
-        </li>
-        <li class="nav-item">
-          <a href="https://github.com/creativetimofficial/argon-dashboard-angular/blob/master/LICENSE.md" class="nav-link" target="_blank">MIT License</a>
+        <li>
+          <a href="https://www.instagram.com/utcgermany/" target="_blank" class="text-white">
+            <i class="fab fa-instagram"></i><span class="text-icon text-white ml-2">Instagram</span>
+          </a>
         </li>
       </ul>
     </div>
+  </div><!--/.top-->
+  <!-- bottom -->
+  <div class="row mt-6">
+    <div class="col-md-6 d-flex justify-content-start mb-2">
+      <small class="text-white">&copy; COPYRIGHT {{ currentDate | date: "yyyy" }} - UNIVERSITY TRAVEL CLUB</small>
+    </div>
+    <div class="col-md-6 d-flex justify-content-sm-start justify-content-md-end">
+      <small class="d-flex">
+        <a href="" class="text-white">IMPRESSUM</a>
+      </small>
+      <small class="d-flex">
+        <a href="" class="text-white ml-4">DATENSCHUTZ</a>
+      </small>
+    </div>
+    <a [routerLink]="['#']" target="_self" class="text-white" data-bs-toggle="tooltip" data-bs-placement="top" title="Back to top">
+      <i class="bi bi-arrow-up-circle-fill"></i>
+    </a>
   </div>
-</footer>
+</div>
