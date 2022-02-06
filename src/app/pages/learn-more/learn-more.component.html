@@ -39,7 +39,7 @@
       <div class="row">
         <div class="col-md-4 mb-6 d-flex" *ngFor="let item of currentLand.highlights; let i=index">
           <mat-card class="col-sm-12 col-md-12" [ngStyle]="matCardShadowHighlight">
-            <img mat-card-image class="highlight-img" [src]="item?.realImage" alt="{{item?.name}}-Bild">
+            <img mat-card-image class="highlight-img" [src]="item?.realImage" alt="Bild: [{{item?.name}}]">
             <mat-card-content>
               <h3>{{item?.name}}</h3>
               <p>{{item?.description}}</p>
@@ -196,22 +196,24 @@
       </div>
     </div>
     <!-- Ablauf der Reise -->
-    <div class="ablauf-contents">
-      <h2>Ablauf der Reise</h2>
-      <h3>UNTERKÜNFTE</h3>
-      <p class="unterkünfte-text">{{currentLand?.unterkunft_text}}</p>
-      <div class="row" *ngIf="currentLand?.unterkunft">
-        <div class="col-md-12" *ngFor="let item of currentLand.unterkunft; let i=index">
-          <div class="row col-md-12 mb-4">
-            <h1 id="index" class="col-md-1" [ngStyle]="fontColor">{{i + 1}}</h1>
-            <div class="col-md-7">
-              <h3 [ngStyle]="fontColor" class="mb-1">{{item.name}}</h3>
-              <p><a [ngStyle]="fontColor" routerLinkActive="active" href="{{item.link}}" target="_blank">{{item.link}}</a></p>
-              <p><span class="font-weight-bold">Adresse:</span> {{item.adresse}}</p>
-              <p>{{item.beschreibung}}</p>
-            </div>
-            <div class="row col-md-4 mb-5">
-              <img *ngFor="let bild of item.bilder" class="col-sm-12 col-md-12 col-lg-6 img-fluid mb-4" [src]="getImage(bild)" alt="Bild-Bild-{{i+1}}a">
+    <div class="my-container" [ngStyle]="{'background': setOpacityColor()}">
+      <div class="ablauf-contents">
+        <h2>Ablauf der Reise</h2>
+        <h3>UNTERKÜNFTE</h3>
+        <p class="unterkünfte-text">{{currentLand?.unterkunft_text}}</p>
+        <div class="row" *ngIf="currentLand?.unterkunft">
+          <div class="col-md-12" *ngFor="let item of currentLand.unterkunft; let i=index">
+            <div class="row col-md-12 mb-4">
+              <h1 id="index" class="col-md-1" [ngStyle]="fontColor">{{i + 1}}</h1>
+              <div class="col-md-7">
+                <h3 [ngStyle]="fontColor" class="mb-1">{{item.name}}</h3>
+                <p><a [ngStyle]="fontColor" routerLinkActive="active" href="{{item.link}}">{{item.link}}</a></p>
+                <p><span class="font-weight-bold">Adresse:</span> {{item.adresse}}</p>
+                <p>{{item.beschreibung}}</p>
+              </div>
+              <div class="row col-md-4 mb-5">
+                <img *ngFor="let bild of item.bilder" class="col-sm-12 col-md-12 col-lg-6 img-fluid mb-4" [src]="getImage(bild)" alt="Bild-Bild-{{i+1}}a">
+              </div>
             </div>
           </div>
         </div>

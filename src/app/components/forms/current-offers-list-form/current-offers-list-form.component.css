@@ -5,3 +5,7 @@ h2 {
 .content {
     min-width: 400px;
 }
+
+mat-dialog-content {
+  min-height: 150px;
+}

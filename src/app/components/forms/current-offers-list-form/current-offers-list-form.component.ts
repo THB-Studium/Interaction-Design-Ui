@@ -50,14 +50,15 @@ export class CurrentOffersListFormComponent implements OnInit, OnDestroy {
       next: (result) => country = result,
       complete: () => {
         const dialog = this.dialog.open(BookingFormComponent, {
-          width: '750px',
-          height: '800px',
+          maxWidth: "800px",
+          maxHeight: "800px",
           disableClose : true,
           autoFocus : true
         });
         // Set needed values
         dialog.componentInstance.land = country;
         dialog.componentInstance.currentTripOffer = this.selectedOffer.value;
+        console.log(this.selectedOffer.value)
       }
     });
   }
