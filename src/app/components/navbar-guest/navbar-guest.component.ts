@@ -1,6 +1,13 @@
 import {Component, OnInit} from "@angular/core";
-import { Location } from "@angular/common";
+import { formatDate, Location } from "@angular/common";
 import { Router } from "@angular/router";
+import { CurrentOffersListFormComponent } from "../forms/current-offers-list-form/current-offers-list-form.component";
+import { MatDialog } from "@angular/material/dialog";
+
+import { ToastrService } from "ngx-toastr";
+import { TripOfferService } from "src/app/services/trip-offer/trip-offer.service";
+
+import { TripOffer } from "src/app/models/tripOffer";
 
 @Component({
   selector: "app-navbar-guest",
@@ -14,14 +21,49 @@ export class NavbarGuestComponent implements OnInit {
 
   public isCollapsed = true;
 
-  constructor(location: Location, private router: Router) {
+  // Defines currentOffers
+  currentOffers: TripOffer[];
+
+  constructor(
+    location: Location, 
+    private router: Router,
+    private tripofferService: TripOfferService,
+    private toastrService: ToastrService,
+    private dialog: MatDialog
+  ) {
     // Get the current page
     this.location = location;
+    this.currentOffers = [];
   }
 
   ngOnInit() {
     this.router.events.subscribe((event) => {
       this.isCollapsed = true;
+    });
+  }
+
+  startReservationProcess() {
+    // Get the list of the current offers
+    this.tripofferService.getAll().subscribe({
+      next: (result: TripOffer[]) => {
+        // only current and valid offers are needed
+        const today = formatDate(new Date(), "yyyy-MM-dd", "en_US");
+        this.currentOffers = result.filter(
+          (x) => x.endDatum > today && x.landId != null
+        );
+      },
+      error: () => {
+        this.toastrService.error(
+          "Die Liste von Reiseangebote konnten nicht geladen werden."
+        );
+      },
+      complete: () => {
+        const dialodForm = this.dialog.open(CurrentOffersListFormComponent, {
+          disableClose: true,
+          autoFocus: true,
+        });
+        dialodForm.componentInstance.currentOffers = this.currentOffers;
+      },
     });
   }
 }

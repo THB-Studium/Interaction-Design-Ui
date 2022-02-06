@@ -34,22 +34,24 @@
       <!-- Navbar items -->
       <ul class="navbar-nav ml-auto">
         <li class="nav-item">
-          <a class="nav-link nav-link-icon" routerLinkActive="active" [routerLink]="['/aboutus']">
+          <a class="nav-link nav-link-icon" routerLinkActive="active">
             <span class="nav-link-inner--text">Über uns</span>
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link nav-link-icon" routerLinkActive="active" [routerLink]="['/']">
+          <a class="nav-link nav-link-icon" routerLinkActive="active">
             <span class="nav-link-inner--text">Reisen</span>
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link nav-link-icon" routerLinkActive="active" [routerLink]="['/']">
-            <span class="nav-link-inner--text">Direct Buchen</span>
+          <a class="nav-link nav-link-icon" routerLinkActive="active">
+            <span class="nav-link-inner--text" (click)="startReservationProcess()">
+              Direct Buchen
+            </span>
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link nav-link-icon" routerLinkActive="active" [routerLink]="['/']">
+          <a class="nav-link nav-link-icon" routerLinkActive="active">
             <span class="nav-link-inner--text">Newsletter</span>
           </a>
         </li>

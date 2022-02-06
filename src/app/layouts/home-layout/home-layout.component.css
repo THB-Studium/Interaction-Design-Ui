@@ -114,6 +114,19 @@ ngb-carousel {
   margin-left: 0;
 }
 
+ul li a {
+  cursor: pointer;
+  color: #fff;
+}
+
+ul li a:hover {
+  color: rgba(255, 255, 255, .7);
+}
+
+ul li a:active {
+  color: #fff;
+}
+
 /*############################### Screen settings ####################################*/
 @media screen and (min-width: 1200px) and (max-width: 1400px) {
   .carousel-caption h1 {
