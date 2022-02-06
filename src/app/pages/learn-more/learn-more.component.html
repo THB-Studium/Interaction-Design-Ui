@@ -1,16 +1,12 @@
-<body>
-  <a id="main-page-btn" routerLinkActive="active" [routerLink]="['/dashboard']">< ZURÜCK ZUR MAINPAGE</a>
-
+<div class="container-fluid content">
+  <a id="main-page-btn" routerLinkActive="active" [routerLink]="['/dashboard']">&lt; ZURÜCK ZUR MAINPAGE</a>
   <!-- Spinner -->
   <app-spinner *ngIf="!loadFinished"></app-spinner>
-
   <!-- Body Contents -->
   <div *ngIf="loadFinished">
-
     <!-- Rise Info und Map -->
     <div class="travel-info-header">
       <h2>{{currentTripOffer?.titel}}</h2>
-
       <p>
         <span class="mr-2">{{currentTripOffer?.startDatum | date: 'dd. MMM'}}</span>
         - &nbsp;
@@ -32,17 +28,14 @@
           <span id="reserve">RESERVIEREN ></span>
         </button>
       </div>
-
       <div class="travel-map">
         <img class="img-fluid" [src]="currentLand?.realImage">
         <p>{{currentLand?.name | uppercase}} - REISEROUTE</p>
       </div>
     </div>
-
     <!-- Highlights list -->
     <div class="highlight-contents">
       <h2>Die Highlights im Überblick</h2>
-
       <div class="row" *ngIf="currentLand?.highlights?.length > 0">
         <div class="col-md-4 mb-6 d-flex" *ngFor="let item of currentLand.highlights; let i=index">
           <mat-card class="col-md-12" [ngStyle]="matCardShadowHighlight">
@@ -58,11 +51,9 @@
         <p>Keine Highlights vorhanden!</p>
       </div>
     </div>
-
     <!-- Fakten-Check -->
     <div class="fakten-check-contents">
       <h2>Fakten-Check</h2>
-
       <div class="row">
         <div class="col-sm-7 d-flex">
           <mat-card id="mat-card-group-1" class="col-ms-12" [ngStyle]="matCardShadow">
@@ -82,11 +73,9 @@
                   Weitere Flughäfen können auf Anfrage gerne auch gebucht werden.
                 </p>
               </div>
-
               <!--      BUCHUNGSKLASSEN      -->
               <div class="buchungsklassen">
                 <h3>BUCHUNGSKLASSEN</h3>
-
                 <div class="klassen" *ngFor="let item of currentTripOffer?.buchungsklassenReadListTO">
                   <h4 [ngStyle]="fontColor">
                     {{item.type | uppercase}}
@@ -96,33 +85,28 @@
                     <li>{{item.description}}</li>
                   </ul>
                 </div>
-
                 <div>
                   <p>
                     <span class="font-weight-bold">WICHTIGER HINWEIS:</span>  {{currentTripOffer?.hinweise}}
                   </p>
-
                   <small [ngStyle]="fontColor" *ngIf="currentTripOffer?.sonstigeHinweise">
                     <span class="font-weight-bold">{{currentTripOffer?.sonstigeHinweise.split(':')[0] | uppercase}}: </span>
                     <br>{{currentTripOffer.sonstigeHinweise.split(':')[1] | uppercase}}
                   </small>
                 </div>
-
               </div>
-
               <!--      WER DARF MIT?      -->
               <div class="wer-darf-mit">
                 <h3>WER DARF MIT?</h3>
                 <h4>Mitreiseberechtigt sind:</h4>
-
                 <ul>
                   <li *ngFor="let person of currentTripOffer.mitReiserBerechtigt">{{person}}</li>
                 </ul>
-
-                <p>Bitte hab Verständnis dafür, dass nicht-immatrikulierte Partner, Verwandte und Freunde
-                  deshalb nicht dabei sein können.</p>
+                <p>
+                  Bitte hab Verständnis dafür, dass nicht-immatrikulierte Partner, Verwandte und Freunde
+                  deshalb nicht dabei sein können.
+                </p>
               </div>
-
             </mat-card-content>
           </mat-card>
         </div>
@@ -132,33 +116,29 @@
               <!--      KOSTEN      -->
               <div class="kosten">
                 <h3>KOSTEN</h3>
-                <table mat-table [dataSource]="bookingClassesDataSource">
+                <table mat-table [dataSource]="bookingClassesDataSource" aria-describedby="price">
                   <!-- TARIFE Column -->
                   <ng-container matColumnDef="tarife">
-                    <th mat-header-cell *matHeaderCellDef [ngStyle]="backgroundColor">TARIFE</th>
+                    <th mat-header-cell *matHeaderCellDef [ngStyle]="backgroundColor" scope="tarif">TARIFE</th>
                     <td mat-cell *matCellDef="let element"
                         [style]="element.type.toLowerCase().includes('studenten-tarif' || 'studenten tarif' || 'studententarif') ? fontColor : null">
                       {{element.type | uppercase}}
                       <span *ngIf="element.type.toLowerCase().includes('studenten-tarif' || 'studenten tarif' || 'studententarif')">*</span>
                     </td>
                   </ng-container>
-
                   <!-- PREISE Column -->
                   <ng-container matColumnDef="preise">
-                    <th mat-header-cell *matHeaderCellDef [ngStyle]="backgroundColor">PREISE</th>
+                    <th mat-header-cell *matHeaderCellDef [ngStyle]="backgroundColor" scope="price">PREISE</th>
                     <td mat-cell *matCellDef="let element"
                         [style]="element.type.toLowerCase().includes('studenten-tarif' || 'studenten tarif' || 'studententarif') ? fontColor : null">
                       {{element.preis}}.-</td>
                   </ng-container>
-
                   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                 </table>
-
                 <h4></h4>
                 <p></p>
               </div>
-
               <!--      INKLUDIERTE LEISTUNGEN      -->
               <div class="inkludierte-leistung">
                 <h3>INKLUDIERTE LEISTUNGEN</h3>
@@ -166,7 +146,6 @@
                   <li *ngFor="let leistung of currentTripOffer?.leistungen">{{leistung}}</li>
                 </ul>
               </div>
-
               <!--      ANMELDEFRIST      -->
               <div class="anmeldefrist">
                 <h3>ANMELDEFRIST</h3>
@@ -178,7 +157,6 @@
                   <br>Anmeldung nur solange genügend Plätze da sind.
                 </p>
               </div>
-
               <!--      ERWARTUNGEN      -->
               <div class="erwartungen">
                 <h3>ERWARTUNGEN</h3>
@@ -189,17 +167,13 @@
                       ABENTEUER: <app-stars [appreciation]="currentTripOffer?.erwartungenReadListTO?.abenteuer"></app-stars>
                     </div>
                   </div>
-
-                  <div class="col-sm-6">
-                    <div class="col-sm-12">
-                      ENTSCHLEUNIGUNG: <app-stars [appreciation]="currentTripOffer?.erwartungenReadListTO?.entschleunigung"></app-stars>
-                    </div>
+                  <div class="col-sm-12 col-md-12 col-lg-6">
+                    ENTSCHLEUNIGUNG: <app-stars [appreciation]="currentTripOffer?.erwartungenReadListTO?.entschleunigung"></app-stars>
                   </div>
-
-                  <div class="col-sm-6">
-                    <div class="col-sm-12">
-                      KOMFORT: <app-stars [appreciation]="currentTripOffer?.erwartungenReadListTO?.konfort"></app-stars>
-                    </div>
+                </div>
+                <div class="row mb-2" [ngStyle]="fontColor">
+                  <div class="col-sm-12 col-md-12 col-lg-6">
+                    KOMFORT: <app-stars [appreciation]="currentTripOffer?.erwartungenReadListTO?.konfort"></app-stars>
                   </div>
 
                   <div class="col-sm-6">
@@ -234,24 +208,19 @@
         </div>
       </div>
     </div>
-
     <!-- Ablauf der Reise -->
     <div class="ablauf-contents">
       <h2>Ablauf der Reise</h2>
-
       <h3>UNTERKÜNFTE</h3>
       <p class="unterkünfte-text">{{currentLand?.unterkunft_text}}</p>
-
       <div class="row" *ngIf="currentLand?.unterkunft">
         <div class="col-md-12" *ngFor="let item of currentLand.unterkunft; let i=index">
           <div class="row col-md-12 mb-6">
             <h1 id="index" class="row col-md-1" [ngStyle]="fontColor">{{i + 1}}</h1>
             <div class="col-md-7">
-              <h3 [ngStyle]="fontColor">{{item.name}}</h3>
-              <a [ngStyle]="fontColor" routerLinkActive="active" href="{{item.link}}">{{item.link}}</a>
-
+              <h3 [ngStyle]="fontColor" class="mb-1">{{item.name}}</h3>
+              <p><a [ngStyle]="fontColor" routerLinkActive="active" href="{{item.link}}">{{item.link}}</a></p>
               <p><span class="font-weight-bold">Adresse:</span> {{item.adresse}}</p>
-
               <p>{{item.beschreibung}}</p>
             </div>
             <div class="row col-md-4 mb-5" *ngFor="let bild of item.bilder">
@@ -261,11 +230,9 @@
         </div>
       </div>
     </div>
-
     <!-- Länderinfo | Gesundheit & Sicherheit -->
     <div class="landInfos-contents">
       <h2>Länderinfo | Gesundheit & Sicherheit</h2>
-
       <mat-card [ngStyle]="matCardShadow">
         <mat-card-content *ngFor="let info of currentLand?.landInfo; let i=index">
           <mat-expansion-panel class="mb-2" [expanded]="checkIfExpanded(i)" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
@@ -277,7 +244,5 @@
         </mat-card-content>
       </mat-card>
     </div>
-
   </div>
-
-</body>
+</div>
