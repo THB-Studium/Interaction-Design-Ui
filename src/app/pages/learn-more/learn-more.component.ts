@@ -52,6 +52,14 @@ export class LearnMoreComponent implements OnInit {
     this.setCurrentLandAndTO();
   }
 
+  ngOnDestroy(): void {
+    // Reset the color
+    this.sharedDataService.changeCurrentBackgroundColors({
+      header: '',
+      bodyAndFooter: '',
+    });
+  }
+
   checkIfExpanded(index: number): boolean {
     return index === 0
   }

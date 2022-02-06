@@ -34,7 +34,7 @@
       </div>
 
       <div class="travel-map">
-        <img class="img-fluid" [src]="currentLand?.realImage">
+        <img class="img-fluid" [src]="currentLand?.realImage" alt="reiseroute img">
         <p>{{currentLand?.name | uppercase}} - REISEROUTE</p>
       </div>
     </div>
@@ -64,7 +64,7 @@
       <h2>Fakten-Check</h2>
 
       <div class="row">
-        <div class="col-sm-7 d-flex">
+        <div class="col-sm-12 col-md-12 col-lg-7">
           <mat-card id="mat-card-group-1" class="col-ms-12" [ngStyle]="matCardShadow">
             <mat-card-content>
               <!--      REISEZEITRAUM      -->
@@ -126,7 +126,7 @@
             </mat-card-content>
           </mat-card>
         </div>
-        <div class="col-sm-5 d-flex">
+        <div class="col-sm-12 col-md-12 col-lg-5">
           <mat-card id="mat-card-group-2" class="col-ms-12" [ngStyle]="matCardShadow">
             <mat-card-content>
               <!--      KOSTEN      -->
@@ -182,53 +182,38 @@
               <!--      ERWARTUNGEN      -->
               <div class="erwartungen">
                 <h3>ERWARTUNGEN</h3>
+                <div class="row mb-2" [ngStyle]="fontColor">
+                  <div class="col-sm-12 col-md-12 col-lg-6">
+                    ABENTEUER: <app-stars [appreciation]="currentTripOffer?.erwartungenReadListTO?.abenteuer"></app-stars>
+                  </div>
 
+                  <div class="col-sm-12 col-md-12 col-lg-6">
+                    ENTSCHLEUNIGUNG: <app-stars [appreciation]="currentTripOffer?.erwartungenReadListTO?.entschleunigung"></app-stars>
+                  </div>
+                </div>
+
+                <div class="row mb-2" [ngStyle]="fontColor">
+                  <div class="col-sm-12 col-md-12 col-lg-6">
+                    KOMFORT: <app-stars [appreciation]="currentTripOffer?.erwartungenReadListTO?.konfort"></app-stars>
+                  </div>
+                  <div class="col-sm-12 col-md-12 col-lg-6">
+                    NACHHALTLIGKEIT: <app-stars [appreciation]="currentTripOffer?.erwartungenReadListTO?.nachhaltigkeit"></app-stars>
+                  </div>
+                </div>
+                <div class="row mb-2" [ngStyle]="fontColor">
+                  <div class="col-sm-12 col-md-12 col-lg-6">
+                    SONNE & STRAND: <app-stars [appreciation]="currentTripOffer?.erwartungenReadListTO?.sonne_strand"></app-stars>
+                  </div>
+                  <div class="col-sm-12 col-md-12 col-lg-6">
+                    SICHERHEIT: <app-stars [appreciation]="currentTripOffer?.erwartungenReadListTO?.sicherheit"></app-stars>
+                  </div>
+                </div>
                 <div class="row" [ngStyle]="fontColor">
-                  <div class="col-sm-6">
-                    <div class="col-sm-12">
-                      ABENTEUER: <app-stars [appreciation]="currentTripOffer?.erwartungenReadListTO?.abenteuer"></app-stars>
-                    </div>
+                  <div class="col-sm-12">
+                    ON THE ROAD: <app-stars [appreciation]="currentTripOffer?.erwartungenReadListTO?.road"></app-stars>
                   </div>
-
-                  <div class="col-sm-6">
-                    <div class="col-sm-12">
-                      ENTSCHLEUNIGUNG: <app-stars [appreciation]="currentTripOffer?.erwartungenReadListTO?.entschleunigung"></app-stars>
-                    </div>
-                  </div>
-
-                  <div class="col-sm-6">
-                    <div class="col-sm-12">
-                      KOMFORT: <app-stars [appreciation]="currentTripOffer?.erwartungenReadListTO?.konfort"></app-stars>
-                    </div>
-                  </div>
-
-                  <div class="col-sm-6">
-                    <div class="col-sm-12">
-                      NACHHALTLIGKEIT: <app-stars [appreciation]="currentTripOffer?.erwartungenReadListTO?.nachhaltigkeit"></app-stars>
-                    </div>
-                  </div>
-
-                  <div class="col-sm-6">
-                    <div class="col-sm-12">
-                      SONNE & STRAND: <app-stars [appreciation]="currentTripOffer?.erwartungenReadListTO?.sonne_strand"></app-stars>
-                    </div>
-                  </div>
-
-                  <div class="col-sm-6">
-                    <div class="col-sm-12">
-                      SICHERHEIT: <app-stars [appreciation]="currentTripOffer?.erwartungenReadListTO?.sicherheit"></app-stars>
-                    </div>
-                  </div>
-
-                  <div class="col-sm-6">
-                    <div class="col-sm-12">
-                      ON THE ROAD: <app-stars [appreciation]="currentTripOffer?.erwartungenReadListTO?.road"></app-stars>
-                    </div>
-                  </div>
-
                 </div>
               </div>
-
             </mat-card-content>
           </mat-card>
         </div>
