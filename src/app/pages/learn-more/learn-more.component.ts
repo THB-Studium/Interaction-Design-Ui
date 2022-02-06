@@ -1,4 +1,4 @@
-import {AfterViewChecked, Component, OnDestroy, OnInit} from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { ActivatedRoute } from "@angular/router";
 
 import { CountriesColors } from "../../shared/datas/countries-colors";
@@ -18,11 +18,8 @@ import { Country } from "../../models/country";
   templateUrl: './learn-more.component.html',
   styleUrls: ['./learn-more.component.css']
 })
-<<<<<<< HEAD
 export class LearnMoreComponent implements OnInit {
-=======
-export class LearnMoreComponent implements OnInit, AfterViewChecked, OnDestroy {
->>>>>>> 9482999 (home layout has been added and some bugs fixed)
+
   countries: Array<any> = []
   tripOffers: Array<any> = []
   currentLand: Country
@@ -61,16 +58,6 @@ export class LearnMoreComponent implements OnInit, AfterViewChecked, OnDestroy {
     this.setCurrentLandAndTO();
   }
 
-<<<<<<< HEAD
-=======
-  ngAfterViewChecked(): void {
-    const height1 = document.getElementById('mat-card-group-1')?.getBoundingClientRect()?.height
-    const height2 = document.getElementById('mat-card-group-2')?.getBoundingClientRect()?.height
-
-    if (height1 && height2) {
-      this.matCardHeight = height1 > height2 ? { 'height.px': height1 } : { 'height.px': height2 }
-    }
-  }
 
   ngOnDestroy(): void {
     // Reset the color
@@ -80,7 +67,6 @@ export class LearnMoreComponent implements OnInit, AfterViewChecked, OnDestroy {
     });
   }
 
->>>>>>> 9482999 (home layout has been added and some bugs fixed)
   checkIfExpanded(index: number): boolean {
     return index === 0
   }
