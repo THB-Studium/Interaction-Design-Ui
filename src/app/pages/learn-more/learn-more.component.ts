@@ -1,4 +1,4 @@
-import { Component, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { ActivatedRoute } from "@angular/router";
 
 import { CountriesColors } from "../../shared/datas/countries-colors";
@@ -58,10 +58,10 @@ export class LearnMoreComponent implements OnInit {
 
   bookingFormDialog() {
     const dialog = this.dialog.open(BookingFormComponent, {
-      width: '750px',
-      height: '800px',
+      maxWidth: '800px',
+      maxHeight: '800px',
       disableClose : true,
-      autoFocus : true
+      // autoFocus : true
     });
 
     dialog.componentInstance.land = this.currentLand;
@@ -97,15 +97,16 @@ export class LearnMoreComponent implements OnInit {
 
             this.countriesService.getOne(this.currentTripOffer.landId).subscribe({
               next: (land: Country) => {
-
                 let objectURL = "data:image/png;base64," + land.karte_bild;
                 land.realImage = this.sanitizer.bypassSecurityTrustUrl(objectURL);
                 this.currentLand = land;
-
-                land.highlights.map(highlight => {
-                  return highlight.realImage = this.getImage(highlight.bild);
+                // read the associated image for each country
+                land.highlights.forEach(highlight => {
+                  highlight.realImage = this.getImage(highlight.bild);
                 });
-
+              },
+              complete: () => {
+                // set navbar and footer background
                 this.setStandardColors();
               }
             });
@@ -125,11 +126,10 @@ export class LearnMoreComponent implements OnInit {
     this.matCardShadowHighlight = { 'box-shadow': '1px 1px 5px 1px ' + currentBgColor?.bodyBgColor }
 
     // To transfer standard colours to other components
-    const sharedBgColor = {
-      header: { background: currentBgColor?.headerBgColor },
-      bodyAndFooter: { background: currentBgColor?.bodyBgColor },
-    }
-    this.sharedDataService.changeCurrentBackgroundColor(sharedBgColor)
+    this.sharedDataService.changeCurrentBackgroundColors({
+      header: this.currentLand?.headerFarbe,
+      bodyAndFooter: this.currentLand?.bodyFarbe,
+    });
 
     this.loadFinished = true
   }

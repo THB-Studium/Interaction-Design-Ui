@@ -1,23 +1,5 @@
-body {
-  padding-top: 3rem;
-  padding-bottom: 3rem;
-  color: #5a5a5a;
-}
-
-header {
-  height: auto;
-}
-
-main {
-  height: auto;
-  overflow: auto;
-  padding-top: 0;
-}
-
 footer {
-  //position: absolute;
+  align-items: center;
   width: 100%;
-  height: auto;
-  clear: both;
-  //bottom: 0;
+  padding: 5em 3em 1em 3em;
 }

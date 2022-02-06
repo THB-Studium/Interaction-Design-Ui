@@ -14,6 +14,7 @@ import { Highlight } from "src/app/models/highlight";
 import { Traveler } from "src/app/models/traveler";
 import { TripOffer } from "src/app/models/tripOffer";
 import { User } from "src/app/models/user";
+import { StandardColors } from "src/app/shared/datas/standard-colors";
 
 @Injectable({
   providedIn: "root",
@@ -234,16 +235,21 @@ export class SharedDataService {
   //#endregion accommodation
 
   //#region body background color
-  private backgroundColor: any = {
-    header: { background: '' },
-    bodyAndFooter: { background: '' },
+  private backgroundColors: any = {
+    // set default colors
+    header: StandardColors.Blue,
+    bodyAndFooter: StandardColors.Blue
   }
 
-  private backgroundColorSource = new BehaviorSubject<any>(this.backgroundColor);
-  public currentBackgroundColor = this.backgroundColorSource.asObservable();
+  private backgroundColorSource = new BehaviorSubject<any>(this.backgroundColors);
+  public currentBackgroundColors = this.backgroundColorSource.asObservable();
 
-  changeCurrentBackgroundColor(backgroundColor: any) {
+  changeCurrentBackgroundColors(backgroundColor: any) {
+    if (backgroundColor.header === '' && backgroundColor.bodyAndFooter === '') {
+      backgroundColor = this.backgroundColors;
+    }
     this.backgroundColorSource.next(backgroundColor);
   }
+  //#rendegion body background color
 
 }

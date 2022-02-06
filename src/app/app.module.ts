@@ -8,6 +8,7 @@ import { ToastrModule } from "ngx-toastr";
 import { AppComponent } from "./app.component";
 import { AdminLayoutComponent } from "./layouts/admin-layout/admin-layout.component";
 import { AuthLayoutComponent } from "./layouts/auth-layout/auth-layout.component";
+import { HomeLayoutComponent } from './layouts/home-layout/home-layout.component';
 
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { NgxWebstorageModule } from "ngx-webstorage";
@@ -35,7 +36,7 @@ registerLocaleData(localeDe, localeDeExtra);
     }),
     NgxWebstorageModule.forRoot(),
   ],
-  declarations: [AppComponent, AdminLayoutComponent, AuthLayoutComponent],
+  declarations: [AppComponent, AdminLayoutComponent, AuthLayoutComponent, HomeLayoutComponent],
   providers: [
     //{ provide: HTTP_INTERCEPTORS, useClass: AppHttpInterceptor, multi: true },
     { provide: LocationStrategy, useClass: HashLocationStrategy },
