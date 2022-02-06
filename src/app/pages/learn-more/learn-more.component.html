@@ -63,9 +63,9 @@
     <div class="fakten-check-contents">
       <h2>Fakten-Check</h2>
 
-      <div class="row col-md-12">
-        <div class="col-md-7 mr-8 mb-5">
-          <mat-card id="mat-card-group-1" class="col-md-12" [ngStyle]="matCardShadow">
+      <div class="row">
+        <div class="col-sm-7 d-flex">
+          <mat-card id="mat-card-group-1" class="col-ms-12" [ngStyle]="matCardShadow">
             <mat-card-content>
               <!--      REISEZEITRAUM      -->
               <div class="reisezeitraum">
@@ -126,8 +126,8 @@
             </mat-card-content>
           </mat-card>
         </div>
-        <div class="col-md-4">
-          <mat-card id="mat-card-group-2" class="col-md-12" [ngStyle]="matCardShadow">
+        <div class="col-sm-5 d-flex">
+          <mat-card id="mat-card-group-2" class="col-ms-12" [ngStyle]="matCardShadow">
             <mat-card-content>
               <!--      KOSTEN      -->
               <div class="kosten">
@@ -182,93 +182,51 @@
               <!--      ERWARTUNGEN      -->
               <div class="erwartungen">
                 <h3>ERWARTUNGEN</h3>
-                <table class="erwartungen-table">
-                  <tr>
-                    <td>
-                      ABENTEUER:
-                      <span class="stars">
-                      <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.abenteuer > 0">star</mat-icon>
-                      <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.abenteuer > 20">star</mat-icon>
-                      <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.abenteuer > 40">star</mat-icon>
-                      <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.abenteuer > 60">star</mat-icon>
-                      <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.abenteuer > 80">star</mat-icon>
-                    </span>
-                    </td>
 
-                    <td>
-                      ENTSCHLEUNIGUNG:
-                      <span class="stars">
-                      <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.entschleunigung > 0">star</mat-icon>
-                      <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.entschleunigung > 20">star</mat-icon>
-                      <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.entschleunigung > 40">star</mat-icon>
-                      <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.entschleunigung > 60">star</mat-icon>
-                      <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.entschleunigung > 80">star</mat-icon>
-                    </span>
-                    </td>
-                  </tr>
+                <div class="row" [ngStyle]="fontColor">
+                  <div class="col-sm-6">
+                    <div class="col-sm-12">
+                      ABENTEUER: <app-stars [appreciation]="currentTripOffer?.erwartungenReadListTO?.abenteuer"></app-stars>
+                    </div>
+                  </div>
 
-                  <tr>
-                    <td>
-                      KOMFORT:
-                      <span class="stars">
-                      <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.konfort > 0">star</mat-icon>
-                      <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.konfort > 20">star</mat-icon>
-                      <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.konfort > 40">star</mat-icon>
-                      <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.konfort > 60">star</mat-icon>
-                      <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.konfort > 80">star</mat-icon>
-                    </span>
-                    </td>
+                  <div class="col-sm-6">
+                    <div class="col-sm-12">
+                      ENTSCHLEUNIGUNG: <app-stars [appreciation]="currentTripOffer?.erwartungenReadListTO?.entschleunigung"></app-stars>
+                    </div>
+                  </div>
 
-                    <td>
-                      NACHHALTLIGKEIT:
-                      <span class="stars">
-                      <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.nachhaltigkeit > 0">star</mat-icon>
-                      <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.nachhaltigkeit > 20">star</mat-icon>
-                      <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.nachhaltigkeit > 40">star</mat-icon>
-                      <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.nachhaltigkeit > 60">star</mat-icon>
-                      <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.nachhaltigkeit > 80">star</mat-icon>
-                    </span>
-                    </td>
-                  </tr>
+                  <div class="col-sm-6">
+                    <div class="col-sm-12">
+                      KOMFORT: <app-stars [appreciation]="currentTripOffer?.erwartungenReadListTO?.konfort"></app-stars>
+                    </div>
+                  </div>
 
-                  <tr>
-                    <td>
-                      SONNE & STRAND:
-                      <span class="stars">
-                      <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.sonne_strand > 0">star</mat-icon>
-                      <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.sonne_strand > 20">star</mat-icon>
-                      <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.sonne_strand > 40">star</mat-icon>
-                      <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.sonne_strand > 60">star</mat-icon>
-                      <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.sonne_strand > 80">star</mat-icon>
-                    </span>
-                    </td>
+                  <div class="col-sm-6">
+                    <div class="col-sm-12">
+                      NACHHALTLIGKEIT: <app-stars [appreciation]="currentTripOffer?.erwartungenReadListTO?.nachhaltigkeit"></app-stars>
+                    </div>
+                  </div>
 
-                    <td>
-                      SICHERHEIT:
-                      <span class="stars">
-                      <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.sicherheit > 0">star</mat-icon>
-                      <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.sicherheit > 20">star</mat-icon>
-                      <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.sicherheit > 40">star</mat-icon>
-                      <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.sicherheit > 60">star</mat-icon>
-                      <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.sicherheit > 80">star</mat-icon>
-                    </span>
-                    </td>
-                  </tr>
+                  <div class="col-sm-6">
+                    <div class="col-sm-12">
+                      SONNE & STRAND: <app-stars [appreciation]="currentTripOffer?.erwartungenReadListTO?.sonne_strand"></app-stars>
+                    </div>
+                  </div>
 
-                  <tr>
-                    <td>
-                      ON THE ROAD:
-                      <span class="stars">
-                      <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.road > 0">star</mat-icon>
-                      <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.road > 20">star</mat-icon>
-                      <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.road > 40">star</mat-icon>
-                      <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.road > 60">star</mat-icon>
-                      <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.road > 80">star</mat-icon>
-                    </span>
-                    </td>
-                  </tr>
+                  <div class="col-sm-6">
+                    <div class="col-sm-12">
+                      SICHERHEIT: <app-stars [appreciation]="currentTripOffer?.erwartungenReadListTO?.sicherheit"></app-stars>
+                    </div>
+                  </div>
 
-                </table>
+                  <div class="col-sm-6">
+                    <div class="col-sm-12">
+                      ON THE ROAD: <app-stars [appreciation]="currentTripOffer?.erwartungenReadListTO?.road"></app-stars>
+                    </div>
+                  </div>
+
+                </div>
               </div>
 
             </mat-card-content>
