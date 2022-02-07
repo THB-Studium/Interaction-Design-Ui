@@ -39,7 +39,7 @@
                 </p>
                 <p>
                   <small class="mr-2">Interessierte:</small>
-                  <small class="font-weight-bold">{{gebot.interessiert}}</small>
+                  <small class="font-weight-bold">{{gebot.interessiert < 0 ? 0 : gebot.interessiert}}</small>
                 </p>
               </div>
             </div>

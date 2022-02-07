@@ -125,13 +125,10 @@ export class LearnMoreComponent implements OnInit {
   }
 
   private setStandardColors(): void {
-    const currentBgColor = CountriesColors.data.filter(item =>
-      item.landName.toLowerCase().includes(this.currentLand.name.toLowerCase().split(' ')[0]))[0]
-
-    this.backgroundColor = { background: currentBgColor?.bodyBgColor }
-    this.fontColor = { color: currentBgColor?.bodyBgColor }
-    this.matCardShadow = { 'box-shadow': '1px 1px 14px 2px ' + currentBgColor?.bodyBgColor }
-    this.matCardShadowHighlight = { 'box-shadow': '1px 1px 5px 1px ' + currentBgColor?.bodyBgColor }
+    this.backgroundColor = { background: this.currentLand.bodyFarbe }
+    this.fontColor = { color: this.currentLand.bodyFarbe }
+    this.matCardShadow = { 'box-shadow': '1px 1px 14px 2px ' + this.currentLand.bodyFarbe }
+    this.matCardShadowHighlight = { 'box-shadow': '1px 1px 5px 1px ' + this.currentLand.bodyFarbe }
 
     // To transfer standard colours to other components
     this.sharedDataService.changeCurrentBackgroundColors({

@@ -16,7 +16,7 @@
         <p>
           Freie Plätze: <span class="font-weight-bold">{{currentTripOffer?.freiPlaetze}}/{{currentTripOffer?.plaetze}}</span>
           <span>
-            &nbsp; - &nbsp; Interessierte: <span class="font-weight-bold">{{currentTripOffer?.interessiert}}</span>
+            &nbsp; - &nbsp; Interessierte: <span class="font-weight-bold">{{currentTripOffer?.interessiert < 0 ? 0 : currentTripOffer?.interessiert}}</span>
           </span>
         </p>
         <h3 *ngIf = "currentTripOffer?.freiPlaetze <= 0" class="set-content-right"> Keine Plätze mehr !</h3>
@@ -55,8 +55,8 @@
     <div class="fakten-check-contents">
       <h2>Fakten-Check</h2>
       <div class="row">
-        <div class="col-sm-12 col-md-12 col-lg-7">
-          <mat-card id="mat-card-group-1" class="col-ms-12" [ngStyle]="matCardShadow">
+        <div class="col-sm-12 col-md-12 col-lg-7 d-flex justify-content-center">
+          <mat-card id="mat-card-group-1" class="col-sm-12" [ngStyle]="matCardShadow">
             <mat-card-content>
               <!--      REISEZEITRAUM      -->
               <div class="reisezeitraum">
@@ -110,8 +110,8 @@
             </mat-card-content>
           </mat-card>
         </div>
-        <div class="col-sm-12 col-md-12 col-lg-5">
-          <mat-card id="mat-card-group-2" class="col-ms-12" [ngStyle]="matCardShadow">
+        <div class="col-sm-12 col-md-12 col-lg-4 d-flex justify-content-end">
+          <mat-card id="mat-card-group-2" class="col-sm-12" [ngStyle]="matCardShadow">
             <mat-card-content>
               <!--      KOSTEN      -->
               <div class="kosten">
@@ -221,14 +221,19 @@
     <div class="landInfos-contents">
       <h2>Länderinfo | Gesundheit & Sicherheit</h2>
       <mat-card [ngStyle]="matCardShadow">
-        <mat-card-content *ngFor="let info of currentLand?.landInfo; let i=index">
-          <mat-expansion-panel class="mb-2" [expanded]="checkIfExpanded(i)" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
-            <mat-expansion-panel-header>
-              <mat-panel-title>{{info?.titel | uppercase}}</mat-panel-title>
-            </mat-expansion-panel-header>
-            <p>{{info?.description}}</p>
-          </mat-expansion-panel>
-        </mat-card-content>
+        <div *ngIf="currentLand?.landInfo?.length > 0">
+          <mat-card-content *ngFor="let info of currentLand?.landInfo; let i=index">
+            <mat-expansion-panel class="mb-2" [expanded]="checkIfExpanded(i)" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+              <mat-expansion-panel-header>
+                <mat-panel-title>{{info?.titel | uppercase}}</mat-panel-title>
+              </mat-expansion-panel-header>
+              <p>{{info?.description}}</p>
+            </mat-expansion-panel>
+          </mat-card-content>
+        </div>
+        <div *ngIf="currentLand?.landInfo?.length == 0">
+          Keine Länderinfo | Gesundheit & Sicherheit vorhanden!
+        </div>
       </mat-card>
     </div>
   </div>
