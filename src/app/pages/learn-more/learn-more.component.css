@@ -1,10 +1,5 @@
-<<<<<<< HEAD
-body {
-  padding: 10em 5% 1em;
-=======
 .content {
   padding: 2em 5% 1em;
->>>>>>> e162cc7 (FEATURE: title size has been modified. Fit to screen)
   min-height: calc(100vh - 230px);
   margin-bottom: 3em;
 }
