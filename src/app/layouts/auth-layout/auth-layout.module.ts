@@ -66,7 +66,7 @@ import { AboutusComponent } from "src/app/pages/aboutus/aboutus.component";
     LearnMoreComponent,
     LoginComponent,
     RegisterComponent,
-    AboutusComponent
+    AboutusComponent,
   ],
   providers: [
     //{ provide: HTTP_INTERCEPTORS, useClass: AppHttpInterceptor, multi: true },

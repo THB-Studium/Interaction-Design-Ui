@@ -108,6 +108,19 @@
 
           <div class="row">
             <mat-form-field appearance="fill">
+              <mat-select required hideRequiredMarker="true" floatLabel="true" formControlName="status">
+                <mat-option value="student" (click)="isStudent=true; isMitArbeiter=false">Student</mat-option>
+                <mat-option value="alumnus">Alumnus</mat-option>
+                <mat-option value="hochschulmitarbeiter" (click)="isMitArbeiter=true; isStudent=false">
+                  Hochschulmitarbeiter</mat-option>
+              </mat-select>
+              <mat-error *ngIf="(personenDatenFormGroup.get('status')).errors?.required">
+                Der Status ist <strong>erforderlich</strong>.
+              </mat-error>
+              <mat-label><i> Status</i></mat-label>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" *ngIf="!isMitArbeiter">
               <mat-label>Studiengang</mat-label>
               <input matInput placeholder="Study program" formControlName="studiengang" required>
               <mat-icon matSuffix>school</mat-icon>
@@ -116,34 +129,18 @@
                 Der Studiengang ist <strong>erforderlich</strong>.
               </mat-error>
             </mat-form-field>
-
-            <mat-form-field appearance="fill">
-              <mat-select required hideRequiredMarker="true" floatLabel="true" formControlName="status">
-                <mat-option value="student">Student</mat-option>
-                <mat-option value="alumnus">Alumnus</mat-option>
-                <mat-option value="hochschulmitarbeiter">Hochschulmitarbeiter</mat-option>
-              </mat-select>
-              <mat-error *ngIf="(personenDatenFormGroup.get('status')).errors?.required">
-                Der Status ist <strong>erforderlich</strong>.
-              </mat-error>
-              <mat-label><i> Status</i></mat-label>
-            </mat-form-field>
           </div>
 
           <div class="row">
-            <mat-form-field appearance="fill">
+            <mat-form-field appearance="fill" *ngIf="!isStudent">
               <mat-label>Arbeitet Bei</mat-label>
-              <input required matInput placeholder="Arbeitet Bei" formControlName="arbeitet">
+              <input matInput placeholder="Arbeitet Bei" formControlName="arbeitet" [required]="false">
               <mat-icon matSuffix>work</mat-icon>
               <mat-hint>Arbeitetsort hinzufügen</mat-hint>
-              <mat-error *ngIf="(personenDatenFormGroup.get('arbeitet')).errors?.required">
-                Die Eingabe ist <strong>erforderlich</strong>.
-              </mat-error>
             </mat-form-field>
 
             <mat-form-field appearance="fill">
-              <mat-select required hideRequiredMarker="true" floatLabel="true"
-                          formControlName="schonTeilgennomem">
+              <mat-select required hideRequiredMarker="true" floatLabel="true" formControlName="schonTeilgennomem">
                 <mat-option value="true">ja</mat-option>
                 <mat-option value="false">Nein</mat-option>
               </mat-select>
@@ -264,6 +261,19 @@
 
           <div class="row">
             <mat-form-field appearance="fill">
+              <mat-select required hideRequiredMarker="true" floatLabel="true" formControlName="status">
+                <mat-option value="student" (click)="isStudentMitReiser=true; isMitArbeiter=false">Student</mat-option>
+                <mat-option value="alumnus">Alumnus</mat-option>
+                <mat-option value="hochschulmitarbeiter" (click)="isMitArbeiter=true; isStudent=false">
+                  Hochschulmitarbeiter</mat-option>
+              </mat-select>
+              <mat-error *ngIf="(personenDatenFormGroupMitReiser.get('status')).errors?.required">
+                Der Status ist <strong>erforderlich</strong>.
+              </mat-error>
+              <mat-label><i> Status</i></mat-label>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" *ngIf="!isMitArbeiter">
               <mat-label>Studiengang</mat-label>
               <input matInput placeholder="Study program" formControlName="studiengang" required>
               <mat-icon matSuffix>school</mat-icon>
@@ -272,35 +282,18 @@
                 Der Studiengang ist <strong>erforderlich</strong>.
               </mat-error>
             </mat-form-field>
-
-            <mat-form-field appearance="fill">
-
-              <mat-select required hideRequiredMarker="true" floatLabel="true" formControlName="status">
-                <mat-option value="student">Student</mat-option>
-                <mat-option value="alumnus">Alumnus</mat-option>
-                <mat-option value="hochschulmitarbeiter">Hochschulmitarbeiter</mat-option>
-              </mat-select>
-              <mat-error *ngIf="(personenDatenFormGroupMitReiser.get('status')).errors?.required">
-                Der Status ist <strong>erforderlich</strong>.
-              </mat-error>
-              <mat-label><i> Status</i></mat-label>
-            </mat-form-field>
           </div>
 
           <div class="row">
-            <mat-form-field appearance="fill">
+            <mat-form-field appearance="fill" *ngIf="!isStudentMitReiser">
               <mat-label>Arbeitet Bei</mat-label>
-              <input required matInput placeholder="Arbeitet Bei" formControlName="arbeitet">
+              <input required matInput placeholder="Arbeitet Bei" formControlName="arbeitet" [required]="false">
               <mat-icon matSuffix>work</mat-icon>
               <mat-hint>Arbeitetsort hinzufügen</mat-hint>
-              <mat-error *ngIf="(personenDatenFormGroupMitReiser.get('arbeitet')).errors?.required">
-                Die Eingabe ist <strong>erforderlich</strong>.
-              </mat-error>
             </mat-form-field>
 
             <mat-form-field appearance="fill">
-              <mat-select required hideRequiredMarker="true" floatLabel="true"
-                          formControlName="schonTeilgennomem">
+              <mat-select required hideRequiredMarker="true" floatLabel="true" formControlName="schonTeilgennomem">
                 <mat-option value="true">ja</mat-option>
                 <mat-option value="false">Nein</mat-option>
               </mat-select>
@@ -340,8 +333,8 @@
           <div class="row">
             <mat-form-field appearance="fill">
               <mat-label>Reisedatum (yyyy-mm-dd)</mat-label>
-              <input matInput [matDatepicker]="picker_Reise" [min]="minDate" [max]="maxDate"
-                     formControlName="datum" required>
+              <input matInput [matDatepicker]="picker_Reise" [min]="minDate" [max]="maxDate" formControlName="datum"
+                required>
               <mat-datepicker-toggle matSuffix [for]="picker_Reise">
                 <mat-icon matDatepickerToggleIcon>date_range</mat-icon>
               </mat-datepicker-toggle>
@@ -398,7 +391,7 @@
             <mat-form-field appearance="fill">
               <mat-label>HandGepäck </mat-label>
               <textarea matInput placeholder="HandGepäck" formControlName="handgepaeck" required cols="30"
-                        rows="3"></textarea>
+                rows="3"></textarea>
               <mat-hint>HandGepäck hinzufügen</mat-hint>
               <mat-error *ngIf="(reiseDatenFormGroup.get('handgepaeck')).errors?.required">
                 Das HandGepäck ist <strong>erforderlich</strong>.
@@ -407,8 +400,7 @@
 
             <mat-form-field appearance="fill">
               <mat-label>Koffer </mat-label>
-              <textarea matInput placeholder="Koffer" formControlName="koffer" required cols="30"
-                        rows="3"></textarea>
+              <textarea matInput placeholder="Koffer" formControlName="koffer" required cols="30" rows="3"></textarea>
               <mat-hint>Koffer hinzufügen</mat-hint>
               <mat-error *ngIf="(reiseDatenFormGroup.get('koffer')).errors?.required">
                 Das Koffer ist <strong>erforderlich</strong>.
@@ -427,12 +419,370 @@
       <!--  AGB  -->
       <mat-step [stepControl]="agbFormGroup">
         <form [formGroup]="agbFormGroup">
-          <ng-template matStepLabel>Allgemeine Geschäftsbedingungen</ng-template>
+          <ng-template matStepLabel>Allgemeine Geschäftsbedingungen</ng-template><br>
+          <div class="row">
+            <div class="col-12">
+              <mat-accordion>
+                <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      AGB
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <div class="row">
+                    <div class="col-12">
+                      <p>
+                        <span><h2>ALLGEMEINE GESCHÄFTSBEDINGUNGEN</h2></span> 
+                        <span>für die Vermittlung von Pauschalreisen gem. § 651V BGB</span><br>
+                      </p>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-12">
+                      <p>
+                        MD.H Studienreisen / University Travel Club Germany, Reisebüro und Reiseveranstalter. 
+                        Ansprechpartner: Julia Schnitzer, Immanuelkirchstrasse 33, 10405 Berlin <br>
+                      </p>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-12">
+                      <span class="title"><h3>§1 Geltungsbereich</h3></span>
+                      <p class="ml-3">                        
+                        <span>
+                          Diese Vertragsbedingungen über die Reisevermittlung von Pauschalreiseverträgen sind anwendbar, 
+                          wenn der Reisever-mittler das Formblatt über Pauschalreisen aushändigt. In dem Formblatt ist der
+                          vermittelte Reiseveranstalter als verantwortlicher Unternehmer für die Erbringung der Pauschalreise 
+                          ausgewiesen.
+                        </span>
+                      </p>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-12">
+                      <span class="title"><h3>§2 Vertragsschluss</h3></span>
+                      <p class="ml-3">                        
+                        <span>
+                          <strong>2.1</strong> Mit Abschluss des Buchungsvorgangs, der mündlich, schriftlich, telefonisch, per Telefax oder auf 
+                          elektronischem Wege (E-Mail / Internet) erteilt werden kann, bietet der Kunde dem Reisebüro, den Abschluss 
+                          eines Vermittlungsver-trages über Reisedienstleistungen an, der durch die Annahmeerklärung des Reisebüros 
+                          zustande kommt.Wird der Auftrag auf elektronischem Weg erteilt, so bestätigt das Reisebüro grundsätzlich zunächst 
+                          nur den Eingang des Auftrags auf elektronischem Wege. Eine Eingangsbestätigung stellt noch keine Annahme des 
+                          Vermittlungs-auftrags dar.
+                        </span>
+                      </p>    
+                      <p class="ml-3">
+                        <span>
+                          <strong>2.2</strong> Die beiderseitigen Rechte und Pflichten des Kunden und des Reisevermittlers ergeben sich, soweit dem nicht 
+                          zwingende gesetzliche Bestimmungen entgegenstehen, aus den im Einzelfall vertraglich getroffenen Vereinbarungen, 
+                          die-sen Geschäftsbedingungen und den gesetzlichen Vorschriften, insbesondere der §§ 651a ff BGB i.V.m. Art. 250ff. 
+                          EGBGB und §§ 675, 631 ff. BGB über die entgeltliche Geschäftsbesorgung.
+                        </span>
+                      </p>    
+                      <p class="ml-3">
+                        <span>
+                          <strong>2.3</strong> Für die Rechte und Pflichten des Kunden gegenüber dem vermittelten Reiseveranstalter gelten ausschließlich die 
+                          mit diesem getroffenen Vereinbarungen, insbesondere -soweit wirksam vereinbart -dessen Reise-oder Geschäfts-bedingungen. 
+                          Ohne besondere Vereinbarung oder ohne besonderen Hinweis gelten bei Beförderungsleistungen die auf gesetzlicher Grundlage 
+                          von der zuständigen Verkehrsbehörde oder aufgrund internationaler Überein-kommen erlassenen Beförderungsbedingungen und 
+                          Tarifbestimmungen.
+                        </span>
+                      </p>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-12">
+                      <span class="title"><h3>§3 Zahlungen und Mängelanzeigen</h3></span>
+                      <p class="ml-3">
+                        <span>
+                          <strong>3.1</strong> Reisevermittler und Reiseveranstalter dürfen Zahlungen auf den Reisepreis vor Beendigung der Pauschalreise nur 
+                          fordern oder annehmen, wenn ein wirksamer Kundengeldabsicherungsvertrag des Reiseveranstalters besteht und dem Kunden 
+                          der Sicherungsschein mit Namen und Kontaktdaten des Kundengeldabsicherers in klarer, verständlicher und hervorgehobener
+                          Weise übergeben wurde.
+                        </span>
+                      </p>
+                      <p class="ml-3">
+                        <span >
+                          <strong>3.2</strong> Der Reisevermittler gilt als vom Reiseveranstalter bevollmächtigt, Mängelanzeigen sowie andere Erklärungen des 
+                          Kun-den/Reisenden bezüglich der Erbringung der Pauschalreise entgegenzunehmen. Der Reisevermittler wird den 
+                          Reiseveranstalter unverzüglich von solchen Erklärungen des Reisenden in Kenntnis setzen. Der Reisevermittler empfiehlt 
+                          zur Vermeidung von Zeitverlusten trotz unverzüglicher Weiterleitung, entsprechende Erklärungen un-mittelbar gegenüber 
+                          der Reiseleitung oder der Kontaktstelle des Reiseveranstalters zu erklären.
+                        </span>
+                      </p>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-12">
+                      <span class="title"><h3>§4 Auskünfte und Hinweise</h3></span>
+                      <p class="ml-3">
+                        <span>
+                          <strong>4.1</strong> Auf Wunsch wird dann die Buchungsanfrage beim Pauschalreiseveranstalter durch den Reisevermittler vorgenommen. 
+                          Sofern nicht ausdrücklich vereinbart wurde, dass der Pauschalreiseveranstalter dem Kunden die Reiseunterlagen direkt 
+                          übermittelt, gehört zur Leistungspflicht des Reisevermittlers.  
+                        </span>
+                      </p>
+                      <p class="ml-3">
+                        <span >
+                          <strong>4.2</strong> Bei der Erteilung von sonstigen Hinweisen und Auskünften, zu deren Angabe der Reisevermittler nicht nach § 651v Abs.
+                          1 BGB i.V.m. Art. 250 § 1 bis 3 EGBGB verpflichtet ist, haftet der Reisevermittler im Rahmen des Gesetzes und der 
+                          vertraglichen Vereinbarungen für die richtigeAuswahl der Informationsquelle und die korrekte Weitergabe an den Kunden. 
+                          Ein Auskunftsvertrag mit einer vertraglichen Hauptpflicht zur Auskunftserteilung kommt nur bei einer entsprechenden 
+                          ausdrücklichen Vereinbarung zustande. Für die Richtigkeit erteilter Auskünfte haftet der Reisevermittler gemäß § 675 Abs. 
+                          2 BGB nicht, es sei denn, dass ein besonderer Auskunftsvertrag abgeschlossen wurde.
+                        </span>
+                      </p>
+                      <p class="ml-3">
+                        <span >
+                          <strong>4.3 </strong>Der Reisevermittler ist nur bei Vorliegen einer ausdrücklichen Vereinbarung dazu verpflichtet, den jeweils 
+                          günstigsten Anbieter der angefragten Reiseleistung zu ermitteln und/oder anzubieten.
+                        </span>
+                      </p>
+                      <p class="ml-3">
+                        <span >
+                          <strong>4.4 </strong> Ohne  ausdrückliche  Vereinbarung  übernimmt  der  Reisevermittler  bezüglich  Auskünften  zu  Preisen,  Leistungen,  
+                          Bu-chungskonditionen und sonstigen Umständen der Reiseleistungkeine Garantie i.S. von § 276 Abs. 1 Satz 1 BGB und bezüglich 
+                          Auskünften über die Verfügbarkeit der vom Reisevermittler zu vermittelnden Leistungen keine Beschaffungsgarantie im Sinne 
+                          dieser Vorschrift.
+                        </span>
+                      </p>
+                      <p class="ml-3">
+                        <span >
+                          <strong>4.5 </strong>Der Reisevermittler nimmt Sonderwünsche des Kunden entgegen und leitet diese an den Reiseveranstalter weiter. 
+                          Für die Erfüllung solcher Sonderwünsche steht der Reisevermittler nur ein, soweit dies ausdrücklich vereinbart ist. 
+                          Die Erfüllung der Sonderwünsche ist nicht Bedingung oder Vertragsgrundlage für den Vermittlungsauftrag oder für die vom 
+                          Reisevermittler an den Pauschalreiseveranstalter zu übermittelnde Buchungserklärung des Kunden, sofern dies nicht ausdrücklich
+                          vereinbart wurde. Der Kunde wird darauf hingewiesen, dass Sonderwünsche im Regelfall nur durch ausdrückliche Bestätigung 
+                          des Pauschalreiseveranstalters zum Inhalt der vertraglichen Ver-pflichtungen des Pauschalreiseveranstalters werden.
+                        </span>
+                      </p>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-12">
+                      <span class="title"><h3>§5 Auskünfte und Hinweise</h3></span>
+                      <p class="ml-3">
+                        <span>
+                          <strong>5.1 </strong>Der Vermittler ist berechtigt, Zahlungen entsprechend den Leistungs-und Zahlungsbestimmungen der vermittelten 
+                          Leis-tungserbringer zu verlangen, soweit diese wirksam zwischen dem Leistungserbringer und dem Kunden verein-bart sind 
+                          und rechtswirksame Zahlungsbestimmungen enthalten. <br> <br>
+                          Zahlungsansprüche gegenüber dem Kunden kann der Vermittler, soweit dies 
+                          den Vereinbarungen zwischen dem Vermittler und dem Leistungserbringer entspricht, als dessen Inkassobevollmächtigter geltend
+                          machen, jedoch auch aus eigenem Recht auf Grundlage der gesetzlichen Vorschusspflicht des Kunden als Auftraggeber gemäß 
+                          § 669 BGB.
+                        </span>
+                      </p>
+                      <p class="ml-3">
+                        <span >
+                          <strong>5.2 </strong>Die vorstehenden Regelungen gelten entsprechend für Stornokosten (Rücktrittsentschädigungen) und sonstige gesetzlich 
+                          oder vertraglich begründete Forderungen des vermittelten Leistungserbringers.
+                        </span>
+                      </p>
+                      <p class="ml-3">
+                        <span >
+                          <strong>5.3 </strong>Der Kunde kann eigenen Zahlungsansprüchen des Vermittlers nicht im Wege der Zurückbehaltung oder Aufrechnung entgegenhalten, 
+                          dass der Kunde Ansprüche gegenüber dem vermittelten Leistungserbringer, insbesondere auf-grund mangelhafter Erfüllung des 
+                          vermittelten Vertrages, hat. Dies gilt nicht, wenn für das Entstehen solcher Ansprüche eine schuldhafte Verletzung von 
+                          Vertragspflichten des Vermittlers ursächlich oder mitursächlich ge-worden ist oder der Vermittler aus anderen Gründen 
+                          gegenüber dem Kunden für die geltend gemachten Gegen-ansprüche haftet.
+                        </span>
+                      </p>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-12">
+                      <span class="title"><h3>§6 Vermittlung von Flugbeförderungsleistungen</h3></span>
+                      <p class="ml-3">
+                        <span>
+                          <strong>6.1 </strong>Entsprechend der EU-Verordnung Nr. 2111/2005 über die Erstellung einer gemeinschaftlichen Liste der Luftfahrtunter-nehmen ist 
+                          der Vermittler verpflichtet, den Fluggast bei der Buchung über die Identität der ausführenden Flug-gesellschaft zu unterrichten. 
+                          Sofern bei der Buchung die ausführende Fluggesellschaft noch nicht feststeht, wird der Vermittler ihm die vom vermittelten Unternehmen 
+                          vorliegenden Informationen über diejenige Fluggesell-schaft  übermitteln,  die  wahrscheinlich  den  Flug  durchführt.  Bei  einem  
+                          Wechsel  der  Fluggesellschaft  wird  der Kunde unverzüglich über den Wechsel unterrichtet. Die gemeinschaftliche Liste über die mit 
+                          Flugverbot in der Europäischen Union belegten Fluggesellschaften ist über die Internetseiten 
+                          <a href="http://ec.europa.eu/transport/mo-des/air/safety/air-ban/index_de.htmundwww.lba.deabrufbar">http://ec.europa.eu/transport/mo-des/air/safety/air-ban/index_de.htmundwww.lba.deabrufbar</a>.
+                        </span>
+                      </p>
+                      <p class="ml-3">
+                        <span >
+                          <strong>6.2 </strong>Für das Vertragsverhältnis zwischen dem Kunden und der Fluggesellschaft gelten –soweit jeweils anwendbar -die ge-setzlichen 
+                          Bestimmungen des deutschen Luftverkehrsgesetzes, des Warschauer und Montrealer Übereinkom-mens und unmittelbar, wie inländische 
+                          gesetzliche Bestimmungen, die Verordnung (EG) Nr. 261/2004 zu Flug-passagierrechten, die Verordnung (EG) Nr. 2111/2005 über die 
+                          Erstellung einer gemeinschaftlichen Liste der Luft-fahrtunternehmen, gegen die in der Gemeinschaft eine Betriebsuntersagung 
+                          ergangen ist, sowie über die Unter-richtung von Fluggästen über die Identität des ausführenden Luftfahrtunternehmens, die 
+                          Verordnung (EG) Nr. 1107/2006  des  Europäischen  Parlaments  und  des  Rates  über  die  Rechte  von  behinderten  Flugreisenden
+                          und Flugreisenden mit eingeschränkter Mobilität. <br><br>
+                          Dem Kunden wird dringend empfohlen, sich über seine Rechte als Fluggast, z.B. durch die Aushänge in den Flug-häfen, durch die 
+                          Informationen des ausführenden Luftfahrtunternehmens oder durch die Informationsblätter des Luftfahrtbundesamts unter www.lba.de
+                          zu informieren.
+                        </span>
+                      </p>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-12">
+                      <span class="title"><h3>§7 Prüfung der Reiseunterlagen</h3></span>
+                      <p class="ml-3">
+                        <span>
+                          <strong>7.1 </strong>Sowohl den Kunden, wie auch den Reisevermittler trifft die Pflicht, Vertrags-und sonstige Unterlagen des vermittelten 
+                          Pauschalreiseveranstalters über die Pauschalreise, die dem Kunden durch den Reisevermittler ausgehändigt wur-den, 
+                          insbesondere Buchungsbestätigungen, Flugscheine, Hotelgutscheine,Visa, Versicherungsscheine und sons-tige Unterlagen 
+                          über die vermittelte Pauschalreise auf Richtigkeit und Vollständigkeit, insbesondere auf die Über-einstimmung mit der 
+                          Buchung und dem Vermittlungsauftrag zu überprüfen.
+                        </span>
+                      </p>
+                      <p class="ml-3">
+                        <span >
+                          <strong>7.2 </strong>Soweit Unterlagen über die vermittelte Pauschalreise dem Kunden nicht direkt vom vermittelten Pauschalreiseveranstal-ter 
+                          übermittelt werden, erfolgt die Aushändigung durch den Reisevermittler durch postalischen oder elektroni-schen Versand.
+                        </span>
+                      </p>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-12">
+                      <span class="title"><h3>§8 Mitwirkung des Kunden</h3></span>
+                      <p class="ml-3">
+                        <span>
+                          <strong>8.1 </strong>Der Kunde hat fürihn erkennbare Fehler oder Mängel der Vermittlungstätigkeit des Reisevermittlers nach deren Feststel-lung 
+                          diesem unverzüglich mitzuteilen. Hierunter fallen insbesondere fehlerhafte oder unvollständige Angaben von persönli-chen 
+                          Kundendaten, sonstiger Informationen, Auskünfte und Unterlagen über die vermittelte Pauschalreise sowie die nicht vollständige 
+                          Ausführung von Vermittlungsleistungen (z.B. nicht vorgenommene Buchungen oder Reservierungen).
+                        </span>
+                      </p>
+                      <p class="ml-3">
+                        <span >
+                          <strong>8.2 </strong>Erfolgt keine Anzeige nach Ziff. 8.1 durch den Kunden, so gilt:
+                          <ol>
+                            <li>Unterbleibt die Anzeige des Kunden nach Ziff. 8.1 unverschuldet, entfallen seine Ansprüche nicht.</li>
+                            <li>Ansprüche des Kunden an den Reisevermittler entfallen insoweit, als dieser nachweist, dass dem Kunden 
+                              ein Schaden bei ordnungsgemäßer Anzeige nicht oder nicht in der vom Kunden geltend gemachten Höhe entstanden wäre.
+                              Dies gilt insbesondere, soweit der Reisevermittler nachweist, dass eine unverzügliche Anzeige durch den Kunden dem
+                              Reisevermittler die Möglichkeit zur Behebung des Mangels oder der Verringerung eines Schadens, z.B. durch Umbuchung,
+                              Zusatzbuchung oder Stornierung mit dem vermittelten Pauschalreiseveranstalter ermöglicht hätte.</li>
+                            <li>Ansprüche des Kunden im Falle einer unterbliebenen Anzeige nach Ziff. 8.1 entfallen <strong>nicht</strong> bei 
+                              Schäden aus der Verletzung des Lebens, des Körpers oder der Gesundheit, die auf einer vorsätzlichen oder fahrläs-sigen 
+                              Pflichtverletzung des Reisevermittlers oder eines gesetzlichen Vertreters oder Erfüllungsgehilfen des Reisevermitt-lers 
+                              resultieren; </li>
+                          </ol><br><br>
+                          bei Ansprüchen auf den Ersatz sonstiger Schäden, die auf einer vorsätzlichen oder grob fahrlässigen Pflichtverletzung des 
+                          Reisevermittlers oder eines gesetzlichen Vertreters oder Erfüllungsgehilfen des Reisevermittlers beruhen; <br><br>
+                          bei Verletzung einer wesentlichen Pflicht, deren Erfüllung die ordnungsgemäße Durchführung des Vermittlungsvertra-ges 
+                          überhaupt erst ermöglicht oder deren Verletzung die Erreichung des Vertragszwecks gefährdet. <br><br>
+                          Die Haftung für Buchungsfehler nach § 651x BGB bleibt unberührt.
+                        </span>
+                      </p>                      
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-12">
+                      <span class="title"><h3>§9 Pflichten des Reisevermittlers bei Reklamationen gegenüber den vermittelten Pauschalreiseveranstaltern.</h3></span>
+                      <p class="ml-3">
+                        <span>
+                          Der Kunde kann Mängelanzeigen sowie andere Erklärungen bezüglich der Erbringung der Reiseleistungen durch den Pau-schalreiseveranstalter 
+                          auch seinem Reisevermittler, über den er die Pauschalreise gebucht hat, zur Kenntnis bringen. <br><br>
+                          
+                          <p class="ml-3">
+                            Es besteht jedoch keine Pflicht des Reisevermittlers, den Kunden bezüglich Art, Umfang, Höhe, Anspruchsvoraus-setzungen und einzuhaltende 
+                          Fristen oder sonstige rechtliche Bestimmungen, die Ansprüche gegenüber den ver-mittelten Pauschalreiseveranstaltern betreffend, zu beraten.
+                          </p>
+                          <br><br>
+                        </span>
+                      </p>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-12">
+                      <span class="title"><h3>§10 Wichtige Hinweise zu Versicherungen von Pauschalreisen</h3></span>
+                      <p class="ml-3">
+                        <span>
+                          <strong>10.1</strong> Der Reisevermittler weist auf die Möglichkeit hin, zur Minimierung eines Kostenrisikos bei Stornierungen durch den Kunden
+                          eine Reiserücktrittskostenversicherung bei Buchung abzuschließen.
+                        </span>
+                      </p>
+                      <p class="ml-3">
+                        <span >
+                          <strong>10.2</strong> Der Kunde wird weiterhin darauf hingewiesen, dass eine Reiserücktrittskostenversicherung üblicherweise nicht den en-stehenden 
+                          Schaden abdeckt, der ihm durch einen -auch unverschuldeten -Abbruch der Inanspruchnahme der Pauschalreise nach deren Antritt entstehen kann. 
+                          Eine Reiseabbruchversicherung ist in der Regel gesondert ab-zuschließen.
+                        </span>
+                      </p>
+                      <p class="ml-3">
+                        <span >
+                          <strong>10.3</strong> Der Reisevermittler empfiehlt zusätzlich, bei Reisen ins Auslandauf ausreichenden Auslandskrankenversicherungsschutz zu achten.
+                        </span>
+                      </p>
+                      <p class="ml-3">
+                        <span >
+                          <strong>10.4</strong> Bei der Vermittlung von Reiseversicherungen wird der Kunde darauf hingewiesen, dass die Versicherungsbedingungen der vermittelten 
+                          Reiseversicherungen besondere Vertragsbedingungen und/oder Mitwirkungspflichten des Kun-den enthalten können, insbesondere Haftungsausschlüsse 
+                          (z.B. bei Vorerkrankungen), die Obliegenheit zur un-verzüglichen Stornierung in der Reiserücktrittskostenversicherung, Fristen für die 
+                          Schadensanzeige und Selbst-behalte. Der Vermittler haftet nicht, soweit er keine Falschauskunft bezüglich der Versicherungsbedingungen getätigt 
+                          hat und der vermittelte Reiseversicherer aufgrund von wirksam vereinbarten Versicherungsbedingun-gen ein Leistungsverweigerungsrecht gegenüber dem Kunden hat.
+                        </span>
+                      </p>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-12">
+                      <span class="title"><h3>§11 Haftung</h3></span>
+                      <p class="ml-3">
+                        <span>
+                          <strong>11.1</strong> Der Reisevermittler haftet nicht für das Zustandekommen von Verträgen mit den zu vermittelnden Pauschalreiseveran-staltern, sofern er eine entsprechende
+                          vertragliche Pflicht nicht ausdrücklich vereinbarthat.
+                        </span>
+                      </p>
+                      <p class="ml-3">
+                        <span >
+                          <strong>11.2</strong>  Der  Reisevermittler  haftet  nicht  für  Mängel  und  Schäden,  die  dem  Kunden  im  Zusammenhang  mit  der  vermittelten Reiseleistung entstehen. 
+                          Dies gilt nicht bei einer ausdrücklichen diesbezüglichen Vereinbarung oder Zusicherung des Reisevermittlers, insbesondere, wenn diese von der Leistungsbeschreibung 
+                          des Pauschalreiseveranstalters erheblich abweicht.
+                        </span>
+                      </p>
+                      <p class="ml-3">
+                        <span >
+                          <strong>11.3</strong> Eine etwaige eigene Haftung des Reisevermittlers aus § 651x BGB oder der schuldhaften Verletzung von Reisevermitt-lerpflichten bleibt von den vorstehenden Bestimmungen unberührt.
+                        </span>
+                      </p>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-12">
+                      <span class="title"><h3>§12 Verbraucherstreitbeilegung</h3></span>
+                      <p class="ml-3">
+                        <span>
+                          Der Reisevermittler weist im Hinblick auf das Gesetz über Verbraucherstreitbeilegung darauf hin, dass der Reisevermittler 
+                          an  einem  Streitbeilegungsverfahren  vor  der  Verbraucherschlichtungsstelle  teilnimmt.  Die  zuständige  Verbraucherschlich-tungsstelle ist:NameSchiedsamt Pankow, Breite Str. 24a-26, 13062 Berlin,
+                          <a href="https://www.berlin.de/ba-pankow/politik-und-ver-waltung/aemter/amt-fuer-buergerdienste/schiedsamt/">https://www.berlin.de/ba-pankow/politik-und-ver-waltung/aemter/amt-fuer-buergerdienste/schiedsamt/</a> <br><br>
+                          Sofern eine Verbraucherstreitbeilegung nach Drucklegung dieser Geschäftsbedingungen über die Vermittlung von Pau-schalreisen für den Reisevermittler verpflichtend würde, informiert der Reisevermittler die Verbraucher
+                          hierüber in ge-eigneter Form. <br><br>
+                          Der  Reisevermittler  verweist  für  alleVerträge  über  Pauschalreisen,  die  im  elektronischen  Rechtsverkehr  geschlossen wurden, auf die europäische Online-Streitbeilegungs-Plattform <a href="http://ec.europa.eu/consumers/odrhin">http://ec.europa.eu/consumers/odrhin</a>.
+                        </span>
+                      </p>
+                    </div>
+                  </div>
+                </mat-expansion-panel>
+              </mat-accordion>
+            </div>
+          </div><br>
           <div class="row">
             <div class="col-12">
               <mat-checkbox #termsChecked formControlName="agb">
                 Ich habe die <strong>Allgemeine Geschäftsbedingungen</strong> gelesen und <strong>stimme
-                ihnen zu.</strong>
+                  ihnen zu.</strong>
               </mat-checkbox>
             </div>
           </div>
@@ -536,9 +886,14 @@
             </div>
           </div>
         </div><br>
+        <div class="row">
+          <div class="col-12">
+            <p>Sind alle Informationen Richtig ?</p>
+          </div>
+        </div>
         <div class="action-buttons">
           <button color="primary" mat-button matStepperPrevious>Zurück</button>
-          <button color="primary" mat-button matStepperNext>Weiter</button>
+          <button color="primary" mat-button matStepperNext color="primary" (click)="buchen()">Ja, Buchen</button>
         </div>
         <mat-divider></mat-divider>
       </mat-step>
@@ -546,34 +901,27 @@
       <!--  Done    -->
       <mat-step>
         <ng-template matStepLabel>Done</ng-template>
-        <p>Sind alle Informationen Richtig ?</p>
+
+        <p>
+          {{responseAfterBooking}}
+        </p>
+        
         <div class="action-buttons">
-          <button color="primary" mat-button matStepperPrevious>Zurück</button>
-          <button color="primary" mat-button color="primary" (click)="buchen()">Ja, Buchen</button>
+          <div class="row">
+            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 text-left">
+              <button mat-raised-button color="warn" mat-dialog-close>schließen</button>
+            </div>
+            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6"></div>
+            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+              <button mat-raised-button color="accent" [disabled]="!canDownloadPdf" (click)="downloadPdf()">
+                Als PDF runterladen
+              </button>
+            </div>
+          </div>
         </div>
-        <mat-divider></mat-divider>
       </mat-step>
 
     </mat-stepper>
   </form>
 
 </mat-dialog-content>
-
-    <div class="row">
-        <div class="col-md-3">
-            <button mat-raised-button color="warn" mat-dialog-close>
-                ABBRECHEN
-            </button>
-        </div>
-        <div class="col-md-6"></div>
-        <div class="col-md-3">
-            <button mat-raised-button color="accent" [disabled]="!canDownloadPdf" (click)="downloadPdf()">
-                Als PDF runterladen
-            </button>
-        </div>
-    </div>
-<mat-divider></mat-divider>
-
-<mat-dialog-actions>
-  <button color="warn" mat-button mat-dialog-close>ABBRECHEN</button>
-</mat-dialog-actions>

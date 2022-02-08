@@ -29,3 +29,15 @@ mat-dialog-actions {
   min-height: unset;
   float: right;
 }
+
+.title {
+  font-weight: bold;
+}
+
+strong {
+  font-weight: bold;
+}
+
+.btn-close {
+  float: left;
+}

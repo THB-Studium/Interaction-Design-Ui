@@ -58,6 +58,11 @@ export class BookingFormComponent implements OnInit {
   maxDate: Date;
   canDownloadPdf = false;
   currentBookingId: any;
+  isStudent = false;
+  isStudentMitReiser = false;
+  isMitArbeiter = false;
+  panelOpenState = false;
+  responseAfterBooking = "";
 
   constructor(
     private bookingclassService: BookingClassService,
@@ -90,7 +95,7 @@ export class BookingFormComponent implements OnInit {
       email: ['', Validators.required],
       studiengang: ['', Validators.required],
       status: ['', Validators.required],
-      arbeitet: ['', Validators.required],
+      arbeitet: [''],
       schonTeilgennomem: ['', Validators.required],
       hochschule: ['', Validators.required],
       mitMitreiser: ['', Validators.required],
@@ -105,7 +110,7 @@ export class BookingFormComponent implements OnInit {
       email: ['', Validators.required],
       studiengang: ['', Validators.required],
       status: ['', Validators.required],
-      arbeitet: ['', Validators.required],
+      arbeitet: [''],
       schonTeilgennomem: ['', Validators.required],
       hochschule: ['', Validators.required],
     });
@@ -163,12 +168,12 @@ export class BookingFormComponent implements OnInit {
 
     let buchungsObjekt: Booking = {
       id: null,
-      buchungsklasseId: this.selectedBookingClass.id,
+      buchungsklasseId: this.selectedBookingClass?.id,
       datum: this.reise.datum,
       flughafen: this.reise.flughafen,
       handGepaeck: this.reise.handgepaeck,
       koffer: this.reise.koffer,
-      reiseAngebotId: this.currentTripOffer.id,
+      reiseAngebotId: this.currentTripOffer?.id,
       zahlungMethod: this.reise.zahlungsmethod,
 
       reiser: {
@@ -202,22 +207,19 @@ export class BookingFormComponent implements OnInit {
       } : null
     }
 
-    console.log(buchungsObjekt);
-
     this.buchungService.addOne(buchungsObjekt).subscribe({
       next: (resp) => {
-        console.log(resp);
         this.canDownloadPdf = true;
         this.currentBookingId = resp.id;
 
       },
       complete: () => {
         this.toaster.success('erfolgreich gebucht', 'Erfolgreich');
-        //this.dialog.closeAll();
+        this.responseAfterBooking = " Die Reise wurde erfolgreich gebucht";
       },
       error: (error) => {
-        console.log(error)
         this.toaster.error('Die Buchung konnte nicht durchgeführt werden', 'Fehler');
+        this.responseAfterBooking = "Die Buchung konnte nicht durchgeführt werden";
       }
     });
   }

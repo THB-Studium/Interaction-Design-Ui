@@ -49,6 +49,7 @@ import { EditBookingFormComponent } from './forms/edit-booking-form/edit-booking
 import { SpinnerComponent } from './spinner/spinner.component';
 import { StarsComponent } from './stars/stars.component';
 import { CurrentOffersListFormComponent } from './forms/current-offers-list-form/current-offers-list-form.component';
+import { MatExpansionModule } from "@angular/material/expansion";
 
 @NgModule({
   imports: [
@@ -82,7 +83,8 @@ import { CurrentOffersListFormComponent } from './forms/current-offers-list-form
     MatProgressBarModule,
     MatListModule,
     NgxMatSelectSearchModule,
-    ColorPickerModule
+    ColorPickerModule,
+    MatExpansionModule
   ],
   declarations: [
     FooterComponent,
