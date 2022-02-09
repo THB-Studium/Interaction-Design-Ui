@@ -141,6 +141,10 @@ mat-card {
   background-color: var(--color-blue) !important;
 }
 
+.bg-favorite {
+  background-color: var(--color-blue) !important;
+}
+
 .isFavorite {
   color: #ee713F;
 }

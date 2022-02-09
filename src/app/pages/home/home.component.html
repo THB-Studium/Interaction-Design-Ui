@@ -17,7 +17,7 @@
           </div>
           <div class="row">
             <div class="text-top-right">
-              <button class="ml-1 align-self-end" mat-mini-fab aria-label="add icon"
+              <button class="ml-1 align-self-end bg-favorite" mat-mini-fab aria-label="add icon"
                 [matTooltip]="gebot.isfavorite ? 'nicht mehr interessiert' : 'interessiert'" matTooltipHideDelay="2000"
                 id="addInterest">
                 <mat-icon *ngIf="!gebot.isfavorite" (click)="interessiert(gebot.id, 'add')">favorite</mat-icon>

@@ -98,7 +98,7 @@
 }
 
 .social i:hover {
-  background-color: #2d92ab;
+  color: #2d92ab;
   transition: 1s ease;
   border-radius: 50%;
 }
