@@ -190,7 +190,7 @@ export class HomeComponent implements OnInit {
       complete: () => {
         // filter only feedbacks that are public.
         const feedbacks = this.feedbacks.filter(
-          (x) => x.veroefentlich === true
+          (x) => x.veroeffentlich === true
         );
         // clear the list
         this.feedbacks = [];
