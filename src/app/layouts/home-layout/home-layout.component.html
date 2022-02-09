@@ -1,86 +1,134 @@
 <div class="navbar-wrapper">
-    <div class="container-fluid">
-        <nav class="navbar navbar-horizontal navbar-expand-md navbar-dark" id="navbar-main">
-            <div class="container-fluid px-4">
-                <a class="navbar-brand" routerLinkActive="active" [routerLink]="['/dashboard']">
-                    <img src="./assets/logo/Logo_weiß.png" class="brand img-fluid" alt="brand" />
+  <div class="container-fluid">
+    <nav
+      class="navbar navbar-horizontal navbar-expand-md navbar-dark"
+      id="navbar-main"
+    >
+      <div class="container-fluid px-4">
+        <a
+          class="navbar-brand"
+          routerLinkActive="active"
+          [routerLink]="['/dashboard']"
+        >
+          <img
+            src="./assets/logo/Logo_weiß.png"
+            class="brand img-fluid"
+            alt="brand"
+          />
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          (click)="isCollapsed = !isCollapsed"
+          aria-controls="sidenav-collapse-main"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div
+          class="collapse navbar-collapse"
+          [ngbCollapse]="isCollapsed"
+          id="sidenav-collapse-main"
+        >
+          <!-- Collapse header -->
+          <div class="navbar-collapse-header d-md-none">
+            <div class="row">
+              <div class="col-6 collapse-brand">
+                <a
+                  routerLinkActive="active"
+                  [routerLink]="['/dashboard']"
+                  *ngIf="isCollapsed"
+                >
+                  <img src="./assets/logo/Logo_weiß.png" alt="brand" />
                 </a>
-                <button class="navbar-toggler" type="button" (click)="isCollapsed = !isCollapsed"
-                    aria-controls="sidenav-collapse-main">
-                    <span class="navbar-toggler-icon"></span>
+                <a
+                  routerLinkActive="active"
+                  [routerLink]="['/dashboard']"
+                  *ngIf="!isCollapsed"
+                >
+                  <img src="./assets/logo/Logo_black.png" alt="brand" />
+                </a>
+              </div>
+              <div class="col-6 collapse-close">
+                <button
+                  type="button"
+                  class="navbar-toggler"
+                  (click)="isCollapsed = !isCollapsed"
+                >
+                  <span></span>
+                  <span></span>
                 </button>
-                <div class="collapse navbar-collapse" [ngbCollapse]="isCollapsed" id="sidenav-collapse-main">
-                    <!-- Collapse header -->
-                    <div class="navbar-collapse-header d-md-none">
-                        <div class="row">
-                            <div class="col-6 collapse-brand">
-                                <a routerLinkActive="active" [routerLink]="['/dashboard']" *ngIf="isCollapsed">
-                                    <img src="./assets/logo/Logo_weiß.png" alt="brand" />
-                                </a>
-                                <a routerLinkActive="active" [routerLink]="['/dashboard']" *ngIf="!isCollapsed">
-                                    <img src="./assets/logo/Logo_black.png" alt="brand" />
-                                </a>
-                            </div>
-                            <div class="col-6 collapse-close">
-                                <button type="button" class="navbar-toggler" (click)="isCollapsed = !isCollapsed">
-                                    <span></span>
-                                    <span></span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Navbar items -->
-                    <ul class="navbar-nav ml-auto">
-                        <li class="nav-item">
-                            <a class="nav-link nav-link-icon" routerLinkActive="active">
-                                <span class="nav-link-inner--text">Über uns</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link nav-link-icon" routerLinkActive="active">
-                                <span class="nav-link-inner--text">Reisen</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link nav-link-icon" routerLinkActive="active">
-                                <span class="nav-link-inner--text" (click)="startReservationProcess()">
-                                    Direct Buchen
-                                </span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link nav-link-icon" routerLinkActive="active">
-                                <span class="nav-link-inner--text">Newsletter</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
+              </div>
             </div>
-        </nav>
-    </div><!-- /container -->
-    <!-- carousel -->
-    <div class="mt--9">
-        <ngb-carousel [showNavigationArrows]="true" [showNavigationIndicators]="true"
-            interval="{{slideList.length > 1 ? 5000 : 0}}" [keyboard]="true" [pauseOnHover]="true" [wrap]="true"
-            [activeId]="'secondSlide'">
-            <ng-template *ngFor="let slide of slideList; let i = index" ngbSlide>
-                <div class="picsum-img-wrapper">
-                    <img class="img-fluid fit-img" src="./assets/img/carousel/{{slide.image}}" alt="Slide {{i+1}}" />
-                </div>
-                <div class="carousel-caption">
-                    <h1>{{slide.title}}</h1>
-                    <p class="col-sm-12 col-md-6">{{slide.description}}</p>
-                </div>
-            </ng-template>
-        </ngb-carousel>
-    </div>
-    <!-- /.carousel -->
-    <!-- page content -->
-    <router-outlet></router-outlet>
-    <!-- /. page content -->
-    <!-- FOOTER -->
-    <footer class="mt-4">
-        <app-footer></app-footer>
-    </footer>
-    <!-- /.FOOTER -->
-</div><!-- /navbar wrapper -->
+          </div>
+          <!-- Navbar items -->
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link nav-link-icon" routerLinkActive="active">
+                <span class="nav-link-inner--text">Über uns</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link nav-link-icon" routerLinkActive="active">
+                <span class="nav-link-inner--text">Reisen</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link nav-link-icon" routerLinkActive="active">
+                <span
+                  class="nav-link-inner--text"
+                  (click)="startReservationProcess()"
+                >
+                  Direct Buchen
+                </span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link nav-link-icon" routerLinkActive="active">
+                <span class="nav-link-inner--text" (click)="toSection()"
+                  >Newsletter</span
+                >
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </div>
+  <!-- /container -->
+  <!-- carousel -->
+  <div class="mt--9">
+    <ngb-carousel
+      [showNavigationArrows]="true"
+      [showNavigationIndicators]="true"
+      interval="{{ slideList.length > 1 ? 5000 : 0 }}"
+      [keyboard]="true"
+      [pauseOnHover]="true"
+      [wrap]="true"
+      [activeId]="'secondSlide'"
+    >
+      <ng-template *ngFor="let slide of slideList; let i = index" ngbSlide>
+        <div class="picsum-img-wrapper">
+          <img
+            class="img-fluid fit-img"
+            src="./assets/img/carousel/{{ slide.image }}"
+            alt="Slide {{ i + 1 }}"
+          />
+        </div>
+        <div class="carousel-caption">
+          <h1>{{ slide.title }}</h1>
+          <p class="col-sm-12 col-md-6">{{ slide.description }}</p>
+        </div>
+      </ng-template>
+    </ngb-carousel>
+  </div>
+  <!-- /.carousel -->
+  <!-- page content -->
+  <router-outlet></router-outlet>
+  <!-- /. page content -->
+  <!-- FOOTER -->
+  <footer id="bottom" class="mt-4">
+    <app-footer></app-footer>
+  </footer>
+  <!-- /.FOOTER -->
+</div>
+<!-- /navbar wrapper -->
