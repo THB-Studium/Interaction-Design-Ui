@@ -32,18 +32,14 @@
                     <!-- Navbar items -->
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item">
-                            <a class="nav-link nav-link-icon" routerLinkActive="active">
+                            <a class="nav-link nav-link-icon" routerLinkActive="active" [routerLink]="['/aboutus']">
                                 <span class="nav-link-inner--text">Über uns</span>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link nav-link-icon" routerLinkActive="active">
-                                <span class="nav-link-inner--text">Reisen</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link nav-link-icon" routerLinkActive="active">
-                                <span class="nav-link-inner--text" (click)="startReservationProcess()">
+                                <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                                <span class="nav-link-inner--text" (click)="startReservationProcess()" *ngIf="!loading">
                                     Direct Buchen
                                 </span>
                             </a>
