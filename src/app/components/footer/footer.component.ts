@@ -1,5 +1,6 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, Inject, HostListener } from "@angular/core";
 import { FormControl, Validators } from "@angular/forms";
+import { DOCUMENT, ViewportScroller } from "@angular/common";
 
 import { ToastrService } from "ngx-toastr";
 import { NewsLettersService } from "src/app/services/news-letters/news-letters.service";
@@ -10,17 +11,42 @@ import { NewsLettersService } from "src/app/services/news-letters/news-letters.s
   styleUrls: ["./footer.component.scss"],
 })
 export class FooterComponent implements OnInit {
+  windowScrolled: boolean;
   currentDate: Date = new Date();
 
   emailCtrl: FormControl;
 
   constructor(
     private toastr: ToastrService,
-    private newLetterService: NewsLettersService
+    private newLetterService: NewsLettersService,
+    @Inject(DOCUMENT) private document: Document,
+    private viewScroller: ViewportScroller
   ) {
-    this.emailCtrl = new FormControl('', [Validators.email, Validators.required]);
+    this.emailCtrl = new FormControl("", [
+      Validators.email,
+      Validators.required,
+    ]);
   }
-
+  @HostListener("window:scroll", [])
+  onWindowScroll() {
+    if (
+      window.pageYOffset ||
+      document.documentElement.scrollTop ||
+      document.body.scrollTop > 100
+    ) {
+      this.windowScrolled = true;
+    } else if (
+      (this.windowScrolled && window.pageYOffset) ||
+      document.documentElement.scrollTop ||
+      document.body.scrollTop < 10
+    ) {
+      this.windowScrolled = false;
+    }
+  }
+  scrollToTop() {
+    console.log("hello");
+    this.viewScroller.scrollToPosition([0, 0]);
+  }
   ngOnInit() {}
 
   abonnieren() {
