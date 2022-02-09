@@ -1,0 +1,28 @@
+<mat-dialog-content>
+    <mat-card class="content">
+        <mat-card-title>Reiseangebot buchen</mat-card-title>
+        <mat-card-content>
+            <mat-form-field class="col-md-12" appearance="standard">
+                <mat-label>Das Reiseangebot auswählen</mat-label>
+                <mat-select [formControl]="selectedOffer" required>
+                    <mat-option>
+                        <ngx-mat-select-search [formControl]="offersFilteringCtrl" [searching]="searching">
+                        </ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option *ngFor="let offer of filteredOffers | async" [value]="offer">
+                        {{offer.titel}}
+                    </mat-option>
+                </mat-select>
+                <mat-hint>Angebot nach Name suchen.</mat-hint>
+                <mat-error *ngIf="selectedOffer.invalid">
+                    Die Eingabe ist <strong>erforderlich</strong>.
+                </mat-error>
+            </mat-form-field>
+        </mat-card-content>
+        <mat-divider inset></mat-divider>
+        <mat-card-actions class="justify-content-end" mat-dialog-close>
+            <button mat-button>ABBRECHEN</button>
+            <button mat-raised-button (click)="startBookingProcess()" [disabled]="selectedOffer.invalid">OK</button>
+        </mat-card-actions>
+    </mat-card>
+</mat-dialog-content>

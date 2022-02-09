@@ -29,6 +29,18 @@ img {
   max-width: 10em !important;
 }
 
+ul li a {
+  cursor: pointer;
+  color: rgba(255, 255, 255, .7);
+}
+
+ul li a:hover {
+  color: #fff;
+}
+
+.navbar-nav .nav-link.active {
+  color: #fff !important;
+}
 
 /*############################### Screen settings ####################################*/
 @media screen and (min-width: 992px) and (max-width: 1200px) {

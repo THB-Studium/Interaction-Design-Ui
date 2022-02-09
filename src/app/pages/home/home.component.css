@@ -58,6 +58,10 @@
   cursor: pointer;
 }
 
+.card-shadow {
+  border-radius: 15px 15px 15px 15px !important;
+}
+
 .text-bottom-left {
   position: absolute;
   bottom: 8px;
@@ -71,7 +75,7 @@
 }
 
 .text-bottom-left h2 {
-  font-size: 3.2rem !important;
+  font-size: 2.5rem !important;
 }
 
 .text-bottom-left small {
@@ -137,6 +141,10 @@ mat-card {
   background-color: var(--color-blue) !important;
 }
 
+.bg-favorite {
+  background-color: var(--color-blue) !important;
+}
+
 .isFavorite {
   color: #ee713F;
 }
@@ -146,8 +154,8 @@ mat-card {
 }
 
 .section-contents-FB {
-  margin-top: 4em;
-  margin-bottom: 8em;
+  margin-top: 0;
+  margin-bottom: 6em;
   padding: 0 2em;
 }
 
@@ -215,7 +223,7 @@ mat-card {
 
 @media screen and (max-width: 778px) {
   .text-bottom-left h2 {
-    font-size: 2rem !important;
+    font-size: 1.4rem !important;
   }
 
   .text-bottom-left small {

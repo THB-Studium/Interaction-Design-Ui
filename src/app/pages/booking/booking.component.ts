@@ -199,7 +199,7 @@ export class BookingComponent implements OnInit, AfterViewInit {
               disableClose : true,
               autoFocus : true
             });
-            // Set need values
+            // Set needed values
             dialog.componentInstance.land = country;
             dialog.componentInstance.currentTripOffer = this.selectedOffer.value;
           }

@@ -48,6 +48,7 @@ import { FeedbackFormComponent } from './forms/feedback-form/feedback-form.compo
 import { EditBookingFormComponent } from './forms/edit-booking-form/edit-booking-form.component';
 import { SpinnerComponent } from './spinner/spinner.component';
 import { StarsComponent } from './stars/stars.component';
+import { CurrentOffersListFormComponent } from './forms/current-offers-list-form/current-offers-list-form.component';
 
 @NgModule({
   imports: [
@@ -102,6 +103,7 @@ import { StarsComponent } from './stars/stars.component';
     EditBookingFormComponent,
     SpinnerComponent,
     StarsComponent,
+    CurrentOffersListFormComponent,
   ],
     exports: [
         FooterComponent,
