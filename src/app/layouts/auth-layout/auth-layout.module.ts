@@ -68,7 +68,6 @@ import { ScrollToTopComponent } from "src/app/components/scroll-to-top/scroll-to
     LoginComponent,
     RegisterComponent,
     AboutusComponent,
-    ScrollToTopComponent,
   ],
   providers: [
     //{ provide: HTTP_INTERCEPTORS, useClass: AppHttpInterceptor, multi: true },

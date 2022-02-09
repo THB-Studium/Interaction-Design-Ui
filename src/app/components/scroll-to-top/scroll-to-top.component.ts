@@ -1,5 +1,6 @@
 import { Component, OnInit, Inject, HostListener } from "@angular/core";
-import { DOCUMENT } from "@angular/common";
+import { DOCUMENT, ViewportScroller } from "@angular/common";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "app-scroll-to-top",
@@ -9,7 +10,11 @@ import { DOCUMENT } from "@angular/common";
 export class ScrollToTopComponent implements OnInit {
   windowScrolled: boolean;
 
-  constructor(@Inject(DOCUMENT) private document: Document) {}
+  constructor(
+    private router: Router,
+    private viewScroller: ViewportScroller,
+    @Inject(DOCUMENT) private document: Document
+  ) {}
   @HostListener("window:scroll", [])
   onWindowScroll() {
     if (
@@ -27,14 +32,8 @@ export class ScrollToTopComponent implements OnInit {
     }
   }
   scrollToTop() {
-    (function smoothscroll() {
-      var currentScroll =
-        document.documentElement.scrollTop || document.body.scrollTop;
-      if (currentScroll > 0) {
-        window.requestAnimationFrame(smoothscroll);
-        window.scrollTo(0, currentScroll - currentScroll / 8);
-      }
-    })();
+    console.log("hello");
+    this.viewScroller.scrollToPosition([0, 0]);
   }
 
   ngOnInit(): void {}
