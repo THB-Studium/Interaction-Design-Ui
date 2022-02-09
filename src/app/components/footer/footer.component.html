@@ -14,7 +14,7 @@
             required />
         </div>
         <div class="d-flex justify-content-end">
-          <button class="btn btn-sm btn-white ml-3" (click)="abonnieren()">ABONNIEREN</button>
+          <button class="btn btn-sm btn-white ml-3" (click)="abonnieren()" [ngStyle]="{'color': buttonColor}">ABONNIEREN</button>
         </div>
         <small *ngIf="emailCtrl.value.length > 5 && !emailCtrl.valid" class="text-white">
           Geben Sie eine gültige E-Mail ein.

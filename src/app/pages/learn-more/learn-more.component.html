@@ -1,9 +1,9 @@
 <div class="container-fluid content">
-  <a id="main-page-btn" routerLinkActive="active" [routerLink]="['/dashboard']">&lt; ZURÜCK ZUR MAINPAGE</a>
   <!-- Spinner -->
   <app-spinner *ngIf="!loadFinished"></app-spinner>
   <!-- Body Contents -->
   <div *ngIf="loadFinished">
+    <a id="main-page-btn" routerLinkActive="active" [routerLink]="['/dashboard']">&lt; ZURÜCK ZUR MAINPAGE</a>
     <!-- Rise Info und Map -->
     <div class="travel-info-header">
       <h2>{{currentTripOffer?.titel}}</h2>
@@ -16,7 +16,7 @@
         <p>
           Freie Plätze: <span class="font-weight-bold">{{currentTripOffer?.freiPlaetze}}/{{currentTripOffer?.plaetze}}</span>
           <span>
-            &nbsp; - &nbsp; Interessierte: <span class="font-weight-bold">{{currentTripOffer?.interessiert}}</span>
+            &nbsp; - &nbsp; Interessierte: <span class="font-weight-bold">{{currentTripOffer?.interessiert < 0 ? 0 : currentTripOffer?.interessiert}}</span>
           </span>
         </p>
         <h3 *ngIf = "currentTripOffer?.freiPlaetze <= 0" class="set-content-right"> Keine Plätze mehr !</h3>
@@ -34,12 +34,12 @@
       </div>
     </div>
     <!-- Highlights list -->
-    <div class="highlight-contents">
+    <div class="highlight-contents" *ngIf="currentLand?.highlights?.length > 0">
       <h2>Die Highlights im Überblick</h2>
-      <div class="row" *ngIf="currentLand?.highlights?.length > 0">
+      <div class="row">
         <div class="col-md-4 mb-6 d-flex" *ngFor="let item of currentLand.highlights; let i=index">
-          <mat-card class="col-md-12" [ngStyle]="matCardShadowHighlight">
-            <img mat-card-image [src]="item?.realImage" alt="{{item?.name}}-Bild">
+          <mat-card class="col-sm-12 col-md-12" [ngStyle]="matCardShadowHighlight">
+            <img mat-card-image class="highlight-img" [src]="item?.realImage" alt="{{item?.name}}-Bild">
             <mat-card-content>
               <h3>{{item?.name}}</h3>
               <p>{{item?.description}}</p>
@@ -55,8 +55,8 @@
     <div class="fakten-check-contents">
       <h2>Fakten-Check</h2>
       <div class="row">
-        <div class="col-sm-12 col-md-12 col-lg-7">
-          <mat-card id="mat-card-group-1" class="col-ms-12" [ngStyle]="matCardShadow">
+        <div class="col-sm-12 col-md-12 col-lg-7 d-flex justify-content-start mr-auto">
+          <mat-card id="mat-card-group-1" class="col-sm-12" [ngStyle]="matCardShadow">
             <mat-card-content>
               <!--      REISEZEITRAUM      -->
               <div class="reisezeitraum">
@@ -100,7 +100,7 @@
                 <h3>WER DARF MIT?</h3>
                 <h4>Mitreiseberechtigt sind:</h4>
                 <ul>
-                  <li *ngFor="let person of currentTripOffer.mitReiserBerechtigt">{{person}}</li>
+                  <li *ngFor="let person of currentTripOffer?.mitReiserBerechtigt">{{person}}</li>
                 </ul>
                 <p>
                   Bitte hab Verständnis dafür, dass nicht-immatrikulierte Partner, Verwandte und Freunde
@@ -110,8 +110,8 @@
             </mat-card-content>
           </mat-card>
         </div>
-        <div class="col-sm-12 col-md-12 col-lg-5">
-          <mat-card id="mat-card-group-2" class="col-ms-12" [ngStyle]="matCardShadow">
+        <div class="col-sm-12 col-md-12 col-lg-5 d-flex justify-content-sm-center justify-content-md-center justify-content-lg-end">
+          <mat-card id="mat-card-group-2" class="col-sm-10" [ngStyle]="matCardShadow">
             <mat-card-content>
               <!--      KOSTEN      -->
               <div class="kosten">
@@ -202,23 +202,23 @@
       <p class="unterkünfte-text">{{currentLand?.unterkunft_text}}</p>
       <div class="row" *ngIf="currentLand?.unterkunft">
         <div class="col-md-12" *ngFor="let item of currentLand.unterkunft; let i=index">
-          <div class="row col-md-12 mb-6">
-            <h1 id="index" class="row col-md-1" [ngStyle]="fontColor">{{i + 1}}</h1>
+          <div class="row col-md-12 mb-4">
+            <h1 id="index" class="col-md-1" [ngStyle]="fontColor">{{i + 1}}</h1>
             <div class="col-md-7">
               <h3 [ngStyle]="fontColor" class="mb-1">{{item.name}}</h3>
               <p><a [ngStyle]="fontColor" routerLinkActive="active" href="{{item.link}}">{{item.link}}</a></p>
               <p><span class="font-weight-bold">Adresse:</span> {{item.adresse}}</p>
               <p>{{item.beschreibung}}</p>
             </div>
-            <div class="row col-md-4 mb-5" *ngFor="let bild of item.bilder">
-              <img class="col-md-6 img-fluid" [src]="getImage(bild)" alt="Bild-Bild-{{i+1}}a">
+            <div class="row col-md-4 mb-5">
+              <img *ngFor="let bild of item.bilder" class="col-sm-12 col-md-12 col-lg-6 img-fluid mb-4" [src]="getImage(bild)" alt="Bild-Bild-{{i+1}}a">
             </div>
           </div>
         </div>
       </div>
     </div>
     <!-- Länderinfo | Gesundheit & Sicherheit -->
-    <div class="landInfos-contents">
+    <div class="landInfos-contents" *ngIf="currentLand?.landInfo?.length > 0">
       <h2>Länderinfo | Gesundheit & Sicherheit</h2>
       <mat-card [ngStyle]="matCardShadow">
         <mat-card-content *ngFor="let info of currentLand?.landInfo; let i=index">

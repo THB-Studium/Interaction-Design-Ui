@@ -20,6 +20,7 @@ export class NavbarGuestComponent implements OnInit {
   public location: Location;
 
   public isCollapsed = true;
+  loading = false;
 
   // Defines currentOffers
   currentOffers: TripOffer[];
@@ -43,6 +44,8 @@ export class NavbarGuestComponent implements OnInit {
   }
 
   startReservationProcess() {
+    // display loader
+    this.loading = true;
     // Get the list of the current offers
     this.tripofferService.getAll().subscribe({
       next: (result: TripOffer[]) => {
@@ -53,9 +56,11 @@ export class NavbarGuestComponent implements OnInit {
         );
       },
       error: () => {
-        this.toastrService.error(
+        this.toastrService.info(
           "Die Liste von Reiseangebote konnten nicht geladen werden."
         );
+        // hide the loader on error
+        this.loading = false;
       },
       complete: () => {
         const dialodForm = this.dialog.open(CurrentOffersListFormComponent, {
@@ -63,6 +68,8 @@ export class NavbarGuestComponent implements OnInit {
           autoFocus: true,
         });
         dialodForm.componentInstance.currentOffers = this.currentOffers;
+        // hide the loader on modal open
+        this.loading = false;
       },
     });
   }

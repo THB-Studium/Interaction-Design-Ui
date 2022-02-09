@@ -116,15 +116,15 @@ ngb-carousel {
 
 ul li a {
   cursor: pointer;
-  color: #fff;
-}
-
-ul li a:hover {
   color: rgba(255, 255, 255, .7);
 }
 
-ul li a:active {
+ul li a:hover {
   color: #fff;
+}
+
+.navbar-nav .nav-link.active {
+  color: #fff !important;
 }
 
 /*############################### Screen settings ####################################*/
