@@ -206,7 +206,7 @@
             <h1 id="index" class="col-md-1" [ngStyle]="fontColor">{{i + 1}}</h1>
             <div class="col-md-7">
               <h3 [ngStyle]="fontColor" class="mb-1">{{item.name}}</h3>
-              <p><a [ngStyle]="fontColor" routerLinkActive="active" href="{{item.link}}">{{item.link}}</a></p>
+              <p><a [ngStyle]="fontColor" routerLinkActive="active" href="{{item.link}}" target="_blank">{{item.link}}</a></p>
               <p><span class="font-weight-bold">Adresse:</span> {{item.adresse}}</p>
               <p>{{item.beschreibung}}</p>
             </div>
