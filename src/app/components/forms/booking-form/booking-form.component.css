@@ -2,10 +2,9 @@
   margin-top: 8px;
 }
 
-.mat-form-field {
-  margin-top: 16px;
-  margin-left: 10px;
-  width: 260px;
+.mat-dialog-container {
+  padding: 0 !important;
+  overflow-y: scroll !important;
 }
 
 textarea {

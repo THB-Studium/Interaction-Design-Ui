@@ -75,8 +75,6 @@ export class LearnMoreComponent implements OnInit {
 
   bookingFormDialog() {
     const dialog = this.dialog.open(BookingFormComponent, {
-      maxWidth: "800px",
-      maxHeight: "800px",
       disableClose: true,
       // autoFocus : true,
       panelClass: "dialog-responsive"
