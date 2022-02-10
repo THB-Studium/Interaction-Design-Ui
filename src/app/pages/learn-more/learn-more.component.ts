@@ -78,7 +78,8 @@ export class LearnMoreComponent implements OnInit {
       maxWidth: "800px",
       maxHeight: "800px",
       disableClose: true,
-      // autoFocus : true
+      // autoFocus : true,
+      panelClass: "dialog-responsive"
     });
 
     dialog.componentInstance.land = this.currentLand;
