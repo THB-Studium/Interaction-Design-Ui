@@ -16,12 +16,11 @@
             required />
         </div>
         <div class="d-flex justify-content-end">
-          <button class="btn btn-sm btn-white ml-3" (click)="abonnieren()" [ngStyle]="{'color': buttonColor}">ABONNIEREN</button>
+          <button class="btn btn-sm btn-white ml-3" (click)="abonnieren()"
+            [ngStyle]="{'color': buttonColor}" [disabled]="emailCtrl.value.length > 0 && !emailCtrl.valid">ABONNIEREN</button>
         </div>
-        <small *ngIf="emailCtrl.value.length > 5 && !emailCtrl.valid" class="text-white">
-          Geben Sie eine gültige E-Mail ein.
-        </small>
       </div>
+      
     </div>
     <div class="col-sm-12 col-md-4 col-xl-4 mx-auto d-flex justify-content-sm-start justify-content-md-end">
       <ul class="icons">
