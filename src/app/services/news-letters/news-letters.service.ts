@@ -22,7 +22,7 @@ export class NewsLettersService {
     // POST
     subscribe(form: any): Observable<NewsLetters> {
       return this.httpClient.post<NewsLetters>(
-        this.NEWSLETTERS_URL,
+        `${this.NEWSLETTERS_URL}/subscribe`,
         form
       );
     }

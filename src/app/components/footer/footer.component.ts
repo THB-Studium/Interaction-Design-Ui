@@ -27,6 +27,7 @@ export class FooterComponent implements OnInit {
       Validators.required,
     ]);
   }
+
   @HostListener("window:scroll", [])
   onWindowScroll() {
     if (
@@ -43,10 +44,11 @@ export class FooterComponent implements OnInit {
       this.windowScrolled = false;
     }
   }
+
   scrollToTop() {
-    console.log("hello");
     this.viewScroller.scrollToPosition([0, 0]);
   }
+
   ngOnInit() {}
 
   abonnieren() {
@@ -61,6 +63,7 @@ export class FooterComponent implements OnInit {
         error: () => {
           this.toastr.error("Ihr Abonnement ist fehlgeschlagen");
         },
+        complete: () => this.emailCtrl.setValue('')
       });
     }
   }
