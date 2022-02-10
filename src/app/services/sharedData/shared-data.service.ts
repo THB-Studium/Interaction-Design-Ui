@@ -220,9 +220,9 @@ export class SharedDataService {
     flughafen: '',
     handGepaeck: '',
     koffer: '',
-    mitReiser: null,
+    mitReisender: null,
     reiseAngebotId: '',
-    reiser: null,
+    reisender: null,
     zahlungMethod: null
   }
 

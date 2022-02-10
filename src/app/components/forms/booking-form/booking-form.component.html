@@ -109,9 +109,9 @@
                 <mat-form-field class="col-md-12" appearance="fill">
                   <mat-label>Status</mat-label>
                   <mat-select required hideRequiredMarker="true" floatLabel="true" formControlName="status">
-                    <mat-option value="student" (click)="isStudent=true; isMitArbeiter=false">Student</mat-option>
-                    <mat-option value="alumnus" (click)="isMitArbeiter=false; isStudent=false">Alumnus</mat-option>
-                    <mat-option value="hochschulmitarbeiter" (click)="isMitArbeiter=true; isStudent=false">
+                    <mat-option value="student" (click)="isStudent=true; isMitArbeiter=false; istAlumReiser = false">Student</mat-option>
+                    <mat-option value="alumnus" (click)="istAlumReiser = true; isMitArbeiter=false; isStudent=false">Alumnus</mat-option>
+                    <mat-option value="hochschulmitarbeiter" (click)="isMitArbeiter=true; isStudent=false; istAlumReiser = false">
                       Hochschulmitarbeiter</mat-option>
                   </mat-select>
                   <mat-error *ngIf="(personenDatenFormGroup.get('status')).errors?.required">
@@ -135,7 +135,7 @@
               <div class="form-group col-md-6">
                 <mat-form-field class="col-md-12" appearance="fill" *ngIf="!isMitArbeiter">
                   <mat-label>Studiengang</mat-label>
-                  <input matInput placeholder="Study program" formControlName="studiengang" required>
+                  <input matInput placeholder="Study program" formControlName="studiengang" [required]="istAlumReiser || isStudentReiser">
                   <mat-icon matSuffix>school</mat-icon>
                   <mat-hint>Studiengang</mat-hint>
                   <mat-error *ngIf="(personenDatenFormGroup.get('studiengang')).errors?.required">
@@ -146,7 +146,7 @@
               <div class="form-group col-md-6">
                 <mat-form-field class="col-md-12" appearance="fill" *ngIf="!isStudent">
                   <mat-label>Arbeitet Bei</mat-label>
-                  <input matInput placeholder="Arbeitet Bei" formControlName="arbeitet" [required]="false">
+                  <input matInput placeholder="Arbeitet Bei" formControlName="arbeitet" [required]="isMitArbeiter">
                   <mat-icon matSuffix>work</mat-icon>
                   <mat-hint>Arbeitetsort hinzufügen</mat-hint>
                 </mat-form-field>
@@ -270,10 +270,10 @@
                 <mat-form-field class="col-md-12" appearance="fill">
                   <mat-label>Status</mat-label>
                   <mat-select required hideRequiredMarker="true" floatLabel="true" formControlName="status">
-                    <mat-option value="student" (click)="isStudentMitReiser=true; isMitArbeiter=false">Student
+                    <mat-option value="student" (click)="isStudentMitReiser=true; isMitArbeiterMitReiser=false; istAlumMitReiser = false">Student
                     </mat-option>
-                    <mat-option value="alumnus">Alumnus</mat-option>
-                    <mat-option value="hochschulmitarbeiter" (click)="isMitArbeiter=true; isStudent=false">
+                    <mat-option value="alumnus" (click)="istAlumMitReiser = true; isStudentMitReiser=false; isMitArbeiterMitReiser=false">Alumnus</mat-option>
+                    <mat-option value="hochschulmitarbeiter" (click)="isStudentMitReiser=false; isMitArbeiterMitReiser=true; istAlumMitReiser = false">
                       Hochschulmitarbeiter</mat-option>
                   </mat-select>
                   <mat-error *ngIf="(personenDatenFormGroupMitReiser.get('status')).errors?.required">
@@ -295,9 +295,9 @@
             </div>
             <div class="form-row">
               <div class="form-group col-md-6">
-                <mat-form-field class="col-md-12" appearance="fill" *ngIf="!isMitArbeiter">
+                <mat-form-field class="col-md-12" appearance="fill" *ngIf="!isMitArbeiterMitReiser">
                   <mat-label>Studiengang</mat-label>
-                  <input matInput placeholder="Study program" formControlName="studiengang" required>
+                  <input matInput placeholder="Study program" formControlName="studiengang" [required]="istAlumMitReiser || isStudentMitReiser">
                   <mat-icon matSuffix>school</mat-icon>
                   <mat-hint>Studiengang hinzufügen</mat-hint>
                   <mat-error *ngIf="(personenDatenFormGroupMitReiser.get('studiengang')).errors?.required">
@@ -306,9 +306,9 @@
                 </mat-form-field>
               </div>
               <div class="form-group col-md-6">
-                <mat-form-field class="col-md-12" appearance="fill" *ngIf="!isStudent">
+                <mat-form-field class="col-md-12" appearance="fill" *ngIf="!isStudentMitReiser">
                   <mat-label>Arbeitet Bei</mat-label>
-                  <input required matInput placeholder="Arbeitet Bei" formControlName="arbeitet" [required]="false">
+                  <input required matInput placeholder="Arbeitet Bei" formControlName="arbeitet" [required]="isMitArbeiterMitReiser">
                   <mat-icon matSuffix>work</mat-icon>
                   <mat-hint>Arbeitetsort hinzufügen</mat-hint>
                 </mat-form-field>
