@@ -1,4 +1,8 @@
-<h2 mat-dialog-title class="d-flex">Reise buchen</h2>
+<div mat-dialog-title>
+  <h2>
+    Reise buchen <mat-icon class="float-right" mat-dialog-close>close</mat-icon>
+  </h2>
+</div>
 <mat-divider inside></mat-divider>
 <mat-dialog-content class="p-0">
   <div class="col-md-12 p-4">
@@ -29,7 +33,7 @@
       <mat-stepper orientation="vertical" [linear]="true" #stepper class="m-0">
         <!-- person infos -->
         <mat-step [stepControl]="personenDatenFormGroup" class="p-0">
-          <form [formGroup]="personenDatenFormGroup" class="col-md-12 pt-3">
+          <form [formGroup]="personenDatenFormGroup" class="col-md-12 pt-3 p-0">
             <ng-template matStepLabel>Reisenden Informationen</ng-template>
             <div class="form-row">
               <div class="form-group col-md-6">
@@ -187,7 +191,7 @@
 
         <!-- follow person infos -->
         <mat-step *ngIf="mitreiserForm" [stepControl]="personenDatenFormGroupMitReiser" class="p-0">
-          <form [formGroup]="personenDatenFormGroupMitReiser" class="col-md-12 pt-3">
+          <form [formGroup]="personenDatenFormGroupMitReiser" class="col-md-12 pt-3 p-0">
             <ng-template matStepLabel>Mitreisenden Informationen</ng-template>
             <div class="form-row">
               <div class="form-group col-md-6">
@@ -338,7 +342,7 @@
 
         <!-- travel infos -->
         <mat-step [stepControl]="reiseDatenFormGroup" class="p-0">
-          <form [formGroup]="reiseDatenFormGroup" class="col-md-12 pt-3">
+          <form [formGroup]="reiseDatenFormGroup" class="col-md-12 pt-3 p-0">
             <ng-template matStepLabel>Informationen zur Reise</ng-template>
             <div class="form-row">
               <div class="form-group col-md-6">
@@ -438,7 +442,7 @@
 
         <!--  AGB  -->
         <mat-step [stepControl]="agbFormGroup" class="p-0">
-          <form [formGroup]="agbFormGroup" class="col-md-12 pt-3">
+          <form [formGroup]="agbFormGroup" class="col-md-12 pt-3 p-0">
             <ng-template matStepLabel>Allgemeine Geschäftsbedingungen</ng-template><br>
             <div class="row">
               <div class="col-12">
@@ -996,48 +1000,48 @@
               <h2>{{i + 1}}</h2>
             </div>
             <div class="card-body">
-              <div class="form-row">
-                <div class="form-group col-6">
+              <div class="row">
+                <div class="col-6">
                   Vorname: <strong>{{resier.vorname}}</strong>
                 </div>
-                <div class="form-group col-6">
+                <div class="col-6">
                   Nachname: <strong>{{resier.nachname}}</strong>
                 </div>
               </div>
-              <div class="form-row">
-                <div class="form-group col-6">
+              <div class="row">
+                <div class="col-6">
                   Geburtsdatum: <strong>{{resier.geburtsdatum}}</strong>
                 </div>
-                <div class="form-group col-6">
+                <div class="col-6">
                   Postanschrift: <strong>{{resier.postanschrift}}</strong>
                 </div>
               </div>
-              <div class="form-row">
-                <div class="form-group col-6">
+              <div class="row">
+                <div class="col-6">
                   Handynummer: <strong>{{resier.handynummer}}</strong>
                 </div>
-                <div class="form-group col-6">
+                <div class="col-6">
                   Email: <strong>{{resier.email}}</strong>
                 </div>
               </div>
-              <div class="form-row">
-                <div class="form-group col-6">
+              <div class="row">
+                <div class="col-6">
                   Studiengang: <strong>{{resier.studiengang}}</strong>
                 </div>
-                <div class="form-group col-6">
+                <div class="col-6">
                   Status: <strong>{{resier.status}}</strong>
                 </div>
               </div>
-              <div class="form-row">
-                <div class="form-group col-6">
+              <div class="row">
+                <div class="col-6">
                   Arbeitet Bei: <strong>{{resier.arbeitetBei}}</strong>
                 </div>
-                <div class="form-group col-6">
+                <div class="col-6">
                   Hochschule: <strong>{{resier.hochschule}}</strong>
                 </div>
               </div>
-              <div class="form-row">
-                <div class="form-group col-6">
+              <div class="row">
+                <div class="col-6">
                   <span *ngIf="resier.schonTeilgennomem">Schon Teilgennomem: <strong>Ja</strong></span>
                   <span *ngIf="!resier.schonTeilgennomem"> Schon Teilgennomem: <strong>Nein</strong></span>
                 </div>
@@ -1050,33 +1054,33 @@
               <h2>Reiseinformationen</h2>
             </div>
             <div class="card-body">
-              <div class="form-row">
-                <div class="form-group col-6">
+              <div class="row">
+                <div class="col-6">
                   Datum: <strong>{{reise?.datum}}</strong>
                 </div>
-                <div class="form-group col-6">
+                <div class="col-6">
                   Flughafen: <strong>{{reise?.flughafen}}</strong>
                 </div>
               </div>
-              <div class="form-row">
-                <div class="form-group col-6">
+              <div class="row">
+                <div class="col-6">
                   Buchungsklasse: <strong>{{selectedBookingClass?.type}}</strong>
                 </div>
-                <div class="form-group col-6">
+                <div class="col-6">
                   Zahlungsmethode: <strong>{{reise?.zahlungsmethod}}</strong>
                 </div>
               </div>
-              <div class="form-row">
-                <div class="form-group col-6">
+              <div class="row">
+                <div class="col-6">
                   Koffer: <strong>{{reise?.koffer}}</strong>
                 </div>
-                <div class="form-group col-6">
+                <div class="col-6">
                   Handgepäck: <strong>{{reise?.handgepaeck}}</strong>
                 </div>
               </div>
             </div>
           </div><br>
-          <div class="form-row">
+          <div class="row">
             <div class="col-12">
               <p>Sind alle Informationen Richtig ?</p>
             </div>
@@ -1110,8 +1114,3 @@
     </div>
   </div>
 </mat-dialog-content>
-<!--bottom-->
-<mat-divider inset></mat-divider>
-<mat-dialog-actions class="justify-content-end">
-  <button class="mat-raised-button" mat-dialog-close>ABBRECHEN</button>
-</mat-dialog-actions>
