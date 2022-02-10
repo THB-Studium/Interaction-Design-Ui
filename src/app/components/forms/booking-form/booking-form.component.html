@@ -30,7 +30,7 @@
       </div>
     </div>
     <div class="col-sm-12">
-      <mat-stepper orientation="vertical" [linear]="true" #stepper class="m-0">
+      <mat-stepper orientation="vertical" [linear]="false" #stepper class="m-0">
         <!-- person infos -->
         <mat-step [stepControl]="personenDatenFormGroup" class="p-0">
           <form [formGroup]="personenDatenFormGroup" class="col-md-12 pt-3 p-0">
@@ -139,7 +139,7 @@
               <div class="form-group col-md-6">
                 <mat-form-field class="col-md-12" appearance="fill" *ngIf="!isMitArbeiter">
                   <mat-label>Studiengang</mat-label>
-                  <input matInput placeholder="Study program" formControlName="studiengang" [required]="istAlumReiser || isStudentReiser">
+                  <input matInput placeholder="Study program" formControlName="studiengang" [required]="isStudent">
                   <mat-icon matSuffix>school</mat-icon>
                   <mat-hint>Studiengang</mat-hint>
                   <mat-error *ngIf="(personenDatenFormGroup.get('studiengang')).errors?.required">
@@ -301,7 +301,7 @@
               <div class="form-group col-md-6">
                 <mat-form-field class="col-md-12" appearance="fill" *ngIf="!isMitArbeiterMitReiser">
                   <mat-label>Studiengang</mat-label>
-                  <input matInput placeholder="Study program" formControlName="studiengang" [required]="istAlumMitReiser || isStudentMitReiser">
+                  <input matInput placeholder="Study program" formControlName="studiengang" [required]="isStudentMitReiser">
                   <mat-icon matSuffix>school</mat-icon>
                   <mat-hint>Studiengang hinzufügen</mat-hint>
                   <mat-error *ngIf="(personenDatenFormGroupMitReiser.get('studiengang')).errors?.required">
@@ -409,26 +409,14 @@
 
             <div class="form-row">
               <div class="form-group col-md-6">
-                <mat-form-field class="col-md-12" appearance="fill">
-                  <mat-label>HandGepäck </mat-label>
-                  <textarea matInput placeholder="HandGepäck" formControlName="handgepaeck" required cols="30"
-                    rows="3"></textarea>
-                  <mat-hint>HandGepäck hinzufügen</mat-hint>
-                  <mat-error *ngIf="(reiseDatenFormGroup.get('handgepaeck')).errors?.required">
-                    Das HandGepäck ist <strong>erforderlich</strong>.
-                  </mat-error>
-                </mat-form-field>
+                  <mat-checkbox class="col-md-12" #termsChecked formControlName="handgepaeck">
+                    Ich habe Handgepäck
+                  </mat-checkbox>
               </div>
               <div class="form-group col-md-6">
-                <mat-form-field class="col-md-12" appearance="fill">
-                  <mat-label>Koffer </mat-label>
-                  <textarea matInput placeholder="Koffer" formControlName="koffer" required cols="30"
-                    rows="3"></textarea>
-                  <mat-hint>Koffer hinzufügen</mat-hint>
-                  <mat-error *ngIf="(reiseDatenFormGroup.get('koffer')).errors?.required">
-                    Das Koffer ist <strong>erforderlich</strong>.
-                  </mat-error>
-                </mat-form-field>
+                    <mat-checkbox class="col-md-12" #termsChecked formControlName="koffer">
+                      Ich habe Koffer
+                    </mat-checkbox>
               </div>
             </div>
 
@@ -1001,47 +989,47 @@
             </div>
             <div class="card-body">
               <div class="row">
-                <div class="col-6">
+                <div class="col-md-6">
                   Vorname: <strong>{{resier.vorname}}</strong>
                 </div>
-                <div class="col-6">
+                <div class="col-md-6">
                   Nachname: <strong>{{resier.nachname}}</strong>
                 </div>
               </div>
               <div class="row">
-                <div class="col-6">
+                <div class="col-md-6">
                   Geburtsdatum: <strong>{{resier.geburtsdatum}}</strong>
                 </div>
-                <div class="col-6">
+                <div class="col-md-6">
                   Postanschrift: <strong>{{resier.postanschrift}}</strong>
                 </div>
               </div>
               <div class="row">
-                <div class="col-6">
+                <div class="col-md-6">
                   Handynummer: <strong>{{resier.handynummer}}</strong>
                 </div>
-                <div class="col-6">
+                <div class="col-md-6">
                   Email: <strong>{{resier.email}}</strong>
                 </div>
               </div>
               <div class="row">
-                <div class="col-6">
+                <div class="col-md-6">
                   Studiengang: <strong>{{resier.studiengang}}</strong>
                 </div>
-                <div class="col-6">
+                <div class="col-md-6">
                   Status: <strong>{{resier.status}}</strong>
                 </div>
               </div>
               <div class="row">
-                <div class="col-6">
+                <div class="col-md-6">
                   Arbeitet Bei: <strong>{{resier.arbeitetBei}}</strong>
                 </div>
-                <div class="col-6">
+                <div class="col-md-6">
                   Hochschule: <strong>{{resier.hochschule}}</strong>
                 </div>
               </div>
               <div class="row">
-                <div class="col-6">
+                <div class="col-md-6">
                   <span *ngIf="resier.schonTeilgennomem">Schon Teilgennomem: <strong>Ja</strong></span>
                   <span *ngIf="!resier.schonTeilgennomem"> Schon Teilgennomem: <strong>Nein</strong></span>
                 </div>
@@ -1055,15 +1043,15 @@
             </div>
             <div class="card-body">
               <div class="row">
-                <div class="col-6">
+                <div class="col-md-6">
                   Datum: <strong>{{reise?.datum}}</strong>
                 </div>
-                <div class="col-6">
+                <div class="col-md-6">
                   Flughafen: <strong>{{reise?.flughafen}}</strong>
                 </div>
               </div>
               <div class="row">
-                <div class="col-6">
+                <div class="col-md-6">
                   Buchungsklasse: <strong>{{selectedBookingClass?.type}}</strong>
                 </div>
                 <div class="col-6">
@@ -1071,17 +1059,17 @@
                 </div>
               </div>
               <div class="row">
-                <div class="col-6">
+                <div class="col-md-6">
                   Koffer: <strong>{{reise?.koffer}}</strong>
                 </div>
-                <div class="col-6">
+                <div class="col-md-6">
                   Handgepäck: <strong>{{reise?.handgepaeck}}</strong>
                 </div>
               </div>
             </div>
           </div><br>
           <div class="row">
-            <div class="col-12">
+            <div class="col-md-12">
               <p>Sind alle Informationen Richtig ?</p>
             </div>
           </div>

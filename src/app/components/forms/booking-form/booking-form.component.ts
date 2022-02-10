@@ -96,7 +96,7 @@ export class BookingFormComponent implements OnInit {
       postanschrift: ['', Validators.compose([Validators.required, Validators.pattern(Pattern.street)])],
       handynummer: ['', Validators.compose([Validators.required, Validators.pattern(Pattern.mobile)])],
       email: ['', Validators.required],
-      studiengang: ['', Validators.required],
+      studiengang: [''],
       status: ['', Validators.required],
       arbeitet: [''],
       schonTeilgennomem: ['', Validators.required],
@@ -111,7 +111,7 @@ export class BookingFormComponent implements OnInit {
       postanschrift: ['', Validators.compose([Validators.required, Validators.pattern(Pattern.street)])],
       handynummer: ['', Validators.compose([Validators.required, Validators.pattern(Pattern.mobile)])],
       email: ['', Validators.required],
-      studiengang: ['', Validators.required],
+      studiengang: [''],
       status: ['', Validators.required],
       arbeitet: [''],
       schonTeilgennomem: ['', Validators.required],
@@ -122,9 +122,9 @@ export class BookingFormComponent implements OnInit {
       buchungsklasseId: ['', Validators.required],
       datum: ['', Validators.required],
       flughafen: ['', Validators.required],
-      handgepaeck: ['', Validators.required],
+      handgepaeck: [''],
       zahlungsmethod: ['', Validators.required],
-      koffer: ['', Validators.required],
+      koffer: [''],
     });
 
     this.agbFormGroup = this._formBuilder.group({
@@ -174,8 +174,8 @@ export class BookingFormComponent implements OnInit {
       buchungsklasseId: this.selectedBookingClass?.id,
       datum: this.reise.datum,
       flughafen: this.reise.flughafen,
-      handGepaeck: this.reise.handgepaeck,
-      koffer: this.reise.koffer,
+      handGepaeck: this.reise.handgepaeck === true ? 'true': 'false',
+      koffer: this.reise.koffer === true ? 'true': 'false',
       reiseAngebotId: this.currentTripOffer?.id,
       zahlungMethod: this.reise.zahlungsmethod,
 
