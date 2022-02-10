@@ -68,4 +68,10 @@ export class HomeLayoutComponent implements OnInit {
       },
     });
   }
+  
+  toSection() {
+    const elem = document.querySelector("footer");
+    console.log(elem);
+    elem.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
 }

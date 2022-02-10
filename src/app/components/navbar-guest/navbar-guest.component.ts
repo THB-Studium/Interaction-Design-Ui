@@ -26,7 +26,7 @@ export class NavbarGuestComponent implements OnInit {
   currentOffers: TripOffer[];
 
   constructor(
-    location: Location, 
+    location: Location,
     private router: Router,
     private tripofferService: TripOfferService,
     private toastrService: ToastrService,

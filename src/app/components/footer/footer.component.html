@@ -7,7 +7,9 @@
       <p class="text-white">post@university-travel-club.org</p>
     </div>
     <div class="col-sm-12 col-md-4 col-xl-4 mx-auto mb-5">
-      <h3 class="text-white d-flex justify-content-sm-start justify-content-md-center">Newsletter abonnieren</h3>
+      <h3 class="text-white d-flex justify-content-sm-start justify-content-md-center">
+        Newsletter abonnieren
+      </h3>
       <div class="row justify-content-sm-start justify-content-md-center">
         <div class="d-flex justify-content-start mb-1">
           <input type="text" placeholder="E-Mail Adresse" class="form-control input-form" [formControl]="emailCtrl"
@@ -35,11 +37,13 @@
         </li>
       </ul>
     </div>
-  </div><!--/.top-->
+  </div>
+  <!--/.top-->
   <!-- bottom -->
   <div class="row mt-6">
     <div class="col-md-6 d-flex justify-content-start mb-2">
-      <small class="text-white">&copy; COPYRIGHT {{ currentDate | date: "yyyy" }} - UNIVERSITY TRAVEL CLUB</small>
+      <small class="text-white">&copy; COPYRIGHT {{ currentDate | date: "yyyy" }} - UNIVERSITY TRAVEL
+        CLUB</small>
     </div>
     <div class="col-md-6 d-flex justify-content-sm-start justify-content-md-end">
       <small class="d-flex">
@@ -49,8 +53,16 @@
         <a href="" class="text-white ml-4">DATENSCHUTZ</a>
       </small>
     </div>
-    <a [routerLink]="['#']" target="_self" class="text-white" data-bs-toggle="tooltip" data-bs-placement="top" title="Back to top">
+    <!--<a
+      target="_self"
+      class="text-white"
+      data-bs-toggle="tooltip"
+      data-bs-placement="top"
+      title="Back to top"
+      (click)="scrollToTop()"
+    >
       <i class="bi bi-arrow-up-circle-fill"></i>
     </a>
+    -->
   </div>
 </div>

@@ -81,7 +81,7 @@ export class SharedDataService {
     freiPlaetze: 0,
     interessiert: 0,
     leistungen: [],
-    mitReiserBerechtigt: [],
+    mitreiseberechtigt: [],
     hinweise: "",
     sonstigeHinweise: "",
     landId: "",

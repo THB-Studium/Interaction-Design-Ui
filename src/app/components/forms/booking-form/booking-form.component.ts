@@ -142,7 +142,7 @@ export class BookingFormComponent implements OnInit {
     if(this.mitreiserForm) {
       this.reisendeArray.push(this.personenDatenFormGroupMitReiser.value);
     }
-    this.selectedBookingClass =this.getBuchungsKlasse(this.reiseDatenFormGroup.get('buchungsklasseId').value);
+    this.selectedBookingClass = this.getBuchungsKlasse(this.reiseDatenFormGroup.get('buchungsklasseId').value);
 
     this.reisendeArray = this.reisendeArray.map((reiser) => {
       reiser.geburtsdatum = formatDate(reiser.geburtsdatum, "yyyy-MM-dd", "en_US");
