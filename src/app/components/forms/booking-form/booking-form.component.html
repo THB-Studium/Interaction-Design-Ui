@@ -117,7 +117,7 @@
             <mat-form-field appearance="fill">
               <mat-select required hideRequiredMarker="true" floatLabel="true" formControlName="status">
                 <mat-option value="student" (click)="isStudent=true; isMitArbeiter=false">Student</mat-option>
-                <mat-option value="alumnus">Alumnus</mat-option>
+                <mat-option value="alumnus" (click)="isMitArbeiter=false; isStudent=false">Alumnus</mat-option>
                 <mat-option value="hochschulmitarbeiter" (click)="isMitArbeiter=true; isStudent=false">
                   Hochschulmitarbeiter</mat-option>
               </mat-select>
