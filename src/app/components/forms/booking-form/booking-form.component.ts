@@ -61,6 +61,7 @@ export class BookingFormComponent implements OnInit {
   isStudent = false;
   isStudentMitReiser = false;
   isMitArbeiter = false;
+  isMitArbeiterMitReiser = false;
   panelOpenState = false;
   responseAfterBooking = "";
 
