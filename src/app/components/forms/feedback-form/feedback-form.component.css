@@ -48,3 +48,7 @@
 textarea {
   min-height: 100px;
 }
+
+mat-dialog-content {
+  padding-top: 30px;
+}

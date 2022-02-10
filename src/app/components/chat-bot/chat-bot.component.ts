@@ -29,11 +29,11 @@ export class ChatBotComponent implements OnInit {
         "oneTimeRating":true
       };
 
-      // let script = document.getElementsByTagName("script").item(0);
-      // if (!!script) {
-      //   script = document.createElement("script");
-      // }
-      const script = document.createElement("script");
+      let script = document.getElementsByTagName("script").item(0);
+      if (!!script) {
+        script = document.createElement("script");
+      }
+      // const script = document.createElement("script");
       script.type = credentials.scriptType;
       script.async = true;
       script.src = credentials.sourceURL;
