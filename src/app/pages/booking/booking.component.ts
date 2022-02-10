@@ -289,7 +289,7 @@ export class BookingComponent implements OnInit, AfterViewInit {
             this.toastrService.error("Etwas ist schief gelaufen.", "Fehler"),
           complete: () => {
             // get the traveler information
-            this.travelerService.getOne(booking.reiserId).subscribe({
+            this.travelerService.getOne(booking.reisenderId).subscribe({
               next: (traveler) => (this.traveler = traveler),
               error: () => {
                 this.toastrService.error(
@@ -298,8 +298,8 @@ export class BookingComponent implements OnInit, AfterViewInit {
                 );
               },
               complete: () => {
-                if (booking.mitReiserId) {
-                  this.travelerService.getOne(booking.mitReiserId).subscribe({
+                if (booking.mitReisenderId) {
+                  this.travelerService.getOne(booking.mitReisenderId).subscribe({
                     next: (traveler) => (this.cotraveler = traveler),
                     error: () => {
                       this.toastrService.error(
@@ -394,6 +394,6 @@ export class BookingComponent implements OnInit, AfterViewInit {
   }
 
   getPhoneNumber(phone: string): string {
-    return phone ? `+${phone}` : "";
+    return phone ? `${phone}` : "";
   }
 }
