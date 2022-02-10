@@ -23,6 +23,7 @@ import { MatPaginatorModule } from "@angular/material/paginator";
 import { MatDialogModule } from "@angular/material/dialog";
 
 import { HomeComponent } from "src/app/pages/home/home.component";
+import { MatExpansionModule } from "@angular/material/expansion";
 
 @NgModule({
   declarations: [HomeComponent],
@@ -42,7 +43,8 @@ import { HomeComponent } from "src/app/pages/home/home.component";
     MatBadgeModule,
     MatTooltipModule,
     MatPaginatorModule,
-    MatDialogModule
+    MatDialogModule,
+    MatExpansionModule
   ],
   providers: [{ provide: LocationStrategy, useClass: HashLocationStrategy }],
 })

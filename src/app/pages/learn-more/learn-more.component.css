@@ -171,7 +171,9 @@ button,
 /*** About the responcivity ***/
 
 @media screen and (max-width: 1200px) {
-
+  .dialog-responsive {
+    width: 100%;
+  }
 }
 
 @media screen and (max-width: 1008px){
@@ -186,11 +188,19 @@ button,
     float: right;
     bottom: 4em;
   }
+
+  .dialog-responsive {
+    width: 100%;
+  }
 }
 
 @media screen and (min-width: 767px) and (max-width: 960px) {
   .highlight-contents mat-card {
     min-width: 230px;
+  }
+
+  .dialog-responsive {
+    width: 90%;
   }
 }
 
@@ -199,11 +209,19 @@ button,
     min-height: 320px;
     max-height: 320px;
   }
+
+  .dialog-responsive {
+    width: 90%;
+  }
 }
 
 @media screen and (max-width: 755px) {
   .travel-map p {
     font-size: 110%;
+  }
+
+  .dialog-responsive {
+    width: 800%;
   }
 }
 
@@ -214,11 +232,19 @@ button,
   .booking-btn #reserve {
     display: revert;
   }
+
+  .dialog-responsive {
+    width: 70%;
+  }
 }
 
 @media screen and (max-width: 600px) {
   .travel-map p {
     font-size: 100%;
+  }
+
+  .dialog-responsive {
+    width: 60%;
   }
 }
 
@@ -226,10 +252,20 @@ button,
   .travel-map p {
     font-size: 80%;
   }
+
+  .dialog-responsive {
+    width: 50%;
+    margin-left: 20px;
+  }
 }
 
 @media screen and (max-width: 440px) {
   .booking-btn {
     font-size: 11px;
+  }
+
+  .dialog-responsive {
+    width: 40%;
+    margin-left: 20px;
   }
 }

@@ -49,8 +49,8 @@
                         [value]="bookingForm.get('bookingClass').value" selected>
                         {{bookingForm.get('bookingClass').value.type}}
                     </mat-option>
-                    <mat-option
-                        *ngFor="let bookingclass of getBookingclassArray(bookingclassArray)" [value]="bookingclass">
+                    <mat-option *ngFor="let bookingclass of getBookingclassArray(bookingclassArray)"
+                        [value]="bookingclass">
                         {{bookingclass.type}}
                     </mat-option>
                 </mat-select>
@@ -144,29 +144,40 @@
             </mat-form-field>
         </div>
     </div>
-    <!--handLuggage-->
     <div class="form-row">
-        <div class="form-group col-md-12">
-            <mat-form-field class="col-md-12" appearance="standard">
-                <mat-label>HandGepäck</mat-label>
-                <textarea matInput formControlName="handLuggage" [required]="false"></textarea>
-                <mat-error *ngIf="bookingForm.get('handLuggage').invalid">
-                    Die Eingabe ist <strong>erforderlich</strong>.
-                </mat-error>
-            </mat-form-field>
+        <!--handLuggage-->
+        <div class="form-group col-md-6">
+            <mat-label>HandGepäck</mat-label>
+            <mat-select formControlName="handLuggage" required>
+                <mat-option disabled>auswählen</mat-option>
+                <mat-option *ngIf="bookingForm.get('handLuggage').value"
+                    [value]="bookingForm.get('handLuggage').value" selected>
+                    {{bookingForm.get('handLuggage').value}}
+                </mat-option>
+                <mat-option *ngFor="let item of getLuggageOption(luggages)" [value]="item">
+                    {{item}}
+                </mat-option>
+            </mat-select>
+            <mat-error *ngIf="bookingForm.get('handLuggage').invalid">
+                Die Eingabe ist <strong>erforderlich</strong>.
+            </mat-error>
         </div>
-    </div>
-    <!--suitcase-->
-    <div class="form-row">
-        <div class="form-group col-md-12">
-            <mat-form-field class="col-md-12" appearance="standard">
-                <mat-label>Koffer</mat-label>
-                <textarea matInput formControlName="suitcase" [required]="false"></textarea>
-                <mat-error *ngIf="bookingForm.get('suitcase').invalid">
-                    Die Eingabe ist <strong>erforderlich</strong>.
-                </mat-error>
-            </mat-form-field>
+        <!--suitcase-->
+        <div class="form-group col-md-6">
+            <mat-label>Koffer</mat-label>
+            <mat-select formControlName="suitcase" required>
+                <mat-option disabled>auswählen</mat-option>
+                <mat-option *ngIf="bookingForm.get('suitcase').value"
+                    [value]="bookingForm.get('suitcase').value" selected>
+                    {{bookingForm.get('suitcase').value}}
+                </mat-option>
+                <mat-option *ngFor="let item of getLuggageOption(luggages, true)" [value]="item">
+                    {{item}}
+                </mat-option>
+            </mat-select>
+            <mat-error *ngIf="bookingForm.get('suitcase').invalid">
+                Die Eingabe ist <strong>erforderlich</strong>.
+            </mat-error>
         </div>
     </div>
 </form>
-

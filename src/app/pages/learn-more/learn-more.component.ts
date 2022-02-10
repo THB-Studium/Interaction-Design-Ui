@@ -27,6 +27,11 @@ export class LearnMoreComponent implements OnInit {
   currentLand: Country;
   currentTripOffer: TripOffer;
 
+  bilder = [
+    'blaue-lagune.jpg', 'geysir.jpg', 'joekursalon.jpg',
+    'polarlicht.jpg', 'reykjavik.jpg', 'vulkan-hekia-and-katla.jpg'
+  ]
+
   // for style and view setting:
   backgroundColor: any;
   fontColor: any;
@@ -70,10 +75,9 @@ export class LearnMoreComponent implements OnInit {
 
   bookingFormDialog() {
     const dialog = this.dialog.open(BookingFormComponent, {
-      maxWidth: "800px",
-      maxHeight: "800px",
       disableClose: true,
-      // autoFocus : true
+      // autoFocus : true,
+      panelClass: "dialog-responsive"
     });
 
     dialog.componentInstance.land = this.currentLand;

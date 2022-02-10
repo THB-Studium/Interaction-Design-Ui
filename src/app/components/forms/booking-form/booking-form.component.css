@@ -2,10 +2,17 @@
   margin-top: 8px;
 }
 
+.mat-dialog-container {
+  padding: 0 !important;
+  overflow-y: scroll !important;
+}
+
+.mat-vertical-content {
+  padding: 0 !important;
+}
+
 .mat-form-field {
-  margin-top: 16px;
-  margin-left: 10px;
-  width: 260px;
+  padding: 0 !important;
 }
 
 textarea {
@@ -23,3 +30,17 @@ mat-dialog-content {
 mat-dialog-actions {
   min-height: unset;
 }
+
+.title {
+  font-weight: bold;
+}
+
+strong {
+  font-weight: bold;
+}
+
+.btn-close {
+  float: left;
+}
+
+
