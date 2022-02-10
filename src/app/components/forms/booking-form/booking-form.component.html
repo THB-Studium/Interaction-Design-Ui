@@ -30,7 +30,7 @@
       </div>
     </div>
     <div class="col-sm-12">
-      <mat-stepper orientation="vertical" [linear]="true" #stepper class="m-0">
+      <mat-stepper orientation="vertical" [linear]="false" #stepper class="m-0">
         <!-- person infos -->
         <mat-step [stepControl]="personenDatenFormGroup" class="p-0">
           <form [formGroup]="personenDatenFormGroup" class="col-md-12 pt-3 p-0">
@@ -113,9 +113,12 @@
                 <mat-form-field class="col-md-12" appearance="fill">
                   <mat-label>Status</mat-label>
                   <mat-select required hideRequiredMarker="true" floatLabel="true" formControlName="status">
-                    <mat-option value="student" (click)="isStudent=true; isMitArbeiter=false">Student</mat-option>
-                    <mat-option value="alumnus" (click)="isMitArbeiter=false; isStudent=false">Alumnus</mat-option>
-                    <mat-option value="hochschulmitarbeiter" (click)="isMitArbeiter=true; isStudent=false">
+                    <mat-option value="student" (click)="isStudent=true; isMitArbeiter=false; istAlumReiser = false">
+                      Student</mat-option>
+                    <mat-option value="alumnus" (click)="istAlumReiser = true; isMitArbeiter=false; isStudent=false">
+                      Alumnus</mat-option>
+                    <mat-option value="hochschulmitarbeiter"
+                      (click)="isMitArbeiter=true; isStudent=false; istAlumReiser = false">
                       Hochschulmitarbeiter</mat-option>
                   </mat-select>
                   <mat-error *ngIf="(personenDatenFormGroup.get('status')).errors?.required">
@@ -139,7 +142,7 @@
               <div class="form-group col-md-6">
                 <mat-form-field class="col-md-12" appearance="fill" *ngIf="!isMitArbeiter">
                   <mat-label>Studiengang</mat-label>
-                  <input matInput placeholder="Study program" formControlName="studiengang" required>
+                  <input matInput placeholder="Study program" formControlName="studiengang" [required]="isStudent">
                   <mat-icon matSuffix>school</mat-icon>
                   <mat-hint>Studiengang</mat-hint>
                   <mat-error *ngIf="(personenDatenFormGroup.get('studiengang')).errors?.required">
@@ -150,7 +153,7 @@
               <div class="form-group col-md-6">
                 <mat-form-field class="col-md-12" appearance="fill" *ngIf="!isStudent">
                   <mat-label>Arbeitet Bei</mat-label>
-                  <input matInput placeholder="Arbeitet Bei" formControlName="arbeitet" [required]="false">
+                  <input matInput placeholder="Arbeitet Bei" formControlName="arbeitet" [required]="isMitArbeiter">
                   <mat-icon matSuffix>work</mat-icon>
                   <mat-hint>Arbeitetsort hinzufügen</mat-hint>
                 </mat-form-field>
@@ -274,10 +277,14 @@
                 <mat-form-field class="col-md-12" appearance="fill">
                   <mat-label>Status</mat-label>
                   <mat-select required hideRequiredMarker="true" floatLabel="true" formControlName="status">
-                    <mat-option value="student" (click)="isStudentMitReiser=true; isMitArbeiter=false">Student
+                    <mat-option value="student"
+                      (click)="isStudentMitReiser=true; isMitArbeiterMitReiser=false; istAlumMitReiser = false">Student
                     </mat-option>
-                    <mat-option value="alumnus">Alumnus</mat-option>
-                    <mat-option value="hochschulmitarbeiter" (click)="isMitArbeiter=true; isStudent=false">
+                    <mat-option value="alumnus"
+                      (click)="istAlumMitReiser = true; isStudentMitReiser=false; isMitArbeiterMitReiser=false">Alumnus
+                    </mat-option>
+                    <mat-option value="hochschulmitarbeiter"
+                      (click)="isStudentMitReiser=false; isMitArbeiterMitReiser=true; istAlumMitReiser = false">
                       Hochschulmitarbeiter</mat-option>
                   </mat-select>
                   <mat-error *ngIf="(personenDatenFormGroupMitReiser.get('status')).errors?.required">
@@ -299,9 +306,10 @@
             </div>
             <div class="form-row">
               <div class="form-group col-md-6">
-                <mat-form-field class="col-md-12" appearance="fill" *ngIf="!isMitArbeiter">
+                <mat-form-field class="col-md-12" appearance="fill" *ngIf="!isMitArbeiterMitReiser">
                   <mat-label>Studiengang</mat-label>
-                  <input matInput placeholder="Study program" formControlName="studiengang" required>
+                  <input matInput placeholder="Study program" formControlName="studiengang"
+                    [required]="isStudentMitReiser">
                   <mat-icon matSuffix>school</mat-icon>
                   <mat-hint>Studiengang hinzufügen</mat-hint>
                   <mat-error *ngIf="(personenDatenFormGroupMitReiser.get('studiengang')).errors?.required">
@@ -310,9 +318,10 @@
                 </mat-form-field>
               </div>
               <div class="form-group col-md-6">
-                <mat-form-field class="col-md-12" appearance="fill" *ngIf="!isStudent">
+                <mat-form-field class="col-md-12" appearance="fill" *ngIf="!isStudentMitReiser">
                   <mat-label>Arbeitet Bei</mat-label>
-                  <input required matInput placeholder="Arbeitet Bei" formControlName="arbeitet" [required]="false">
+                  <input required matInput placeholder="Arbeitet Bei" formControlName="arbeitet"
+                    [required]="isMitArbeiterMitReiser">
                   <mat-icon matSuffix>work</mat-icon>
                   <mat-hint>Arbeitetsort hinzufügen</mat-hint>
                 </mat-form-field>
@@ -409,26 +418,14 @@
 
             <div class="form-row">
               <div class="form-group col-md-6">
-                <mat-form-field class="col-md-12" appearance="fill">
-                  <mat-label>HandGepäck </mat-label>
-                  <textarea matInput placeholder="HandGepäck" formControlName="handgepaeck" required cols="30"
-                    rows="3"></textarea>
-                  <mat-hint>HandGepäck hinzufügen</mat-hint>
-                  <mat-error *ngIf="(reiseDatenFormGroup.get('handgepaeck')).errors?.required">
-                    Das HandGepäck ist <strong>erforderlich</strong>.
-                  </mat-error>
-                </mat-form-field>
+                <mat-checkbox color="primary" class="col-md-12" #termsChecked formControlName="handgepaeck">
+                  Ich habe Handgepäck
+                </mat-checkbox>
               </div>
               <div class="form-group col-md-6">
-                <mat-form-field class="col-md-12" appearance="fill">
-                  <mat-label>Koffer </mat-label>
-                  <textarea matInput placeholder="Koffer" formControlName="koffer" required cols="30"
-                    rows="3"></textarea>
-                  <mat-hint>Koffer hinzufügen</mat-hint>
-                  <mat-error *ngIf="(reiseDatenFormGroup.get('koffer')).errors?.required">
-                    Das Koffer ist <strong>erforderlich</strong>.
-                  </mat-error>
-                </mat-form-field>
+                <mat-checkbox color="primary" class="col-md-12" #termsChecked formControlName="koffer">
+                  Ich habe Koffer
+                </mat-checkbox>
               </div>
             </div>
 
@@ -978,7 +975,7 @@
             </div><br>
             <div class="row">
               <div class="col-12">
-                <mat-checkbox #termsChecked formControlName="agb">
+                <mat-checkbox color="primary" #termsChecked formControlName="agb">
                   Ich habe die <strong>Allgemeine Geschäftsbedingungen</strong> gelesen und <strong>stimme
                     ihnen zu.</strong>
                 </mat-checkbox>
@@ -995,55 +992,55 @@
         <mat-step class="p-0">
           <ng-template matStepLabel>Fazit</ng-template>
           <h2 class="mt-2">Reisende(n):</h2>
-          <div class="card" *ngFor="let resier of reisendeArray; let i = index">
+          <div class="card" *ngFor="let reisender of reisendeArray; let i = index">
             <div class="card-header">
               <h2>{{i + 1}}</h2>
             </div>
             <div class="card-body">
               <div class="row">
-                <div class="col-6">
-                  Vorname: <strong>{{resier.vorname}}</strong>
+                <div class="col-md-6">
+                  Vorname: <strong>{{reisender.vorname}}</strong>
                 </div>
-                <div class="col-6">
-                  Nachname: <strong>{{resier.nachname}}</strong>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-6">
-                  Geburtsdatum: <strong>{{resier.geburtsdatum}}</strong>
-                </div>
-                <div class="col-6">
-                  Postanschrift: <strong>{{resier.postanschrift}}</strong>
+                <div class="col-md-6">
+                  Nachname: <strong>{{reisender.nachname}}</strong>
                 </div>
               </div>
               <div class="row">
-                <div class="col-6">
-                  Handynummer: <strong>{{resier.handynummer}}</strong>
+                <div class="col-md-6">
+                  Geburtsdatum: <strong>{{reisender.geburtsdatum}}</strong>
                 </div>
-                <div class="col-6">
-                  Email: <strong>{{resier.email}}</strong>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-6">
-                  Studiengang: <strong>{{resier.studiengang}}</strong>
-                </div>
-                <div class="col-6">
-                  Status: <strong>{{resier.status}}</strong>
+                <div class="col-md-6">
+                  Postanschrift: <strong>{{reisender.postanschrift}}</strong>
                 </div>
               </div>
               <div class="row">
-                <div class="col-6">
-                  Arbeitet Bei: <strong>{{resier.arbeitetBei}}</strong>
+                <div class="col-md-6">
+                  Handynummer: <strong>{{reisender.handynummer}}</strong>
                 </div>
-                <div class="col-6">
-                  Hochschule: <strong>{{resier.hochschule}}</strong>
+                <div class="col-md-6">
+                  Email: <strong>{{reisender.email}}</strong>
                 </div>
               </div>
               <div class="row">
-                <div class="col-6">
-                  <span *ngIf="resier.schonTeilgennomem">Schon Teilgennomem: <strong>Ja</strong></span>
-                  <span *ngIf="!resier.schonTeilgennomem"> Schon Teilgennomem: <strong>Nein</strong></span>
+                <div class="col-md-6" *ngIf="reisender.studiengang.length > 0">
+                  Studiengang: <strong>{{reisender.studiengang}}</strong>
+                </div>
+                <div class="col-md-6" *ngIf="reisender?.status?.length > 0">
+                  Status: <strong>{{reisender.status}}</strong>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6" *ngIf="reisender?.arbeitetBei?.length > 0">
+                  Arbeitet Bei: <strong>{{reisender.arbeitetBei}}</strong>
+                </div>
+                <div class="col-md-6">
+                  Hochschule: <strong>{{reisender.hochschule}}</strong>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <span *ngIf="reisender.schonTeilgennomem">Schon Teilgennomem: <strong>Ja</strong></span>
+                  <span *ngIf="!reisender.schonTeilgennomem"> Schon Teilgennomem: <strong>Nein</strong></span>
                 </div>
               </div>
             </div>
@@ -1055,15 +1052,15 @@
             </div>
             <div class="card-body">
               <div class="row">
-                <div class="col-6">
+                <div class="col-md-6">
                   Datum: <strong>{{reise?.datum}}</strong>
                 </div>
-                <div class="col-6">
+                <div class="col-md-6">
                   Flughafen: <strong>{{reise?.flughafen}}</strong>
                 </div>
               </div>
               <div class="row">
-                <div class="col-6">
+                <div class="col-md-6">
                   Buchungsklasse: <strong>{{selectedBookingClass?.type}}</strong>
                 </div>
                 <div class="col-6">
@@ -1071,18 +1068,18 @@
                 </div>
               </div>
               <div class="row">
-                <div class="col-6">
-                  Koffer: <strong>{{reise?.koffer}}</strong>
+                <div class="col-md-6" *ngIf="reise?.koffer">
+                  Koffer: <strong>{{reise?.koffer ? 'Ja' : 'Nein'}}</strong>
                 </div>
-                <div class="col-6">
-                  Handgepäck: <strong>{{reise?.handgepaeck}}</strong>
+                <div class="col-md-6" *ngIf="reise?.handgepaeck">
+                  Handgepäck: <strong>{{reise?.handgepaeck ? 'Ja' : 'Nein'}}</strong>
                 </div>
               </div>
             </div>
           </div><br>
           <div class="row">
-            <div class="col-12">
-              <p>Sind alle Informationen Richtig ?</p>
+            <div class="col-md-12">
+              <p class="font-weight-600">Sind alle Informationen Richtig ?</p>
             </div>
           </div>
           <div class="action-buttons">
@@ -1095,16 +1092,17 @@
         <!--  Done    -->
         <mat-step>
           <ng-template matStepLabel>Done</ng-template>
-          <p>{{responseAfterBooking}}</p>
+          <p class="font-weight-700 mb-2">{{responseAfterBooking}}</p>
           <div class="action-buttons">
+            <mat-divider inside></mat-divider>
             <div class="row">
               <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 text-left">
-                <button mat-raised-button color="warn" mat-dialog-close>schließen</button>
+                <button mat-raised-button mat-dialog-close><i class="fa fa-times mr-2 text-danger"></i>Schließen</button>
               </div>
               <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6"></div>
               <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                <button mat-raised-button color="accent" [disabled]="!canDownloadPdf" (click)="downloadPdf()">
-                  Als PDF runterladen
+                <button mat-raised-button color="primary" [disabled]="!canDownloadPdf" (click)="downloadPdf()">
+                  <i class="fa fa-file-pdf text-danger mr-2"></i> Als PDF herunterladen
                 </button>
               </div>
             </div>
