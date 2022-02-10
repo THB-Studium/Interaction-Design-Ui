@@ -10,7 +10,7 @@ import { Traveler } from 'src/app/models/traveler';
 })
 export class TravelerService {
   // API for travelers
-  readonly TRAVELER_URL: string = `${Server.API_URL}/reisers`;
+  readonly TRAVELER_URL: string = `${Server.API_URL}/reisende`;
   headers = new HttpHeaders({ "Content-Type": "application/json" });
 
   constructor(private httpClient: HttpClient) { }

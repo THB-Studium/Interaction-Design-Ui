@@ -95,8 +95,8 @@ export class BookingComponent implements OnInit, AfterViewInit {
         flughafen: "",
         handGepaeck: "",
         koffer: "",
-        mitReiser: null,
-        reiser: null,
+        mitReisender: null,
+        reisender: null,
         zahlungMethod: null,
         reiseAngebotId: "",
       },
@@ -243,11 +243,12 @@ export class BookingComponent implements OnInit, AfterViewInit {
             flughafen: booking.flughafen,
             handGepaeck: booking.handGepaeck,
             koffer: booking.koffer,
-            mitReiserId: booking.mitReiser ? booking.mitReiser.id : null,
-            reiserId: booking.reiser.id,
+            mitReisenderId: booking.mitReisender ? booking.mitReisender.id : null,
+            reisenderId: booking.reisender.id,
             zahlungMethod: booking.zahlungMethod,
             reiseAngebotId: booking.reiseAngebotId
           };
+
           this.bookingService.updateOne(toUpdate).subscribe({
             next: (savedValue) => {
               this.sharedDataService.changeCurrentBooking(savedValue);

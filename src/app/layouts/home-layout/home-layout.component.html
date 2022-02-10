@@ -1,59 +1,25 @@
 <div class="navbar-wrapper">
   <div class="container-fluid">
-    <nav
-      class="navbar navbar-horizontal navbar-expand-md navbar-dark"
-      id="navbar-main"
-    >
+    <nav class="navbar navbar-horizontal navbar-expand-md navbar-dark" id="navbar-main">
       <div class="container-fluid px-4">
-        <a
-          [routerLink]="['/dashboard']"
-          class="navbar-brand"
-          routerLinkActive="active"
-        >
-          <img
-            alt="brand"
-            class="brand img-fluid"
-            src="./assets/logo/Logo_weiß.png"
-          />
+        <a [routerLink]="['/dashboard']" class="navbar-brand" routerLinkActive="active">
+          <img alt="brand" class="brand img-fluid" src="./assets/logo/Logo_weiß.png" />
         </a>
-        <button
-          (click)="isCollapsed = !isCollapsed"
-          aria-controls="sidenav-collapse-main"
-          class="navbar-toggler"
-          type="button"
-        >
+        <button (click)="isCollapsed = !isCollapsed" aria-controls="sidenav-collapse-main" class="navbar-toggler"
+          type="button">
           <span class="navbar-toggler-icon"></span>
         </button>
-        <div
-          [ngbCollapse]="isCollapsed"
-          class="collapse navbar-collapse"
-          id="sidenav-collapse-main"
-        >
+        <div [ngbCollapse]="isCollapsed" class="collapse navbar-collapse" id="sidenav-collapse-main">
           <!-- Collapse header -->
           <div class="navbar-collapse-header d-md-none">
             <div class="row">
               <div class="col-6 collapse-brand">
-                <a
-                  *ngIf="isCollapsed"
-                  [routerLink]="['/dashboard']"
-                  routerLinkActive="active"
-                >
+                <a *ngIf="isCollapsed" [routerLink]="['/home']" routerLinkActive="active">
                   <img alt="brand" src="./assets/logo/Logo_weiß.png" />
-                </a>
-                <a
-                  *ngIf="!isCollapsed"
-                  [routerLink]="['/dashboard']"
-                  routerLinkActive="active"
-                >
-                  <img alt="brand" src="./assets/logo/Logo_black.png" />
                 </a>
               </div>
               <div class="col-6 collapse-close">
-                <button
-                  (click)="isCollapsed = !isCollapsed"
-                  class="navbar-toggler"
-                  type="button"
-                >
+                <button (click)="isCollapsed = !isCollapsed" class="navbar-toggler" type="button">
                   <span></span>
                   <span></span>
                 </button>
@@ -63,32 +29,21 @@
           <!-- Navbar items -->
           <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-              <a class="nav-link nav-link-icon" routerLinkActive="active">
+              <a class="nav-link nav-link-icon" [routerLink]="['/aboutus']" routerLinkActive="active">
                 <span class="nav-link-inner--text">Über uns</span>
               </a>
             </li>
             <li class="nav-item">
               <a class="nav-link nav-link-icon" routerLinkActive="active">
-                <span class="nav-link-inner--text">Reisen</span>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link nav-link-icon" routerLinkActive="active">
                 <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
-                <span
-                  (click)="startReservationProcess()"
-                  class="nav-link-inner--text"
-                  *ngIf="!loading"
-                >
+                <span (click)="startReservationProcess()" class="nav-link-inner--text" *ngIf="!loading">
                   Direkt Buchen
                 </span>
               </a>
             </li>
             <li class="nav-item">
               <a class="nav-link nav-link-icon" routerLinkActive="active">
-                <span class="nav-link-inner--text" (click)="toSection()"
-                  >Newsletter</span
-                >
+                <span class="nav-link-inner--text" (click)="toSection()">Newsletter</span>
               </a>
             </li>
           </ul>
@@ -99,22 +54,11 @@
   <!-- /container -->
   <!-- carousel -->
   <div class="mt--9">
-    <ngb-carousel
-      [activeId]="'secondSlide'"
-      [keyboard]="true"
-      [pauseOnHover]="true"
-      [showNavigationArrows]="true"
-      [showNavigationIndicators]="true"
-      [wrap]="true"
-      interval="{{ slideList.length > 1 ? 5000 : 0 }}"
-    >
+    <ngb-carousel [activeId]="'secondSlide'" [keyboard]="true" [pauseOnHover]="true" [showNavigationArrows]="true"
+      [showNavigationIndicators]="true" [wrap]="true" interval="{{ slideList.length > 1 ? 5000 : 0 }}">
       <ng-template *ngFor="let slide of slideList; let i = index" ngbSlide>
         <div class="picsum-img-wrapper">
-          <img
-            alt="Slide {{ i + 1 }}"
-            class="img-fluid fit-img"
-            src="./assets/img/carousel/{{ slide.image }}"
-          />
+          <img alt="Slide {{ i + 1 }}" class="img-fluid fit-img" src="./assets/img/carousel/{{ slide.image }}" />
         </div>
         <div class="carousel-caption">
           <h1>{{ slide.title }}</h1>

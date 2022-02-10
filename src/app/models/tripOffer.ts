@@ -13,7 +13,7 @@ export class TripOffer {
   public freiPlaetze: number;
   public leistungen: Array<string>;
   public interessiert: number;
-  public mitReiserBerechtigt: string[];
+  public mitreiseberechtigt: string[];
   public hinweise: string;
   public sonstigeHinweise: string;
   public erwartungenReadListTO: Expectation;

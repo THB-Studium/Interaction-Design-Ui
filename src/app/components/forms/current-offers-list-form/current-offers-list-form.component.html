@@ -1,8 +1,6 @@
 <h2 mat-dialog-title>Reiseangebot buchen</h2>
-
 <mat-divider></mat-divider>
-
-<mat-dialog-content>
+<mat-dialog-content class="col-md-12 p-4">
   <mat-form-field class="col-md-12" appearance="standard">
     <mat-label>Gewünschte Reiseangebot auswählen</mat-label>
     <mat-select [formControl]="selectedOffer" required>
@@ -17,10 +15,8 @@
     </mat-error>
   </mat-form-field>
 </mat-dialog-content>
-
 <mat-divider></mat-divider>
-
 <mat-dialog-actions>
   <button color="warn" mat-button mat-dialog-close>ABBRECHEN</button>
-  <button mat-raised-button (click)="startBookingProcess()" [disabled]="selectedOffer.invalid">BUCHEN</button>
+  <button mat-raised-button (click)="startBookingProcess()" [disabled]="selectedOffer.invalid" mat-dialog-close>BUCHEN</button>
 </mat-dialog-actions>
