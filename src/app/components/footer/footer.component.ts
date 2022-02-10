@@ -1,10 +1,9 @@
-import { Component, Input, OnInit } from "@angular/core";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { Component, OnInit, Inject, Input, HostListener } from "@angular/core";
+import { FormControl, Validators } from "@angular/forms";
+import { DOCUMENT, ViewportScroller } from "@angular/common";
 
 import { ToastrService } from "ngx-toastr";
 import { NewsLettersService } from "src/app/services/news-letters/news-letters.service";
-
-import { Pattern } from "src/app/variables/pattern";
 
 @Component({
   selector: "app-footer",
@@ -12,38 +11,57 @@ import { Pattern } from "src/app/variables/pattern";
   styleUrls: ["./footer.component.scss"],
 })
 export class FooterComponent implements OnInit {
-  @Input() btnColor: any;
-  @Input() footerBgColor: any;
+  windowScrolled: boolean;
+  @Input() buttonColor: any
   currentDate: Date = new Date();
-
-  emailForm: FormGroup;
+  emailCtrl: FormControl;
 
   constructor(
-    private fb: FormBuilder,
     private toastr: ToastrService,
-    private newLetterService: NewsLettersService
-  ) {}
-
-  ngOnInit() {
-    this.emailForm = this.fb.group({
-      email: ["", [Validators.required, Validators.pattern(Pattern.email)]],
-    });
+    private newLetterService: NewsLettersService,
+    @Inject(DOCUMENT) private document: Document,
+    private viewScroller: ViewportScroller
+  ) {
+    this.emailCtrl = new FormControl("", [
+      Validators.email,
+      Validators.required,
+    ]);
   }
+  @HostListener("window:scroll", [])
+  onWindowScroll() {
+    if (
+      window.pageYOffset ||
+      document.documentElement.scrollTop ||
+      document.body.scrollTop > 100
+    ) {
+      this.windowScrolled = true;
+    } else if (
+      (this.windowScrolled && window.pageYOffset) ||
+      document.documentElement.scrollTop ||
+      document.body.scrollTop < 10
+    ) {
+      this.windowScrolled = false;
+    }
+  }
+  scrollToTop() {
+    console.log("hello");
+    this.viewScroller.scrollToPosition([0, 0]);
+  }
+  ngOnInit() {}
 
   abonnieren() {
-    let subscribe = {
-      email: this.emailForm.get("email").value,
-      active: true,
-    };
+    if (this.emailCtrl.valid) {
+      let subscribe = {
+        email: this.emailCtrl.value,
+        active: true,
+      };
 
-    this.newLetterService.subscribe(subscribe).subscribe({
-      next: () => this.toastr.success("Successfully subscribed", "Success"),
-      error: () => {
-        this.toastr.success(
-          "Error while subscribing to the newsletters!",
-          "Error"
-        )
-      }
-    });
+      this.newLetterService.subscribe(subscribe).subscribe({
+        next: () => this.toastr.success("Sie sind abonniert."),
+        error: () => {
+          this.toastr.error("Ihr Abonnement ist fehlgeschlagen");
+        },
+      });
+    }
   }
 }

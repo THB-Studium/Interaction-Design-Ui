@@ -7,6 +7,7 @@ import {
 } from "@angular/common";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { AuthLayoutRoutes } from "./auth-layout.routing";
+import { ComponentsModule } from "../../components/components.module";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
@@ -26,14 +27,13 @@ import { MatSortModule } from "@angular/material/sort";
 import { MatDialogModule } from "@angular/material/dialog";
 import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatNativeDateModule, MAT_DATE_FORMATS } from "@angular/material/core";
+import { MatExpansionModule } from "@angular/material/expansion";
 
 import { LoginComponent } from "../../pages/login/login.component";
 import { RegisterComponent } from "../../pages/register/register.component";
-import { HomeComponent } from "src/app/pages/home/home.component";
 import { LearnMoreComponent } from "../../pages/learn-more/learn-more.component";
-import { ComponentsModule } from "../../components/components.module";
-import { MatExpansionModule } from "@angular/material/expansion";
 import { AboutusComponent } from "src/app/pages/aboutus/aboutus.component";
+import { ScrollToTopComponent } from "src/app/components/scroll-to-top/scroll-to-top.component";
 
 @NgModule({
   imports: [
@@ -64,11 +64,10 @@ import { AboutusComponent } from "src/app/pages/aboutus/aboutus.component";
     MatExpansionModule,
   ],
   declarations: [
-    HomeComponent,
     LearnMoreComponent,
     LoginComponent,
     RegisterComponent,
-    AboutusComponent
+    AboutusComponent,
   ],
   providers: [
     //{ provide: HTTP_INTERCEPTORS, useClass: AppHttpInterceptor, multi: true },
@@ -77,13 +76,13 @@ import { AboutusComponent } from "src/app/pages/aboutus/aboutus.component";
       provide: MAT_DATE_FORMATS,
       useValue: {
         parse: {
-          dateInput: 'YYYY-MM-DD',
+          dateInput: "YYYY-MM-DD",
         },
         display: {
-          dateInput: 'DD MMM, YYYY',
-          monthYearLabel: 'MMMM YYYY',
-          dateA11yLabel: 'LL',
-          monthYearA11yLabel: 'MMMM YYYY',
+          dateInput: "DD MMM, YYYY",
+          monthYearLabel: "MMMM YYYY",
+          dateA11yLabel: "LL",
+          monthYearA11yLabel: "MMMM YYYY",
         },
       },
     },

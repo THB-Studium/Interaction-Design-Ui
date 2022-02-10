@@ -1,31 +1,14 @@
-<!-- Carousel-Header -->
-<ngb-carousel [showNavigationArrows]="true" [showNavigationIndicators]="true"
-  interval="{{slideList.length > 1 ? 5000 : 0}}" [keyboard]="true" [pauseOnHover]="true" [wrap]="true"
-  [activeId]="'secondSlide'">
-  <ng-template *ngFor="let slide of slideList; let i = index" ngbSlide>
-    <div class="picsum-img-wrapper">
-      <img class="img-fluid fit-img" src="./assets/img/carousel/{{slide.image}}" alt="Slide {{i+1}}" />
-    </div>
-    <div class="carousel-caption">
-      <h1>{{slide.title}}</h1>
-      <p class="col-sm-12 col-md-6">{{slide.description}}</p>
-    </div>
-  </ng-template>
-</ngb-carousel>
-
 <div class="container-fluid">
   <!-- Reiseangebot -->
   <div class="section-contents-RG col-md-12">
     <h2 class="black-color mb-5">Reiseangebote</h2>
-
     <!--  Spinner  -->
     <app-spinner [dataName]="'Reiseangebote'" *ngIf="!loadReiseangeboteFinished"></app-spinner>
-
     <div *ngIf="loadReiseangeboteFinished && tripOffers.length > 0">
       <div class="row mb-5" *ngFor="let gebot of tripOffers">
         <div class="col-md-12 mx-auto d-block offers">
           <img [src]="gebot.realImage.changingThisBreaksApplicationSecurity" class="card-shadow img-fluid"
-              alt="cover_image">
+            alt="cover_image">
           <div class="overlay">
             <div class="text">
               <em class="fas fa-plane-departure text-white"></em>
@@ -34,10 +17,12 @@
           </div>
           <div class="row">
             <div class="text-top-right">
-              <button class="ml-1 align-self-end" mat-mini-fab aria-label="add icon" [matTooltip]="gebot.isfavorite ? 'nicht mehr interessiert' : 'interessiert'"
-                      matTooltipHideDelay="2000"  id="addInterest">
+              <button class="ml-1 align-self-end bg-favorite" mat-mini-fab aria-label="add icon"
+                [matTooltip]="gebot.isfavorite ? 'nicht mehr interessiert' : 'interessiert'" matTooltipHideDelay="2000"
+                id="addInterest">
                 <mat-icon *ngIf="!gebot.isfavorite" (click)="interessiert(gebot.id, 'add')">favorite</mat-icon>
-                <mat-icon *ngIf="gebot.isfavorite" class="isFavorite" (click)="interessiert(gebot.id, 'remove')">favorite</mat-icon>
+                <mat-icon *ngIf="gebot.isfavorite" class="isFavorite" (click)="interessiert(gebot.id, 'remove')">
+                  favorite</mat-icon>
               </button>
             </div>
             <div class="text-bottom-left text-white">
@@ -54,7 +39,7 @@
                 </p>
                 <p>
                   <small class="mr-2">Interessierte:</small>
-                  <small class="font-weight-bold">{{gebot.interessiert}}</small>
+                  <small class="font-weight-bold">{{gebot.interessiert < 0 ? 0 : gebot.interessiert}}</small>
                 </p>
               </div>
             </div>
@@ -67,39 +52,35 @@
         </div>
       </div>
     </div>
-
     <div *ngIf="loadReiseangeboteFinished && tripOffers.length === 0">
       <p>Keine Reiseangebote vorhanden!</p>
     </div>
   </div>
 
   <!-- Feedback -->
-  <div class="section-contents-FB col-md-12">
-    <div class="row">
+  <div class="section-contents-FB col-md-12" *ngIf="feedbacks.length > 0">
+    <div class="row mb-5">
       <div class="col-10">
-        <h2 class="black-color mb-5">Feedback</h2>
+        <h2 class="black-color">Feedback</h2>
       </div>
-      <div class="set-content-right">
-        <button class="ml-1" mat-mini-fab aria-label="add icon" matTooltip="Neus Feedback teilen"
+      <div class="col-2 align-self-end">
+        <button class="float-right" mat-mini-fab aria-label="add icon" matTooltip="Neus Feedback teilen"
           matTooltipHideDelay="2000" (click)="feedbackTeilenDialog(feedbackDialog)" id="addFeedback">
           <mat-icon>add</mat-icon>
         </button>
       </div>
     </div>
-
     <!--  Spinner  -->
     <app-spinner [dataName]="'Feedbacks'" *ngIf="!loadFeedBacksFinished"></app-spinner>
-
     <div class="row" *ngIf="loadFeedBacksFinished && feedbacks.length > 0">
-      <div class="col-md-12 col-lg-6">
+      <div class="set-left col-md-12 col-lg-6 d-flex justify-content-sm-center justify-content-md-start mb-4">
         <img [src]="currentFeedback?.bild" alt="FeebackBild-{{currentIndex + 1}}" class="img-feedback img-fluid">
       </div>
-
       <div class="col-md-12 col-lg-6" *ngIf="loadFeedBacksFinished">
         <img src="./assets/img/anführungszeichnen.PNG" alt="Anführungszeichnen" class="img-fluid">
         <p class="message">{{currentFeedback?.description}}</p>
         <p class="autor font-weight-bold">{{currentFeedback?.autor}}</p>
-        <p class="display-flex set-content-bottom">
+        <p class="display-flex set-content-bottom mt-3">
           <strong>{{currentIndex + 1}} / {{feedbacks.length}}</strong>
           <mat-icon class="ml-2 prev-btn" (click)="feedbackAktion('prev')">keyboard_arrow_left</mat-icon>
           <mat-icon class="next-btn" (click)="feedbackAktion('next')">keyboard_arrow_right</mat-icon>

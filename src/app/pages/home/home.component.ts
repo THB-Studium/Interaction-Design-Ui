@@ -13,10 +13,9 @@ import { SlideList } from "src/app/shared/datas/slideList";
 import { Feedback } from "src/app/models/feedback";
 import { TripOffer } from "src/app/models/tripOffer";
 import { Subject } from "rxjs";
-import {CountryService} from "../../services/country/country.service";
-import {Country} from "../../models/country";
-import {SharedDataService} from "../../services/sharedData/shared-data.service";
-import {StandardColors} from "../../shared/datas/standard-colors";
+import { CountryService } from "../../services/country/country.service";
+import { Country } from "../../models/country";
+import { SharedDataService } from "../../services/sharedData/shared-data.service";
 
 @Component({
   selector: "app-home",
@@ -31,12 +30,13 @@ export class HomeComponent implements OnInit {
   currentFeedback: Feedback;
   currentIndex: number;
   dialogConfig = new MatDialogConfig();
-  readonly defaultFeedbackImg = "./assets/img/feedback/feedback-default-img.jpg";
+  readonly defaultFeedbackImg =
+    "./assets/img/feedback/feedback-default-img.jpg";
   interested: any[] = [];
   interessiertIds = new Subject<any>();
 
-  loadFeedBacksFinished: boolean = true
-  loadReiseangeboteFinished: boolean = true
+  loadFeedBacksFinished: boolean = true;
+  loadReiseangeboteFinished: boolean = true;
 
   constructor(
     private router: Router,
@@ -46,16 +46,15 @@ export class HomeComponent implements OnInit {
     private sanitizer: DomSanitizer,
     private feedbackService: FeedbackService,
     private toastrService: ToastrService,
-    private sharedDataService: SharedDataService,
+    private sharedDataService: SharedDataService
   ) {
-    // to set the header background color to transparent
-    this.sharedDataService.changeCurrentBackgroundColor({
-      header: { background: 'transparent' },
-      bodyAndFooter: { background: StandardColors.data.blue }
-    })
-
     this.slideList = SlideList.data;
     this.currentIndex = 0;
+    // reset the header and the footer background color
+    this.sharedDataService.changeCurrentBackgroundColors({
+      header: '',
+      bodyAndFooter: '',
+    });
   }
 
   ngOnInit(): void {
@@ -77,8 +76,8 @@ export class HomeComponent implements OnInit {
   }
 
   getCountryName(landId: string): string {
-    const land = this.countries.filter((land: Country) => land.id === landId)[0]
-    return land?.id ? land.name : ''
+    const land = this.countries.filter((x: Country) => x.id === landId)[0];
+    return land?.id ? land.name : "";
   }
 
   routeToLearnMore(gebotId: string): void {
@@ -107,7 +106,7 @@ export class HomeComponent implements OnInit {
   }
 
   interessiert(id: string, action: string): void {
-    if(action === 'add') {
+    if (action === "add") {
       this.reiseAngebotsService.interessiert(id).subscribe({
         error: (error) => {
           if (error.error.text === "Successfully added") {
@@ -123,23 +122,17 @@ export class HomeComponent implements OnInit {
               localStorage.setItem("ids", JSON.stringify(this.interested));
               this.interessiertIds.next(this.interested);
             }
-            this.toastrService.success(
-              "Reiseangebot zu Favorits hinzugefügt",
-              "Erfolgreich"
-            );
-            //this.ngOnInit();
           } else {
-            this.toastrService.error("Fehler", "Fehler");
+            this.toastrService.error("Etwas ist schief gelaufen", "Fehler");
           }
-        }
+        },
       });
     }
 
-    if(action === 'remove') {
+    if (action === "remove") {
       this.reiseAngebotsService.uninteressiert(id).subscribe({
         error: (error) => {
           if (error.error.text === "Successfully updated") {
-
             this.interested = JSON.parse(localStorage.getItem("ids"));
             this.interested = this.addId([id], this.interested);
             let id_delete = this.interested.indexOf(id);
@@ -147,17 +140,10 @@ export class HomeComponent implements OnInit {
             localStorage.removeItem("ids");
             localStorage.setItem("ids", JSON.stringify(this.interested));
             this.interessiertIds.next(this.interested);
-
-            this.toastrService.info(
-              "Reiseangebot von Favorits gelöscht",
-              "Erfolgreich"
-            );
-
-            //this.ngOnInit();
           } else {
-            this.toastrService.error("Fehler", "Fehler");
+            this.toastrService.error("Etwas ist schief gelaufen", "Fehler");
           }
-        }
+        },
       });
     }
   }
@@ -175,17 +161,13 @@ export class HomeComponent implements OnInit {
   }
 
   private getAllTripoffers(): void {
-    this.loadReiseangeboteFinished = false
+    this.loadReiseangeboteFinished = false;
     this.reiseAngebotsService.getAll().subscribe({
       next: (bg) => {
         this.tripOffers = bg
           .map((tripOffer) => {
             this.interested = JSON.parse(localStorage.getItem("ids"));
-            if (this.interested?.indexOf(tripOffer.id) != -1) {
-              tripOffer.isfavorite = true;
-            } else {
-              tripOffer.isfavorite = false;
-            }
+            tripOffer.isfavorite = this.interested?.indexOf(tripOffer.id) != -1;
             tripOffer.realImage = this.convertByteToImage(tripOffer.startbild);
             return tripOffer;
           })
@@ -194,12 +176,12 @@ export class HomeComponent implements OnInit {
               trip.landId !== null && new Date(trip.endDatum) > new Date()
           );
       },
-      complete: () => this.getAllCountries()
+      complete: () => this.getAllCountries(),
     });
   }
 
   private getAllFeedbacks(): void {
-    this.loadFeedBacksFinished = false
+    this.loadFeedBacksFinished = false;
     this.feedbackService.getAll().subscribe({
       next: (result) => (this.feedbacks = result),
       error: () => {
@@ -208,7 +190,7 @@ export class HomeComponent implements OnInit {
       complete: () => {
         // filter only feedbacks that are public.
         const feedbacks = this.feedbacks.filter(
-          (x) => x.veroefentlich === true
+          (x) => x.veroeffentlich === true
         );
         // clear the list
         this.feedbacks = [];
@@ -228,7 +210,7 @@ export class HomeComponent implements OnInit {
           });
         });
 
-        this.loadFeedBacksFinished = true
+        this.loadFeedBacksFinished = true;
       },
     });
   }
@@ -236,11 +218,10 @@ export class HomeComponent implements OnInit {
   private getAllCountries(): void {
     this.countriesService.getAll().subscribe({
       next: (countries: Array<Country>) => {
-        console.log('HomeComponent.getAllCountries()', countries)
-        this.countries = countries
+        this.countries = countries;
       },
-      complete: () => this.loadReiseangeboteFinished = true,
-      error: (error) => console.log('Error in HomeComponent.getAllCountries()', error)
-    })
+      complete: () => (this.loadReiseangeboteFinished = true),
+      error: (error) => console.log("Fehler beim Laden aller Länder", error),
+    });
   }
 }

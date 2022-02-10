@@ -1,15 +1,12 @@
-<body>
-  <a id="main-page-btn" routerLinkActive="active" [routerLink]="['/dashboard']">< ZURÜCK ZUR MAINPAGE</a>
-
+<div class="container-fluid content">
   <!-- Spinner -->
   <app-spinner *ngIf="!loadFinished"></app-spinner>
-
   <!-- Body Contents -->
   <div *ngIf="loadFinished">
+    <a id="main-page-btn" routerLinkActive="active" [routerLink]="['/dashboard']">&lt; ZURÜCK ZUR MAINPAGE</a>
     <!-- Rise Info und Map -->
     <div class="travel-info-header">
       <h2>{{currentTripOffer?.titel}}</h2>
-
       <p>
         <span class="mr-2">{{currentTripOffer?.startDatum | date: 'dd. MMM'}}</span>
         - &nbsp;
@@ -19,28 +16,30 @@
         <p>
           Freie Plätze: <span class="font-weight-bold">{{currentTripOffer?.freiPlaetze}}/{{currentTripOffer?.plaetze}}</span>
           <span>
-            &nbsp; - &nbsp; Interessierte: <span class="font-weight-bold">{{currentTripOffer?.interessiert}}</span>
+            &nbsp; - &nbsp; Interessierte: <span class="font-weight-bold">{{currentTripOffer?.interessiert < 0 ? 0 : currentTripOffer?.interessiert}}</span>
           </span>
         </p>
         <h3 *ngIf = "currentTripOffer?.freiPlaetze <= 0" class="set-content-right"> Keine Plätze mehr !</h3>
         <h3 *ngIf = "anmeldeFristVorbei" class="set-content-right"> Der Anmeldefrist ist vorbei !</h3>
-        <button mat-raised-button class="set-content-right" [ngStyle]="backgroundColor" (click)="bookingFormDialog()" [disabled]="currentTripOffer?.freiPlaetze <= 0 || anmeldeFristVorbei">PLATZ RESERVIEREN ></button>
+        <button mat-button class="booking-btn"
+                [ngStyle]="backgroundColor" (click)="bookingFormDialog()"
+                [disabled]="currentTripOffer?.freiPlaetze <= 0 || anmeldeFristVorbei">
+          <span id="reserve-place">PLATZ RESERVIEREN ></span>
+          <span id="reserve">RESERVIEREN ></span>
+        </button>
       </div>
-
-      <!--   Map   -->
-      <mat-card class="white-color" [style.background-image]="'url(' + currentLand?.realImage?.changingThisBreaksApplicationSecurity  + ')'">>
-        <p class="set-content-bottom">{{currentLand?.name | uppercase}} - REISEROUTE</p>
-      </mat-card>
+      <div class="travel-map">
+        <img class="img-fluid" [src]="currentLand?.realImage" alt="reiseroute img">
+        <p>{{currentLand?.name | uppercase}} - REISEROUTE</p>
+      </div>
     </div>
-
     <!-- Highlights list -->
-    <div class="highlight-contents">
+    <div class="highlight-contents" *ngIf="currentLand?.highlights?.length > 0">
       <h2>Die Highlights im Überblick</h2>
-
-      <div class="row" *ngIf="currentLand?.highlights?.length > 0">
-        <div class="col-md-4" *ngFor="let item of currentLand.highlights">
-          <mat-card class="col-md-11 mb-6" [ngStyle]="matCardShadowHighlight">
-            <img mat-card-image [src]="item?.realImage" alt="{{item?.name}}-Bild">
+      <div class="row">
+        <div class="col-md-4 mb-6 d-flex" *ngFor="let item of currentLand.highlights; let i=index">
+          <mat-card class="col-sm-12 col-md-12" [ngStyle]="matCardShadowHighlight">
+            <img mat-card-image class="highlight-img" [src]="item?.realImage" alt="{{item?.name}}-Bild">
             <mat-card-content>
               <h3>{{item?.name}}</h3>
               <p>{{item?.description}}</p>
@@ -52,14 +51,12 @@
         <p>Keine Highlights vorhanden!</p>
       </div>
     </div>
-
     <!-- Fakten-Check -->
     <div class="fakten-check-contents">
       <h2>Fakten-Check</h2>
-
-      <div class="row col-md-12">
-        <div class="col-md-7 mr-8 mb-5">
-          <mat-card id="mat-card-group-1" class="col-md-12" [ngStyle]="matCardShadow">
+      <div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-7 d-flex justify-content-start mr-auto">
+          <mat-card id="mat-card-group-1" class="col-sm-12" [ngStyle]="matCardShadow">
             <mat-card-content>
               <!--      REISEZEITRAUM      -->
               <div class="reisezeitraum">
@@ -76,11 +73,9 @@
                   Weitere Flughäfen können auf Anfrage gerne auch gebucht werden.
                 </p>
               </div>
-
               <!--      BUCHUNGSKLASSEN      -->
               <div class="buchungsklassen">
                 <h3>BUCHUNGSKLASSEN</h3>
-
                 <div class="klassen" *ngFor="let item of currentTripOffer?.buchungsklassenReadListTO">
                   <h4 [ngStyle]="fontColor">
                     {{item.type | uppercase}}
@@ -90,69 +85,60 @@
                     <li>{{item.description}}</li>
                   </ul>
                 </div>
-
                 <div>
                   <p>
                     <span class="font-weight-bold">WICHTIGER HINWEIS:</span>  {{currentTripOffer?.hinweise}}
                   </p>
-
                   <small [ngStyle]="fontColor" *ngIf="currentTripOffer?.sonstigeHinweise">
                     <span class="font-weight-bold">{{currentTripOffer?.sonstigeHinweise.split(':')[0] | uppercase}}: </span>
                     <br>{{currentTripOffer.sonstigeHinweise.split(':')[1] | uppercase}}
                   </small>
                 </div>
-
               </div>
-
               <!--      WER DARF MIT?      -->
               <div class="wer-darf-mit">
                 <h3>WER DARF MIT?</h3>
                 <h4>Mitreiseberechtigt sind:</h4>
-
                 <ul>
-                  <li *ngFor="let person of currentTripOffer.mitReiserBerechtigt">{{person}}</li>
+                  <li *ngFor="let person of currentTripOffer?.mitReiserBerechtigt">{{person}}</li>
                 </ul>
-
-                <p>Bitte hab Verständnis dafür, dass nicht-immatrikulierte Partner, Verwandte und Freunde
-                  deshalb nicht dabei sein können.</p>
+                <p>
+                  Bitte hab Verständnis dafür, dass nicht-immatrikulierte Partner, Verwandte und Freunde
+                  deshalb nicht dabei sein können.
+                </p>
               </div>
-
             </mat-card-content>
           </mat-card>
         </div>
-        <div class="col-md-4">
-          <mat-card id="mat-card-group-2" class="col-md-12" [ngStyle]="matCardShadow">
+        <div class="col-sm-12 col-md-12 col-lg-5 d-flex justify-content-sm-center justify-content-md-center justify-content-lg-end">
+          <mat-card id="mat-card-group-2" class="col-sm-10" [ngStyle]="matCardShadow">
             <mat-card-content>
               <!--      KOSTEN      -->
               <div class="kosten">
                 <h3>KOSTEN</h3>
-                <table mat-table [dataSource]="bookingClassesDataSource">
+                <table mat-table [dataSource]="bookingClassesDataSource" aria-describedby="price">
                   <!-- TARIFE Column -->
                   <ng-container matColumnDef="tarife">
-                    <th mat-header-cell *matHeaderCellDef [ngStyle]="backgroundColor">TARIFE</th>
+                    <th mat-header-cell *matHeaderCellDef [ngStyle]="backgroundColor" scope="tarif">TARIFE</th>
                     <td mat-cell *matCellDef="let element"
                         [style]="element.type.toLowerCase().includes('studenten-tarif' || 'studenten tarif' || 'studententarif') ? fontColor : null">
                       {{element.type | uppercase}}
                       <span *ngIf="element.type.toLowerCase().includes('studenten-tarif' || 'studenten tarif' || 'studententarif')">*</span>
                     </td>
                   </ng-container>
-
                   <!-- PREISE Column -->
                   <ng-container matColumnDef="preise">
-                    <th mat-header-cell *matHeaderCellDef [ngStyle]="backgroundColor">PREISE</th>
+                    <th mat-header-cell *matHeaderCellDef [ngStyle]="backgroundColor" scope="price">PREISE</th>
                     <td mat-cell *matCellDef="let element"
                         [style]="element.type.toLowerCase().includes('studenten-tarif' || 'studenten tarif' || 'studententarif') ? fontColor : null">
                       {{element.preis}}.-</td>
                   </ng-container>
-
                   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                 </table>
-
                 <h4></h4>
                 <p></p>
               </div>
-
               <!--      INKLUDIERTE LEISTUNGEN      -->
               <div class="inkludierte-leistung">
                 <h3>INKLUDIERTE LEISTUNGEN</h3>
@@ -160,7 +146,6 @@
                   <li *ngFor="let leistung of currentTripOffer?.leistungen">{{leistung}}</li>
                 </ul>
               </div>
-
               <!--      ANMELDEFRIST      -->
               <div class="anmeldefrist">
                 <h3>ANMELDEFRIST</h3>
@@ -172,136 +157,69 @@
                   <br>Anmeldung nur solange genügend Plätze da sind.
                 </p>
               </div>
-
               <!--      ERWARTUNGEN      -->
               <div class="erwartungen">
                 <h3>ERWARTUNGEN</h3>
-                <table class="erwartungen-table">
-                  <tr>
-                    <td>
-                      ABENTEUER:
-                      <span class="stars">
-                      <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.abenteuer > 0">star</mat-icon>
-                      <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.abenteuer > 20">star</mat-icon>
-                      <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.abenteuer > 40">star</mat-icon>
-                      <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.abenteuer > 60">star</mat-icon>
-                      <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.abenteuer > 80">star</mat-icon>
-                    </span>
-                    </td>
-
-                    <td>
-                      ENTSCHLEUNIGUNG:
-                      <span class="stars">
-                      <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.entschleunigung > 0">star</mat-icon>
-                      <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.entschleunigung > 20">star</mat-icon>
-                      <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.entschleunigung > 40">star</mat-icon>
-                      <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.entschleunigung > 60">star</mat-icon>
-                      <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.entschleunigung > 80">star</mat-icon>
-                    </span>
-                    </td>
-                  </tr>
-
-                  <tr>
-                    <td>
-                      KOMFORT:
-                      <span class="stars">
-                      <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.konfort > 0">star</mat-icon>
-                      <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.konfort > 20">star</mat-icon>
-                      <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.konfort > 40">star</mat-icon>
-                      <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.konfort > 60">star</mat-icon>
-                      <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.konfort > 80">star</mat-icon>
-                    </span>
-                    </td>
-
-                    <td>
-                      NACHHALTLIGKEIT:
-                      <span class="stars">
-                      <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.nachhaltigkeit > 0">star</mat-icon>
-                      <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.nachhaltigkeit > 20">star</mat-icon>
-                      <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.nachhaltigkeit > 40">star</mat-icon>
-                      <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.nachhaltigkeit > 60">star</mat-icon>
-                      <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.nachhaltigkeit > 80">star</mat-icon>
-                    </span>
-                    </td>
-                  </tr>
-
-                  <tr>
-                    <td>
-                      SONNE & STRAND:
-                      <span class="stars">
-                      <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.sonne_strand > 0">star</mat-icon>
-                      <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.sonne_strand > 20">star</mat-icon>
-                      <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.sonne_strand > 40">star</mat-icon>
-                      <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.sonne_strand > 60">star</mat-icon>
-                      <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.sonne_strand > 80">star</mat-icon>
-                    </span>
-                    </td>
-
-                    <td>
-                      SICHERHEIT:
-                      <span class="stars">
-                      <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.sicherheit > 0">star</mat-icon>
-                      <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.sicherheit > 20">star</mat-icon>
-                      <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.sicherheit > 40">star</mat-icon>
-                      <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.sicherheit > 60">star</mat-icon>
-                      <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.sicherheit > 80">star</mat-icon>
-                    </span>
-                    </td>
-                  </tr>
-
-                  <tr>
-                    <td>
-                      ON THE ROAD:
-                      <span class="stars">
-                      <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.road > 0">star</mat-icon>
-                      <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.road > 20">star</mat-icon>
-                      <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.road > 40">star</mat-icon>
-                      <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.road > 60">star</mat-icon>
-                      <mat-icon *ngIf="currentTripOffer?.erwartungenReadListTO?.road > 80">star</mat-icon>
-                    </span>
-                    </td>
-                  </tr>
-
-                </table>
+                <div class="row mb-2" [ngStyle]="fontColor">
+                  <div class="col-sm-12 col-md-12 col-lg-6">
+                    ABENTEUER: <app-stars [appreciation]="currentTripOffer?.erwartungenReadListTO?.abenteuer"></app-stars>
+                  </div>
+                  <div class="col-sm-12 col-md-12 col-lg-6">
+                    ENTSCHLEUNIGUNG: <app-stars [appreciation]="currentTripOffer?.erwartungenReadListTO?.entschleunigung"></app-stars>
+                  </div>
+                </div>
+                <div class="row mb-2" [ngStyle]="fontColor">
+                  <div class="col-sm-12 col-md-12 col-lg-6">
+                    KOMFORT: <app-stars [appreciation]="currentTripOffer?.erwartungenReadListTO?.konfort"></app-stars>
+                  </div>
+                  <div class="col-sm-12 col-md-12 col-lg-6">
+                    NACHHALTLIGKEIT: <app-stars [appreciation]="currentTripOffer?.erwartungenReadListTO?.nachhaltigkeit"></app-stars>
+                  </div>
+                </div>
+                <div class="row mb-2" [ngStyle]="fontColor">
+                  <div class="col-sm-12 col-md-12 col-lg-6">
+                    SONNE & STRAND: <app-stars [appreciation]="currentTripOffer?.erwartungenReadListTO?.sonne_strand"></app-stars>
+                  </div>
+                  <div class="col-sm-12 col-md-12 col-lg-6">
+                    SICHERHEIT: <app-stars [appreciation]="currentTripOffer?.erwartungenReadListTO?.sicherheit"></app-stars>
+                  </div>
+                </div>
+                <div class="row" [ngStyle]="fontColor">
+                  <div class="col-sm-12">
+                    ON THE ROAD: <app-stars [appreciation]="currentTripOffer?.erwartungenReadListTO?.road"></app-stars>
+                  </div>
+                </div>
               </div>
-
             </mat-card-content>
           </mat-card>
         </div>
       </div>
     </div>
-
     <!-- Ablauf der Reise -->
     <div class="ablauf-contents">
       <h2>Ablauf der Reise</h2>
-
       <h3>UNTERKÜNFTE</h3>
       <p class="unterkünfte-text">{{currentLand?.unterkunft_text}}</p>
-
       <div class="row" *ngIf="currentLand?.unterkunft">
         <div class="col-md-12" *ngFor="let item of currentLand.unterkunft; let i=index">
-          <div class="row col-md-12 mb-6">
-            <h1 id="index" class="row col-md-1" [ngStyle]="fontColor">{{i + 1}}</h1>
+          <div class="row col-md-12 mb-4">
+            <h1 id="index" class="col-md-1" [ngStyle]="fontColor">{{i + 1}}</h1>
             <div class="col-md-7">
-              <h3 [ngStyle]="fontColor">{{item.name}}</h3>
-              <a [ngStyle]="fontColor" routerLinkActive="active" href="{{item.link}}">{{item.link}}</a>
-
+              <h3 [ngStyle]="fontColor" class="mb-1">{{item.name}}</h3>
+              <p><a [ngStyle]="fontColor" routerLinkActive="active" href="{{item.link}}" target="_blank">{{item.link}}</a></p>
               <p><span class="font-weight-bold">Adresse:</span> {{item.adresse}}</p>
-
               <p>{{item.beschreibung}}</p>
             </div>
-            <div class="row col-md-4 mb-5" *ngFor="let bild of item.bilder">
-              <img class="col-md-6 img-fluid" [src]="getImage(bild)" alt="Bild-Bild-{{i+1}}a">
+            <div class="row col-md-4 mb-5">
+              <img *ngFor="let bild of item.bilder" class="col-sm-12 col-md-12 col-lg-6 img-fluid mb-4" [src]="getImage(bild)" alt="Bild-Bild-{{i+1}}a">
             </div>
           </div>
         </div>
       </div>
     </div>
-
     <!-- Länderinfo | Gesundheit & Sicherheit -->
-    <div class="landInfos-contents">
+    <div class="landInfos-contents" *ngIf="currentLand?.landInfo?.length > 0">
       <h2>Länderinfo | Gesundheit & Sicherheit</h2>
-
       <mat-card [ngStyle]="matCardShadow">
         <mat-card-content *ngFor="let info of currentLand?.landInfo; let i=index">
           <mat-expansion-panel class="mb-2" [expanded]="checkIfExpanded(i)" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
@@ -314,14 +232,4 @@
       </mat-card>
     </div>
   </div>
-
-  <!-- New feedback dialog -->
-<ng-template #feedbackDialog>
-  <h2 mat-dialog-title>Neues Feedback senden</h2>
-  <mat-divider></mat-divider>
-  <div mat-dialog-content>
-    <app-booking-form></app-booking-form>
-  </div>
-</ng-template>
-
-</body>
+</div>

@@ -1,7 +1,13 @@
-import {Component, Input, OnInit} from "@angular/core";
-import { Location } from "@angular/common";
+import {Component, OnInit} from "@angular/core";
+import { formatDate, Location } from "@angular/common";
 import { Router } from "@angular/router";
-import { BehaviorSubject, Observable } from "rxjs";
+import { CurrentOffersListFormComponent } from "../forms/current-offers-list-form/current-offers-list-form.component";
+import { MatDialog } from "@angular/material/dialog";
+
+import { ToastrService } from "ngx-toastr";
+import { TripOfferService } from "src/app/services/trip-offer/trip-offer.service";
+
+import { TripOffer } from "src/app/models/tripOffer";
 
 @Component({
   selector: "app-navbar-guest",
@@ -9,54 +15,62 @@ import { BehaviorSubject, Observable } from "rxjs";
   styleUrls: ["./navbar-guest.component.css"],
 })
 export class NavbarGuestComponent implements OnInit {
-  @Input() headerBgColor: any
 
   public listTitles: any[];
   public location: Location;
 
   public isCollapsed = true;
+  loading = false;
 
-  public homepageSrc: BehaviorSubject<boolean>;
+  // Defines currentOffers
+  currentOffers: TripOffer[];
 
-  public isHomepage: Observable<boolean>;
-
-  constructor(location: Location, private router: Router) {
+  constructor(
+    location: Location, 
+    private router: Router,
+    private tripofferService: TripOfferService,
+    private toastrService: ToastrService,
+    private dialog: MatDialog
+  ) {
     // Get the current page
     this.location = location;
-
-    // Default homepage
-    /*this.homepageSrc.next(true);
-    this.isHomepage = this.homepageSrc.asObservable();*/
+    this.currentOffers = [];
   }
 
   ngOnInit() {
-    //this.getCurrentPage();
-
     this.router.events.subscribe((event) => {
       this.isCollapsed = true;
     });
   }
 
-  private getCurrentPage() {
-    const url = this.location.prepareExternalUrl(this.location.path());
-    if (url.charAt(0) === "#") {
-      const currentPage = url.slice(1);
-      if (currentPage.toLowerCase().includes('home')) {
-        this.homepageSrc.next(true);
-      }
-    } else {
-      this.homepageSrc.next(false);
-    }
+  startReservationProcess() {
+    // display loader
+    this.loading = true;
+    // Get the list of the current offers
+    this.tripofferService.getAll().subscribe({
+      next: (result: TripOffer[]) => {
+        // only current and valid offers are needed
+        const today = formatDate(new Date(), "yyyy-MM-dd", "en_US");
+        this.currentOffers = result.filter(
+          (x) => x.endDatum > today && x.landId != null
+        );
+      },
+      error: () => {
+        this.toastrService.info(
+          "Die Liste von Reiseangebote konnten nicht geladen werden."
+        );
+        // hide the loader on error
+        this.loading = false;
+      },
+      complete: () => {
+        const dialodForm = this.dialog.open(CurrentOffersListFormComponent, {
+          disableClose: true,
+          autoFocus: true,
+        });
+        dialodForm.componentInstance.currentOffers = this.currentOffers;
+        // hide the loader on modal open
+        this.loading = false;
+      },
+    });
   }
-
-  /**Change navbar backgroung on scroll */
-  /*@HostListener("window:scroll", ["$event"])
-  onWindowScroll(e: any) {
-    if (this.title.includes("home")) {
-      const element = document.querySelector(".navbar");
-      window.pageYOffset > element.clientHeight
-        ? element.classList.add("bg-auth")
-        : element.classList.remove("bg-auth");
-    }
-  }*/
 }

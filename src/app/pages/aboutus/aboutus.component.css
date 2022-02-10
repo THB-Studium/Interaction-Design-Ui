@@ -1,16 +1,17 @@
 .section {
   width: 100%;
-  /*background-image: url("../../../assets/img/background/BG.png");
+  background-image: url("../../../assets/img/background/BG.png");
   background-repeat: no-repeat;
-  background-size: cover;*/
-  height: 100%;
+  background-size: cover;
 }
+
 .section .container {
   width: 80%;
   display: block;
   margin: 20px auto;
   padding: 50px 0px;
 }
+
 .title {
   width: 100%;
   text-align: center;
@@ -18,14 +19,17 @@
   margin-top: 50px;
   padding: 10px;
 }
+
 .title h1 {
   text-transform: uppercase;
   color: #ee713f;
 }
+
 .content {
   float: left;
   width: 55%;
 }
+
 .bold {
   font-weight: 800;
   font-size: 20px;
@@ -34,25 +38,30 @@
   float: right;
   width: 40%;
 }
+
 .image img {
   width: 100%;
   height: auto;
   border-radius: 10px;
 }
+
 .content .article h3 {
   font-size: 34px;
   color: #2d92ab;
   text-align: center;
 }
+
 .content .article p {
   margin-top: 18px;
   font-size: 16px;
   line-height: 1.5;
   color: #000;
 }
+
 .content .button {
   margin-top: 40px;
 }
+
 .content .button a {
   text-decoration: none;
   padding: 8px 25px;
@@ -62,10 +71,12 @@
   font-size: 18px;
   letter-spacing: 1.5px;
 }
+
 .content .button a:hover {
   background-color: #084f43;
   transition: 1s ease;
 }
+
 .social {
   width: 100%;
   clear: both;
@@ -73,6 +84,7 @@
   margin-bottom: 39px;
   display: inline-block;
 }
+
 .social i {
   color: #ee713f;
   font-size: 32px;
@@ -84,53 +96,51 @@
   background-color: #fff;
   padding: 8px 15px;
 }
+
 .social i:hover {
-  background-color: #2d92ab;
+  color: #2d92ab;
   transition: 1s ease;
+  border-radius: 50%;
 }
-@media screen and (max-width: 760px) {
-  .section .container {
-    width: 80%;
-    display: block;
-    margin: 20px auto;
+
+/*##############################################################################################*/
+@media screen and (max-width: 992px) {
+  h1 {
+    font-size: 45px !important;
   }
-  title {
-    width: 60%;
+
+  .title {
+    margin-bottom: 40px;
+    margin-top: 40px;
   }
-  .title h1 {
-    font-size: 22px;
+}
+
+@media screen and (max-width: 768px) {
+  h1 {
+    font-size: 30px !important;
   }
-  .content {
-    float: none;
-    width: 100%;
-    display: block;
-    margin: auto;
+
+  .title {
+    margin-bottom: 20px;
+    margin-top: 20px;
   }
+
   .content .article p {
     font-size: 14px;
   }
+
   .bold {
     font-size: 16px;
   }
-  .image {
-    float: none;
-    width: 100%;
-    margin-top: 50px;
-  }
-  .image img {
-    width: 100%;
-    height: auto;
-    display: block;
-    margin: auto;
-    text-align: center;
-  }
+
   .social {
     text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
   }
+
   .social i {
-    font-size: 19px;
-    width: 35px;
-    height: 35px;
+    font-size: 2em;
     line-height: 35px;
   }
 }

@@ -3,7 +3,7 @@ import {
   Component,
   OnInit,
   Output,
-  EventEmitter,
+  EventEmitter
 } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { MatChipInputEvent } from "@angular/material/chips";
@@ -34,13 +34,13 @@ export class CountryFormComponent implements OnInit, AfterViewInit {
     // text
     accommodation_text: new FormControl("", [Validators.required]),
     // image
-    image: new FormControl(""),
+    image: new FormControl("")
   });
 
   // Defines currentCountry. Contains complet current country information.
   currentCountry: Country;
   // Defines currentCountryId. Contains the id of the current country. Helpfull to handle an edit process.
-  currentCountryId: string = "";
+  currentCountryId: string;
   // Defines airportsArray
   airportsArray = new Set([]);
   // Defines isImgSelected
@@ -55,13 +55,20 @@ export class CountryFormComponent implements OnInit, AfterViewInit {
   // Defines isValid
   isValid = false;
 
+  headercolor: string;
+  footercolor: string;
+
   constructor(
     private activatedRoute: ActivatedRoute,
     private countryService: CountryService,
     private sharedDataService: SharedDataService,
     private toastrService: ToastrService,
     private sanitizer: DomSanitizer
-  ) {}
+  ) {
+    this.currentCountryId = '';
+    this.headercolor = 'rgb(45, 146, 171)';
+    this.footercolor = 'rgb(45, 146, 171)';
+  }
 
   ngOnInit(): void {
     this.initForm();
@@ -74,6 +81,8 @@ export class CountryFormComponent implements OnInit, AfterViewInit {
       highlights: [],
       landInfo: [],
       unterkunft: [],
+      bodyFarbe: '',
+      headerFarbe: ''
     };
   }
 
@@ -114,9 +123,11 @@ export class CountryFormComponent implements OnInit, AfterViewInit {
       name: country.name,
       accommodation_text: country.unterkunft_text,
       airports: [],
-      // Todo: convert image and add his name to this input
-      image: "",
+      image: ""
     });
+
+    this.headercolor = country.headerFarbe;
+    this.footercolor = country.bodyFarbe;
     // Since there is already an attached image, set the img selected to true
     this.isImgSelected = true;
   }
@@ -195,6 +206,8 @@ export class CountryFormComponent implements OnInit, AfterViewInit {
         unterkunft: this.currentCountry.unterkunft
           ? this.currentCountry.unterkunft
           : [],
+        bodyFarbe: this.footercolor,
+        headerFarbe: this.headercolor,
       };
 
       this.sharedDataService.changeCurrentCountry(this.currentCountry);
@@ -203,5 +216,13 @@ export class CountryFormComponent implements OnInit, AfterViewInit {
     } else {
       this.notifyFormIsValid.emit(false);
     }
+  }
+
+  setHeaderColor(color: string) {
+    this.currentCountry.headerFarbe = color;
+  }
+
+  setFooterColor(color: string) {
+    this.currentCountry.bodyFarbe = color;
   }
 }

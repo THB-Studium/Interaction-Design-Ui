@@ -23,7 +23,7 @@ export class CountryComponent implements OnInit, AfterViewInit {
   // Defines sort
   @ViewChild(MatSort, { static: false }) sort: MatSort;
   // Defines displayedColumns
-  displayedColumns: string[] = ["name", "airports", "accommodation", "action"];
+  displayedColumns: string[] = ["name", "airports", "action"];
   // Defines dataSource
   dataSource: MatTableDataSource<Country>;
   // Defines countriesList
@@ -42,6 +42,8 @@ export class CountryComponent implements OnInit, AfterViewInit {
   dialogConfig = new MatDialogConfig();
   //
   isValid = false;
+  // Defines loading
+  loading = true;
 
   constructor(
     private countryService: CountryService,
@@ -66,6 +68,8 @@ export class CountryComponent implements OnInit, AfterViewInit {
         unterkunft: [],
         unterkunft_text: "",
         realImage: "",
+        bodyFarbe: '',
+        headerFarbe: ''
       },
     ]);
     this.getCountries();
@@ -105,8 +109,6 @@ export class CountryComponent implements OnInit, AfterViewInit {
   }
 
   private getCountries() {
-    //this.sortByName(this.countriesList);
-    //this.dataSource.data = this.countriesList;
     this.countryService.getAll().subscribe({
       next: (countries) => {
         this.countriesList = countries;
@@ -120,6 +122,7 @@ export class CountryComponent implements OnInit, AfterViewInit {
           "Fehler"
         );
       },
+      complete: () => this.loading = false
     });
   }
 
@@ -142,6 +145,8 @@ export class CountryComponent implements OnInit, AfterViewInit {
       flughafen: this.currentCountry.flughafen,
       unterkunft_text: this.currentCountry.unterkunft_text,
       image: this.currentCountry.karte_bild,
+      bodyFarbe: this.currentCountry.bodyFarbe,
+      headerFarbe: this.currentCountry.headerFarbe
     };
 
     // get the value from the data service
@@ -213,7 +218,7 @@ export class CountryComponent implements OnInit, AfterViewInit {
   }
 
   getDescription(description: string) {
-    return description.length > 14 ? `${description.substring(0, 15)}...` : description;
+    return description && description.length > 14 ? `${description.substring(0, 15)}...` : description;
   }
 
   // On error

@@ -13,7 +13,7 @@ export class Feedbacks {
         'Bauwerken und vor allem einer sehr freundlichen Bevölkerung. Die Organisation\n' +
         'der Reise war perfekt und ließe keine Wünsche offen. Gerne wieder!',
       bild: 'fb-1.jpg',
-      veroefentlich: true,
+      veroeffentlich: true,
       autor: 'Steven Kranz'
     },
     {
@@ -23,21 +23,21 @@ export class Feedbacks {
         'Bauwerken und vor allem einer sehr freundlichen Bevölkerung. Die Organisation\n' +
         'der Reise war perfekt und ließe keine Wünsche offen. Gerne wieder!',
       bild: 'fb-2.jpg',
-      veroefentlich: true,
+      veroeffentlich: true,
       autor: 'Thomas Sankara'
     },
     {
       id: uuid_v4(),
       description: 'Die Organisation der Reise war perfekt und ließe keine Wünsche offen. Gerne wieder!',
       bild: 'fb-3.jpg',
-      veroefentlich: true,
+      veroeffentlich: true,
       autor: 'Meriem Makeba'
     },
     {
       id: uuid_v4(),
       description: 'Wahr schlecht mit vielen Wartezeit und Störungen!',
       bild: 'fb-2.jpg',
-      veroefentlich: false,
+      veroeffentlich: false,
       autor: 'Meriem Makeba'
     },
   ];
