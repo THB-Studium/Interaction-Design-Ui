@@ -9,14 +9,14 @@
         <mat-form-field class="col-md-12">
           <mat-label>Hintergrundbild</mat-label>
           <mat-toolbar class="mb-1">
-            <input disabled matInput [value]="selectedFileName?.length ? selectedFileName : 'Bild auswählen'"
+            <input readonly matInput [value]="selectedFileName?.length ? selectedFileName : 'Bild auswählen'"
                    formControlName="image" required />
           </mat-toolbar>
           <div class="input-file-container">
             <div class="js text-center">
               <input type="file" class="input-file ml-5" id="fileInput" name="fileInput" accept="image/*"
                      (change)="selectFile($event)" />
-              <label tabindex="0" for="fileInput" class="input-file-trigger">Bild auswählen...</label>
+              <label tabindex="0" for="fileInput" class="input-file-trigger">Bild auswählen</label>
             </div>
           </div>
           <mat-error *ngIf="!isImgSelected">

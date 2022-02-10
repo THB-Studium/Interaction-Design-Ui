@@ -1,15 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ToastrService } from 'ngx-toastr';
-import { FeedbackService } from 'src/app/services/feedback/feedback.service';
+import { Component, OnInit } from "@angular/core";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { ToastrService } from "ngx-toastr";
+import { FeedbackService } from "src/app/services/feedback/feedback.service";
 
 @Component({
-  selector: 'app-feedback-form',
-  templateUrl: './feedback-form.component.html',
-  styleUrls: ['./feedback-form.component.css']
+  selector: "app-feedback-form",
+  templateUrl: "./feedback-form.component.html",
+  styleUrls: ["./feedback-form.component.css"],
 })
 export class FeedbackFormComponent implements OnInit {
-
   feedbackForm: FormGroup;
   selectedFile: any;
   fileInputByte: any;
@@ -20,7 +19,7 @@ export class FeedbackFormComponent implements OnInit {
     private fb: FormBuilder,
     private feedbackService: FeedbackService,
     private toaster: ToastrService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.feedbackForm = this.fb.group({
@@ -28,7 +27,6 @@ export class FeedbackFormComponent implements OnInit {
       feedback: ["", [Validators.required, Validators.minLength(6)]],
       image: ["No Image Selected"],
     });
-
   }
 
   selectFile(event: any) {
@@ -45,32 +43,28 @@ export class FeedbackFormComponent implements OnInit {
         this.fileInputByte = reader.result;
       };
       this.selectedFileName = name[0];
-      this.feedbackForm.get('image').setErrors(null);
+      this.feedbackForm.get("image").setErrors(null);
     } else {
-      this.feedbackForm.get('image').setErrors({ valid: true });
+      this.feedbackForm.get("image").setErrors({ valid: true });
       this.isImgSelected = false;
     }
   }
 
   sendFeedback() {
-    
     let feedback = {
-      autor: this.feedbackForm.get('name').value,
-      description: this.feedbackForm.get('feedback').value,
+      autor: this.feedbackForm.get("name").value,
+      description: this.feedbackForm.get("feedback").value,
       bild: this.isImgSelected ? this.fileInputByte : null
-    }
+    };
 
-    this.feedbackService.addOne(feedback).subscribe( {
-      next:(response) => {
-
-        this.toaster.success('Successfully sended the feedback', 'Success');
+    this.feedbackService.addOne(feedback).subscribe({
+      next: (response) => {
+        this.toaster.success("Danke für Ihr Feedback", "Gesendet");
       },
 
       error: () => {
-        this.toaster.error('Error while sending the feedback', 'Error');
-      }
-
-    })
+        this.toaster.error("Fehler beim Senden Ihres Feedbacks", "Fehler");
+      },
+    });
   }
-
 }

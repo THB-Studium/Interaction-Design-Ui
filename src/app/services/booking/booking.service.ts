@@ -10,7 +10,7 @@ import { Booking, BookingUpdate } from 'src/app/models/booking';
 })
 export class BookingService {
   // API for booking
-  readonly BOOKING_URL: string = `${Server.API_URL}/buchungs`;
+  readonly BOOKING_URL: string = `${Server.API_URL}/buchungen`;
   headers = new HttpHeaders({ "Content-Type": "application/json" });
 
   constructor(private httpClient: HttpClient) { }
