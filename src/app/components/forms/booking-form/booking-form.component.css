@@ -7,6 +7,14 @@
   overflow-y: scroll !important;
 }
 
+.mat-vertical-content {
+  padding: 0 !important;
+}
+
+.mat-form-field {
+  padding: 0 !important;
+}
+
 textarea {
   min-height: 100px;
 }
