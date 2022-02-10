@@ -8,8 +8,8 @@ export class Booking {
     public flughafen: string;
     public handGepaeck: string;
     public koffer: string;
-    public mitReiser: Traveler;
-    public reiser: Traveler;
+    public mitReisender: Traveler;
+    public reisender: Traveler;
     public zahlungMethod: PaymentMethod;
     public reiseAngebotId: string;
 }
@@ -21,8 +21,8 @@ export class BookingUpdate {
     public flughafen: string;
     public handGepaeck: string;
     public koffer: string;
-    public mitReiserId: string;
-    public reiserId: string;
+    public mitReisenderId: string;
+    public reisenderId: string;
     public zahlungMethod: PaymentMethod;
     public reiseAngebotId: string;
 }

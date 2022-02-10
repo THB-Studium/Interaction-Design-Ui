@@ -140,7 +140,7 @@ export class BookingFormComponent implements OnInit {
     if(this.mitreiserForm) {
       this.reisendeArray.push(this.personenDatenFormGroupMitReiser.value);
     }
-    this.selectedBookingClass =this.getBuchungsKlasse(this.reiseDatenFormGroup.get('buchungsklasseId').value);
+    this.selectedBookingClass = this.getBuchungsKlasse(this.reiseDatenFormGroup.get('buchungsklasseId').value);
 
     this.reisendeArray = this.reisendeArray.map((reiser) => {
       reiser.geburtsdatum = formatDate(reiser.geburtsdatum, "yyyy-MM-dd", "en_US");
@@ -177,7 +177,7 @@ export class BookingFormComponent implements OnInit {
       reiseAngebotId: this.currentTripOffer?.id,
       zahlungMethod: this.reise.zahlungsmethod,
 
-      reiser: {
+      reisender: {
         id: null,
         adresse: reiserForm.postanschrift,
         arbeitBei: reiserForm.arbeitet,
@@ -192,7 +192,7 @@ export class BookingFormComponent implements OnInit {
         status: reiserForm.status
       },
 
-      mitReiser: this.mitreiserForm ? {
+      mitReisender: this.mitreiserForm ? {
         id: null,
         adresse: mitReiserForm.postanschrift,
         arbeitBei: mitReiserForm.arbeitet,

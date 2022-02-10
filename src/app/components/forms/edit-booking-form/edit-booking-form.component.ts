@@ -136,9 +136,9 @@ export class EditBookingFormComponent
       handGepaeck: "",
       id: "",
       koffer: "",
-      mitReiser: null,
+      mitReisender: null,
       reiseAngebotId: "",
-      reiser: null,
+      reisender: null,
       zahlungMethod: null,
     };
     this.dateError = "";
@@ -253,7 +253,7 @@ export class EditBookingFormComponent
                 // Get the traveler information
                 this.travelerService.getOne(value.reiserId).subscribe({
                   next: (traveler) => {
-                    this.currentBooking.reiser = traveler;
+                    this.currentBooking.reisender = traveler;
                     this.bookingForm.get("traveler").setValue(traveler);
                   },
                   error: () => {
@@ -266,7 +266,7 @@ export class EditBookingFormComponent
                     if (value.mitReiserId) {
                       this.travelerService.getOne(value.mitReiserId).subscribe({
                         next: (traveler) => {
-                          this.currentBooking.mitReiser = traveler;
+                          this.currentBooking.mitReisender = traveler;
                           this.bookingForm.get("coTraveler").setValue(traveler);
                         },
                         error: () => {
@@ -371,8 +371,8 @@ export class EditBookingFormComponent
         buchungsklasseId: this.bookingForm.get("bookingClass").value.id,
         flughafen: this.bookingForm.get("airport").value,
         datum: this.selectedDate,
-        reiser: this.bookingForm.get("traveler").value,
-        mitReiser: this.bookingForm.get("coTraveler").value,
+        reisender: this.bookingForm.get("traveler").value,
+        mitReisender: this.bookingForm.get("coTraveler").value,
         handGepaeck: this.bookingForm.get("handLuggage").value,
         koffer: this.bookingForm.get("suitcase").value,
         zahlungMethod: this.bookingForm.get("paymentMethod").value,

@@ -150,7 +150,7 @@ export class EditTripofferComponent implements OnInit, AfterViewInit {
       interessiert: 0,
       landId: null,
       leistungen: [],
-      mitReiserBerechtigt: null,
+      mitreiseberechtigt: null,
       plaetze: 0,
       sonstigeHinweise: "",
       startDatum: null,
@@ -249,7 +249,7 @@ export class EditTripofferComponent implements OnInit, AfterViewInit {
 
     // authorization array initialization
     this.authorizedtotravelArray.clear();
-    tripoffer.mitReiserBerechtigt?.forEach((value) =>
+    tripoffer.mitreiseberechtigt?.forEach((value) =>
       this.authorizedtotravelArray.add(value)
     );
 

@@ -81,7 +81,7 @@ export class SharedDataService {
     freiPlaetze: 0,
     interessiert: 0,
     leistungen: [],
-    mitReiserBerechtigt: [],
+    mitreiseberechtigt: [],
     hinweise: "",
     sonstigeHinweise: "",
     landId: "",
@@ -220,9 +220,9 @@ export class SharedDataService {
     flughafen: '',
     handGepaeck: '',
     koffer: '',
-    mitReiser: null,
+    mitReisender: null,
     reiseAngebotId: '',
-    reiser: null,
+    reisender: null,
     zahlungMethod: null
   }
 

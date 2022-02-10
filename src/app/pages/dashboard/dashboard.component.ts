@@ -215,7 +215,7 @@ export class DashboardComponent implements OnInit {
                     this.currentTripoffers.push({
                       name: x.titel,
                       destination: country.name,
-                      interestAmount: x.interessiert,
+                      interestAmount: x.interessiert < 0? 0 : x.interessiert,
                       rate:
                         interested > 0
                           ? Math.round(x.interessiert / interested) * 100
