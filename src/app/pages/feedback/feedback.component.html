@@ -41,7 +41,7 @@
           <ng-container matColumnDef="status">
             <th mat-header-cell *matHeaderCellDef mat-sort-header scope="col">Zustand</th>
             <td mat-cell *matCellDef="let row">
-              <mat-icon *ngIf="!row?.veroefentlich" style="vertical-align:middle">timelapse</mat-icon> {{row?.veroefentlich ? 'öffentlich' : 'austehend'}}
+              <mat-icon *ngIf="!row?.veroeffentlich" style="vertical-align:middle">timelapse</mat-icon> {{row?.veroeffentlich ? 'öffentlich' : 'austehend'}}
             </td>
           </ng-container>
 
@@ -85,7 +85,7 @@
       <mat-card-header>
         <div mat-card-avatar class="header-img"></div>
         <mat-card-title>Autor: {{currentFeedback?.autor}}</mat-card-title>
-        <mat-card-subtitle><label class="font-weight-600">Stand:</label> {{currentFeedback?.veroefentlich ? 'öffentlich' : 'austehend'}}</mat-card-subtitle>
+        <mat-card-subtitle><label class="font-weight-600">Stand:</label> {{currentFeedback?.veroeffentlich ? 'öffentlich' : 'austehend'}}</mat-card-subtitle>
       </mat-card-header>
       <img mat-card-image *ngIf="currentFeedback?.realImage" [src]="currentFeedback?.realImage" alt="{{currentFeedback?.autor}}_img" class="col-md-12">
       <img mat-card-image *ngIf="!currentFeedback?.realImage" [src]="defaultFeedbackImg" alt="default_img" class="col-md-12">
@@ -94,7 +94,7 @@
       </mat-card-content>
       <mat-card-actions align="end">
         <button mat-button mat-dialog-close (click)="commitChanges()">
-          {{currentFeedback?.veroefentlich ? 'ABLEHNEN' : 'VERÖFFENTLICHEN'}}
+          {{currentFeedback?.veroeffentlich ? 'ABLEHNEN' : 'VERÖFFENTLICHEN'}}
         </button>
         <button mat-button mat-dialog-close color="accent">ABBRECHEN</button>
       </mat-card-actions>

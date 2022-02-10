@@ -1,7 +1,7 @@
 /*######## Reiseangebot ########*/
 .section-contents-RG {
-  margin-top: 2em;
-  padding: 3em 2em;
+  margin-top: 0;
+  padding: 6em 2em;
 }
 
 .section-contents-RG .offers img {
@@ -138,6 +138,10 @@ mat-card {
 }
 
 #addFeedback {
+  background-color: var(--color-blue) !important;
+}
+
+.bg-favorite {
   background-color: var(--color-blue) !important;
 }
 

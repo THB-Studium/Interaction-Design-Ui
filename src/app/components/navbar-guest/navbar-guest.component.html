@@ -9,8 +9,7 @@
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div class="collapse navbar-collapse" [ngbCollapse]="isCollapsed"
-      id="sidenav-collapse-main">
+    <div class="collapse navbar-collapse" [ngbCollapse]="isCollapsed" id="sidenav-collapse-main">
       <!-- Collapse header -->
       <div class="navbar-collapse-header d-md-none">
         <div class="row">
@@ -34,18 +33,19 @@
       <!-- Navbar items -->
       <ul class="navbar-nav ml-auto">
         <li class="nav-item">
-          <a class="nav-link nav-link-icon" routerLinkActive="active">
+          <a class="nav-link nav-link-icon" routerLinkActive="active" [routerLink]="['/home']">
+            <span class="nav-link-inner--text">Homepage</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link nav-link-icon" routerLinkActive="active" [routerLink]="['/aboutus']">
             <span class="nav-link-inner--text">Über uns</span>
           </a>
         </li>
         <li class="nav-item">
           <a class="nav-link nav-link-icon" routerLinkActive="active">
-            <span class="nav-link-inner--text">Reisen</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link nav-link-icon" routerLinkActive="active">
-            <span class="nav-link-inner--text" (click)="startReservationProcess()">
+            <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+            <span class="nav-link-inner--text" (click)="startReservationProcess()" *ngIf="!loading">
               Direct Buchen
             </span>
           </a>

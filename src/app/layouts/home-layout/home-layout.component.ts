@@ -20,6 +20,7 @@ export class HomeLayoutComponent implements OnInit {
   slideList: Array<Slide> = [];
   // Defines currentOffers
   currentOffers: TripOffer[];
+  loading = false;
 
   constructor(
     private router: Router,
@@ -38,6 +39,8 @@ export class HomeLayoutComponent implements OnInit {
   }
 
   startReservationProcess() {
+    // display loader
+    this.loading = true;
     // Get the list of the current offers
     this.tripofferService.getAll().subscribe({
       next: (result: TripOffer[]) => {
@@ -48,19 +51,24 @@ export class HomeLayoutComponent implements OnInit {
         );
       },
       error: () => {
-        this.toastrService.error(
+        this.toastrService.info(
           "Die Liste von Reiseangebote konnten nicht geladen werden."
         );
+        // hide the loader on error
+        this.loading = false;
       },
       complete: () => {
         const dialodForm = this.dialog.open(CurrentOffersListFormComponent, {
           disableClose: true,
-          autoFocus: true,
+          autoFocus: true
         });
         dialodForm.componentInstance.currentOffers = this.currentOffers;
+        // hide the loader on modal open
+        this.loading = false;
       },
     });
   }
+  
   toSection() {
     const elem = document.querySelector("footer");
     console.log(elem);

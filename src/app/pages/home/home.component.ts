@@ -122,12 +122,8 @@ export class HomeComponent implements OnInit {
               localStorage.setItem("ids", JSON.stringify(this.interested));
               this.interessiertIds.next(this.interested);
             }
-            this.toastrService.success(
-              "Reiseangebot zu Favorits hinzugefügt",
-              "Erfolgreich"
-            );
           } else {
-            this.toastrService.error("Fehler", "Fehler");
+            this.toastrService.error("Etwas ist schief gelaufen", "Fehler");
           }
         },
       });
@@ -144,13 +140,8 @@ export class HomeComponent implements OnInit {
             localStorage.removeItem("ids");
             localStorage.setItem("ids", JSON.stringify(this.interested));
             this.interessiertIds.next(this.interested);
-
-            this.toastrService.info(
-              "Reiseangebot von Favorits gelöscht",
-              "Erfolgreich"
-            );
           } else {
-            this.toastrService.error("Fehler", "Fehler");
+            this.toastrService.error("Etwas ist schief gelaufen", "Fehler");
           }
         },
       });
@@ -199,7 +190,7 @@ export class HomeComponent implements OnInit {
       complete: () => {
         // filter only feedbacks that are public.
         const feedbacks = this.feedbacks.filter(
-          (x) => x.veroefentlich === true
+          (x) => x.veroeffentlich === true
         );
         // clear the list
         this.feedbacks = [];

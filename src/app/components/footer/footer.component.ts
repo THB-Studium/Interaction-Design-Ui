@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, HostListener } from "@angular/core";
+import { Component, OnInit, Inject, Input, HostListener } from "@angular/core";
 import { FormControl, Validators } from "@angular/forms";
 import { DOCUMENT, ViewportScroller } from "@angular/common";
 
@@ -12,8 +12,8 @@ import { NewsLettersService } from "src/app/services/news-letters/news-letters.s
 })
 export class FooterComponent implements OnInit {
   windowScrolled: boolean;
+  @Input() buttonColor: any
   currentDate: Date = new Date();
-
   emailCtrl: FormControl;
 
   constructor(

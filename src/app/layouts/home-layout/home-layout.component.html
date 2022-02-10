@@ -32,33 +32,28 @@
           <!-- Navbar items -->
           <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-              <a class="nav-link nav-link-icon" routerLinkActive="active">
+              <a class="nav-link nav-link-icon" routerLinkActive="active" [routerLink]="['/aboutus']">
                 <span class="nav-link-inner--text">Über uns</span>
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link nav-link-icon" routerLinkActive="active">
-                <span class="nav-link-inner--text">Reisen</span>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link nav-link-icon" routerLinkActive="active">
-                <span class="nav-link-inner--text" (click)="startReservationProcess()">
+              <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+              <a class="nav-link nav-link-icon"  (click)="startReservationProcess()" *ngIf="!loading" routerLinkActive="active">
+                <span class="nav-link-inner--text">
                   Direct Buchen
                 </span>
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link nav-link-icon" routerLinkActive="active">
-                <span class="nav-link-inner--text" (click)="toSection()">Newsletter</span>
+              <a class="nav-link nav-link-icon" (click)="toSection()" routerLinkActive="active">
+                <span class="nav-link-inner--text">Newsletter</span>
               </a>
             </li>
           </ul>
         </div>
       </div>
     </nav>
-  </div>
-  <!-- /container -->
+  </div><!-- /container -->
   <!-- carousel -->
   <div class="mt--9">
     <ngb-carousel [showNavigationArrows]="true" [showNavigationIndicators]="true"
