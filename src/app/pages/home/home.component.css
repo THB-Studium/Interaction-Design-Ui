@@ -26,6 +26,10 @@
   margin-bottom: 0;
 }
 
+.overlay em {
+  cursor: pointer;
+}
+
 .offers:hover .overlay {
   opacity: 1;
   display: block;
@@ -200,6 +204,7 @@ mat-card {
   margin-bottom: 2em;
 }
 
+
 /*##################################### Display Screen settings ###################################*/
 @media screen and (min-width: 993px) and (max-width: 1007px) {
   .text-top-right {
@@ -211,7 +216,7 @@ mat-card {
   .text-top-right {
     left: 90%;
   }
-  
+
   .set-content-bottom {
     position: relative !important;
   }
