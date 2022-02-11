@@ -9,6 +9,7 @@ import { CountryService } from "src/app/services/country/country.service";
 import { BookingFormComponent } from "../booking-form/booking-form.component";
 
 import { TripOffer } from "src/app/models/tripOffer";
+import { TripOfferService } from "src/app/services/trip-offer/trip-offer.service";
 
 @Component({
   selector: "app-current-offers-list-form",
@@ -24,11 +25,13 @@ export class CurrentOffersListFormComponent implements OnInit, OnDestroy {
   filteredOffers: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
   // Defines currentOffers
   currentOffers: TripOffer[];
+  selectedTripOffer: TripOffer;
 
   constructor(
     private router: Router,
     private dialog: MatDialog,
-    private countryService: CountryService
+    private countryService: CountryService,
+    private tripOfferService: TripOfferService
   ) {
     this.selectedOffer = new FormControl();
     this.currentOffers = [];
@@ -46,16 +49,24 @@ export class CurrentOffersListFormComponent implements OnInit, OnDestroy {
   startBookingProcess() {
     this.router.navigate(['learn-more', this.selectedOffer.value.id]);
     let country = null;
-    this.countryService.getOne(this.selectedOffer.value.landId).subscribe({
-      next: (result) => country = result,
+
+    this.tripOfferService.getOne(this.selectedOffer.value.id).subscribe({
+      next: (result) => {
+        this.selectedTripOffer = result;
+      },
       complete: () => {
-        const dialog = this.dialog.open(BookingFormComponent, {
-          disableClose : true,
-          autoFocus : true
+        this.countryService.getOne(this.selectedOffer.value.landId).subscribe({
+          next: (result) => country = result,
+          complete: () => {
+            const dialog = this.dialog.open(BookingFormComponent, {
+              disableClose : true,
+              autoFocus : true
+            });
+            // Set needed values
+            dialog.componentInstance.land = country;
+            dialog.componentInstance.currentTripOffer = this.selectedTripOffer;
+          }
         });
-        // Set needed values
-        dialog.componentInstance.land = country;
-        dialog.componentInstance.currentTripOffer = this.selectedOffer.value;
       }
     });
   }
