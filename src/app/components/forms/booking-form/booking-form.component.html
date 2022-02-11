@@ -388,7 +388,7 @@
             <div class="form-row">
               <div class="form-group col-md-6">
                 <mat-form-field class="col-md-12" appearance="fill">
-                  <mat-label>ZahlungsMethod</mat-label>
+                  <mat-label>Zahlungsmethode</mat-label>
                   <mat-select formControlName="zahlungsmethod" required>
                     <mat-option disabled>auswählen</mat-option>
                     <mat-option *ngFor="let method of paymentMethodArray" [value]="method">
@@ -396,7 +396,7 @@
                     </mat-option>
                   </mat-select>
                   <mat-error *ngIf="(reiseDatenFormGroup.get('zahlungsmethod')).errors?.required">
-                    Die ZahlungsMethod ist <strong>erforderlich</strong>.
+                    Die Zahlungsmethode ist <strong>erforderlich</strong>.
                   </mat-error>
                 </mat-form-field>
               </div>
