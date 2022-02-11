@@ -33,6 +33,7 @@ import { LoginComponent } from "../../pages/login/login.component";
 import { RegisterComponent } from "../../pages/register/register.component";
 import { LearnMoreComponent } from "../../pages/learn-more/learn-more.component";
 import { AboutusComponent } from "src/app/pages/aboutus/aboutus.component";
+import { ScrollToTopComponent } from "src/app/components/scroll-to-top/scroll-to-top.component";
 
 @NgModule({
   imports: [
@@ -66,7 +67,7 @@ import { AboutusComponent } from "src/app/pages/aboutus/aboutus.component";
     LearnMoreComponent,
     LoginComponent,
     RegisterComponent,
-    AboutusComponent
+    AboutusComponent,
   ],
   providers: [
     //{ provide: HTTP_INTERCEPTORS, useClass: AppHttpInterceptor, multi: true },
@@ -75,13 +76,13 @@ import { AboutusComponent } from "src/app/pages/aboutus/aboutus.component";
       provide: MAT_DATE_FORMATS,
       useValue: {
         parse: {
-          dateInput: 'YYYY-MM-DD',
+          dateInput: "YYYY-MM-DD",
         },
         display: {
-          dateInput: 'DD MMM, YYYY',
-          monthYearLabel: 'MMMM YYYY',
-          dateA11yLabel: 'LL',
-          monthYearA11yLabel: 'MMMM YYYY',
+          dateInput: "DD MMM, YYYY",
+          monthYearLabel: "MMMM YYYY",
+          dateA11yLabel: "LL",
+          monthYearA11yLabel: "MMMM YYYY",
         },
       },
     },

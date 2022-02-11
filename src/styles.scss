@@ -52,6 +52,17 @@ p {
   z-index: 9999 !important;
 }
 
+// about mat-dialog:
+
+mat-dialog-actions {
+  float: right;
+}
+
+mat-dialog-content h3,
+.mat-dialog-title {
+  color: #000000 !important;
+}
+
 //.carousel-control-next-icon, .carousel-control-prev-icon {
 //  color: land-color("black-color") !important;
 //}
@@ -139,11 +150,11 @@ p {
   h1 {
     font-size: 37px !important;
   }
-  
+
   h2 {
     font-size: 33px !important;
   }
-  
+
   h3 {
     font-size: 26px !important;
   }
@@ -153,11 +164,11 @@ p {
   h1 {
     font-size: 35px !important;
   }
-  
+
   h2 {
     font-size: 30px !important;
   }
-  
+
   h3 {
     font-size: 25px !important;
   }
@@ -167,11 +178,11 @@ p {
   h1 {
     font-size: 30px !important;
   }
-  
+
   h2 {
     font-size: 27px !important;
   }
-  
+
   h3 {
     font-size: 20px !important;
   }
@@ -181,11 +192,11 @@ p {
   h1 {
     font-size: 30px !important;
   }
-  
+
   h2 {
     font-size: 27px !important;
   }
-  
+
   h3 {
     font-size: 20px !important;
   }
@@ -195,11 +206,11 @@ p {
   h1 {
     font-size: 26px !important;
   }
-  
+
   h2 {
     font-size: 22px !important;
   }
-  
+
   h3 {
     font-size: 17px !important;
   }
@@ -209,11 +220,11 @@ p {
   h1 {
     font-size: 26px !important;
   }
-  
+
   h2 {
     font-size: 22px !important;
   }
-  
+
   h3 {
     font-size: 17px !important;
   }

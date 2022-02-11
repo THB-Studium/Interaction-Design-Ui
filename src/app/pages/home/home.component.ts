@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { DomSanitizer, SafeUrl } from "@angular/platform-browser";
 import { Router } from "@angular/router";
-import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
+import { MatDialog } from "@angular/material/dialog";
 
 import { TripOfferService } from "src/app/services/trip-offer/trip-offer.service";
 import { FeedbackService } from "src/app/services/feedback/feedback.service";
@@ -16,6 +16,7 @@ import { Subject } from "rxjs";
 import { CountryService } from "../../services/country/country.service";
 import { Country } from "../../models/country";
 import { SharedDataService } from "../../services/sharedData/shared-data.service";
+import {FeedbackFormComponent} from "../../components/forms/feedback-form/feedback-form.component";
 
 @Component({
   selector: "app-home",
@@ -29,7 +30,6 @@ export class HomeComponent implements OnInit {
   countries: Array<Country> = [];
   currentFeedback: Feedback;
   currentIndex: number;
-  dialogConfig = new MatDialogConfig();
   readonly defaultFeedbackImg =
     "./assets/img/feedback/feedback-default-img.jpg";
   interested: any[] = [];
@@ -65,11 +65,7 @@ export class HomeComponent implements OnInit {
 
     this.interessiertIds.subscribe((inte: any[]) => {
       this.tripOffers = this.tripOffers.map((trip) => {
-        if (inte.indexOf(trip.id) != -1) {
-          trip.isfavorite = true;
-        } else {
-          trip.isfavorite = false;
-        }
+        trip.isfavorite = inte.indexOf(trip.id) != -1;
         return trip;
       });
     });
@@ -81,7 +77,7 @@ export class HomeComponent implements OnInit {
   }
 
   routeToLearnMore(gebotId: string): void {
-    this.router.navigate(["/learn-more", gebotId]);
+    this.router.navigate(["/learn-more", gebotId]).then(() => {});
   }
 
   feedbackAktion(action: string): void {
@@ -96,8 +92,10 @@ export class HomeComponent implements OnInit {
     this.currentFeedback = this.feedbacks[this.currentIndex];
   }
 
-  feedbackTeilenDialog(dialogForm: any): void {
-    this.dialog.open(dialogForm, this.dialogConfig);
+  onAddFeedback() {
+    this.dialog.open(FeedbackFormComponent, {
+      disableClose: true,
+    });
   }
 
   convertByteToImage(bytearray: string): SafeUrl {
@@ -150,7 +148,7 @@ export class HomeComponent implements OnInit {
 
   addId(target, source): any {
     source?.forEach((v) => {
-      var p = target.indexOf(v);
+      const p = target.indexOf(v);
       if (p === -1) {
         target.push(v);
       } else {
@@ -190,7 +188,7 @@ export class HomeComponent implements OnInit {
       complete: () => {
         // filter only feedbacks that are public.
         const feedbacks = this.feedbacks.filter(
-          (x) => x.veroefentlich === true
+          (x) => x.veroeffentlich === true
         );
         // clear the list
         this.feedbacks = [];

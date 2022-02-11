@@ -27,6 +27,11 @@ export class LearnMoreComponent implements OnInit {
   currentLand: Country;
   currentTripOffer: TripOffer;
 
+  bilder = [
+    'blaue-lagune.jpg', 'geysir.jpg', 'joekursalon.jpg',
+    'polarlicht.jpg', 'reykjavik.jpg', 'vulkan-hekia-and-katla.jpg'
+  ]
+
   // for style and view setting:
   backgroundColor: any;
   fontColor: any;
@@ -70,10 +75,9 @@ export class LearnMoreComponent implements OnInit {
 
   bookingFormDialog() {
     const dialog = this.dialog.open(BookingFormComponent, {
-      maxWidth: "800px",
-      maxHeight: "800px",
       disableClose: true,
-      // autoFocus : true
+      // autoFocus : true,
+      panelClass: "dialog-responsive"
     });
 
     dialog.componentInstance.land = this.currentLand;
@@ -96,6 +100,35 @@ export class LearnMoreComponent implements OnInit {
     return this.sanitizer.bypassSecurityTrustUrl(
       "data:image/png;base64," + bild
     );
+  }
+
+  setOpacityColor(): string {
+    if (this.currentLand?.bodyFarbe) {
+      const color: string = this.currentLand.bodyFarbe
+
+      // for rgb colors:
+      if (color.startsWith('rgb')) {
+        return color.replace(')', ',0.05)')
+      }
+
+      // for hex colors:
+      if (color.startsWith('#')) {
+        return this.hexToRgbA(color)
+      }
+    }
+  }
+
+  private hexToRgbA(hex: string): string {
+    let c;
+    if(/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)){
+      c= hex.substring(1).split('');
+      if(c.length== 3){
+        c= [c[0], c[0], c[1], c[1], c[2], c[2]];
+      }
+      c= '0x'+c.join('');
+      return 'rgba('+[(c>>16)&255, (c>>8)&255, c&255].join(',')+',0.05)';
+    }
+    throw new Error('Bad Hex');
   }
 
   private setCurrentLandAndTO(): void {

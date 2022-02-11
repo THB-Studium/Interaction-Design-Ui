@@ -95,8 +95,8 @@ export class BookingComponent implements OnInit, AfterViewInit {
         flughafen: "",
         handGepaeck: "",
         koffer: "",
-        mitReiser: null,
-        reiser: null,
+        mitReisender: null,
+        reisender: null,
         zahlungMethod: null,
         reiseAngebotId: "",
       },
@@ -194,8 +194,6 @@ export class BookingComponent implements OnInit, AfterViewInit {
           next: (result) => country = result,
           complete: () => {
             const dialog = this.dialog.open(BookingFormComponent, {
-              width: '750px',
-              height: '800px',
               disableClose : true,
               autoFocus : true
             });
@@ -243,11 +241,12 @@ export class BookingComponent implements OnInit, AfterViewInit {
             flughafen: booking.flughafen,
             handGepaeck: booking.handGepaeck,
             koffer: booking.koffer,
-            mitReiserId: booking.mitReiser ? booking.mitReiser.id : null,
-            reiserId: booking.reiser.id,
+            mitReisenderId: booking.mitReisender ? booking.mitReisender.id : null,
+            reisenderId: booking.reisender.id,
             zahlungMethod: booking.zahlungMethod,
             reiseAngebotId: booking.reiseAngebotId
           };
+
           this.bookingService.updateOne(toUpdate).subscribe({
             next: (savedValue) => {
               this.sharedDataService.changeCurrentBooking(savedValue);
@@ -288,7 +287,7 @@ export class BookingComponent implements OnInit, AfterViewInit {
             this.toastrService.error("Etwas ist schief gelaufen.", "Fehler"),
           complete: () => {
             // get the traveler information
-            this.travelerService.getOne(booking.reiserId).subscribe({
+            this.travelerService.getOne(booking.reisenderId).subscribe({
               next: (traveler) => (this.traveler = traveler),
               error: () => {
                 this.toastrService.error(
@@ -297,8 +296,8 @@ export class BookingComponent implements OnInit, AfterViewInit {
                 );
               },
               complete: () => {
-                if (booking.mitReiserId) {
-                  this.travelerService.getOne(booking.mitReiserId).subscribe({
+                if (booking.mitReisenderId) {
+                  this.travelerService.getOne(booking.mitReisenderId).subscribe({
                     next: (traveler) => (this.cotraveler = traveler),
                     error: () => {
                       this.toastrService.error(
@@ -393,6 +392,6 @@ export class BookingComponent implements OnInit, AfterViewInit {
   }
 
   getPhoneNumber(phone: string): string {
-    return phone ? `+${phone}` : "";
+    return phone ? `${phone}` : "";
   }
 }

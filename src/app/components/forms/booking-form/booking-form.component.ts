@@ -15,7 +15,6 @@ import { TripOffer } from "src/app/models/tripOffer";
 
 import { PaymentMethod } from "src/app/enums/paymentMethod";
 import { BookingService } from "src/app/services/booking/booking.service";
-import { MatDialog } from "@angular/material/dialog";
 import { Pattern } from "src/app/variables/pattern";
 
 @Component({
@@ -56,13 +55,22 @@ export class BookingFormComponent implements OnInit {
 
   minDate: Date;
   maxDate: Date;
+  canDownloadPdf = false;
+  currentBookingId: any;
+  isStudent = false;
+  isStudentMitReiser = false;
+  isMitArbeiter = false;
+  isMitArbeiterMitReiser = false;
+  panelOpenState = false;
+  istAlumReiser= false;
+  istAlumMitReiser= false;
+  responseAfterBooking = "";
 
   constructor(
     private bookingclassService: BookingClassService,
     private _formBuilder: FormBuilder,
     private buchungService: BookingService,
-    private toaster: ToastrService,
-    private dialog: MatDialog,
+    private toaster: ToastrService
   ) {
 
     this.paymentMethodArray = [
@@ -86,9 +94,9 @@ export class BookingFormComponent implements OnInit {
       postanschrift: ['', Validators.compose([Validators.required, Validators.pattern(Pattern.street)])],
       handynummer: ['', Validators.compose([Validators.required, Validators.pattern(Pattern.mobile)])],
       email: ['', Validators.required],
-      studiengang: ['', Validators.required],
+      studiengang: [''],
       status: ['', Validators.required],
-      arbeitet: ['', Validators.required],
+      arbeitet: [''],
       schonTeilgennomem: ['', Validators.required],
       hochschule: ['', Validators.required],
       mitMitreiser: ['', Validators.required],
@@ -101,9 +109,9 @@ export class BookingFormComponent implements OnInit {
       postanschrift: ['', Validators.compose([Validators.required, Validators.pattern(Pattern.street)])],
       handynummer: ['', Validators.compose([Validators.required, Validators.pattern(Pattern.mobile)])],
       email: ['', Validators.required],
-      studiengang: ['', Validators.required],
+      studiengang: [''],
       status: ['', Validators.required],
-      arbeitet: ['', Validators.required],
+      arbeitet: [''],
       schonTeilgennomem: ['', Validators.required],
       hochschule: ['', Validators.required],
     });
@@ -112,9 +120,9 @@ export class BookingFormComponent implements OnInit {
       buchungsklasseId: ['', Validators.required],
       datum: ['', Validators.required],
       flughafen: ['', Validators.required],
-      handgepaeck: ['', Validators.required],
+      handgepaeck: [''],
       zahlungsmethod: ['', Validators.required],
-      koffer: ['', Validators.required],
+      koffer: [''],
     });
 
     this.agbFormGroup = this._formBuilder.group({
@@ -132,7 +140,7 @@ export class BookingFormComponent implements OnInit {
     if(this.mitreiserForm) {
       this.reisendeArray.push(this.personenDatenFormGroupMitReiser.value);
     }
-    this.selectedBookingClass =this.getBuchungsKlasse(this.reiseDatenFormGroup.get('buchungsklasseId').value);
+    this.selectedBookingClass = this.getBuchungsKlasse(this.reiseDatenFormGroup.get('buchungsklasseId').value);
 
     this.reisendeArray = this.reisendeArray.map((reiser) => {
       reiser.geburtsdatum = formatDate(reiser.geburtsdatum, "yyyy-MM-dd", "en_US");
@@ -161,15 +169,15 @@ export class BookingFormComponent implements OnInit {
 
     let buchungsObjekt: Booking = {
       id: null,
-      buchungsklasseId: this.selectedBookingClass.id,
+      buchungsklasseId: this.selectedBookingClass?.id,
       datum: this.reise.datum,
       flughafen: this.reise.flughafen,
-      handGepaeck: this.reise.handgepaeck,
-      koffer: this.reise.koffer,
-      reiseAngebotId: this.currentTripOffer.id,
+      handGepaeck: this.reise.handgepaeck === true ? 'true': 'false',
+      koffer: this.reise.koffer === true ? 'true': 'false',
+      reiseAngebotId: this.currentTripOffer?.id,
       zahlungMethod: this.reise.zahlungsmethod,
 
-      reiser: {
+      reisender: {
         id: null,
         adresse: reiserForm.postanschrift,
         arbeitBei: reiserForm.arbeitet,
@@ -184,7 +192,7 @@ export class BookingFormComponent implements OnInit {
         status: reiserForm.status
       },
 
-      mitReiser: this.mitreiserForm ? {
+      mitReisender: this.mitreiserForm ? {
         id: null,
         adresse: mitReiserForm.postanschrift,
         arbeitBei: mitReiserForm.arbeitet,
@@ -200,20 +208,25 @@ export class BookingFormComponent implements OnInit {
       } : null
     }
 
-    console.log(buchungsObjekt);
-
     this.buchungService.addOne(buchungsObjekt).subscribe({
       next: (resp) => {
-        console.log(resp);
+        this.canDownloadPdf = true;
+        this.currentBookingId = resp.id;
+
       },
       complete: () => {
         this.toaster.success('erfolgreich gebucht', 'Erfolgreich');
-        this.dialog.closeAll();
+        this.responseAfterBooking = "Die Reise wurde erfolgreich gebucht";
       },
       error: (error) => {
-        console.log(error)
         this.toaster.error('Die Buchung konnte nicht durchgeführt werden', 'Fehler');
+        this.responseAfterBooking = "Die Buchung konnte nicht durchgeführt werden";
       }
     });
   }
+
+  downloadPdf() {
+    this.buchungService.exportPdf(this.currentBookingId);
+  }
+
 }
