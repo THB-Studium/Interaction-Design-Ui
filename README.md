@@ -235,3 +235,19 @@ Facebook: <https://www.facebook.com/CreativeTim?ref=creativetim>
 Dribbble: <https://dribbble.com/creativetim?ref=creativetim>
 
 Instagram: <https://www.instagram.com/CreativeTimOfficial?ref=creativetim>
+
+### Structure
+
+The  structure of the project has changed. For the current structure check the attached pdf.
+
+### Start
+
+To start the project on a local computer, you have the run the following cli commands in the root of the project:
+ - npm install. This command installs a package, and any packages that it depends on. 
+ - ng serve or npm start. This command will start a local server which can use to access the site. Default: localhost:4200
+
+ ### Credentials
+
+ - Enter localhost:4200/#/verwaltung to access the administration page. Credentials can be found in the .doc file.
+
+
