@@ -4,18 +4,17 @@ import {
   Input,
 } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-
 import { formatDate } from "@angular/common";
 
-import { ToastrService } from "ngx-toastr";
 import { BookingClassService } from "src/app/services/booking-class/booking-class.service";
+import { BookingService } from "src/app/services/booking/booking.service";
+import { ToastrService } from "ngx-toastr";
 
 import { Booking } from "src/app/models/booking";
-import { TripOffer } from "src/app/models/tripOffer";
-
-import { PaymentMethod } from "src/app/enums/paymentMethod";
-import { BookingService } from "src/app/services/booking/booking.service";
+import { BookingState } from "src/app/enums/bookingState";
 import { Pattern } from "src/app/variables/pattern";
+import { PaymentMethod } from "src/app/enums/paymentMethod";
+import { TripOffer } from "src/app/models/tripOffer";
 
 @Component({
   selector: "app-booking-form",
@@ -176,6 +175,7 @@ export class BookingFormComponent implements OnInit {
       koffer: this.reise.koffer === true ? 'true': 'false',
       reiseAngebotId: this.currentTripOffer?.id,
       zahlungMethod: this.reise.zahlungsmethod,
+      status: BookingState.EINGEGANGEN,
 
       reisender: {
         id: null,

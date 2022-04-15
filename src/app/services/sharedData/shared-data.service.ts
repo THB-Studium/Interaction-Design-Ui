@@ -223,7 +223,8 @@ export class SharedDataService {
     mitReisender: null,
     reiseAngebotId: '',
     reisender: null,
-    zahlungMethod: null
+    zahlungMethod: null,
+    status: null
   }
 
   private bookingSource = new BehaviorSubject<Booking>(this.booking);

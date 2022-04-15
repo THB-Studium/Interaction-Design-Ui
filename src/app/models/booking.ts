@@ -12,6 +12,7 @@ export class Booking {
     public reisender: Traveler;
     public zahlungMethod: PaymentMethod;
     public reiseAngebotId: string;
+    public status: string;
 }
 
 export class BookingUpdate {
@@ -25,4 +26,5 @@ export class BookingUpdate {
     public reisenderId: string;
     public zahlungMethod: PaymentMethod;
     public reiseAngebotId: string;
+    public status: string;
 }

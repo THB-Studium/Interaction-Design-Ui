@@ -121,7 +121,7 @@ export class EditBookingFormComponent
   // Defines selectedDate
   selectedDate: any;
   //
-  luggages=['Ja', 'Nein'];
+  luggages = ["Ja", "Nein"];
 
   constructor(
     private sharedDataService: SharedDataService,
@@ -142,6 +142,7 @@ export class EditBookingFormComponent
       reiseAngebotId: "",
       reisender: null,
       zahlungMethod: null,
+      status: "",
     };
     this.dateError = "";
     this.paymentMethodArray = [
@@ -234,9 +235,15 @@ export class EditBookingFormComponent
             this.currentBooking.id = value.id;
             this.defaultAirport = value.flughafen;
             this.currentBooking.datum = value.datum;
-            this.currentBooking.handGepaeck = value.handGepaeck === 'true' ? this.luggages[0] : this.luggages[1];
-            this.currentBooking.koffer = value.koffer === 'true' ? this.luggages[0] : this.luggages[1];
+            this.currentBooking.handGepaeck =
+              value.handGepaeck === "true"
+                ? this.luggages[0]
+                : this.luggages[1];
+            this.currentBooking.koffer =
+              value.koffer === "true" ? this.luggages[0] : this.luggages[1];
             this.currentBooking.zahlungMethod = value.zahlungMethod;
+            this.currentBooking.reisender = booking.reisender;
+            this.currentBooking.mitReisender = booking.mitReisender;
 
             // Get the tripoffer
             this.tripofferService.getOne(value.reiseAngebotId).subscribe({
@@ -253,7 +260,7 @@ export class EditBookingFormComponent
               },
               complete: () => {
                 // Get the traveler information
-                this.travelerService.getOne(value.reisenderId).subscribe({
+                this.travelerService.getOne(value.reisender.id).subscribe({
                   next: (traveler) => {
                     this.currentBooking.reisender = traveler;
                     this.bookingForm.get("traveler").setValue(traveler);
@@ -264,20 +271,6 @@ export class EditBookingFormComponent
                     );
                   },
                   complete: () => {
-                    // if cotraveler exists, than get his information
-                    if (value.mitReisenderId) {
-                      this.travelerService.getOne(value.mitReisenderId).subscribe({
-                        next: (traveler) => {
-                          this.currentBooking.mitReisender = traveler;
-                          this.bookingForm.get("coTraveler").setValue(traveler);
-                        },
-                        error: () => {
-                          this.toastrService.error(
-                            "Die Mitreisende Informationen konnten nicht geladen werden"
-                          );
-                        },
-                      });
-                    }
                     // Get the bookingclass information
                     const bcId = value.buchungsklasseId;
                     this.bookingclassService.getOne(bcId).subscribe({
@@ -297,8 +290,15 @@ export class EditBookingFormComponent
                           "Die Buchungsklasse Informationen konnten nicht geladen werden"
                         );
                       },
-                      complete: () =>
-                        this.setFormDefaultValue(this.currentBooking),
+                      complete: () => {
+                        this.bookingForm
+                          .get("traveler")
+                          .setValue(this.currentBooking.reisender);
+                        this.bookingForm
+                          .get("coTraveler")
+                          .setValue(this.currentBooking.mitReisender);
+                        this.setFormDefaultValue(this.currentBooking);
+                      },
                     });
                   },
                 });
@@ -375,10 +375,13 @@ export class EditBookingFormComponent
         datum: this.selectedDate,
         reisender: this.bookingForm.get("traveler").value,
         mitReisender: this.bookingForm.get("coTraveler").value,
-        handGepaeck: this.bookingForm.get("handLuggage").value === 'Ja' ? 'true' : 'false',
-        koffer: this.bookingForm.get("suitcase").value === 'Ja' ? 'true' : 'false',
+        handGepaeck:
+          this.bookingForm.get("handLuggage").value === "Ja" ? "true" : "false",
+        koffer:
+          this.bookingForm.get("suitcase").value === "Ja" ? "true" : "false",
         zahlungMethod: this.bookingForm.get("paymentMethod").value,
         reiseAngebotId: this.bookingForm.get("tripoffer").value.id,
+        status: this.currentBooking.status
       };
 
       this.sharedDataService.changeCurrentBooking(this.currentBooking);
@@ -531,6 +534,8 @@ export class EditBookingFormComponent
   }
 
   public getLuggageOption(options: string[], isSuitcase?: boolean) {
-    return !isSuitcase ? options.filter (x => x !== this.bookingForm.get('handLuggage').value) : options.filter (x => x !== this.bookingForm.get('suitcase').value);
+    return !isSuitcase
+      ? options.filter((x) => x !== this.bookingForm.get("handLuggage").value)
+      : options.filter((x) => x !== this.bookingForm.get("suitcase").value);
   }
 }

@@ -12,6 +12,8 @@ import { Booking, BookingUpdate } from 'src/app/models/booking';
 export class BookingService {
   // API for booking
   readonly BOOKING_URL: string = `${Server.API_URL}/buchungen`;
+  readonly BOOKING_AD_PDF_URL: string = `${this.BOOKING_URL}/exportPdf`;
+  readonly DELETE_BOOKING_COTRAVELER_URL: string = `${this.BOOKING_URL}/removeMitReisender`;
   headers = new HttpHeaders({ "Content-Type": "application/json" });
 
   constructor(private httpClient: HttpClient) { }
@@ -28,13 +30,13 @@ export class BookingService {
   }
 
   // POST
-  addOne(booking: Booking): Observable<Booking> {
-    return this.httpClient.post<Booking>(this.BOOKING_URL, booking);
+  addOne(booking: Booking): Observable<BookingUpdate> {
+    return this.httpClient.post<BookingUpdate>(this.BOOKING_URL, booking);
   }
 
   // PUT
-  updateOne(booking: BookingUpdate): Observable<Booking> {
-    return this.httpClient.put<Booking>(this.BOOKING_URL, booking, {
+  updateOne(booking: BookingUpdate): Observable<BookingUpdate> {
+    return this.httpClient.put<BookingUpdate>(this.BOOKING_URL, booking, {
       headers: this.headers,
     });
   }
@@ -48,14 +50,21 @@ export class BookingService {
   }
 
   //get
-  exportPdf(id: string) :void{
+  exportPdf(id: string): void{
     let headers = new HttpHeaders({ "Accept": "application/pdf" });
-    this.httpClient.get(`${this.BOOKING_URL}/exportPdf/${id}`, {
+    this.httpClient.get(`${this.BOOKING_AD_PDF_URL}/${id}`, {
       responseType: 'blob',
       headers: headers,
     }).subscribe(blob => {
       const currentDate = new Date();
       saveAs(blob, 'Buchung_'+currentDate.getTime()+'.pdf');
+    });
+  }
+
+  deleteCoTraveler(id: string) {
+    const tobedelete = `${this.DELETE_BOOKING_COTRAVELER_URL}/${id}`;
+    return this.httpClient.delete(tobedelete, {
+      responseType: "text"
     });
   }
 }
