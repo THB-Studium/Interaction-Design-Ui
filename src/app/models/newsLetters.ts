@@ -1,4 +1,5 @@
 export class NewsLetters {
-  active: boolean;
+  id: string;
+  status: boolean;
   email: string;
 }
