@@ -11,7 +11,7 @@ import { Server } from "src/app/variables/server";
 export class NewsLettersService {
   readonly NEWSLETTERS_URL: string = `${Server.API_URL}/newsletters`;
   readonly SUBSCRIBERS_URL = `${this.NEWSLETTERS_URL}/listabonniert`;
-  readonly MAILINGLIST_URL = `${this.NEWSLETTERS_URL}/mailToAbonniert`;
+  readonly MAILINGLIST_URL = `${Server.API_URL}/mail/simple-email`;
 
   headers = new HttpHeaders({ "Content-Type": "application/json" });
 
@@ -42,7 +42,21 @@ export class NewsLettersService {
 
   // Send mail
   SendMailToAll(form: MailingList): Observable<any> {
-    return this.httpClient.post<MailingList>(this.MAILINGLIST_URL, form);
+    let formData = new FormData();
+    formData.append("to", JSON.stringify(form.recipient));
+    formData.append("subject", form.subject);
+    formData.append("text", form.message);
+    formData.set("Content-Type", "application/json");
+    /*const body = {
+      'to': JSON.stringify(['titinang@th-brandenburg.de', 'keunne.baudoin@yahoo.fr']),
+      'subject': form.subject,
+      'text': form.message,
+    };*/
+    return this.httpClient.post<FormData>(
+      this.MAILINGLIST_URL,
+      formData,
+      {headers: this.headers}
+    );
   }
 
   // PUT
