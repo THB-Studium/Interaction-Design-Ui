@@ -51,7 +51,7 @@
             <div class="form-row" *ngIf="fileNames.length > 0">
                 <div class="form-group col-md-12 mb-0">
                     <mat-form-field class="col-md-12" appearance="fill">
-                        <mat-label>ausgewählte Dateinamen</mat-label>
+                        <mat-label>ausgewählte {{fileNames.length > 1 ? 'Dateien' : 'Datei'}}</mat-label>
                         <input matInput value="{{fileNames}}" [required]="false" disabled="true">
                     </mat-form-field>
                 </div>
@@ -68,7 +68,7 @@
                         fileNames.length + ' Dateien )' : ''}}
                         <i class="fa fa-file-pdf mr-3 text-danger" (click)="pdfUpload.click()" matTooltip="Pdf anhängen"
                             matTooltipHideDelay="{{ toolTipDuration }}"></i>
-                        <i class="fa fa-paperclip" (click)="fileUpload.click()" matTooltip="Dateien anhängen"
+                        <i class="fa fa-paperclip" (click)="fileUpload.click()" matTooltip="Datei(en) anhängen"
                             matTooltipHideDelay="{{ toolTipDuration }}"></i>
                     </div>
                 </div>
