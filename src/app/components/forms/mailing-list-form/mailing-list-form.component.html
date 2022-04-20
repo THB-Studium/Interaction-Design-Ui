@@ -37,7 +37,7 @@
             </div>
             <!--message-->
             <div class="form-row">
-                <div class="form-group col-md-12">
+                <div class="form-group col-md-12 mb-1">
                     <mat-form-field class="col-md-12" appearance="fill">
                         <mat-label>Nachricht</mat-label>
                         <textarea matInput formControlName="msg" required></textarea>
@@ -47,25 +47,41 @@
                     </mat-form-field>
                 </div>
             </div>
-            <!--file-->
-            <!--div class="form-row">
-                <div class="form-group col-md-12">
+            <!--filenames-->
+            <div class="form-row" *ngIf="fileNames.length > 0">
+                <div class="form-group col-md-12 mb-0">
                     <mat-form-field class="col-md-12" appearance="fill">
-                        <mat-label>File</mat-label>
-                        <input matInput formControlName="subject" class="form-control" type="file" id="formFile"
-                            [required]="false" multiple>
-                        <mat-error *ngIf="mailForm.get('msg').invalid">
-                            Die Eingabe ist <strong>erforderlich</strong>.
-                        </mat-error>
+                        <mat-label>ausgewählte Dateinamen</mat-label>
+                        <input matInput value="{{fileNames}}" [required]="false" disabled="true">
                     </mat-form-field>
                 </div>
-            </div-->
+            </div>
+            <!--file-->
+            <div class="form-row">
+                <div class="form-group col-md-12">
+                    <input type="file" class="file-input" [accept]="pdfFileType" (change)="onPdfSelected($event)"
+                        #pdfUpload multiple>
+                    <input type="file" class="file-input" [accept]="requiredFileType" (change)="onFileSelected($event)"
+                        #fileUpload multiple>
+                    <div class="file-upload" [ngStyle]="{top: fileNames.length == 0 ? '-3.4em' : '-8.4em'}">
+                        {{fileNames.length == 1 ? '( ' + fileNames.length + ' Datei )' : fileNames.length > 1 ? '( ' +
+                        fileNames.length + ' Dateien )' : ''}}
+                        <i class="fa fa-file-pdf mr-3 text-danger" (click)="pdfUpload.click()" matTooltip="Pdf anhängen"
+                            matTooltipHideDelay="{{ toolTipDuration }}"></i>
+                        <i class="fa fa-paperclip" (click)="fileUpload.click()" matTooltip="Dateien anhängen"
+                            matTooltipHideDelay="{{ toolTipDuration }}"></i>
+                    </div>
+                </div>
+            </div>
         </mat-card-content>
         <mat-card-actions>
             <button class="ml-4" (click)="sendToAll()" mat-fab color="primary" aria-label="send"
-                [disabled]="!recipients.value || !mailForm.get('msg').value">
+                [disabled]="!recipients.value || !mailForm.get('msg').value" matTooltip="Senden"
+                matTooltipHideDelay="{{ toolTipDuration }}">
                 <mat-icon>send</mat-icon>
             </button>
+            <button mat-button (click)="navigateToNewsletter()" matTooltip="Abbrechen"
+                matTooltipHideDelay="{{ toolTipDuration }}">Abbrechen</button>
         </mat-card-actions>
     </mat-card>
 </form>
@@ -83,10 +99,18 @@
             </p>
             <div class="col-md-12 p-2">
                 <mat-divider></mat-divider>
+                <p class="font-weight-600">An:</p>
                 <ul class="mt-2">
                     <li *ngFor="let recipient of recipients.value" class="font-weight-500 mt-2">{{recipient}}</li>
                 </ul>
+                <mat-divider></mat-divider>
             </div>
         </mat-card-content>
+        <mat-card-actions align="end">
+            <button class="ml-4" (click)="navigateToNewsletter()" mat-raised-button color="primary"
+                aria-label="Back to newsletter">
+                Ok
+            </button>
+        </mat-card-actions>
     </mat-card>
 </div>

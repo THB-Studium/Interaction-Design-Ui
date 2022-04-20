@@ -1,5 +1,6 @@
 export class MailingList {
-  recipient: string[];
+  recipients: string[];
   subject: string;
   message: string;
+  files: File[];
 }

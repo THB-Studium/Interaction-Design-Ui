@@ -1,5 +1,5 @@
 textarea {
-  min-height: 10rem;
+  min-height: 12rem;
 }
 
 .material-icons.green {
@@ -15,4 +15,17 @@ textarea {
 
 li {
     list-style: none;
+}
+
+.file-input {
+  display: none;
+}
+
+.file-upload {
+  position: absolute;
+  right: 5em
+}
+
+.file-upload i {
+  font-size: 22px;
 }

@@ -1,10 +1,11 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, Input, OnInit } from "@angular/core";
 import {
   FormBuilder,
   FormControl,
   FormGroup,
   Validators,
 } from "@angular/forms";
+import { Router } from "@angular/router";
 
 import { NewsLettersService } from "src/app/services/news-letters/news-letters.service";
 import { ToastrService } from "ngx-toastr";
@@ -22,8 +23,18 @@ export class MailingListFormComponent implements OnInit {
   recipients = new FormControl();
   recipientList: string[];
   sent: boolean;
+  toolTipDuration = 300;
+  fileNames: string[];
+  attachedPdffiles: File[];
+  attachedfiles: File[];
+  uploadedfiles: File[];
+  @Input()
+  pdfFileType: string;
+  @Input()
+  requiredFileType: string;
 
   constructor(
+    private route: Router,
     private fb: FormBuilder,
     private newsLetterService: NewsLettersService,
     private toastrService: ToastrService
@@ -35,6 +46,13 @@ export class MailingListFormComponent implements OnInit {
 
     this.sent = false;
     this.recipientList = [];
+
+    this.pdfFileType = "application/pdf";
+    this.requiredFileType = "image/*,application/pdf,.csv";
+    this.uploadedfiles = [];
+    this.attachedPdffiles = [];
+    this.attachedfiles = [];
+    this.fileNames = [];
   }
 
   ngOnInit(): void {
@@ -56,16 +74,61 @@ export class MailingListFormComponent implements OnInit {
     });
   }
 
+  onPdfSelected(event: any) {
+    const files: FileList = event.target.files;
+    if (files) {
+      // the list without the old pdf
+      this.uploadedfiles = this.uploadedfiles.filter(
+        (x) => !this.attachedPdffiles.includes(x)
+      );
+      // Empty the list
+      this.attachedPdffiles = [];
+      this.fileNames = [];
+      // save the current filenames
+      this.uploadedfiles.forEach((file) => this.fileNames.push(file.name));
+      Array.from(files).forEach((file) => {
+        // save current pdf files that have been attached
+        this.attachedPdffiles.push(file);
+        // add each to the list of the files to be uploaded
+        this.uploadedfiles.push(file);
+        // Add into the list, the name of the current file
+        this.fileNames.push(file.name);
+      });
+    }
+  }
+
+  onFileSelected(event: any) {
+    const files: FileList = event.target.files;
+    if (files) {
+      this.uploadedfiles = this.uploadedfiles.filter(
+        (x) => !this.attachedfiles.includes(x)
+      );
+
+      this.attachedfiles = [];
+      this.fileNames = [];
+
+      this.uploadedfiles.forEach((file) => this.fileNames.push(file.name));
+
+      Array.from(files).forEach((file) => {
+        this.attachedfiles.push(file);
+        this.uploadedfiles.push(file);
+        this.fileNames.push(file.name);
+      });
+    }
+  }
+
   sendToAll() {
     const mailingList: MailingList = {
       message: this.mailForm.get("msg").value,
-      recipient: this.recipients.value,
+      recipients: this.recipients.value,
       subject: this.mailForm.get("subject").value,
+      files: this.uploadedfiles,
     };
     this.newsLetterService.SendMailToAll(mailingList).subscribe({
       next: (result) => {
-        console.log(result);
-        this.sent = true;
+        if (result) {
+          this.sent = true;
+        }
       },
       error: () => {
         this.toastrService.error(
@@ -77,5 +140,9 @@ export class MailingListFormComponent implements OnInit {
         this.toastrService.success("Die E-Mail wurde erfolgreich gesendet.");
       },
     });
+  }
+
+  navigateToNewsletter() {
+    this.route.navigate(["/newsletter"]);
   }
 }

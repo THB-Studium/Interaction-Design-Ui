@@ -42,18 +42,45 @@ export class NewsLettersService {
 
   // Send mail
   SendMailToAll(form: MailingList): Observable<any> {
-    let toSend = {
-      to: form.recipient,
-      subject: form.subject,
-      properties: { content: form.message },
-    };
+    // get attached files list
+    const files = form.files;
+
+    console.log(files);
 
     let formData = new FormData();
-    formData.append(
-      "mail",
-      new Blob([JSON.stringify(toSend)], { type: "application/json" })
-    );
-    return this.httpClient.post<any>(this.MAILINGLIST_URL, formData);
+
+    if (files.length == 0) {
+      formData.append(
+        "mail",
+        new Blob(
+          [
+            JSON.stringify({
+              to: form.recipients,
+              subject: form.subject,
+              properties: { content: form.message },
+            }),
+          ],
+          { type: "application/json" }
+        )
+      );
+      return this.httpClient.post<any>(this.MAILINGLIST_URL, formData);
+    } else {
+      formData.append(
+        "mail",
+        new Blob(
+          [
+            JSON.stringify({
+              to: form.recipients,
+              subject: form.subject,
+              properties: { content: form.message },
+              files: files // HERE
+            }),
+          ],
+          { type: "application/json" }
+        )
+      );
+      return this.httpClient.post<any>("URL FOR MAIL WITH FILES", formData);
+    }
   }
 
   // PUT
