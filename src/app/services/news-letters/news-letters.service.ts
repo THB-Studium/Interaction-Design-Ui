@@ -42,22 +42,18 @@ export class NewsLettersService {
 
   // Send mail
   SendMailToAll(form: MailingList): Observable<any> {
-
-
     let toSend = {
-      to : form.recipient,
+      to: form.recipient,
       subject: form.subject,
-      properties: {"content" : form.message}
-    }
+      properties: { content: form.message },
+    };
 
     let formData = new FormData();
-    formData.append("mail", new Blob([JSON.stringify(toSend)], { type: "application/json"}));
-
-    formData.forEach((e:any)=> console.log(e));
-    return this.httpClient.post<FormData>(
-      this.MAILINGLIST_URL,
-      formData
+    formData.append(
+      "mail",
+      new Blob([JSON.stringify(toSend)], { type: "application/json" })
     );
+    return this.httpClient.post<any>(this.MAILINGLIST_URL, formData);
   }
 
   // PUT
@@ -75,7 +71,3 @@ export class NewsLettersService {
     });
   }
 }
-function e(e: any) {
-  throw new Error("Function not implemented.");
-}
-
