@@ -231,22 +231,17 @@ export class EditBookingFormComponent
       this.sharedDataService.currentBooking
         .subscribe({
           next: (booking) => {
-            const value: any = booking;
-            this.currentBooking.id = value.id;
-            this.defaultAirport = value.flughafen;
-            this.currentBooking.datum = value.datum;
+            this.currentBooking = booking;
+            this.defaultAirport = this.currentBooking.flughafen;
             this.currentBooking.handGepaeck =
-              value.handGepaeck === "true"
+            this.currentBooking.handGepaeck === "true"
                 ? this.luggages[0]
                 : this.luggages[1];
             this.currentBooking.koffer =
-              value.koffer === "true" ? this.luggages[0] : this.luggages[1];
-            this.currentBooking.zahlungMethod = value.zahlungMethod;
-            this.currentBooking.reisender = booking.reisender;
-            this.currentBooking.mitReisender = booking.mitReisender;
+            this.currentBooking.koffer === "true" ? this.luggages[0] : this.luggages[1];
 
             // Get the tripoffer
-            this.tripofferService.getOne(value.reiseAngebotId).subscribe({
+            this.tripofferService.getOne(this.currentBooking.reiseAngebotId).subscribe({
               next: (offer) => {
                 this.bookingForm.get("tripoffer").setValue(offer);
                 this.currentBooking.reiseAngebotId = offer.id;
@@ -259,47 +254,33 @@ export class EditBookingFormComponent
                 );
               },
               complete: () => {
-                // Get the traveler information
-                this.travelerService.getOne(value.reisender.id).subscribe({
-                  next: (traveler) => {
-                    this.currentBooking.reisender = traveler;
-                    this.bookingForm.get("traveler").setValue(traveler);
+                // Get the bookingclass information
+                const bcId = this.currentBooking.buchungsklasseId;
+                this.bookingclassService.getOne(bcId).subscribe({
+                  next: (bc) => {
+                    const idx = this.bookingclassArray.findIndex(
+                      (x) => x.id === bc.id
+                    );
+                    this.bookingForm
+                      .get("bookingClass")
+                      .setValue(this.bookingclassArray[idx]);
+                    //this.bookingclassArray.splice(idx, 1);
+                    // set the value of the current booking class in current booking
+                    this.currentBooking.buchungsklasseId = bc.id;
                   },
                   error: () => {
                     this.toastrService.error(
-                      "Die Reisende Informationen konnten nicht geladen werden"
+                      "Die Buchungsklasse Informationen konnten nicht geladen werden"
                     );
                   },
                   complete: () => {
-                    // Get the bookingclass information
-                    const bcId = value.buchungsklasseId;
-                    this.bookingclassService.getOne(bcId).subscribe({
-                      next: (bc) => {
-                        const idx = this.bookingclassArray.findIndex(
-                          (x) => x.id === bc.id
-                        );
-                        this.bookingForm
-                          .get("bookingClass")
-                          .setValue(this.bookingclassArray[idx]);
-                        //this.bookingclassArray.splice(idx, 1);
-                        // set the value of the current booking class in current booking
-                        this.currentBooking.buchungsklasseId = bc.id;
-                      },
-                      error: () => {
-                        this.toastrService.error(
-                          "Die Buchungsklasse Informationen konnten nicht geladen werden"
-                        );
-                      },
-                      complete: () => {
-                        this.bookingForm
-                          .get("traveler")
-                          .setValue(this.currentBooking.reisender);
-                        this.bookingForm
-                          .get("coTraveler")
-                          .setValue(this.currentBooking.mitReisender);
-                        this.setFormDefaultValue(this.currentBooking);
-                      },
-                    });
+                    this.bookingForm
+                      .get("traveler")
+                      .setValue(this.currentBooking.reisender);
+                    this.bookingForm
+                      .get("coTraveler")
+                      .setValue(this.currentBooking.mitReisender);
+                    this.setFormDefaultValue(this.currentBooking);
                   },
                 });
               },

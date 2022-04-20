@@ -68,20 +68,21 @@
                                 <em class="fa fa-lock text-black"></em>
                             </label>
                             <label class="mr-3" matTooltip="As Pdf exportieren"
-                                matTooltipHideDelay="{{toolTipDuration}}" (click)="exportAsPDF(row)">
-                                <em class="fa fa-file-pdf text-danger"
-                                    *ngIf="row?.status !== bookingStates[0] && row?.status !== null"></em>
+                                matTooltipHideDelay="{{toolTipDuration}}" (click)="exportAsPDF(row)"
+                                *ngIf="row?.status !== bookingStates[0] && row?.status !== null">
+                                <em class="fa fa-file-pdf text-danger"></em>
                             </label>
                             <label class="mr-3" matTooltip="Ansehen" matTooltipHideDelay="{{toolTipDuration}}"
-                                (click)="detailsDialog(row, viewDialog)">
+                                (click)="detailsDialog(row, viewDialog)"
+                                *ngIf="row?.status !== bookingStates[0] && row?.status !== null">
                                 <em class="fa fa-eye text-primary"></em>
                             </label>
                             <label class="mr-3" matTooltip="Editieren" matTooltipHideDelay="{{toolTipDuration}}"
-                                (click)="editDialog(row, bookingDialog)">
+                                (click)="editDialog(row, bookingDialog)" *ngIf="row?.status !== bookingStates[0] && row?.status !== null">
                                 <em class="fa fa-pen text-info"></em>
                             </label>
                             <label matTooltip="Entfernen" matTooltipHideDelay="{{toolTipDuration}}"
-                                (click)="deleteDialog(row, delDialog)">
+                                (click)="deleteDialog(row, delDialog)" *ngIf="row?.status !== bookingStates[0] && row?.status !== null">
                                 <em class="fa fa-trash text-red"></em>
                             </label>
                         </td>
@@ -165,7 +166,7 @@
                     <h4>Reiseangebot:</h4>
                     <mat-divider class="mb-0"></mat-divider>
                     <div class="form-row pt-2">
-                        <div class="form-group col-md-12 mb-0">
+                        <div class="form-group col-md-12 mb-0 p-0">
                             <mat-form-field class="col-md-12 p-0" appearance="fill">
                                 <mat-label>Angebot</mat-label>
                                 <input matInput [value]="tripoffer.titel" disabled>
@@ -173,13 +174,13 @@
                         </div>
                     </div>
                     <div class="form-row">
-                        <div class="form-group col-md-6 mb-0">
+                        <div class="form-group col-md-6 mb-0 p-0">
                             <mat-form-field class="col-md-12 p-0" appearance="fill">
                                 <mat-label>Von</mat-label>
                                 <input matInput [value]="convertDateToString(tripoffer.startDatum)" disabled>
                             </mat-form-field>
                         </div>
-                        <div class="form-group col-md-6 mb-0">
+                        <div class="form-group col-md-6 mb-0 p-0">
                             <mat-form-field class="col-md-12 p-0" appearance="fill">
                                 <mat-label>Bis</mat-label>
                                 <input matInput [value]="convertDateToString(tripoffer.endDatum)" disabled>
@@ -187,13 +188,13 @@
                         </div>
                     </div>
                     <div class="form-row">
-                        <div class="form-group col-md-6 mb-0">
+                        <div class="form-group col-md-6 mb-0 p-0">
                             <mat-form-field class="col-md-12 p-0" appearance="fill">
                                 <mat-label>Plätze</mat-label>
                                 <input matInput [value]="tripoffer.plaetze" disabled>
                             </mat-form-field>
                         </div>
-                        <div class="form-group col-md-6 mb-0">
+                        <div class="form-group col-md-6 mb-0 p-0">
                             <mat-form-field class="col-md-12 p-0" appearance="fill">
                                 <mat-label>Freiplätze</mat-label>
                                 <input matInput [value]="tripoffer.freiplaetze ?? tripoffer.plaetze" disabled>
@@ -206,7 +207,7 @@
                     <h4>Ziel:</h4>
                     <mat-divider class="mb-0"></mat-divider>
                     <div class="form-row pt-2">
-                        <div class="form-group col-md-12 mb-0">
+                        <div class="form-group col-md-12 mb-0 p-0">
                             <mat-form-field class="col-md-12 p-0" appearance="fill">
                                 <mat-label>Name</mat-label>
                                 <input matInput [value]="country.name" disabled>
@@ -219,13 +220,13 @@
                     <h4>Buchungsklasse:</h4>
                     <mat-divider class="mb-0"></mat-divider>
                     <div class="form-row pt-2">
-                        <div class="form-group col-md-6 mb-0">
+                        <div class="form-group col-md-6 mb-0 p-0">
                             <mat-form-field class="col-md-12 p-0" appearance="fill">
                                 <mat-label>Typ</mat-label>
                                 <input matInput [value]="bookingclass.type" disabled>
                             </mat-form-field>
                         </div>
-                        <div class="form-group col-md-6 mb-0">
+                        <div class="form-group col-md-6 mb-0 p-0">
                             <mat-form-field class="col-md-12 p-0" appearance="fill">
                                 <mat-label>Preis</mat-label>
                                 <input matInput [value]="bookingclass.preis" disabled>
@@ -238,13 +239,13 @@
                     <h4>Reisenden</h4>
                     <mat-divider class="mb-2"></mat-divider>
                     <div class="form-row pt-2 m-0">
-                        <div class="form-group col-md-6 mb-0">
+                        <div class="form-group col-md-6 mb-0 p-0">
                             <mat-form-field class="col-md-12 p-0" appearance="fill">
                                 <mat-label>Vorname:</mat-label>
                                 <input matInput [value]="traveler.vorname" disabled>
                             </mat-form-field>
                         </div>
-                        <div class="form-group col-md-6 mb-0">
+                        <div class="form-group col-md-6 mb-0 p-0">
                             <mat-form-field class="col-md-12 p-0" appearance="fill">
                                 <mat-label>Nachname:</mat-label>
                                 <input matInput [value]="traveler.name" disabled>
@@ -252,13 +253,13 @@
                         </div>
                     </div>
                     <div class="form-row">
-                        <div class="form-group col-md-6 mb-0">
+                        <div class="form-group col-md-6 mb-0 p-0">
                             <mat-form-field class="col-md-12 p-0" appearance="fill">
                                 <mat-label>Email:</mat-label>
                                 <input matInput [value]="traveler.email" disabled>
                             </mat-form-field>
                         </div>
-                        <div class="form-group col-md-6 mb-0">
+                        <div class="form-group col-md-6 mb-0 p-0">
                             <mat-form-field class="col-md-12 p-0" appearance="fill">
                                 <mat-label>Handynummer:</mat-label>
                                 <input matInput [value]="traveler.telefonnummer" disabled>
@@ -266,13 +267,13 @@
                         </div>
                     </div>
                     <div class="form-row">
-                        <div class="form-group col-md-6 mb-0">
+                        <div class="form-group col-md-6 mb-0 p-0">
                             <mat-form-field class="col-md-12 p-0" appearance="fill">
                                 <mat-label>Status:</mat-label>
                                 <input matInput [value]="traveler.status" disabled>
                             </mat-form-field>
                         </div>
-                        <div class="form-group col-md-6 mb-0">
+                        <div class="form-group col-md-6 mb-0 p-0">
                             <mat-form-field class="col-md-12 p-0" appearance="fill">
                                 <mat-label>Adresse:</mat-label>
                                 <input matInput [value]="traveler.adresse" disabled>
@@ -288,13 +289,13 @@
                     </div>
                     <mat-divider class="mt-1 mb-0"></mat-divider>
                     <div class="form-row m-0 pt-2">
-                        <div class="form-group col-md-6 mb-0">
+                        <div class="form-group col-md-6 mb-0 p-0">
                             <mat-form-field class="col-md-12 p-0" appearance="fill">
                                 <mat-label>Vorname:</mat-label>
                                 <input matInput [value]="cotraveler.vorname" disabled>
                             </mat-form-field>
                         </div>
-                        <div class="form-group col-md-6 mb-0">
+                        <div class="form-group col-md-6 mb-0 p-0">
                             <mat-form-field class="col-md-12 p-0" appearance="fill">
                                 <mat-label>Nachname:</mat-label>
                                 <input matInput [value]="cotraveler.name" disabled>
@@ -302,13 +303,13 @@
                         </div>
                     </div>
                     <div class="form-row">
-                        <div class="form-group col-md-6 mb-0">
+                        <div class="form-group col-md-6 mb-0 p-0">
                             <mat-form-field class="col-md-12 p-0" appearance="fill">
                                 <mat-label>Email:</mat-label>
                                 <input matInput [value]="cotraveler.email" disabled>
                             </mat-form-field>
                         </div>
-                        <div class="form-group col-md-6 mb-0">
+                        <div class="form-group col-md-6 mb-0 p-0">
                             <mat-form-field class="col-md-12 p-0" appearance="fill">
                                 <mat-label>Handynummer:</mat-label>
                                 <input matInput [value]="getPhoneNumber(cotraveler.telefonnummer)" disabled>
@@ -316,13 +317,13 @@
                         </div>
                     </div>
                     <div class="form-row">
-                        <div class="form-group col-md-6 mb-0">
+                        <div class="form-group col-md-6 mb-0 p-0">
                             <mat-form-field class="col-md-12 p-0" appearance="fill">
                                 <mat-label>Status:</mat-label>
                                 <input matInput [value]="traveler.status" disabled>
                             </mat-form-field>
                         </div>
-                        <div class="form-group col-md-6 mb-0">
+                        <div class="form-group col-md-6 mb-0 p-0">
                             <mat-form-field class="col-md-12 p-0" appearance="fill">
                                 <mat-label>Adresse:</mat-label>
                                 <input matInput [value]="cotraveler.adresse" disabled>
@@ -334,11 +335,11 @@
                 <div class="col-md-12">
                     <div class="d-flex mt-2">
                         <button mat-raised-button (click)="setBookingState(true)" class="mr-2 text-success"
-                            [disabled]="currentBooking.status === bookingStates[2] || currentBooking.status === bookingStates[3]">
+                            [disabled]="currentBooking.status === bookingStates[2]">
                             Bestätigen
                         </button>
                         <button mat-raised-button (click)="setBookingState(false)" class="text-danger"
-                            [disabled]="currentBooking.status === bookingStates[3]">
+                            [disabled]="currentBooking.status === bookingStates[2] || currentBooking.status === bookingStates[3]">
                             Ablehnen
                         </button>
                     </div>

@@ -329,7 +329,7 @@ export class BookingComponent implements OnInit, AfterViewInit {
             reisenderId: booking.reisender?.id,
             zahlungMethod: booking.zahlungMethod,
             reiseAngebotId: booking.reiseAngebotId,
-            status: booking.status,
+            status: booking.status
           };
 
           this.updateBooking(toUpdate);
@@ -357,37 +357,36 @@ export class BookingComponent implements OnInit, AfterViewInit {
                     "Fehler"
                   );
                 },
-                complete: () => {
-                  const currentUpdated: Booking = {
-                    buchungsklasseId: savedValue.buchungsklasseId,
-                    datum: savedValue.datum,
-                    flughafen: savedValue.flughafen,
-                    handGepaeck: savedValue.handGepaeck,
-                    id: savedValue.id,
-                    koffer: savedValue.koffer,
-                    mitReisender: this.cotraveler,
-                    reiseAngebotId: savedValue.reiseAngebotId,
-                    reisender: this.traveler,
-                    status: savedValue.status,
-                    zahlungMethod: savedValue.zahlungMethod,
-                  };
-
-                  this.sharedDataService.changeCurrentBooking(currentUpdated);
-                  this.currentBooking = savedValue;
-                  const idx = this.bookingList.findIndex(
-                    (x) => x.id === savedValue.id
-                  );
-                  this.bookingList[idx] = currentUpdated;
-                  this.sortByDate(this.bookingList);
-                  this.dataSource.data = this.bookingList;
-                  //
-                  if (savedValue.status === BookingState.BEARBEITUNG) {
-                    this.toastrService.info(
-                      "Buchung bearbeiten. Der Reisende wurde benachrichtigt."
-                    );
-                  }
-                },
               });
+            }
+
+            const currentUpdated: Booking = {
+              buchungsklasseId: savedValue.buchungsklasseId,
+              datum: savedValue.datum,
+              flughafen: savedValue.flughafen,
+              handGepaeck: savedValue.handGepaeck,
+              id: savedValue.id,
+              koffer: savedValue.koffer,
+              mitReisender: this.cotraveler,
+              reiseAngebotId: savedValue.reiseAngebotId,
+              reisender: this.traveler,
+              status: savedValue.status,
+              zahlungMethod: savedValue.zahlungMethod,
+            };
+
+            this.sharedDataService.changeCurrentBooking(currentUpdated);
+            this.currentBooking = savedValue;
+            const idx = this.bookingList.findIndex(
+              (x) => x.id === savedValue.id
+            );
+            this.bookingList[idx] = currentUpdated;
+            this.sortByDate(this.bookingList);
+            this.dataSource.data = this.bookingList;
+            //
+            if (savedValue.status === BookingState.BEARBEITUNG && toUpdate.status !== BookingState.BEARBEITUNG) {
+              this.toastrService.info(
+                "Buchung bearbeiten. Der Reisende wurde benachrichtigt."
+              );
             }
           },
         });
@@ -398,10 +397,12 @@ export class BookingComponent implements OnInit, AfterViewInit {
           "Fehler"
         );
       },
-      complete: () =>
+      complete: () => {
         this.toastrService.success(
           "Die Änderung wurde erfolgreich gespeichert"
-        ),
+        );
+        
+      }
     });
   }
 
@@ -420,7 +421,8 @@ export class BookingComponent implements OnInit, AfterViewInit {
             this.toastrService.error("Etwas ist schief gelaufen.", "Fehler"),
           complete: () => {
             // get the travelers information
-            this.travelerService.getOne(booking.reisenderId).subscribe({
+            const id = booking.reisenderId ? booking.reisenderId : booking.reisender.id;
+            this.travelerService.getOne(id).subscribe({
               next: (traveler) => (this.traveler = traveler),
               error: () => {
                 this.toastrService.error(
@@ -429,9 +431,10 @@ export class BookingComponent implements OnInit, AfterViewInit {
                 );
               },
               complete: () => {
-                if (booking.mitReisenderId) {
+                if (booking.mitReisender || booking.mitReisenderId) {
+                  const id = booking.mitReisenderId ? booking.mitReisenderId : booking.mitReisender.id;
                   this.travelerService
-                    .getOne(booking.mitReisenderId)
+                    .getOne(id)
                     .subscribe({
                       next: (traveler) => (this.cotraveler = traveler),
                       error: () => {
@@ -463,11 +466,12 @@ export class BookingComponent implements OnInit, AfterViewInit {
     });
   }
 
-  editDialog(booking: BookingUpdate, dialogForm: any) {
+  editDialog(booking, dialogForm: any) {
     this.sharedDataService.isAddBtnClicked = false;
     this.isAdd = false;
     this.currentBooking = booking;
-    this.travelerService.getOne(this.currentBooking.reisenderId).subscribe({
+    const id = this.currentBooking.reisenderId ? this.currentBooking.reisenderId : booking.reisender.id;
+    this.travelerService.getOne(id).subscribe({
       next: (result) => {
         this.traveler = result;
       },
@@ -475,9 +479,9 @@ export class BookingComponent implements OnInit, AfterViewInit {
         this.toastrService.error("Etwas ist schief gelaufen.", "Fehler");
       },
       complete: () => {
-        this.travelerService
-          .getOne(this.currentBooking.mitReisenderId)
-          .subscribe({
+        if (this.currentBooking.mitReisenderId || booking.mitMitreiser) {
+          const id = this.currentBooking.mitReisenderId ? this.currentBooking.mitReisenderId : booking.mitReisender.id;
+          this.travelerService.getOne(id).subscribe({
             next: (traveler) => (this.cotraveler = traveler),
             error: () => {
               this.toastrService.error("Etwas ist schief gelaufen.", "Fehler");
@@ -502,6 +506,26 @@ export class BookingComponent implements OnInit, AfterViewInit {
               this.dialog.open(dialogForm, this.dialogConfig);
             },
           });
+        }
+        else {
+          const toEdit: Booking = {
+            buchungsklasseId: this.currentBooking.buchungsklasseId,
+            datum: this.currentBooking.datum,
+            flughafen: this.currentBooking.flughafen,
+            handGepaeck: this.currentBooking.handGepaeck,
+            id: this.currentBooking.id,
+            koffer: this.currentBooking.koffer,
+            mitReisender: null,
+            reiseAngebotId: this.currentBooking.reiseAngebotId,
+            reisender: this.traveler,
+            status: this.currentBooking.status,
+            zahlungMethod: this.currentBooking.zahlungMethod,
+          };
+
+          this.sharedDataService.changeCurrentBooking(toEdit);
+          // Open the add admin dialog
+          this.dialog.open(dialogForm, this.dialogConfig);
+        }
       },
     });
   }
