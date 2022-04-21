@@ -12,6 +12,7 @@ export class NewsLettersService {
   readonly NEWSLETTERS_URL: string = `${Server.API_URL}/newsletters`;
   readonly SUBSCRIBERS_URL = `${this.NEWSLETTERS_URL}/listabonniert`;
   readonly MAILINGLIST_URL = `${Server.API_URL}/mail/simple-email`;
+  readonly MAILINGLIST_ATTACHMENT_URL = `${Server.API_URL}/mail/attachment`;
 
   headers = new HttpHeaders({ "Content-Type": "application/json" });
 
@@ -45,7 +46,8 @@ export class NewsLettersService {
     // get attached files list
     const files = form.files;
 
-    console.log(files);
+    // formData: email {}
+    //           content : List<MultipartFile>
 
     let formData = new FormData();
 
@@ -73,13 +75,18 @@ export class NewsLettersService {
               to: form.recipients,
               subject: form.subject,
               properties: { content: form.message },
-              files: files // HERE
             }),
           ],
           { type: "application/json" }
         )
       );
-      return this.httpClient.post<any>("URL FOR MAIL WITH FILES", formData);
+
+      // to send a list of multipart/file to backend
+      // we have to pass the file and the filename
+      for(let i=0; i < files.length; i++){
+        formData.append("content",files[i], files[i].name);
+      }
+      return this.httpClient.post<any>(this.MAILINGLIST_ATTACHMENT_URL, formData);
     }
   }
 
