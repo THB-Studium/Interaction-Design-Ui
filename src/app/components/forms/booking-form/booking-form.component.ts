@@ -4,18 +4,17 @@ import {
   Input,
 } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-
 import { formatDate } from "@angular/common";
 
-import { ToastrService } from "ngx-toastr";
 import { BookingClassService } from "src/app/services/booking-class/booking-class.service";
+import { BookingService } from "src/app/services/booking/booking.service";
+import { ToastrService } from "ngx-toastr";
 
 import { Booking } from "src/app/models/booking";
-import { TripOffer } from "src/app/models/tripOffer";
-
-import { PaymentMethod } from "src/app/enums/paymentMethod";
-import { BookingService } from "src/app/services/booking/booking.service";
+import { BookingState } from "src/app/enums/bookingState";
 import { Pattern } from "src/app/variables/pattern";
+import { PaymentMethod } from "src/app/enums/paymentMethod";
+import { TripOffer } from "src/app/models/tripOffer";
 
 @Component({
   selector: "app-booking-form",
@@ -170,12 +169,13 @@ export class BookingFormComponent implements OnInit {
     let buchungsObjekt: Booking = {
       id: null,
       buchungsklasseId: this.selectedBookingClass?.id,
-      datum: this.reise.datum,
+      buchungDatum: '',
       flughafen: this.reise.flughafen,
       handGepaeck: this.reise.handgepaeck === true ? 'true': 'false',
       koffer: this.reise.koffer === true ? 'true': 'false',
       reiseAngebotId: this.currentTripOffer?.id,
       zahlungMethod: this.reise.zahlungsmethod,
+      status: BookingState.EINGEGANGEN,
 
       reisender: {
         id: null,
@@ -205,7 +205,11 @@ export class BookingFormComponent implements OnInit {
         studiengang: mitReiserForm.studiengang,
         telefonnummer: mitReiserForm.handynummer,
         status: mitReiserForm.status
-      } : null
+      } : null,
+      // todo
+      buchungsnummer: '',
+      hinFlugDatum: this.reise.datum,
+      ruckFlugDatum: this.reise.datum
     }
 
     this.buchungService.addOne(buchungsObjekt).subscribe({

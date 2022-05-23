@@ -99,12 +99,12 @@ export class DashboardComponent implements OnInit {
           );
           if (result.length > 0) {
             const minDate: Booking = result?.reduce((b1, b2) =>
-              b1.datum <= b2.datum ? b1 : b2
+              b1.buchungDatum <= b2.buchungDatum ? b1 : b2
             );
             // set the object
             this.statistics[idx].total = result?.length;
             this.statistics[idx].text = `Seit dem ${this.convertDateToString(
-              minDate.datum
+              minDate.buchungDatum
             )}`;
           }
         }
@@ -160,6 +160,7 @@ export class DashboardComponent implements OnInit {
       next: (result) => {
         // save all offers
         this.tripofferList = result;
+        this.loading = false;
         // find the offer stats into the array of the different stats.
         const idx = this.statistics.findIndex(
           (x) => x.title.toLowerCase() === "reiseangebote"
@@ -179,64 +180,68 @@ export class DashboardComponent implements OnInit {
         );
       },
       complete: () => {
-        // filter the offer to get only the current offer
-        const today = formatDate(new Date(), "yyyy-MM-dd", "en_US");
-        this.tripofferList = this.tripofferList.filter(
-          (x) => x.endDatum > today && x.landId !== null
-        );
-        // amount of interested
-        let interested = 0;
-        this.tripofferList.forEach((x) => {
-          interested += x.interessiert;
-          // get the the offer by id
-          let countryid = null;
-          this.tripofferService.getOne(x.id).subscribe({
-            next: (offer) => {
-              countryid = offer.landId;
-            },
-            error: () => {
-              this.toastrService.error(
-                "Fehler beim Laden Reiseangebote Informationen"
-              );
-            },
-            complete: () => {
-              let country: Country = null;
-              // get the country information
-              if (countryid) {
-                this.countryService.getOne(countryid).subscribe({
-                  next: (result) => (country = result),
-                  error: () => {
-                    this.toastrService.error(
-                      "Fehler beim Laden Reiseangebote Informationen"
-                    );
-                  },
-                  complete: () => {
-                    // add to the list of table
-                    this.currentTripoffers.push({
-                      name: x.titel,
-                      destination: country.name,
-                      interestAmount: x.interessiert < 0? 0 : x.interessiert,
-                      rate:
-                        interested > 0
-                          ? Math.round(x.interessiert / interested) * 100
-                          : 0,
-                      freeplace: x.freiPlaetze,
-                      totalplace: x.plaetze,
-                      reservation:
-                        x.plaetze > 0
-                          ? Math.round(
-                              ((x.plaetze - x.freiPlaetze) * 100) / x.plaetze
-                            )
-                          : 0,
-                    });
-                    // set loading flag to false
-                    this.loading = false;
-                  },
-                });
-              }
-            },
+        if (this.tripofferList.length > 0) {
+          // filter the offer to get only the current offer
+          const today = formatDate(new Date(), "yyyy-MM-dd", "en_US");
+          this.tripofferList = this.tripofferList.filter(
+            (x) => x.endDatum > today && x.landId !== null
+          );
+          // amount of interested
+          let interested = 0;
+          this.tripofferList.forEach((x) => {
+            interested += x.interessiert;
+            // get the the offer by id
+            let countryid = null;
+            this.tripofferService.getOne(x.id).subscribe({
+              next: (offer) => {
+                countryid = offer.landId;
+              },
+              error: () => {
+                this.toastrService.error(
+                  "Fehler beim Laden Reiseangebote Informationen"
+                );
+              },
+              complete: () => {
+                let country: Country = null;
+                // get the country information
+                if (countryid) {
+                  this.countryService.getOne(countryid).subscribe({
+                    next: (result) => (country = result),
+                    error: () => {
+                      this.toastrService.error(
+                        "Fehler beim Laden Reiseangebote Informationen"
+                      );
+                    },
+                    complete: () => {
+                      // add to the list of table
+                      this.currentTripoffers.push({
+                        name: x.titel,
+                        destination: country.name,
+                        interestAmount: x.interessiert < 0 ? 0 : x.interessiert,
+                        rate:
+                          interested > 0
+                            ? Math.round(x.interessiert / interested) * 100
+                            : 0,
+                        freeplace: x.freiPlaetze,
+                        totalplace: x.plaetze,
+                        reservation:
+                          x.plaetze > 0
+                            ? Math.round(
+                                ((x.plaetze - x.freiPlaetze) * 100) / x.plaetze
+                              )
+                            : 0,
+                      });
+                      // set loading flag to false
+                      this.loading = false;
+                    },
+                  });
+                }
+              },
+            });
           });
-        });
+        } else {
+          this.loading = false;
+        }
       },
     });
   }
