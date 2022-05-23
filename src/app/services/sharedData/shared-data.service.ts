@@ -216,7 +216,7 @@ export class SharedDataService {
   private booking: Booking = {
     id: '',
     buchungsklasseId: '',
-    datum: '',
+    //datum: '',
     flughafen: '',
     handGepaeck: '',
     koffer: '',
@@ -224,7 +224,11 @@ export class SharedDataService {
     reiseAngebotId: '',
     reisender: null,
     zahlungMethod: null,
-    status: null
+    status: null,
+    buchungDatum: '',
+    buchungsnummer: '',
+    hinFlugDatum: '',
+    ruckFlugDatum: ''
   }
 
   private bookingSource = new BehaviorSubject<Booking>(this.booking);

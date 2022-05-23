@@ -37,7 +37,13 @@
                     <!-- Date Column -->
                     <ng-container matColumnDef="date">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header scope="col">BUCHUNGSDATUM</th>
-                        <td mat-cell *matCellDef="let row"> {{ convertDateToString(row?.datum) }} </td>
+                        <td mat-cell *matCellDef="let row"> {{ convertDateToString(row?.buchungDatum) }} </td>
+                    </ng-container>
+
+                    <!-- Booking nummer Column -->
+                    <ng-container matColumnDef="bookingNB">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header scope="col">BUCHUNGNUMMER</th>
+                        <td mat-cell *matCellDef="let row"> {{ row?.buchungsnummer }} </td>
                     </ng-container>
 
                     <!-- Status Column -->

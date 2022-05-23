@@ -37,6 +37,7 @@ export class BookingComponent implements OnInit, AfterViewInit {
   // Defines displayedColumns
   displayedColumns: string[] = [
     "date",
+    'bookingNB',
     "status",
     "airport",
     "paymentmethod",
@@ -99,6 +100,7 @@ export class BookingComponent implements OnInit, AfterViewInit {
       BookingState.BEARBEITUNG,
       BookingState.BESTAETIGT,
       BookingState.ABGELEHNT,
+      BookingState.STORNIEREN
     ];
     this.isRemoveCotraveler = false;
   }
@@ -109,7 +111,6 @@ export class BookingComponent implements OnInit, AfterViewInit {
       {
         id: "",
         buchungsklasseId: "",
-        datum: "",
         flughafen: "",
         handGepaeck: "",
         koffer: "",
@@ -118,6 +119,10 @@ export class BookingComponent implements OnInit, AfterViewInit {
         zahlungMethod: null,
         reiseAngebotId: "",
         status: "",
+        buchungDatum: "",
+        buchungsnummer: "",
+        hinFlugDatum: "",
+        ruckFlugDatum: "",
       },
     ]);
 
@@ -126,6 +131,7 @@ export class BookingComponent implements OnInit, AfterViewInit {
 
     // read bookings from the api
     this.getBookingList().then((booking) => {
+      console.log(booking)
       this.setDataSource(booking);
     });
   }
@@ -148,8 +154,8 @@ export class BookingComponent implements OnInit, AfterViewInit {
   // Sorts the by date descending
   sortByDate(bookingList: Booking[]): void {
     bookingList.sort((x, y) => {
-      if (x.datum < y.datum) return 1;
-      if (x.datum > y.datum) return -1;
+      if (x.buchungDatum < y.buchungDatum) return 1;
+      if (x.buchungDatum > y.buchungDatum) return -1;
       return 0;
     });
   }
@@ -238,7 +244,7 @@ export class BookingComponent implements OnInit, AfterViewInit {
     const toUpdate = {
       id: booking.id,
       buchungsklasseId: booking.buchungsklasseId,
-      datum: booking.datum,
+      buchungDatum: booking.buchungDatum,
       flughafen: booking.flughafen,
       handGepaeck: booking.handGepaeck,
       koffer: booking.koffer,
@@ -247,6 +253,9 @@ export class BookingComponent implements OnInit, AfterViewInit {
       zahlungMethod: booking.zahlungMethod,
       reiseAngebotId: booking.reiseAngebotId,
       status: BookingState.BEARBEITUNG,
+      hinFlugDatum: booking.hinFlugDatum,
+      ruckFlugDatum: booking.ruckFlugDatum,
+      buchungsnummer: booking.buchungsnummer,
     };
     this.updateBooking(toUpdate);
   }
@@ -282,7 +291,7 @@ export class BookingComponent implements OnInit, AfterViewInit {
                         complete: () => {
                           const currentAdded: Booking = {
                             buchungsklasseId: savedValue.buchungsklasseId,
-                            datum: savedValue.datum,
+                            buchungDatum: savedValue.buchungDatum,
                             flughafen: savedValue.flughafen,
                             handGepaeck: savedValue.handGepaeck,
                             id: savedValue.id,
@@ -292,6 +301,10 @@ export class BookingComponent implements OnInit, AfterViewInit {
                             reisender: this.traveler,
                             status: savedValue.status,
                             zahlungMethod: savedValue.zahlungMethod,
+                            //
+                            buchungsnummer: savedValue.buchungsnummer,
+                            hinFlugDatum: savedValue.hinFlugDatum,
+                            ruckFlugDatum: savedValue.ruckFlugDatum,
                           };
                           this.sharedDataService.changeCurrentBooking(
                             currentAdded
@@ -316,10 +329,10 @@ export class BookingComponent implements OnInit, AfterViewInit {
           });
         } else {
           // to update just id for traveler and cotraveler are needed
-          const toUpdate = {
+          const toUpdate: BookingUpdate = {
             id: booking.id,
             buchungsklasseId: booking.buchungsklasseId,
-            datum: booking.datum,
+            buchungDatum: booking.buchungDatum,
             flughafen: booking.flughafen,
             handGepaeck: booking.handGepaeck,
             koffer: booking.koffer,
@@ -329,7 +342,10 @@ export class BookingComponent implements OnInit, AfterViewInit {
             reisenderId: booking.reisender?.id,
             zahlungMethod: booking.zahlungMethod,
             reiseAngebotId: booking.reiseAngebotId,
-            status: booking.status
+            status: booking.status,
+            buchungsnummer: booking.buchungsnummer,
+            hinFlugDatum: booking.hinFlugDatum,
+            ruckFlugDatum: booking.ruckFlugDatum,
           };
 
           this.updateBooking(toUpdate);
@@ -362,7 +378,7 @@ export class BookingComponent implements OnInit, AfterViewInit {
 
             const currentUpdated: Booking = {
               buchungsklasseId: savedValue.buchungsklasseId,
-              datum: savedValue.datum,
+              buchungDatum: savedValue.buchungDatum,
               flughafen: savedValue.flughafen,
               handGepaeck: savedValue.handGepaeck,
               id: savedValue.id,
@@ -372,6 +388,9 @@ export class BookingComponent implements OnInit, AfterViewInit {
               reisender: this.traveler,
               status: savedValue.status,
               zahlungMethod: savedValue.zahlungMethod,
+              buchungsnummer: savedValue.buchungsnummer,
+              hinFlugDatum: savedValue.hinFlugDatum,
+              ruckFlugDatum: savedValue.ruckFlugDatum,
             };
 
             this.sharedDataService.changeCurrentBooking(currentUpdated);
@@ -383,7 +402,10 @@ export class BookingComponent implements OnInit, AfterViewInit {
             this.sortByDate(this.bookingList);
             this.dataSource.data = this.bookingList;
             //
-            if (savedValue.status === BookingState.BEARBEITUNG && toUpdate.status !== BookingState.BEARBEITUNG) {
+            if (
+              savedValue.status === BookingState.BEARBEITUNG &&
+              toUpdate.status !== BookingState.BEARBEITUNG
+            ) {
               this.toastrService.info(
                 "Buchung bearbeiten. Der Reisende wurde benachrichtigt."
               );
@@ -401,8 +423,7 @@ export class BookingComponent implements OnInit, AfterViewInit {
         this.toastrService.success(
           "Die Änderung wurde erfolgreich gespeichert"
         );
-        
-      }
+      },
     });
   }
 
@@ -421,7 +442,9 @@ export class BookingComponent implements OnInit, AfterViewInit {
             this.toastrService.error("Etwas ist schief gelaufen.", "Fehler"),
           complete: () => {
             // get the travelers information
-            const id = booking.reisenderId ? booking.reisenderId : booking.reisender.id;
+            const id = booking.reisenderId
+              ? booking.reisenderId
+              : booking.reisender.id;
             this.travelerService.getOne(id).subscribe({
               next: (traveler) => (this.traveler = traveler),
               error: () => {
@@ -432,18 +455,18 @@ export class BookingComponent implements OnInit, AfterViewInit {
               },
               complete: () => {
                 if (booking.mitReisender || booking.mitReisenderId) {
-                  const id = booking.mitReisenderId ? booking.mitReisenderId : booking.mitReisender.id;
-                  this.travelerService
-                    .getOne(id)
-                    .subscribe({
-                      next: (traveler) => (this.cotraveler = traveler),
-                      error: () => {
-                        this.toastrService.error(
-                          "Etwas ist schief gelaufen.",
-                          "Fehler"
-                        );
-                      },
-                    });
+                  const id = booking.mitReisenderId
+                    ? booking.mitReisenderId
+                    : booking.mitReisender.id;
+                  this.travelerService.getOne(id).subscribe({
+                    next: (traveler) => (this.cotraveler = traveler),
+                    error: () => {
+                      this.toastrService.error(
+                        "Etwas ist schief gelaufen.",
+                        "Fehler"
+                      );
+                    },
+                  });
                 }
                 // get the booking class
                 let bookigclassId = booking.buchungsklasseId;
@@ -470,7 +493,9 @@ export class BookingComponent implements OnInit, AfterViewInit {
     this.sharedDataService.isAddBtnClicked = false;
     this.isAdd = false;
     this.currentBooking = booking;
-    const id = this.currentBooking.reisenderId ? this.currentBooking.reisenderId : booking.reisender.id;
+    const id = this.currentBooking.reisenderId
+      ? this.currentBooking.reisenderId
+      : booking.reisender.id;
     this.travelerService.getOne(id).subscribe({
       next: (result) => {
         this.traveler = result;
@@ -480,7 +505,9 @@ export class BookingComponent implements OnInit, AfterViewInit {
       },
       complete: () => {
         if (this.currentBooking.mitReisenderId || booking.mitMitreiser) {
-          const id = this.currentBooking.mitReisenderId ? this.currentBooking.mitReisenderId : booking.mitReisender.id;
+          const id = this.currentBooking.mitReisenderId
+            ? this.currentBooking.mitReisenderId
+            : booking.mitReisender.id;
           this.travelerService.getOne(id).subscribe({
             next: (traveler) => (this.cotraveler = traveler),
             error: () => {
@@ -489,7 +516,7 @@ export class BookingComponent implements OnInit, AfterViewInit {
             complete: () => {
               const toEdit: Booking = {
                 buchungsklasseId: this.currentBooking.buchungsklasseId,
-                datum: this.currentBooking.datum,
+                buchungDatum: this.currentBooking.buchungDatum,
                 flughafen: this.currentBooking.flughafen,
                 handGepaeck: this.currentBooking.handGepaeck,
                 id: this.currentBooking.id,
@@ -499,6 +526,9 @@ export class BookingComponent implements OnInit, AfterViewInit {
                 reisender: this.traveler,
                 status: this.currentBooking.status,
                 zahlungMethod: this.currentBooking.zahlungMethod,
+                buchungsnummer: this.currentBooking.buchungsnummer,
+                hinFlugDatum: this.currentBooking.hinFlugDatum,
+                ruckFlugDatum: this.currentBooking.ruckFlugDatum,
               };
 
               this.sharedDataService.changeCurrentBooking(toEdit);
@@ -506,11 +536,10 @@ export class BookingComponent implements OnInit, AfterViewInit {
               this.dialog.open(dialogForm, this.dialogConfig);
             },
           });
-        }
-        else {
+        } else {
           const toEdit: Booking = {
             buchungsklasseId: this.currentBooking.buchungsklasseId,
-            datum: this.currentBooking.datum,
+            buchungDatum: this.currentBooking.buchungDatum,
             flughafen: this.currentBooking.flughafen,
             handGepaeck: this.currentBooking.handGepaeck,
             id: this.currentBooking.id,
@@ -520,6 +549,9 @@ export class BookingComponent implements OnInit, AfterViewInit {
             reisender: this.traveler,
             status: this.currentBooking.status,
             zahlungMethod: this.currentBooking.zahlungMethod,
+            buchungsnummer: this.currentBooking.buchungsnummer,
+            hinFlugDatum: this.currentBooking.hinFlugDatum,
+            ruckFlugDatum: this.currentBooking.ruckFlugDatum,
           };
 
           this.sharedDataService.changeCurrentBooking(toEdit);
@@ -623,10 +655,10 @@ export class BookingComponent implements OnInit, AfterViewInit {
     if (state) status = this.bookingStates[2];
     else status = this.bookingStates[3];
 
-    const toUpdate = {
+    const toUpdate: BookingUpdate = {
       id: this.currentBooking.id,
       buchungsklasseId: this.currentBooking.buchungsklasseId,
-      datum: this.currentBooking.datum,
+      buchungDatum: this.currentBooking.buchungDatum,
       flughafen: this.currentBooking.flughafen,
       handGepaeck: this.currentBooking.handGepaeck,
       koffer: this.currentBooking.koffer,
@@ -635,6 +667,9 @@ export class BookingComponent implements OnInit, AfterViewInit {
       zahlungMethod: this.currentBooking.zahlungMethod,
       reiseAngebotId: this.currentBooking.reiseAngebotId,
       status: status,
+      buchungsnummer: this.currentBooking.buchungsnummer,
+      hinFlugDatum: this.currentBooking.hinFlugDatum,
+      ruckFlugDatum: this.currentBooking.ruckFlugDatum
     };
 
     this.updateBooking(toUpdate);

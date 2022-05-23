@@ -46,7 +46,7 @@ registerLocaleData(localeDe, localeDeExtra);
     AdminLayoutComponent,
     AuthLayoutComponent,
     HomeLayoutComponent,
-    ScrollToTopComponent,
+    ScrollToTopComponent
   ],
   providers: [
     //{ provide: HTTP_INTERCEPTORS, useClass: AppHttpInterceptor, multi: true },

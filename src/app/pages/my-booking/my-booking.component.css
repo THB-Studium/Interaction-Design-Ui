@@ -1,0 +1,42 @@
+h1 {
+  font-size: 30px !important;
+}
+
+h2 {
+  font-size: 26px !important;
+}
+
+h3 {
+  font-size: 20px !important;
+}
+
+.jumbotron {
+  padding: 1.5rem 1rem 1rem 1rem !important;
+  border-bottom: 4px solid rgb(45, 146, 171);
+  border-radius: 0.4375rem 0.4375rem 0 0;
+  margin: 0 0 1rem 0 !important;
+}
+
+.booking-info label {
+  margin: 0.8em !important;
+}
+
+@media only screen and (max-width: 767px) {
+    .card-body {
+        padding-left: .2rem !important;
+    }
+}
+
+@media only screen and (max-width: 386px) {
+  h1 {
+    font-size: 18px !important;
+  }
+
+  h2 {
+    font-size: 14px !important;
+  }
+
+  h3 {
+    font-size: 12px !important;
+  }
+}

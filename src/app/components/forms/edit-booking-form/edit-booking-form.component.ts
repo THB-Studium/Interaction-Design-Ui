@@ -133,7 +133,7 @@ export class EditBookingFormComponent
   ) {
     this.currentBooking = {
       buchungsklasseId: "",
-      datum: "",
+      buchungDatum: "",
       flughafen: "",
       handGepaeck: "",
       id: "",
@@ -143,6 +143,9 @@ export class EditBookingFormComponent
       reisender: null,
       zahlungMethod: null,
       status: "",
+      buchungsnummer: '',
+      hinFlugDatum: '',
+      ruckFlugDatum: ''
     };
     this.dateError = "";
     this.paymentMethodArray = [
@@ -313,7 +316,7 @@ export class EditBookingFormComponent
 
   private setFormDefaultValue(booking: Booking): void {
     this.bookingForm.setValue({
-      date: booking.datum,
+      date: booking.buchungDatum,
       tripoffer: this.bookingForm.get("tripoffer").value,
       airport: this.defaultAirport,
       bookingClass: this.bookingForm.get("bookingClass").value,
@@ -353,7 +356,7 @@ export class EditBookingFormComponent
         id: id,
         buchungsklasseId: this.bookingForm.get("bookingClass").value.id,
         flughafen: this.bookingForm.get("airport").value,
-        datum: this.selectedDate,
+        buchungDatum: this.selectedDate,
         reisender: this.bookingForm.get("traveler").value,
         mitReisender: this.bookingForm.get("coTraveler").value,
         handGepaeck:
@@ -362,7 +365,11 @@ export class EditBookingFormComponent
           this.bookingForm.get("suitcase").value === "Ja" ? "true" : "false",
         zahlungMethod: this.bookingForm.get("paymentMethod").value,
         reiseAngebotId: this.bookingForm.get("tripoffer").value.id,
-        status: this.currentBooking.status
+        status: this.currentBooking.status,
+        //
+        buchungsnummer: this.currentBooking.buchungsnummer,
+        hinFlugDatum: this.currentBooking.hinFlugDatum,
+        ruckFlugDatum: this.currentBooking.ruckFlugDatum
       };
 
       this.sharedDataService.changeCurrentBooking(this.currentBooking);

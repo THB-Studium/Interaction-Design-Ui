@@ -169,7 +169,7 @@ export class BookingFormComponent implements OnInit {
     let buchungsObjekt: Booking = {
       id: null,
       buchungsklasseId: this.selectedBookingClass?.id,
-      datum: this.reise.datum,
+      buchungDatum: '',
       flughafen: this.reise.flughafen,
       handGepaeck: this.reise.handgepaeck === true ? 'true': 'false',
       koffer: this.reise.koffer === true ? 'true': 'false',
@@ -205,7 +205,11 @@ export class BookingFormComponent implements OnInit {
         studiengang: mitReiserForm.studiengang,
         telefonnummer: mitReiserForm.handynummer,
         status: mitReiserForm.status
-      } : null
+      } : null,
+      // todo
+      buchungsnummer: '',
+      hinFlugDatum: this.reise.datum,
+      ruckFlugDatum: this.reise.datum
     }
 
     this.buchungService.addOne(buchungsObjekt).subscribe({

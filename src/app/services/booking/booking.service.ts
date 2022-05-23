@@ -5,6 +5,7 @@ import { Observable } from "rxjs";
 import * as saveAs from 'file-saver';
 import { Server } from 'src/app/variables/server';
 import { Booking, BookingUpdate } from 'src/app/models/booking';
+import { BookingState } from 'src/app/enums/bookingState';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +15,8 @@ export class BookingService {
   readonly BOOKING_URL: string = `${Server.API_URL}/buchungen`;
   readonly BOOKING_AD_PDF_URL: string = `${this.BOOKING_URL}/exportPdf`;
   readonly DELETE_BOOKING_COTRAVELER_URL: string = `${this.BOOKING_URL}/removeMitReisender`;
+  readonly BOOKING_BY_BNR: string = `${this.BOOKING_URL}/search`;
+  readonly CANCEL_BOOKING: string = `${this.BOOKING_URL}/changestatus`;
   headers = new HttpHeaders({ "Content-Type": "application/json" });
 
   constructor(private httpClient: HttpClient) { }
@@ -21,6 +24,12 @@ export class BookingService {
   // GET ONE
   getOne(id: string): Observable<Booking> {
     const bookingtoberead_url = `${this.BOOKING_URL}/${id}`;
+    return this.httpClient.get<Booking>(bookingtoberead_url);
+  }
+
+  // GET BY BNR
+  getByBookingNummer(bnr: string) {
+    const bookingtoberead_url = `${this.BOOKING_BY_BNR}/${bnr}`;
     return this.httpClient.get<Booking>(bookingtoberead_url);
   }
 
@@ -65,6 +74,13 @@ export class BookingService {
     const tobedelete = `${this.DELETE_BOOKING_COTRAVELER_URL}/${id}`;
     return this.httpClient.delete(tobedelete, {
       responseType: "text"
+    });
+  }
+
+  // Change booking state
+  changeBookingStatus(id: string, status: BookingState) {
+    return this.httpClient.put(`${this.CANCEL_BOOKING}/${id}/${status.toString()}`, {}, {
+      headers: this.headers,
     });
   }
 }

@@ -58,18 +58,18 @@
   </div>
 
   <!-- Feedback -->
-  <div class="section-contents-FB col-md-12" *ngIf="feedbacks.length > 0">
-    <div class="row mb-5">
-      <div class="col-10">
-        <h2 class="black-color">Feedback</h2>
-      </div>
-      <div class="col-2 align-self-end">
-        <button class="float-right" mat-mini-fab aria-label="add icon" matTooltip="Neus Feedback teilen"
-          matTooltipHideDelay="2000" (click)="onAddFeedback()" id="addFeedback">
-          <mat-icon>add</mat-icon>
-        </button>
-      </div>
+  <div class="row mb-5">
+    <div class="col-10">
+      <h2 class="black-color">Feedback</h2>
     </div>
+    <div class="col-2 align-self-end">
+      <button class="float-right" mat-mini-fab aria-label="add icon" matTooltip="Neus Feedback teilen"
+        matTooltipHideDelay="2000" (click)="onAddFeedback()" id="addFeedback">
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+  </div>
+  <div class="section-contents-FB col-md-12" *ngIf="feedbacks.length > 0">
     <!--  Spinner  -->
     <app-spinner [dataName]="'Feedbacks'" *ngIf="!loadFeedBacksFinished"></app-spinner>
     <div class="row" *ngIf="loadFeedBacksFinished && feedbacks.length > 0">

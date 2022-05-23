@@ -2,5 +2,6 @@ export enum BookingState {
     EINGEGANGEN = "Eingegangen",
     BEARBEITUNG = "Bearbeitung",
     BESTAETIGT = "Bestaetigt",
-    ABGELEHNT = "Abgelehnt"
+    ABGELEHNT = "Abgelehnt",
+    STORNIEREN = "Storniert"
 }

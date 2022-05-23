@@ -1,13 +1,10 @@
 <!-- header -->
-<header [ngStyle]="{ background: headerBgColor }">
-  <app-navbar-guest></app-navbar-guest>
-</header>
-<div class="main-content">
-  <main>
-    <router-outlet></router-outlet>
-  </main>
-  <!-- FOOTER -->
-  <footer class="footer" [ngStyle]="{'background': footerBgColor}">
-    <app-footer [buttonColor]="footerBgColor"></app-footer>
-  </footer>
+<div class="wrapper">
+  <header [ngStyle]="{ background: headerBgColor }">
+    <app-navbar-guest></app-navbar-guest>
+  </header>
+  <router-outlet></router-outlet>
 </div>
+<footer class="footer" [ngStyle]="{'background': footerBgColor}">
+  <app-footer [buttonColor]="footerBgColor"></app-footer>
+</footer>

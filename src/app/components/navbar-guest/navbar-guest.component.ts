@@ -1,5 +1,5 @@
 import {Component, OnInit} from "@angular/core";
-import { formatDate, Location } from "@angular/common";
+import { formatDate } from "@angular/common";
 import { Router } from "@angular/router";
 import { CurrentOffersListFormComponent } from "../forms/current-offers-list-form/current-offers-list-form.component";
 import { MatDialog } from "@angular/material/dialog";
@@ -17,60 +17,55 @@ import { TripOffer } from "src/app/models/tripOffer";
 export class NavbarGuestComponent implements OnInit {
 
   public listTitles: any[];
-  public location: Location;
 
   public isCollapsed = true;
   loading = false;
 
   // Defines currentOffers
   currentOffers: TripOffer[];
+  // Defines hasOffers
+  hasOffers: boolean;
 
   constructor(
-    location: Location,
     private router: Router,
     private tripofferService: TripOfferService,
     private toastrService: ToastrService,
     private dialog: MatDialog
   ) {
-    // Get the current page
-    this.location = location;
     this.currentOffers = [];
+    this.hasOffers = false;
   }
 
   ngOnInit() {
     this.router.events.subscribe((event) => {
       this.isCollapsed = true;
     });
+
+    this.getOfferList();
   }
 
-  startReservationProcess() {
-    // display loader
-    this.loading = true;
-    // Get the list of the current offers
+  getOfferList() {
     this.tripofferService.getAll().subscribe({
-      next: (result: TripOffer[]) => {
-        // only current and valid offers are needed
+      next: (result) => {
         const today = formatDate(new Date(), "yyyy-MM-dd", "en_US");
         this.currentOffers = result.filter(
           (x) => x.endDatum > today && x.landId != null
         );
+        this.hasOffers = this.currentOffers.length > 0;
       },
       error: () => {
         this.toastrService.info(
           "Die Liste von Reiseangebote konnten nicht geladen werden."
         );
-        // hide the loader on error
-        this.loading = false;
-      },
-      complete: () => {
-        const dialodForm = this.dialog.open(CurrentOffersListFormComponent, {
-          disableClose: true,
-          autoFocus: true,
-        });
-        dialodForm.componentInstance.currentOffers = this.currentOffers;
-        // hide the loader on modal open
-        this.loading = false;
       },
     });
+  }
+
+  startReservationProcess() {
+    const dialodForm = this.dialog.open(CurrentOffersListFormComponent, {
+      disableClose: true,
+      autoFocus: true,
+    });
+    dialodForm.componentInstance.currentOffers = this.currentOffers;
   }
 }
