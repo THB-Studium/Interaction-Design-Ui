@@ -222,14 +222,14 @@ mat-dialog-content h3,
 
 @media only screen and (max-width: 468px) {
   h1 {
-    font-size: 26px !important;
-  }
-
-  h2 {
     font-size: 22px !important;
   }
 
+  h2 {
+    font-size: 18px !important;
+  }
+
   h3 {
-    font-size: 17px !important;
+    font-size: 13px !important;
   }
 }

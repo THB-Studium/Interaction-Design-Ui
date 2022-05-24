@@ -1,0 +1,130 @@
+<div class="d-flex justify-content-center mt-5 mb-5">
+    <mat-card class="col-md-10">
+        <mat-card-title>
+            <div class="jumbotron">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="mr-auto">
+                            <h1>Buchungsverwaltung</h1>
+                        </div>
+                        <button class="btn btn-white" (click)="pdfSpeichern()" *ngIf="isFound && tripoffer && bookingclass">
+                            <i class="far fa-file-pdf mr-1 text-danger"></i>Speichern
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </mat-card-title>
+        <mat-card-subtitle>
+            <div class="row justify-content-center">
+                <mat-form-field class="col-md-12 text-center">
+                    <mat-label>Buchungsnummer</mat-label>
+                    <input type="text" name="bookingNr" [(ngModel)]="bookingNb" (ngModelChange)="getBooking()" matInput
+                        [required]="false">
+                </mat-form-field>
+            </div>
+        </mat-card-subtitle>
+        <mat-card-content>
+            <div class="col-12">
+                <h3>Reiseinformationen</h3>
+            </div>
+            <div class="col-md-12 mb-5">
+                <p>Enter the booking number and the information will be showing here. text......</p>
+            </div>
+            <div class="col-12" *ngIf="!isFound && requested">
+                <h4>Keine passende Buchung konnte gefunden werden.</h4>
+            </div>
+            <div class="col-12 mb-2" *ngIf="isFound && tripoffer && bookingclass">
+                <div class="col-12">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label><strong>Buchungsdatum: </strong>{{tripoffer?.buchungDatum}}</label>
+                        </div>
+                        <div class="col-md-6">
+                            <label><strong>Flughafen: </strong>{{tripoffer?.flughafen}}</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label><strong>Buchungsklasse: </strong>{{bookingclass?.type}}</label>
+                        </div>
+                        <div class="col-6">
+                            <label><strong>Zahlungsmethode: </strong>{{tripoffer?.zahlungMethod}}</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6" *ngIf="tripoffer?.koffer">
+                            <label><strong>Koffer:</strong> {{tripoffer?.koffer ? 'Ja' : 'Nein'}}</label>
+                        </div>
+                        <div class="col-md-6" *ngIf="tripoffer?.handGepaeck">
+                            <label><strong>Handgepäck:</strong> {{tripoffer?.handGepaeck ? 'Ja' : 'Nein'}}</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="card booking-info" *ngFor="let reisender of reisendeArray; let i = index">
+                    <div class="card-header">
+                        <h2>{{i + 1}}</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label><strong>Vorname:</strong> {{reisender.vorname}}</label>
+                            </div>
+                            <div class="col-md-6">
+                                <label><strong>Nachname:</strong> {{reisender.name}}</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label><strong>Geburtsdatum:</strong> {{reisender.geburtsdatum}}</label>
+                            </div>
+                            <div class="col-md-6">
+                                <label><strong>Postanschrift:</strong> {{reisender.adresse}}</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label><strong>Handynummer:</strong> {{reisender.telefonnummer}}</label>
+                            </div>
+                            <div class="col-md-6">
+                                <label><strong>Email:</strong> {{reisender.email}}</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6" *ngIf="reisender.studiengang.length > 0">
+                                <label><strong>Studiengang:</strong> {{reisender.studiengang}}</label>
+                            </div>
+                            <div class="col-md-6" *ngIf="reisender?.status?.length > 0">
+                                <label><strong>Status:</strong> {{reisender.status}}</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6" *ngIf="reisender?.arbeitetBei?.length > 0">
+                                <label> <strong>Arbeitet Bei:</strong> {{reisender.arbeitetBei}}</label>
+                            </div>
+                            <div class="col-md-6">
+                                <label><strong>Hochschule:</strong> {{reisender.hochschule}}</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>
+                                    <span *ngIf="reisender.schonTeilgennomem"><strong>Schon Teilgennomem:</strong> Ja</span>
+                                    <span *ngIf="!reisender.schonTeilgennomem"><strong>Schon Teilgennomem:</strong> Nein</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </mat-card-content>
+        <mat-divider inset></mat-divider>
+        <mat-card-actions align="end" class="pt-4">
+            <button mat-stroked-button [routerLink]="['/home']">
+                <mat-icon>home</mat-icon> Home
+            </button>
+        </mat-card-actions>
+        <mat-card-footer>
+            <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+        </mat-card-footer>
+    </mat-card>
+</div>

@@ -238,7 +238,7 @@ Instagram: <https://www.instagram.com/CreativeTimOfficial?ref=creativetim>
 
 ### Structure
 
-The  structure of the project has changed. For the current structure check the attached pdf.
+The  structure of the project has changed. Please check the attached pdf file to see the current project structure.
 
 ### Start
 

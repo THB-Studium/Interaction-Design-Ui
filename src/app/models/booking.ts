@@ -4,7 +4,7 @@ import { Traveler } from "./traveler";
 export class Booking {
     public id: string;
     public buchungsklasseId: string;
-    public datum: string;
+    public buchungDatum: string;
     public flughafen: string;
     public handGepaeck: string;
     public koffer: string;
@@ -12,12 +12,18 @@ export class Booking {
     public reisender: Traveler;
     public zahlungMethod: PaymentMethod;
     public reiseAngebotId: string;
+    public status: string;
+    //
+    public buchungsnummer: string;
+    public hinFlugDatum: string;
+    public ruckFlugDatum: string;
 }
 
 export class BookingUpdate {
     public id: string;
     public buchungsklasseId: string;
-    public datum: string;
+    //public datum: string;
+    public buchungDatum: string;
     public flughafen: string;
     public handGepaeck: string;
     public koffer: string;
@@ -25,4 +31,9 @@ export class BookingUpdate {
     public reisenderId: string;
     public zahlungMethod: PaymentMethod;
     public reiseAngebotId: string;
+    public status: string;
+    //
+    public buchungsnummer: string;
+    public hinFlugDatum: string;
+    public ruckFlugDatum: string;
 }

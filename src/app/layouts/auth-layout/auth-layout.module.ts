@@ -28,12 +28,13 @@ import { MatDialogModule } from "@angular/material/dialog";
 import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatNativeDateModule, MAT_DATE_FORMATS } from "@angular/material/core";
 import { MatExpansionModule } from "@angular/material/expansion";
+import { MatProgressBarModule } from "@angular/material/progress-bar";
 
 import { LoginComponent } from "../../pages/login/login.component";
 import { RegisterComponent } from "../../pages/register/register.component";
 import { LearnMoreComponent } from "../../pages/learn-more/learn-more.component";
 import { AboutusComponent } from "src/app/pages/aboutus/aboutus.component";
-import { ScrollToTopComponent } from "src/app/components/scroll-to-top/scroll-to-top.component";
+import { MyBookingComponent } from "src/app/pages/my-booking/my-booking.component";
 
 @NgModule({
   imports: [
@@ -62,12 +63,14 @@ import { ScrollToTopComponent } from "src/app/components/scroll-to-top/scroll-to
     MatNativeDateModule,
     ComponentsModule,
     MatExpansionModule,
+    MatProgressBarModule
   ],
   declarations: [
     LearnMoreComponent,
     LoginComponent,
     RegisterComponent,
     AboutusComponent,
+    MyBookingComponent
   ],
   providers: [
     //{ provide: HTTP_INTERCEPTORS, useClass: AppHttpInterceptor, multi: true },
