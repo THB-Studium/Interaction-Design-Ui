@@ -122,25 +122,9 @@
             <button mat-stroked-button [routerLink]="['/home']">
                 <mat-icon>home</mat-icon> Home
             </button>
-            <button mat-stroked-button color="accent" (click)="cancelconfDialog(confirmationDialog)" [disabled]="!isFound">Stornieren</button>
         </mat-card-actions>
         <mat-card-footer>
             <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
         </mat-card-footer>
     </mat-card>
 </div>
-
-<ng-template #confirmationDialog>
-    <h1 mat-dialog-title>Bestätigen um diese Buchung zu stornieren</h1>
-    <mat-divider></mat-divider>
-    <div mat-dialog-content>
-        <p class="pt-2">
-            Die gerade angezeigte Buchung wird <strong>storniert</strong>.
-        </p>
-    </div>
-    <mat-divider></mat-divider>
-    <div mat-dialog-actions align="end">
-        <button mat-stroked-button color="primary" mat-dialog-close (click)="cancelBooking()">Ja</button>
-        <button mat-raised-button color="accent" mat-dialog-close>Abbrechen</button>
-    </div>
-</ng-template>
