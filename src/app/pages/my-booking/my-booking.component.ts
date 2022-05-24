@@ -138,7 +138,7 @@ export class MyBookingComponent implements OnInit {
           this.toastrService.success('Deine Buchung wurde erfolgreich storniert.')
         }
       },
-      error: (err) => {
+      error: () => {
         this.toastrService.error('Etwas ist schiefgelaufen. Bitte versuchen Sie spaeter nochmal.');
       },
       complete: () => this.resetValues()
