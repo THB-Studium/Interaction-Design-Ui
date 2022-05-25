@@ -74,7 +74,7 @@
                 </div>
             </div>
         </mat-card-content>
-        <mat-card-actions>
+        <mat-card-actions class="d-flex justify-content-end">
             <button class="ml-4" (click)="sendToAll()" mat-fab color="primary" aria-label="send"
                 [disabled]="!recipients.value || !mailForm.get('msg').value" matTooltip="Senden"
                 matTooltipHideDelay="{{ toolTipDuration }}">
