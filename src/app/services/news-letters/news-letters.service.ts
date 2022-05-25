@@ -83,9 +83,7 @@ export class NewsLettersService {
 
       // to send a list of multipart/file to backend
       // we have to pass the file and the filename
-      for(let i=0; i < files.length; i++){
-        formData.append("content",files[i], files[i].name);
-      }
+      files.forEach(x => formData.append("content", x, x.name));
       return this.httpClient.post<any>(this.MAILINGLIST_ATTACHMENT_URL, formData);
     }
   }
