@@ -7,7 +7,6 @@ import { BookingClassService } from 'src/app/services/booking-class/booking-clas
 import { TravelerService } from 'src/app/services/traveler/traveler.service';
 import { ToastrService } from 'ngx-toastr';
 
-import { Booking, BookingUpdate } from 'src/app/models/booking';
 import { BookingClass } from 'src/app/models/bookingClass';
 import { Traveler } from 'src/app/models/traveler';
 import { BookingState } from 'src/app/enums/bookingState';

@@ -51,6 +51,7 @@ import { StarsComponent } from "./stars/stars.component";
 import { ChatBotComponent } from "./chat-bot/chat-bot.component";
 import { CurrentOffersListFormComponent } from "./forms/current-offers-list-form/current-offers-list-form.component";
 import { MatExpansionModule } from "@angular/material/expansion";
+import { MailingListFormComponent } from './forms/mailing-list-form/mailing-list-form.component';
 
 @NgModule({
   imports: [
@@ -108,6 +109,7 @@ import { MatExpansionModule } from "@angular/material/expansion";
     ChatBotComponent,
     StarsComponent,
     CurrentOffersListFormComponent,
+    MailingListFormComponent
   ],
   exports: [
     FooterComponent,
@@ -129,6 +131,7 @@ import { MatExpansionModule } from "@angular/material/expansion";
     SpinnerComponent,
     ChatBotComponent,
     StarsComponent,
+    MailingListFormComponent
   ],
 })
 export class ComponentsModule {}

@@ -50,6 +50,12 @@ export const ROUTES: RouteInfo[] = [
     class: "",
   },
   {
+    path: "/newsletter",
+    title: "Newsletter",
+    icon: "fa fa-newspaper text-black-50",
+    class: "",
+  },
+  {
     path: "/tripoffers",
     title: "Reiseangebote",
     icon: "fas fa-plane-departure text-info",

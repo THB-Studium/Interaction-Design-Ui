@@ -47,6 +47,8 @@ import { FeedbackComponent } from 'src/app/pages/feedback/feedback.component';
 import { TravelerComponent } from "../../pages/traveler/traveler.component";
 import { TripofferComponent } from 'src/app/pages/tripoffer/tripoffer.component';
 import { UserProfileComponent } from "../../pages/user-profile/user-profile.component";
+import { NewsletterComponent } from "src/app/pages/newsletter/newsletter.component";
+import { MailingListComponent } from "src/app/pages/mailing-list/mailing-list.component";
 
 @NgModule({
   imports: [
@@ -95,7 +97,9 @@ import { UserProfileComponent } from "../../pages/user-profile/user-profile.comp
     FeedbackComponent,    
     TravelerComponent,
     TripofferComponent,
-    UserProfileComponent
+    UserProfileComponent,
+    NewsletterComponent,
+    MailingListComponent
   ],
   providers: [
     //{ provide: HTTP_INTERCEPTORS, useClass: AppHttpInterceptor, multi: true },
