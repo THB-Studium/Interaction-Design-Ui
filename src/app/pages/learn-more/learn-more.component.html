@@ -22,7 +22,7 @@
         <h3 *ngIf = "currentTripOffer?.freiPlaetze <= 0" class="set-content-right"> Keine Plätze mehr !</h3>
         <h3 *ngIf = "anmeldeFristVorbei" class="set-content-right"> Der Anmeldefrist ist vorbei !</h3>
         <button mat-button class="booking-btn"
-                [ngStyle]="backgroundColor" (click)="bookingFormDialog()"
+                [ngStyle]="backgroundColor" (click)="toReservationForm()"
                 [disabled]="currentTripOffer?.freiPlaetze <= 0 || anmeldeFristVorbei">
           <span id="reserve-place">PLATZ RESERVIEREN ></span>
           <span id="reserve">RESERVIEREN ></span>

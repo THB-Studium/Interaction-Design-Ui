@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { DomSanitizer, SafeUrl } from "@angular/platform-browser";
 import { MatDialog } from "@angular/material/dialog";
 import { MatTableDataSource } from "@angular/material/table";
@@ -48,6 +48,7 @@ export class LearnMoreComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private sharedDataService: SharedDataService,
     private dialog: MatDialog,
     private reiseAngebotsService: TripOfferService,
@@ -73,15 +74,8 @@ export class LearnMoreComponent implements OnInit {
     return index === 0;
   }
 
-  bookingFormDialog() {
-    const dialog = this.dialog.open(BookingFormComponent, {
-      disableClose: true,
-      // autoFocus : true,
-      panelClass: "dialog-responsive"
-    });
-
-    dialog.componentInstance.land = this.currentLand;
-    dialog.componentInstance.currentTripOffer = this.currentTripOffer;
+  toReservationForm() {
+    this.router.navigate(['reservation', this.currentTripOffer.id]);
   }
 
   getNumberOfDays(): number {
@@ -144,7 +138,6 @@ export class LearnMoreComponent implements OnInit {
             }
 
             this.anmeldeFristVorbei = new Date(this.currentTripOffer.anmeldungsFrist) < new Date();
-
             this.getCurrentOfferAssociatedInfo(this.currentTripOffer.landId);
           },
         });

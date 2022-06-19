@@ -71,7 +71,6 @@ export class BookingFormComponent implements OnInit {
     private buchungService: BookingService,
     private toaster: ToastrService
   ) {
-
     this.paymentMethodArray = [
       PaymentMethod.EINMAL,
       PaymentMethod.GUTHABEN,
@@ -83,8 +82,8 @@ export class BookingFormComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.minDate = new Date(this.currentTripOffer.startDatum);
-    this.maxDate = new Date(this.currentTripOffer.endDatum);
+    this.minDate = new Date(this.currentTripOffer?.startDatum);
+    this.maxDate = new Date(this.currentTripOffer?.endDatum);
 
     this.personenDatenFormGroup = this._formBuilder.group({
       vorname: ['', Validators.required],
@@ -128,7 +127,7 @@ export class BookingFormComponent implements OnInit {
       agb: ['', Validators.requiredTrue],
     });
 
-    this.bookingclasses = this.currentTripOffer.buchungsklassenReadListTO;
+    this.bookingclasses = this.currentTripOffer?.buchungsklassenReadListTO;
   }
 
   getFormValues() {

@@ -1,15 +1,10 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { FormControl } from "@angular/forms";
-import { MatDialog } from "@angular/material/dialog";
 import { ReplaySubject, Subject } from "rxjs";
 import { debounceTime, delay, filter, takeUntil, tap, map } from 'rxjs/operators';
 
-import { CountryService } from "src/app/services/country/country.service";
-import { BookingFormComponent } from "../booking-form/booking-form.component";
-
 import { TripOffer } from "src/app/models/tripOffer";
-import { TripOfferService } from "src/app/services/trip-offer/trip-offer.service";
 
 @Component({
   selector: "app-current-offers-list-form",
@@ -27,12 +22,7 @@ export class CurrentOffersListFormComponent implements OnInit, OnDestroy {
   currentOffers: TripOffer[];
   selectedTripOffer: TripOffer;
 
-  constructor(
-    private router: Router,
-    private dialog: MatDialog,
-    private countryService: CountryService,
-    private tripOfferService: TripOfferService
-  ) {
+  constructor(private router: Router) {
     this.selectedOffer = new FormControl();
     this.currentOffers = [];
   }
@@ -47,28 +37,7 @@ export class CurrentOffersListFormComponent implements OnInit, OnDestroy {
   }
 
   startBookingProcess() {
-    this.router.navigate(['learn-more', this.selectedOffer.value.id]);
-    let country = null;
-
-    this.tripOfferService.getOne(this.selectedOffer.value.id).subscribe({
-      next: (result) => {
-        this.selectedTripOffer = result;
-      },
-      complete: () => {
-        this.countryService.getOne(this.selectedOffer.value.landId).subscribe({
-          next: (result) => country = result,
-          complete: () => {
-            const dialog = this.dialog.open(BookingFormComponent, {
-              disableClose : true,
-              autoFocus : true
-            });
-            // Set needed values
-            dialog.componentInstance.land = country;
-            dialog.componentInstance.currentTripOffer = this.selectedTripOffer;
-          }
-        });
-      }
-    });
+    this.router.navigate(['reservation', this.selectedOffer.value.id]);
   }
 
   filterOfferByName() {

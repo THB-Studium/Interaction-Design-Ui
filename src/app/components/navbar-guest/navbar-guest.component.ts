@@ -49,7 +49,7 @@ export class NavbarGuestComponent implements OnInit {
       next: (result) => {
         const today = formatDate(new Date(), "yyyy-MM-dd", "en_US");
         this.currentOffers = result.filter(
-          (x) => x.endDatum > today && x.landId != null
+          (x) => x.endDatum > today && x.landId != null && x.freiPlaetze < x.plaetze
         );
         this.hasOffers = this.currentOffers.length > 0;
       },
