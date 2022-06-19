@@ -250,6 +250,18 @@ mat-card {
   .text-top-right {
     left: 86%;
   }
+
+  h1 {
+    font-size: 22px !important;
+  }
+  
+  h2 {
+    font-size: 18px !important;
+  }
+  
+  h3 {
+    font-size: 16px !important;
+  }
 }
 
 @media screen and (max-width: 489px) {
@@ -267,7 +279,8 @@ mat-card {
 
 @media screen and (max-width: 378px) {
   .text-bottom-left h2 {
-    font-size: 1.8rem !important;
+    position: absolute;
+    font-size: 1.3rem !important;
   }
 }
 
@@ -280,7 +293,7 @@ mat-card {
 
 @media screen and (max-width: 337px) {
   .text-bottom-left h2 {
-    font-size: 1.6rem !important;
+    font-size: 1rem !important;
   }
 
   .text-top-right {
@@ -293,6 +306,11 @@ mat-card {
   .text-top-right {
     bottom: 70%;
     left: 60%;
+  }
+
+  .text-bottom-left h2 {
+    position: absolute;
+    font-size: .9rem !important;
   }
 }
 
