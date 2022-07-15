@@ -165,7 +165,7 @@ export class EditTripofferComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.expectationForm.valueChanges.subscribe(() => {
-      // if one of the value is bigger than 100, then disable the savee button
+      // if one of the value is bigger than 100, then disable the save button
       if (
         this.expectationForm.value.adventure > 100 || this.expectationForm.value.adventure < 0 || 
         this.expectationForm.value.adventure === null ||

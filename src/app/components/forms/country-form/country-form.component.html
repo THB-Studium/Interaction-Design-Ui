@@ -48,7 +48,7 @@
           <input placeholder="Neuer Flughafen and Enter drücken.." formControlName="airports"
             [matChipInputFor]="airportsList" (matChipInputTokenEnd)="addAirportFromInput($event)">
         </mat-chip-list>
-        <mat-hint>Beim mehrere Eingaben bitte diese mit der Enter Taste trennen.</mat-hint>
+        <mat-hint class="text-primary">Falls mehrere Eingaben bitte diese mit der Enter Taste trennen.</mat-hint>
         <mat-error *ngIf="countryForm.get('airports').invalid">
           Die Eingabe ist <strong>erforderlich</strong>.
         </mat-error>
