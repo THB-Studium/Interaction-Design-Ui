@@ -123,6 +123,16 @@ export class BookingComponent implements OnInit, AfterViewInit {
         buchungsnummer: "",
         hinFlugDatum: "",
         ruckFlugDatum: "",
+
+        abFlughafenReisender: '',
+        ruckFlughafenReisender: '',
+        handGepaeckReisender: '',
+        kofferReisender: '',
+
+        abFlughafenMitReisender: '',
+        ruckFlughafenMitReisender: '',
+        handGepaeckMitReisender: '',
+        kofferMitReisender: ''
       },
     ]);
 
@@ -245,7 +255,6 @@ export class BookingComponent implements OnInit, AfterViewInit {
       id: booking.id,
       buchungsklasseId: booking.buchungsklasseId,
       buchungDatum: booking.buchungDatum,
-      flughafen: booking.flughafen,
       handGepaeck: booking.handGepaeck,
       koffer: booking.koffer,
       mitReisenderId: booking.mitReisenderId,
@@ -256,6 +265,16 @@ export class BookingComponent implements OnInit, AfterViewInit {
       hinFlugDatum: booking.hinFlugDatum,
       ruckFlugDatum: booking.ruckFlugDatum,
       buchungsnummer: booking.buchungsnummer,
+
+      abFlughafenReisender: this.currentBooking.abFlughafenReisender,
+      ruckFlughafenReisender: this.currentBooking.ruckFlughafenReisender,
+      handGepaeckReisender: this.currentBooking.handGepaeckReisender,
+      kofferReisender: this.currentBooking.kofferReisender,
+
+      abFlughafenMitReisender: this.currentBooking.abFlughafenMitReisender,
+      ruckFlughafenMitReisender: this.currentBooking.ruckFlughafenMitReisender,
+      handGepaeckMitReisender: this.currentBooking.handGepaeckMitReisender,
+      kofferMitReisender: this.currentBooking.kofferMitReisender
     };
     this.updateBooking(toUpdate);
   }
@@ -292,7 +311,6 @@ export class BookingComponent implements OnInit, AfterViewInit {
                           const currentAdded: Booking = {
                             buchungsklasseId: savedValue.buchungsklasseId,
                             buchungDatum: savedValue.buchungDatum,
-                            flughafen: savedValue.flughafen,
                             handGepaeck: savedValue.handGepaeck,
                             id: savedValue.id,
                             koffer: savedValue.koffer,
@@ -305,6 +323,16 @@ export class BookingComponent implements OnInit, AfterViewInit {
                             buchungsnummer: savedValue.buchungsnummer,
                             hinFlugDatum: savedValue.hinFlugDatum,
                             ruckFlugDatum: savedValue.ruckFlugDatum,
+
+                            abFlughafenReisender: this.currentBooking.abFlughafenReisender,
+                            ruckFlughafenReisender: this.currentBooking.ruckFlughafenReisender,
+                            handGepaeckReisender: this.currentBooking.handGepaeckReisender,
+                            kofferReisender: this.currentBooking.kofferReisender,
+
+                            abFlughafenMitReisender: this.currentBooking.abFlughafenMitReisender,
+                            ruckFlughafenMitReisender: this.currentBooking.ruckFlughafenMitReisender,
+                            handGepaeckMitReisender: this.currentBooking.handGepaeckMitReisender,
+                            kofferMitReisender: this.currentBooking.kofferMitReisender
                           };
                           this.sharedDataService.changeCurrentBooking(
                             currentAdded
@@ -333,7 +361,6 @@ export class BookingComponent implements OnInit, AfterViewInit {
             id: booking.id,
             buchungsklasseId: booking.buchungsklasseId,
             buchungDatum: booking.buchungDatum,
-            flughafen: booking.flughafen,
             handGepaeck: booking.handGepaeck,
             koffer: booking.koffer,
             mitReisenderId: booking.mitReisender
@@ -346,6 +373,16 @@ export class BookingComponent implements OnInit, AfterViewInit {
             buchungsnummer: booking.buchungsnummer,
             hinFlugDatum: booking.hinFlugDatum,
             ruckFlugDatum: booking.ruckFlugDatum,
+
+            abFlughafenReisender: this.currentBooking.abFlughafenReisender,
+            ruckFlughafenReisender: this.currentBooking.ruckFlughafenReisender,
+            handGepaeckReisender: this.currentBooking.handGepaeckReisender,
+            kofferReisender: this.currentBooking.kofferReisender,
+
+            abFlughafenMitReisender: this.currentBooking.abFlughafenMitReisender,
+            ruckFlughafenMitReisender: this.currentBooking.ruckFlughafenMitReisender,
+            handGepaeckMitReisender: this.currentBooking.handGepaeckMitReisender,
+            kofferMitReisender: this.currentBooking.kofferMitReisender
           };
 
           this.updateBooking(toUpdate);
@@ -379,7 +416,6 @@ export class BookingComponent implements OnInit, AfterViewInit {
             const currentUpdated: Booking = {
               buchungsklasseId: savedValue.buchungsklasseId,
               buchungDatum: savedValue.buchungDatum,
-              flughafen: savedValue.flughafen,
               handGepaeck: savedValue.handGepaeck,
               id: savedValue.id,
               koffer: savedValue.koffer,
@@ -391,6 +427,16 @@ export class BookingComponent implements OnInit, AfterViewInit {
               buchungsnummer: savedValue.buchungsnummer,
               hinFlugDatum: savedValue.hinFlugDatum,
               ruckFlugDatum: savedValue.ruckFlugDatum,
+
+              abFlughafenReisender: this.currentBooking.abFlughafenReisender,
+              ruckFlughafenReisender: this.currentBooking.ruckFlughafenReisender,
+              handGepaeckReisender: this.currentBooking.handGepaeckReisender,
+              kofferReisender: this.currentBooking.kofferReisender,
+
+              abFlughafenMitReisender: this.currentBooking.abFlughafenMitReisender,
+              ruckFlughafenMitReisender: this.currentBooking.ruckFlughafenMitReisender,
+              handGepaeckMitReisender: this.currentBooking.handGepaeckMitReisender,
+              kofferMitReisender: this.currentBooking.kofferMitReisender
             };
 
             this.sharedDataService.changeCurrentBooking(currentUpdated);
@@ -517,7 +563,6 @@ export class BookingComponent implements OnInit, AfterViewInit {
               const toEdit: Booking = {
                 buchungsklasseId: this.currentBooking.buchungsklasseId,
                 buchungDatum: this.currentBooking.buchungDatum,
-                flughafen: this.currentBooking.flughafen,
                 handGepaeck: this.currentBooking.handGepaeck,
                 id: this.currentBooking.id,
                 koffer: this.currentBooking.koffer,
@@ -529,6 +574,16 @@ export class BookingComponent implements OnInit, AfterViewInit {
                 buchungsnummer: this.currentBooking.buchungsnummer,
                 hinFlugDatum: this.currentBooking.hinFlugDatum,
                 ruckFlugDatum: this.currentBooking.ruckFlugDatum,
+
+                abFlughafenReisender: this.currentBooking.abFlughafenReisender,
+                ruckFlughafenReisender: this.currentBooking.ruckFlughafenReisender,
+                handGepaeckReisender: this.currentBooking.handGepaeckReisender,
+                kofferReisender: this.currentBooking.kofferReisender,
+
+                abFlughafenMitReisender: this.currentBooking.abFlughafenMitReisender,
+                ruckFlughafenMitReisender: this.currentBooking.ruckFlughafenMitReisender,
+                handGepaeckMitReisender: this.currentBooking.handGepaeckMitReisender,
+                kofferMitReisender: this.currentBooking.kofferMitReisender
               };
 
               this.sharedDataService.changeCurrentBooking(toEdit);
@@ -540,7 +595,6 @@ export class BookingComponent implements OnInit, AfterViewInit {
           const toEdit: Booking = {
             buchungsklasseId: this.currentBooking.buchungsklasseId,
             buchungDatum: this.currentBooking.buchungDatum,
-            flughafen: this.currentBooking.flughafen,
             handGepaeck: this.currentBooking.handGepaeck,
             id: this.currentBooking.id,
             koffer: this.currentBooking.koffer,
@@ -552,6 +606,16 @@ export class BookingComponent implements OnInit, AfterViewInit {
             buchungsnummer: this.currentBooking.buchungsnummer,
             hinFlugDatum: this.currentBooking.hinFlugDatum,
             ruckFlugDatum: this.currentBooking.ruckFlugDatum,
+
+            abFlughafenReisender: this.currentBooking.abFlughafenReisender,
+            ruckFlughafenReisender: this.currentBooking.ruckFlughafenReisender,
+            handGepaeckReisender: this.currentBooking.handGepaeckReisender,
+            kofferReisender: this.currentBooking.kofferReisender,
+
+            abFlughafenMitReisender: this.currentBooking.abFlughafenMitReisender,
+            ruckFlughafenMitReisender: this.currentBooking.ruckFlughafenMitReisender,
+            handGepaeckMitReisender: this.currentBooking.handGepaeckMitReisender,
+            kofferMitReisender: this.currentBooking.kofferMitReisender
           };
 
           this.sharedDataService.changeCurrentBooking(toEdit);
@@ -659,7 +723,6 @@ export class BookingComponent implements OnInit, AfterViewInit {
       id: this.currentBooking.id,
       buchungsklasseId: this.currentBooking.buchungsklasseId,
       buchungDatum: this.currentBooking.buchungDatum,
-      flughafen: this.currentBooking.flughafen,
       handGepaeck: this.currentBooking.handGepaeck,
       koffer: this.currentBooking.koffer,
       mitReisenderId: this.currentBooking.mitReisenderId,
@@ -669,7 +732,17 @@ export class BookingComponent implements OnInit, AfterViewInit {
       status: status,
       buchungsnummer: this.currentBooking.buchungsnummer,
       hinFlugDatum: this.currentBooking.hinFlugDatum,
-      ruckFlugDatum: this.currentBooking.ruckFlugDatum
+      ruckFlugDatum: this.currentBooking.ruckFlugDatum,
+
+      abFlughafenReisender: this.currentBooking.abFlughafenReisender,
+      ruckFlughafenReisender: this.currentBooking.ruckFlughafenReisender,
+      handGepaeckReisender: this.currentBooking.handGepaeckReisender,
+      kofferReisender: this.currentBooking.kofferReisender,
+
+      abFlughafenMitReisender: this.currentBooking.abFlughafenMitReisender,
+      ruckFlughafenMitReisender: this.currentBooking.ruckFlughafenMitReisender,
+      handGepaeckMitReisender: this.currentBooking.handGepaeckMitReisender,
+      kofferMitReisender: this.currentBooking.kofferMitReisender
     };
 
     this.updateBooking(toUpdate);

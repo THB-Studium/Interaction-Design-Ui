@@ -78,7 +78,7 @@ export class ReservationComponent implements OnInit {
         const today = formatDate(new Date(), "yyyy-MM-dd", "en_US");
         if (
           this.currentTripOffer.anmeldungsFrist < today ||
-          this.currentTripOffer.freiPlaetze == this.currentTripOffer.plaetze
+          this.currentTripOffer.freiPlaetze === 0
         ) {
           isValid = false;
           this.toastrService.info(
@@ -94,9 +94,6 @@ export class ReservationComponent implements OnInit {
           this.countryService.getOne(this.currentTripOffer.landId).subscribe({
             next: (result) => (this.country = result),
             error: (err) => console.error(err),
-            complete: () => {
-              this.toastrService.info("Formular bitte ausfüllen");
-            },
           });
         }
       },

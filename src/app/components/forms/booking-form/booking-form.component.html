@@ -161,6 +161,46 @@
           <div class="form-row">
             <div class="form-group col-md-6">
               <mat-form-field class="col-md-12" appearance="fill">
+                <mat-label> Abreise Flughafen </mat-label>
+                <input matInput placeholder="Abreise Flughafen" formControlName="abFlughafenReisender" required>
+                <mat-icon matSuffix>flight_takeoff</mat-icon>
+                <mat-hint>Abreise Flughafen hinzufügen</mat-hint>
+              </mat-form-field>
+            </div>
+            <div class="form-group col-md-6">
+              <mat-form-field class="col-md-12" appearance="fill">
+                <mat-label> Rückreise Flughafen </mat-label>
+                <input matInput placeholder="Rückreise Flughafen" formControlName="ruckFlughafenReisender" required>
+                <mat-icon matSuffix>flight_land</mat-icon>
+                <mat-hint>Rückreise Flughafen hinzufügen</mat-hint>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <mat-form-field class="col-md-12" appearance="fill">
+                <mat-select required hideRequiredMarker="true" floatLabel="true" formControlName="handGepaeckReisender">
+                  <mat-option value="true">ja</mat-option>
+                  <mat-option value="false">Nein</mat-option>
+                </mat-select>
+                <mat-label>Haben Sie handgepaeck ?</mat-label>
+                <mat-error *ngIf="(personenDatenFormGroup.get('handGepaeckReisender')).errors?.required">
+                  Die Eingabe ist <strong>erforderlich</strong>.
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="form-group col-md-6">
+              <mat-form-field class="col-md-12" appearance="fill">
+                <mat-label> Koffer </mat-label>
+                <input matInput placeholder="Welche Koffer haben Sie ?" formControlName="kofferReisender" required>
+                <mat-icon matSuffix>card_travel</mat-icon>
+                <mat-hint>Koffer hinzufügen</mat-hint>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <mat-form-field class="col-md-12" appearance="fill">
                 <mat-select required hideRequiredMarker="true" floatLabel="true" formControlName="schonTeilgennomem">
                   <mat-option value="true">ja</mat-option>
                   <mat-option value="false">Nein</mat-option>
@@ -168,7 +208,7 @@
                 <mat-error *ngIf="(personenDatenFormGroup.get('schonTeilgennomem')).errors?.required">
                   Die Auswhal ist <strong>erforderlich</strong>.
                 </mat-error>
-                <mat-label>SchonTeilgennomem</mat-label>
+                <mat-label>Haben Sie schon teilgennomem ?</mat-label>
               </mat-form-field>
             </div>
             <div class="form-group col-md-6">
@@ -182,6 +222,21 @@
                   Die Eingabe ist <strong>erforderlich</strong>.
                 </mat-error>
               </mat-form-field>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <mat-label>Ausweis hochladen:</mat-label>
+              <div class="input-file-container">
+                <div class="js text-center">
+                  <input type="file" class="input-file ml-5" id="fileInput" name="fileInput" accept="image/*"
+                    (change)="selectFile($event)" />
+                  <label tabindex="0" for="fileInput" class="input-file-trigger">{{this.selectedFileName?.length ? this.selectedFileName : 'Datei aussuchen ...'}}</label>
+                </div>
+              </div>
+              <mat-error *ngIf="!isImgSelected">
+                Die Eingabe ist <strong>erforderlich</strong>.
+              </mat-error>
             </div>
           </div>
           <div class="action-buttons">
@@ -329,15 +384,70 @@
           <div class="form-row">
             <div class="form-group col-md-6">
               <mat-form-field class="col-md-12" appearance="fill">
+                <mat-label> Abreise Flughafen </mat-label>
+                <input matInput placeholder="Abreise Flughafen" formControlName="abFlughafenMitReisender" required>
+                <mat-icon matSuffix>flight_takeoff</mat-icon>
+                <mat-hint>Abreise Flughafen hinzufügen</mat-hint>
+              </mat-form-field>
+            </div>
+            <div class="form-group col-md-6">
+              <mat-form-field class="col-md-12" appearance="fill">
+                <mat-label> Rückreise Flughafen </mat-label>
+                <input matInput placeholder="Rückreise Flughafen" formControlName="ruckFlughafenMitReisender" required>
+                <mat-icon matSuffix>flight_land</mat-icon>
+                <mat-hint>Rückreise Flughafen hinzufügen</mat-hint>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <mat-form-field class="col-md-12" appearance="fill">
+                <mat-select required hideRequiredMarker="true" floatLabel="true" formControlName="handGepaeckMitReisender">
+                  <mat-option value="true">ja</mat-option>
+                  <mat-option value="false">Nein</mat-option>
+                </mat-select>
+                <mat-label>Haben Sie handgepaeck ?</mat-label>
+                <mat-error *ngIf="(personenDatenFormGroupMitReiser.get('handGepaeckMitReisender')).errors?.required">
+                  Die Eingabe ist <strong>erforderlich</strong>.
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="form-group col-md-6">
+              <mat-form-field class="col-md-12" appearance="fill">
+                <mat-label> Koffer </mat-label>
+                <input matInput placeholder="Welche Koffer haben Sie ?" formControlName="kofferMitReisender" required>
+                <mat-icon matSuffix>card_travel</mat-icon>
+                <mat-hint>Koffer hinzufügen</mat-hint>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <mat-form-field class="col-md-12" appearance="fill">
                 <mat-select required hideRequiredMarker="true" floatLabel="true" formControlName="schonTeilgennomem">
                   <mat-option value="true">ja</mat-option>
                   <mat-option value="false">Nein</mat-option>
                 </mat-select>
-                <mat-error *ngIf="(personenDatenFormGroup.get('schonTeilgennomem')).errors?.required">
+                <mat-error *ngIf="(personenDatenFormGroupMitReiser.get('schonTeilgennomem')).errors?.required">
                   Die Auswhal ist <strong>erforderlich</strong>.
                 </mat-error>
-                <mat-label>SchonTeilgennomem</mat-label>
+                <mat-label>Haben Sie schon teilgennomem ?</mat-label>
               </mat-form-field>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <div class="input-file-container">
+                <mat-label>Ausweis hochladen:</mat-label>
+                <div class="js text-center">
+                  <input type="file" class="input-file ml-5" id="fileInput2" name="fileInput2" accept="image/*"
+                    (change)="selectFileMitReisender($event)" />
+                  <label tabindex="0" for="fileInput2" class="input-file-trigger"> {{this.selectedFileNameMitReisender?.length ? this.selectedFileNameMitReisender : 'Datei aussuchen ...'}}</label>
+                </div>
+              </div>
+              <mat-error *ngIf="!isImgMitReiserSelected">
+                Die Eingabe ist <strong>erforderlich</strong>.
+              </mat-error>
             </div>
           </div>
           <div class="action-buttons">
@@ -399,7 +509,7 @@
                 </mat-error>
               </mat-form-field>
             </div>
-            <div class="form-group col-md-6">
+<!--             <div class="form-group col-md-6">
               <mat-form-field class="col-md-12" appearance="fill">
                 <mat-label>Flughafen</mat-label>
                 <mat-select formControlName="flughafen" required>
@@ -412,10 +522,10 @@
                   Der Flughafen ist <strong>erforderlich</strong>.
                 </mat-error>
               </mat-form-field>
-            </div>
+            </div> -->
           </div>
 
-          <div class="form-row">
+<!--           <div class="form-row">
             <div class="form-group col-md-6">
               <mat-checkbox color="primary" class="col-md-12" #termsChecked formControlName="handgepaeck">
                 Ich habe Handgepäck
@@ -426,7 +536,7 @@
                 Ich habe Koffer
               </mat-checkbox>
             </div>
-          </div>
+          </div> -->
 
           <div class="action-buttons">
             <button color="primary" mat-button matStepperPrevious>Zurück</button>

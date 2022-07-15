@@ -134,7 +134,6 @@ export class EditBookingFormComponent
     this.currentBooking = {
       buchungsklasseId: "",
       buchungDatum: "",
-      flughafen: "",
       handGepaeck: "",
       id: "",
       koffer: "",
@@ -145,7 +144,16 @@ export class EditBookingFormComponent
       status: "",
       buchungsnummer: '',
       hinFlugDatum: '',
-      ruckFlugDatum: ''
+      ruckFlugDatum: '',
+      abFlughafenReisender: '',
+      ruckFlughafenReisender: '',
+      handGepaeckReisender: '',
+      kofferReisender: '',
+
+      abFlughafenMitReisender: '',
+      ruckFlughafenMitReisender: '',
+      handGepaeckMitReisender: '',
+      kofferMitReisender: ''
     };
     this.dateError = "";
     this.paymentMethodArray = [
@@ -235,7 +243,6 @@ export class EditBookingFormComponent
         .subscribe({
           next: (booking) => {
             this.currentBooking = booking;
-            this.defaultAirport = this.currentBooking.flughafen;
             this.currentBooking.handGepaeck =
             this.currentBooking.handGepaeck === "true"
                 ? this.luggages[0]
@@ -355,7 +362,6 @@ export class EditBookingFormComponent
       this.currentBooking = {
         id: id,
         buchungsklasseId: this.bookingForm.get("bookingClass").value.id,
-        flughafen: this.bookingForm.get("airport").value,
         buchungDatum: this.selectedDate,
         reisender: this.bookingForm.get("traveler").value,
         mitReisender: this.bookingForm.get("coTraveler").value,
@@ -369,7 +375,17 @@ export class EditBookingFormComponent
         //
         buchungsnummer: this.currentBooking.buchungsnummer,
         hinFlugDatum: this.currentBooking.hinFlugDatum,
-        ruckFlugDatum: this.currentBooking.ruckFlugDatum
+        ruckFlugDatum: this.currentBooking.ruckFlugDatum,
+
+        abFlughafenReisender: '',
+        ruckFlughafenReisender: '',
+        handGepaeckReisender: '',
+        kofferReisender: '',
+
+        abFlughafenMitReisender: '',
+        ruckFlughafenMitReisender: '',
+        handGepaeckMitReisender: '',
+        kofferMitReisender: ''
       };
 
       this.sharedDataService.changeCurrentBooking(this.currentBooking);
