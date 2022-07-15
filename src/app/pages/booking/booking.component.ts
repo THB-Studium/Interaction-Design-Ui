@@ -23,6 +23,7 @@ import { Traveler } from "src/app/models/traveler";
 import { TripOffer } from "src/app/models/tripOffer";
 
 import { BookingFormComponent } from "src/app/components/forms/booking-form/booking-form.component";
+import { DomSanitizer } from "@angular/platform-browser";
 
 @Component({
   selector: "app-booking",
@@ -39,7 +40,6 @@ export class BookingComponent implements OnInit, AfterViewInit {
     "date",
     'bookingNB',
     "status",
-    "airport",
     "paymentmethod",
     "action",
   ];
@@ -90,7 +90,8 @@ export class BookingComponent implements OnInit, AfterViewInit {
     private bookingclassService: BookingClassService,
     private travelerService: TravelerService,
     private tripofferService: TripOfferService,
-    private countryService: CountryService
+    private countryService: CountryService,
+    private sanitizer: DomSanitizer
   ) {
     this.dialogConfiguration();
     this.selectedOffer = new FormControl();
@@ -475,8 +476,11 @@ export class BookingComponent implements OnInit, AfterViewInit {
 
   detailsDialog(booking, dialogForm: any) {
     this.currentBooking = booking;
+    console.log(booking);
     this.tripofferService.getOne(booking.reiseAngebotId).subscribe({
-      next: (tripoffer) => (this.tripoffer = tripoffer),
+      next: (tripoffer) => {
+        this.tripoffer = tripoffer;
+      },
       error: () =>
         this.toastrService.error("Etwas ist schief gelaufen.", "Fehler"),
       complete: () => {
@@ -492,7 +496,14 @@ export class BookingComponent implements OnInit, AfterViewInit {
               ? booking.reisenderId
               : booking.reisender.id;
             this.travelerService.getOne(id).subscribe({
-              next: (traveler) => (this.traveler = traveler),
+              next: (traveler) => {
+                this.traveler = traveler;
+                  //convert image
+                  let objectURL = "data:image/png;base64," + traveler.identityCard;
+                  this.traveler.realIdentityCard =
+                    this.sanitizer.bypassSecurityTrustUrl(objectURL);
+                    console.log(this.traveler);
+              },
               error: () => {
                 this.toastrService.error(
                   "Etwas ist schief gelaufen.",
@@ -505,7 +516,13 @@ export class BookingComponent implements OnInit, AfterViewInit {
                     ? booking.mitReisenderId
                     : booking.mitReisender.id;
                   this.travelerService.getOne(id).subscribe({
-                    next: (traveler) => (this.cotraveler = traveler),
+                    next: (traveler) => {
+                      this.cotraveler = traveler;
+                      //convert image
+                      let objectURL = "data:image/png;base64," + traveler.identityCard;
+                      this.cotraveler.realIdentityCard =
+                        this.sanitizer.bypassSecurityTrustUrl(objectURL);
+                    },
                     error: () => {
                       this.toastrService.error(
                         "Etwas ist schief gelaufen.",

@@ -12,4 +12,5 @@ export class Traveler {
     public schonTeilgenommen: boolean;
     public status: string
     public identityCard?: any
+    public realIdentityCard?: any
 }
