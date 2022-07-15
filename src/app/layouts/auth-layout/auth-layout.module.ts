@@ -35,6 +35,7 @@ import { RegisterComponent } from "../../pages/register/register.component";
 import { LearnMoreComponent } from "../../pages/learn-more/learn-more.component";
 import { AboutusComponent } from "src/app/pages/aboutus/aboutus.component";
 import { MyBookingComponent } from "src/app/pages/my-booking/my-booking.component";
+import { ReservationComponent } from 'src/app/pages/reservation/reservation.component';
 
 @NgModule({
   imports: [
@@ -70,7 +71,8 @@ import { MyBookingComponent } from "src/app/pages/my-booking/my-booking.componen
     LoginComponent,
     RegisterComponent,
     AboutusComponent,
-    MyBookingComponent
+    MyBookingComponent,
+    ReservationComponent
   ],
   providers: [
     //{ provide: HTTP_INTERCEPTORS, useClass: AppHttpInterceptor, multi: true },

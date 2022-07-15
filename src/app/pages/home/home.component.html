@@ -6,7 +6,7 @@
     <app-spinner [dataName]="'Reiseangebote'" *ngIf="!loadReiseangeboteFinished"></app-spinner>
     <div *ngIf="loadReiseangeboteFinished && tripOffers.length > 0">
       <div class="row mb-5" *ngFor="let gebot of tripOffers">
-        <div class="col-md-12 mx-auto d-block offers">
+        <div class="col-md-12 mx-auto d-block offers" (click)="routeToLearnMore(gebot.id)" style="cursor: pointer;">
           <img [src]="gebot.realImage.changingThisBreaksApplicationSecurity" class="card-shadow img-fluid"
             alt="cover_image">
           <div class="overlay">

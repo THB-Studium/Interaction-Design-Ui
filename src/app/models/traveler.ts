@@ -11,4 +11,6 @@ export class Traveler {
     public hochschule: string;
     public schonTeilgenommen: boolean;
     public status: string
+    public identityCard?: any
+    public realIdentityCard?: any
 }

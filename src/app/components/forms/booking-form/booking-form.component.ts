@@ -15,6 +15,9 @@ import { BookingState } from "src/app/enums/bookingState";
 import { Pattern } from "src/app/variables/pattern";
 import { PaymentMethod } from "src/app/enums/paymentMethod";
 import { TripOffer } from "src/app/models/tripOffer";
+import { ActivatedRoute } from "@angular/router";
+import { TripOfferService } from "src/app/services/trip-offer/trip-offer.service";
+import { tr } from "date-fns/locale";
 
 @Component({
   selector: "app-booking-form",
@@ -65,13 +68,26 @@ export class BookingFormComponent implements OnInit {
   istAlumMitReiser= false;
   responseAfterBooking = "";
 
+  // Defines selectedFile
+  selectedFile?: any;
+  fileInputByte: any;
+  selectedFileMitReisender?: any;
+  fileInputByteMitReisender: any;
+  // Defines selectedFileNames
+  selectedFileName: string[] = [];
+  selectedFileNameMitReisender: string[] = [];
+  // Defines isImgSelected
+  isImgSelected = false;
+  isImgMitReiserSelected = false;
+
   constructor(
     private bookingclassService: BookingClassService,
     private _formBuilder: FormBuilder,
     private buchungService: BookingService,
-    private toaster: ToastrService
+    private toaster: ToastrService,
+    private activatedRoute: ActivatedRoute,
+    private tripofferService: TripOfferService
   ) {
-
     this.paymentMethodArray = [
       PaymentMethod.EINMAL,
       PaymentMethod.GUTHABEN,
@@ -83,8 +99,16 @@ export class BookingFormComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.minDate = new Date(this.currentTripOffer.startDatum);
-    this.maxDate = new Date(this.currentTripOffer.endDatum);
+    this.activatedRoute.params.subscribe(param => {
+
+      this.tripofferService.getOne(param.tripofferId).subscribe((trip : TripOffer) => {
+        this.currentTripOffer = trip;
+        this.bookingclasses = this.currentTripOffer?.buchungsklassenReadListTO;
+      });
+    });
+
+    this.minDate = new Date(this.currentTripOffer?.startDatum);
+    this.maxDate = new Date(this.currentTripOffer?.endDatum);
 
     this.personenDatenFormGroup = this._formBuilder.group({
       vorname: ['', Validators.required],
@@ -99,6 +123,10 @@ export class BookingFormComponent implements OnInit {
       schonTeilgennomem: ['', Validators.required],
       hochschule: ['', Validators.required],
       mitMitreiser: ['', Validators.required],
+      abFlughafenReisender: [''],
+      ruckFlughafenReisender: [''],
+      handGepaeckReisender: ['', Validators.required],
+      kofferReisender: ['']
     });
 
     this.personenDatenFormGroupMitReiser = this._formBuilder.group({
@@ -113,22 +141,22 @@ export class BookingFormComponent implements OnInit {
       arbeitet: [''],
       schonTeilgennomem: ['', Validators.required],
       hochschule: ['', Validators.required],
+      abFlughafenMitReisender: [''],
+      ruckFlughafenMitReisender: [''],
+      handGepaeckMitReisender: ['', Validators.required],
+      kofferMitReisender: ['']
     });
 
     this.reiseDatenFormGroup = this._formBuilder.group({
       buchungsklasseId: ['', Validators.required],
       datum: ['', Validators.required],
-      flughafen: ['', Validators.required],
-      handgepaeck: [''],
-      zahlungsmethod: ['', Validators.required],
-      koffer: [''],
+      zahlungsmethod: ['', Validators.required]
     });
 
     this.agbFormGroup = this._formBuilder.group({
       agb: ['', Validators.requiredTrue],
     });
 
-    this.bookingclasses = this.currentTripOffer.buchungsklassenReadListTO;
   }
 
   getFormValues() {
@@ -170,12 +198,21 @@ export class BookingFormComponent implements OnInit {
       id: null,
       buchungsklasseId: this.selectedBookingClass?.id,
       buchungDatum: '',
-      flughafen: this.reise.flughafen,
       handGepaeck: this.reise.handgepaeck === true ? 'true': 'false',
       koffer: this.reise.koffer === true ? 'true': 'false',
       reiseAngebotId: this.currentTripOffer?.id,
       zahlungMethod: this.reise.zahlungsmethod,
       status: BookingState.EINGEGANGEN,
+
+      abFlughafenReisender: reiserForm.abFlughafenReisender,
+      ruckFlughafenReisender: reiserForm.ruckFlughafenReisender,
+      handGepaeckReisender: reiserForm.handGepaeckReisender,
+      kofferReisender: reiserForm.kofferReisender,
+
+      abFlughafenMitReisender: mitReiserForm.abFlughafenMitReisender,
+      ruckFlughafenMitReisender: mitReiserForm.ruckFlughafenMitReisender,
+      handGepaeckMitReisender: mitReiserForm.handGepaeckMitReisender,
+      kofferMitReisender: mitReiserForm.kofferMitReisender,
 
       reisender: {
         id: null,
@@ -189,7 +226,8 @@ export class BookingFormComponent implements OnInit {
         schonTeilgenommen: reiserForm.schonTeilgennomem,
         studiengang: reiserForm.studiengang,
         telefonnummer: reiserForm.handynummer,
-        status: reiserForm.status
+        status: reiserForm.status,
+        identityCard: this.fileInputByte
       },
 
       mitReisender: this.mitreiserForm ? {
@@ -204,7 +242,8 @@ export class BookingFormComponent implements OnInit {
         schonTeilgenommen: mitReiserForm.schonTeilgennomem,
         studiengang: mitReiserForm.studiengang,
         telefonnummer: mitReiserForm.handynummer,
-        status: mitReiserForm.status
+        status: mitReiserForm.status,
+        identityCard: this.fileInputByteMitReisender
       } : null,
       // todo
       buchungsnummer: '',
@@ -231,6 +270,49 @@ export class BookingFormComponent implements OnInit {
 
   downloadPdf() {
     this.buchungService.exportPdf(this.currentBookingId);
+  }
+
+   // On file selected
+  selectFile(event: any): void {
+
+    this.selectedFileName = [];
+    this.selectedFile = event.target.files;
+
+    if (this.selectedFile && this.selectedFile.item(0)) {
+
+      this.selectedFileName.push(this.selectedFile.item(0).name);
+
+      const file = event.target.files[0];
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        this.fileInputByte = reader.result;
+      };
+
+      this.isImgSelected = true;
+    } else {
+      this.isImgSelected = false;
+    }
+  }
+
+  selectFileMitReisender(event_: any): void {
+    this.selectedFileNameMitReisender = [];
+    this.selectedFileMitReisender = event_.target.files;
+    if (this.selectedFileMitReisender && this.selectedFileMitReisender.item(0)) {
+
+      this.selectedFileNameMitReisender.push(this.selectedFileMitReisender.item(0).name);
+
+      const file = event_.target.files[0];
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        this.fileInputByteMitReisender = reader.result;
+      };
+
+      this.isImgMitReiserSelected = true;
+    } else {
+      this.isImgMitReiserSelected = false;
+    }
   }
 
 }

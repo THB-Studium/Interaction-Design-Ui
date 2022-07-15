@@ -131,6 +131,7 @@
           <input placeholder="Neue Leistung and Enter drücken..." formControlName="services" [matChipInputFor]="serviceList"
             (matChipInputTokenEnd)="addServiceFromInput($event)">
         </mat-chip-list>
+        <small class="text-primary">Leistung tippen und Enter drücken</small>
         <mat-error *ngIf="tripofferForm.get('services').invalid">
           Die Eingabe ist <strong>erforderlich</strong>.
         </mat-error>
@@ -153,9 +154,11 @@
           <input placeholder="Neue Berechtigung and Enter drücken..." formControlName="authorizedtotravel" [matChipInputFor]="authorizationList"
             (matChipInputTokenEnd)="addAuthorizationFromInput($event)">
         </mat-chip-list>
+        <small class="text-primary">Berechtigung tippen und Enter drücken</small>
         <mat-error *ngIf="tripofferForm.get('authorizedtotravel').invalid">
           Die Eingabe ist <strong>erforderlich</strong>.
         </mat-error>
+        
       </mat-form-field>
     </div>
   </div>

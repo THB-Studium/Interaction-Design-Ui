@@ -5,29 +5,34 @@
   <div *ngIf="loadFinished">
     <a id="main-page-btn" routerLinkActive="active" [routerLink]="['/dashboard']">&lt; ZURÜCK ZUR MAINPAGE</a>
     <!-- Rise Info und Map -->
-    <div class="travel-info-header">
-      <h2>{{currentTripOffer?.titel}}</h2>
-      <p>
-        <span class="mr-2">{{currentTripOffer?.startDatum | date: 'dd. MMM'}}</span>
-        - &nbsp;
-        <span>{{currentTripOffer?.endDatum | date: 'dd. MMM yyyy'}}</span>
-      </p>
-      <div class="myRow">
+    <div class="row travel-info-header">
+      <div class="col-md-6">
+        <h2>{{currentTripOffer?.titel}}</h2>
         <p>
-          Freie Plätze: <span class="font-weight-bold">{{currentTripOffer?.freiPlaetze}}/{{currentTripOffer?.plaetze}}</span>
-          <span>
-            &nbsp; - &nbsp; Interessierte: <span class="font-weight-bold">{{currentTripOffer?.interessiert < 0 ? 0 : currentTripOffer?.interessiert}}</span>
-          </span>
+          <span class="mr-2">{{currentTripOffer?.startDatum | date: 'dd. MMM'}}</span>
+          - &nbsp;
+          <span>{{currentTripOffer?.endDatum | date: 'dd. MMM yyyy'}}</span>
         </p>
-        <h3 *ngIf = "currentTripOffer?.freiPlaetze <= 0" class="set-content-right"> Keine Plätze mehr !</h3>
-        <h3 *ngIf = "anmeldeFristVorbei" class="set-content-right"> Der Anmeldefrist ist vorbei !</h3>
-        <button mat-button class="booking-btn"
-                [ngStyle]="backgroundColor" (click)="bookingFormDialog()"
-                [disabled]="currentTripOffer?.freiPlaetze <= 0 || anmeldeFristVorbei">
-          <span id="reserve-place">PLATZ RESERVIEREN ></span>
-          <span id="reserve">RESERVIEREN ></span>
-        </button>
+        <p>
+          Freie Plätze: <span
+            class="font-weight-bold">{{currentTripOffer?.freiPlaetze}}/{{currentTripOffer?.plaetze}}</span>
+          <span>
+            &nbsp; - &nbsp; Interessierte: <span class="font-weight-bold">{{currentTripOffer?.interessiert < 0 ? 0 :
+                currentTripOffer?.interessiert}}</span>
+            </span>
+        </p>
       </div>
+      <div class="col-md-3 mb-3 pt-5">
+        <h3 *ngIf="currentTripOffer?.freiPlaetze <= 0" class="text-info text-font-600"> Keine Plätze mehr !</h3>
+        <h3 *ngIf="anmeldeFristVorbei" class="text-info text-font-600"> Der Anmeldefrist ist vorbei !</h3>
+      </div>
+      <button mat-button class="booking-btn" [ngStyle]="backgroundColor" (click)="toReservationForm()"
+        [disabled]="currentTripOffer?.freiPlaetze <= 0 || anmeldeFristVorbei">
+        <span id="reserve-place">PLATZ RESERVIEREN ></span>
+        <span id="reserve">RESERVIEREN ></span>
+      </button>
+    </div>
+    <div class="row">
       <div class="travel-map">
         <img class="img-fluid" [src]="currentLand?.realImage" alt="reiseroute img">
         <p>{{currentLand?.name | uppercase}} - REISEROUTE</p>
@@ -79,7 +84,8 @@
                 <div class="klassen" *ngFor="let item of currentTripOffer?.buchungsklassenReadListTO">
                   <h4 [ngStyle]="fontColor">
                     {{item.type | uppercase}}
-                    <span *ngIf="item.type.toLowerCase().includes('studenten-tarif' || 'studenten tarif' || 'studententarif')">*</span>
+                    <span
+                      *ngIf="item.type.toLowerCase().includes('studenten-tarif' || 'studenten tarif' || 'studententarif')">*</span>
                   </h4>
                   <ul>
                     <li>{{item.description}}</li>
@@ -87,10 +93,11 @@
                 </div>
                 <div>
                   <p>
-                    <span class="font-weight-bold">WICHTIGER HINWEIS:</span>  {{currentTripOffer?.hinweise}}
+                    <span class="font-weight-bold">WICHTIGER HINWEIS:</span> {{currentTripOffer?.hinweise}}
                   </p>
                   <small [ngStyle]="fontColor" *ngIf="currentTripOffer?.sonstigeHinweise">
-                    <span class="font-weight-bold">{{currentTripOffer?.sonstigeHinweise.split(':')[0] | uppercase}}: </span>
+                    <span class="font-weight-bold">{{currentTripOffer?.sonstigeHinweise.split(':')[0] | uppercase}}:
+                    </span>
                     <br>{{currentTripOffer.sonstigeHinweise.split(':')[1] | uppercase}}
                   </small>
                 </div>
@@ -110,7 +117,8 @@
             </mat-card-content>
           </mat-card>
         </div>
-        <div class="col-sm-12 col-md-12 col-lg-5 d-flex justify-content-sm-center justify-content-md-center justify-content-lg-end">
+        <div
+          class="col-sm-12 col-md-12 col-lg-5 d-flex justify-content-sm-center justify-content-md-center justify-content-lg-end">
           <mat-card id="mat-card-group-2" class="col-sm-10" [ngStyle]="matCardShadow">
             <mat-card-content>
               <!--      KOSTEN      -->
@@ -121,16 +129,17 @@
                   <ng-container matColumnDef="tarife">
                     <th mat-header-cell *matHeaderCellDef [ngStyle]="backgroundColor" scope="tarif">TARIFE</th>
                     <td mat-cell *matCellDef="let element"
-                        [style]="element.type.toLowerCase().includes('studenten-tarif' || 'studenten tarif' || 'studententarif') ? fontColor : null">
+                      [style]="element.type.toLowerCase().includes('studenten-tarif' || 'studenten tarif' || 'studententarif') ? fontColor : null">
                       {{element.type | uppercase}}
-                      <span *ngIf="element.type.toLowerCase().includes('studenten-tarif' || 'studenten tarif' || 'studententarif')">*</span>
+                      <span
+                        *ngIf="element.type.toLowerCase().includes('studenten-tarif' || 'studenten tarif' || 'studententarif')">*</span>
                     </td>
                   </ng-container>
                   <!-- PREISE Column -->
                   <ng-container matColumnDef="preise">
                     <th mat-header-cell *matHeaderCellDef [ngStyle]="backgroundColor" scope="price">PREISE</th>
                     <td mat-cell *matCellDef="let element"
-                        [style]="element.type.toLowerCase().includes('studenten-tarif' || 'studenten tarif' || 'studententarif') ? fontColor : null">
+                      [style]="element.type.toLowerCase().includes('studenten-tarif' || 'studenten tarif' || 'studententarif') ? fontColor : null">
                       {{element.preis}}.-</td>
                   </ng-container>
                   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
@@ -162,10 +171,12 @@
                 <h3>ERWARTUNGEN</h3>
                 <div class="row mb-2" [ngStyle]="fontColor">
                   <div class="col-sm-12 col-md-12 col-lg-6">
-                    ABENTEUER: <app-stars [appreciation]="currentTripOffer?.erwartungenReadListTO?.abenteuer"></app-stars>
+                    ABENTEUER: <app-stars [appreciation]="currentTripOffer?.erwartungenReadListTO?.abenteuer">
+                    </app-stars>
                   </div>
                   <div class="col-sm-12 col-md-12 col-lg-6">
-                    ENTSCHLEUNIGUNG: <app-stars [appreciation]="currentTripOffer?.erwartungenReadListTO?.entschleunigung"></app-stars>
+                    ENTSCHLEUNIGUNG: <app-stars
+                      [appreciation]="currentTripOffer?.erwartungenReadListTO?.entschleunigung"></app-stars>
                   </div>
                 </div>
                 <div class="row mb-2" [ngStyle]="fontColor">
@@ -173,15 +184,18 @@
                     KOMFORT: <app-stars [appreciation]="currentTripOffer?.erwartungenReadListTO?.konfort"></app-stars>
                   </div>
                   <div class="col-sm-12 col-md-12 col-lg-6">
-                    NACHHALTLIGKEIT: <app-stars [appreciation]="currentTripOffer?.erwartungenReadListTO?.nachhaltigkeit"></app-stars>
+                    NACHHALTLIGKEIT: <app-stars
+                      [appreciation]="currentTripOffer?.erwartungenReadListTO?.nachhaltigkeit"></app-stars>
                   </div>
                 </div>
                 <div class="row mb-2" [ngStyle]="fontColor">
                   <div class="col-sm-12 col-md-12 col-lg-6">
-                    SONNE & STRAND: <app-stars [appreciation]="currentTripOffer?.erwartungenReadListTO?.sonne_strand"></app-stars>
+                    SONNE & STRAND: <app-stars [appreciation]="currentTripOffer?.erwartungenReadListTO?.sonne_strand">
+                    </app-stars>
                   </div>
                   <div class="col-sm-12 col-md-12 col-lg-6">
-                    SICHERHEIT: <app-stars [appreciation]="currentTripOffer?.erwartungenReadListTO?.sicherheit"></app-stars>
+                    SICHERHEIT: <app-stars [appreciation]="currentTripOffer?.erwartungenReadListTO?.sicherheit">
+                    </app-stars>
                   </div>
                 </div>
                 <div class="row" [ngStyle]="fontColor">
@@ -212,7 +226,8 @@
                 <p>{{item.beschreibung}}</p>
               </div>
               <div class="row col-md-4 mb-5">
-                <img *ngFor="let bild of item.bilder" class="col-sm-12 col-md-12 col-lg-6 img-fluid mb-4" [src]="getImage(bild)" alt="Bild-Bild-{{i+1}}a">
+                <img *ngFor="let bild of item.bilder" class="col-sm-12 col-md-12 col-lg-6 img-fluid mb-4"
+                  [src]="getImage(bild)" alt="Bild-Bild-{{i+1}}a">
               </div>
             </div>
           </div>
@@ -224,7 +239,8 @@
       <h2>Länderinfo | Gesundheit & Sicherheit</h2>
       <mat-card [ngStyle]="matCardShadow">
         <mat-card-content *ngFor="let info of currentLand?.landInfo; let i=index">
-          <mat-expansion-panel class="mb-2" [expanded]="checkIfExpanded(i)" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+          <mat-expansion-panel class="mb-2" [expanded]="checkIfExpanded(i)" (opened)="panelOpenState = true"
+            (closed)="panelOpenState = false">
             <mat-expansion-panel-header>
               <mat-panel-title>{{info?.titel | uppercase}}</mat-panel-title>
             </mat-expansion-panel-header>

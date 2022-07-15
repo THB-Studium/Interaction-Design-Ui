@@ -52,11 +52,11 @@
                         <td mat-cell *matCellDef="let row" class="text-center"> {{ row?.status }} </td>
                     </ng-container>
 
-                    <!-- Airport Column -->
+                    <!-- Airport Column
                     <ng-container matColumnDef="airport">
                         <th mat-header-cell *matHeaderCellDef scope="col" class="text-center">FLUGHAFEN</th>
                         <td mat-cell *matCellDef="let row" class="text-center"> {{row?.flughafen}} </td>
-                    </ng-container>
+                    </ng-container> -->
 
                     <!-- payment Column -->
                     <ng-container matColumnDef="paymentmethod">
@@ -68,27 +68,23 @@
                     <ng-container matColumnDef="action">
                         <th mat-header-cell *matHeaderCellDef scope="col" class="text-right">ACTION</th>
                         <td mat-cell *matCellDef="let row" class="text-right">
-                            <label class="mr-3" matTooltip="Bearbeiten" matTooltipHideDelay="{{toolTipDuration}}"
-                                (click)="setStateToReview(row)"
-                                *ngIf="row?.status === bookingStates[0] || row?.status === null">
-                                <em class="fa fa-lock text-black"></em>
-                            </label>
+
                             <label class="mr-3" matTooltip="As Pdf exportieren"
                                 matTooltipHideDelay="{{toolTipDuration}}" (click)="exportAsPDF(row)"
-                                *ngIf="row?.status !== bookingStates[0] && row?.status !== null">
+                                >
                                 <em class="fa fa-file-pdf text-danger"></em>
                             </label>
                             <label class="mr-3" matTooltip="Ansehen" matTooltipHideDelay="{{toolTipDuration}}"
                                 (click)="detailsDialog(row, viewDialog)"
-                                *ngIf="row?.status !== bookingStates[0] && row?.status !== null">
+                                >
                                 <em class="fa fa-eye text-primary"></em>
                             </label>
-                            <label class="mr-3" matTooltip="Editieren" matTooltipHideDelay="{{toolTipDuration}}"
+<!--                             <label class="mr-3" matTooltip="Editieren" matTooltipHideDelay="{{toolTipDuration}}"
                                 (click)="editDialog(row, bookingDialog)" *ngIf="row?.status !== bookingStates[0] && row?.status !== null">
                                 <em class="fa fa-pen text-info"></em>
-                            </label>
+                            </label> -->
                             <label matTooltip="Entfernen" matTooltipHideDelay="{{toolTipDuration}}"
-                                (click)="deleteDialog(row, delDialog)" *ngIf="row?.status !== bookingStates[0] && row?.status !== null">
+                                (click)="deleteDialog(row, delDialog)" >
                                 <em class="fa fa-trash text-red"></em>
                             </label>
                         </td>
@@ -242,8 +238,18 @@
                 </div>
                 <!--Traveler-->
                 <div class="col-md-12">
-                    <h4>Reisenden</h4>
+                    <h4>Reisender</h4>
                     <mat-divider class="mb-2"></mat-divider>
+                    <div class="form-row m-0 pt-2">
+                      <div class="form-group col-md-6 mb-0 p-0">
+                          Ausweis:
+                      </div>
+                      <div class="form-group col-md-6 mb-0 p-0">
+                        <div class="text-center" *ngIf="traveler.identityCard">
+                          <img [src]="traveler.realIdentityCard" alt="" width="170px" height="150px">
+                        </div>
+                      </div>
+                  </div>
                     <div class="form-row pt-2 m-0">
                         <div class="form-group col-md-6 mb-0 p-0">
                             <mat-form-field class="col-md-12 p-0" appearance="fill">
@@ -286,14 +292,52 @@
                             </mat-form-field>
                         </div>
                     </div>
+                    <div class="form-row">
+                      <div class="form-group col-md-6 mb-0 p-0">
+                          <mat-form-field class="col-md-12 p-0" appearance="fill">
+                              <mat-label>Hinflughafen:</mat-label>
+                              <input matInput [value]="currentBooking.abFlughafenReisender" disabled>
+                          </mat-form-field>
+                      </div>
+                      <div class="form-group col-md-6 mb-0 p-0">
+                          <mat-form-field class="col-md-12 p-0" appearance="fill">
+                              <mat-label>Rueckflughafen:</mat-label>
+                              <input matInput [value]="currentBooking.ruckFlughafenReisender" disabled>
+                          </mat-form-field>
+                      </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="form-group col-md-6 mb-0 p-0">
+                        <mat-form-field class="col-md-12 p-0" appearance="fill">
+                            <mat-label>handgepaeck:</mat-label>
+                            <input matInput [value]="currentBooking.handGepaeckReisender" disabled>
+                        </mat-form-field>
+                    </div>
+                    <div class="form-group col-md-6 mb-0 p-0">
+                        <mat-form-field class="col-md-12 p-0" appearance="fill">
+                            <mat-label>Koffer:</mat-label>
+                            <input matInput [value]="currentBooking.kofferReisender" disabled>
+                        </mat-form-field>
+                    </div>
+                  </div>
                 </div>
                 <!--Co traveler-->
                 <div *ngIf="cotraveler" class="col-md-12">
                     <div class="d-flex">
-                        <h4 class="mb-0">Mitreisenden</h4>
+                        <h4 class="mb-0">Mitreisender</h4>
                         <button class="btn btn-sm ml-5 text-danger" (click)="removeCotraveler()">Entfernen</button>
                     </div>
                     <mat-divider class="mt-1 mb-0"></mat-divider>
+                    <div class="form-row m-0 pt-2">
+                        <div class="form-group col-md-6 mb-0 p-0">
+                            Ausweis:
+                        </div>
+                        <div class="form-group col-md-6 mb-0 p-0">
+                          <div class="text-center" *ngIf="cotraveler.identityCard">
+                            <img [src]="cotraveler.realIdentityCard" alt="" width="170px" height="150px">
+                          </div>
+                        </div>
+                    </div>
                     <div class="form-row m-0 pt-2">
                         <div class="form-group col-md-6 mb-0 p-0">
                             <mat-form-field class="col-md-12 p-0" appearance="fill">
@@ -336,10 +380,43 @@
                             </mat-form-field>
                         </div>
                     </div>
+                    <div class="form-row">
+                      <div class="form-group col-md-6 mb-0 p-0">
+                          <mat-form-field class="col-md-12 p-0" appearance="fill">
+                              <mat-label>Hinflughafen:</mat-label>
+                              <input matInput [value]="currentBooking.abFlughafenMitReisender" disabled>
+                          </mat-form-field>
+                      </div>
+                      <div class="form-group col-md-6 mb-0 p-0">
+                          <mat-form-field class="col-md-12 p-0" appearance="fill">
+                              <mat-label>Rueckflughafen:</mat-label>
+                              <input matInput [value]="currentBooking.ruckFlughafenMitReisender" disabled>
+                          </mat-form-field>
+                      </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="form-group col-md-6 mb-0 p-0">
+                        <mat-form-field class="col-md-12 p-0" appearance="fill">
+                            <mat-label>handgepaeck:</mat-label>
+                            <input matInput [value]="currentBooking.handGepaeckMitReisender" disabled>
+                        </mat-form-field>
+                    </div>
+                    <div class="form-group col-md-6 mb-0 p-0">
+                        <mat-form-field class="col-md-12 p-0" appearance="fill">
+                            <mat-label>Koffer:</mat-label>
+                            <input matInput [value]="currentBooking.kofferMitReisender" disabled>
+                        </mat-form-field>
+                    </div>
+                  </div>
                 </div>
                 <mat-divider class="mb-0"></mat-divider>
                 <div class="col-md-12">
-                    <div class="d-flex mt-2">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <mat-checkbox class="mt-2 pt-2" [(ngModel)]="checked">Reisende benachrichtigen?</mat-checkbox>
+                        </div>
+                    </div>
+                    <div class="d-flex mt-2 justify-content-end">
                         <button mat-raised-button (click)="setBookingState(true)" class="mr-2 text-success"
                             [disabled]="currentBooking.status === bookingStates[2]">
                             Bestätigen
