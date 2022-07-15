@@ -81,6 +81,7 @@ export class BookingComponent implements OnInit, AfterViewInit {
   bookingStates: BookingState[];
   // Defines isRemoveCotraveler
   isRemoveCotraveler: boolean;
+  public checked = false;
 
   constructor(
     private bookingService: BookingService,
@@ -759,7 +760,8 @@ export class BookingComponent implements OnInit, AfterViewInit {
       abFlughafenMitReisender: this.currentBooking.abFlughafenMitReisender,
       ruckFlughafenMitReisender: this.currentBooking.ruckFlughafenMitReisender,
       handGepaeckMitReisender: this.currentBooking.handGepaeckMitReisender,
-      kofferMitReisender: this.currentBooking.kofferMitReisender
+      kofferMitReisender: this.currentBooking.kofferMitReisender,
+      sendMail: this.checked
     };
 
     this.updateBooking(toUpdate);

@@ -55,4 +55,5 @@ export class BookingUpdate {
     public ruckFlughafenMitReisender: string;
     public handGepaeckMitReisender: string;
     public kofferMitReisender: string;
+    public sendMail?: boolean;
 }
