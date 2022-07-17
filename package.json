@@ -8,7 +8,10 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "install:clean": "rm -rf node_modules/ && rm -rf package-lock.json && npm install && npm start"
+    "install:clean": "rm -rf node_modules/ && rm -rf package-lock.json && npm install && npm start",
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run",
+    "e2e:record": "cypress run --record"
   },
   "private": true,
   "dependencies": {
@@ -41,6 +44,7 @@
     "nouislider": "14.6.2",
     "npm": "^8.3.2",
     "rxjs": "7.2.0",
+    "uuid": "^8.3.2",
     "zone.js": "0.11.4"
   },
   "devDependencies": {
@@ -48,10 +52,13 @@
     "@angular/cli": "12.1.2",
     "@angular/compiler-cli": "12.1.2",
     "@angular/language-service": "12.1.2",
+    "@cypress/schematic": "^1.6.0",
     "@types/jasmine": "3.8.1",
     "@types/jasminewd2": "2.0.10",
     "@types/node": "16.3.2",
     "codelyzer": "6.0.2",
+    "cypress": "latest",
+    "cypress-xpath": "^1.6.2",
     "jasmine-core": "3.8.0",
     "jasmine-spec-reporter": "7.0.0",
     "karma": "6.3.4",

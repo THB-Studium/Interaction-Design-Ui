@@ -1,7 +1,8 @@
 <form [formGroup]="mailForm" class="col-md-12" *ngIf="!sent">
     <mat-card class="col-md-12">
         <mat-card-header>
-            <mat-card-subtitle *ngIf="recipientList.length == 0" class="text-warning">Es sind gerade kein Abonniert</mat-card-subtitle>
+            <mat-card-subtitle *ngIf="recipientList.length == 0" class="text-warning">Es sind gerade kein Abonniert
+            </mat-card-subtitle>
             <mat-card-title>E-Mail erfassen</mat-card-title>
         </mat-card-header>
         <mat-card-content class="mb--4">
