@@ -29,6 +29,7 @@
 src/locale/src/messages.xlf
 
 # misc
+/.angular/cache
 /.sass-cache
 /connect.lock
 /coverage

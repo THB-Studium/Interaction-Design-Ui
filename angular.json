@@ -117,12 +117,10 @@
           },
           "configurations": {
             "prod": {
-              "browserTarget": "argon-dashboard-angular:build:prod",
-              "sourceMap": true
+              "browserTarget": "argon-dashboard-angular:build:prod"
             },
             "dev": {
-              "browserTarget": "argon-dashboard-angular:build:dev",
-              "sourceMap": true
+              "browserTarget": "argon-dashboard-angular:build:dev"
             },
             "test": {
               "browserTarget": "argon-dashboard-angular:build:test"
@@ -154,18 +152,6 @@
               "src/assets"
             ]
           }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "src/tsconfig.app.json",
-              "src/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
-          }
         }
       }
     },
@@ -183,15 +169,6 @@
             "prod": {
               "devServerTarget": "argon-dashboard-angular:serve:prod"
             }
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": "e2e/tsconfig.e2e.json",
-            "exclude": [
-              "**/node_modules/**"
-            ]
           }
         }
       }
