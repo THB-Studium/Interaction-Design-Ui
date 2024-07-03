@@ -1,15 +1,15 @@
-import { Component, OnInit, AfterViewInit, ViewChild } from "@angular/core";
+import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 
-import { DomSanitizer } from "@angular/platform-browser";
-import { MatPaginator } from "@angular/material/paginator";
-import { MatSort } from "@angular/material/sort";
-import { MatTableDataSource } from "@angular/material/table";
-import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
+import {DomSanitizer} from '@angular/platform-browser';
+import {MatSort} from '@angular/material/sort';
 
-import { FeedbackService } from "src/app/services/feedback/feedback.service";
-import { ToastrService } from "ngx-toastr";
+import {FeedbackService} from 'src/app/services/feedback/feedback.service';
+import {ToastrService} from 'ngx-toastr';
 
-import { Feedback } from "src/app/models/feedback";
+import {Feedback} from 'src/app/models/feedback';
+import {MatPaginator} from '@angular/material/paginator';
+import {MatTableDataSource} from '@angular/material/table';
+import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 
 @Component({
   selector: 'app-feedback',
@@ -18,11 +18,11 @@ import { Feedback } from "src/app/models/feedback";
 })
 export class FeedbackComponent implements OnInit, AfterViewInit {
   // Defines paginator
-  @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
+  @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
   // Defines sort
-  @ViewChild(MatSort, { static: false }) sort: MatSort;
+  @ViewChild(MatSort, {static: false}) sort: MatSort;
   // Defines displayedColumns
-  displayedColumns: string[] = ["author", "description", "status", "action"];
+  displayedColumns: string[] = ['author', 'description', 'status', 'action'];
   // Defines dataSource
   dataSource: MatTableDataSource<Feedback>;
   // Defines dialogConfig
@@ -36,8 +36,8 @@ export class FeedbackComponent implements OnInit, AfterViewInit {
   // Defines loading
   loading = true;
   // Defines header-img
-  readonly headerImg = "assets/img/brand/utc.PNG";
-  readonly defaultFeedbackImg = "./assets/img/feedback/feedback-default-img.jpg";
+  readonly headerImg = 'assets/img/brand/utc.PNG';
+  readonly defaultFeedbackImg = './assets/img/feedback/feedback-default-img.jpg';
 
   constructor(
     private dialog: MatDialog,
@@ -87,19 +87,6 @@ export class FeedbackComponent implements OnInit, AfterViewInit {
     this.dialogConfig.autoFocus = true;
   }
 
-  private getAllFeedbacks() {
-    this.feedbackService.getAll().subscribe({
-      next: (feedbacks) => {
-        this.feedbackList = feedbacks;
-        this.dataSource.data = this.feedbackList;
-      },
-      error: () => {
-        this.toastrService.error('Die Feedbacks konnten nicht geladen werden.');
-      },
-      complete: () => this.loading = false
-    });
-  }
-
   commitChanges() {
     // We set the status before save it.
     this.currentFeedback.veroeffentlich = !this.currentFeedback.veroeffentlich;
@@ -125,15 +112,15 @@ export class FeedbackComponent implements OnInit, AfterViewInit {
     this.feedbackService.getOne(row.id).subscribe({
       next: (result) => {
         //convert image
-        if(result.bild) {
-          let objectURL = "data:image/png;base64," + result.bild;
+        if (result.bild) {
+          let objectURL = 'data:image/png;base64,' + result.bild;
           row.realImage = this.sanitizer.bypassSecurityTrustUrl(objectURL);
         } else {
           this.currentFeedback.realImage = null;
         }
       },
       error: () => {
-        this.toastrService.error("Die Information über dieses Feedback konnte nicht geladen werden.");
+        this.toastrService.error('Die Information über dieses Feedback konnte nicht geladen werden.');
       },
       complete: () => {
         this.currentFeedback = row;
@@ -167,6 +154,19 @@ export class FeedbackComponent implements OnInit, AfterViewInit {
 
   extractDescription(text: string): string {
     return text.length > 40 ? `${text.substring(0, 39)}...` : text;
+  }
+
+  private getAllFeedbacks() {
+    this.feedbackService.getAll().subscribe({
+      next: (feedbacks) => {
+        this.feedbackList = feedbacks;
+        this.dataSource.data = this.feedbackList;
+      },
+      error: () => {
+        this.toastrService.error('Die Feedbacks konnten nicht geladen werden.');
+      },
+      complete: () => this.loading = false
+    });
   }
 
 }

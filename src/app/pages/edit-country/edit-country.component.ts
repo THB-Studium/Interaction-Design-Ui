@@ -1,36 +1,36 @@
-import { AfterViewInit, Component, OnInit } from "@angular/core";
-import { Router, ActivatedRoute } from "@angular/router";
-import { FormControl, FormGroup, Validators } from "@angular/forms";
-import { MatChipInputEvent } from "@angular/material/chips";
-import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
+import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 
-import { AccommodationService } from "src/app/services/accommodation/accommodation.service";
-import { CountryService } from "src/app/services/country/country.service";
-import { CountryInformationService } from "src/app/services/country-information/country-information.service";
-import { HighlightService } from "src/app/services/highlight/highlight.service";
-import { SharedDataService } from "src/app/services/sharedData/shared-data.service";
-import { ToastrService } from "ngx-toastr";
+import {AccommodationService} from 'src/app/services/accommodation/accommodation.service';
+import {CountryService} from 'src/app/services/country/country.service';
+import {CountryInformationService} from 'src/app/services/country-information/country-information.service';
+import {HighlightService} from 'src/app/services/highlight/highlight.service';
+import {SharedDataService} from 'src/app/services/sharedData/shared-data.service';
+import {ToastrService} from 'ngx-toastr';
 
-import { Country } from "src/app/models/country";
-import { Highlight } from "src/app/models/highlight";
-import { Accommodation } from "src/app/models/accommodation";
-import { CountryInformation } from "src/app/models/countryInformation";
-import { DomSanitizer } from "@angular/platform-browser";
+import {Country} from 'src/app/models/country';
+import {Highlight} from 'src/app/models/highlight';
+import {Accommodation} from 'src/app/models/accommodation';
+import {CountryInformation} from 'src/app/models/countryInformation';
+import {DomSanitizer} from '@angular/platform-browser';
+import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
+import {MatChipInputEvent} from '@angular/material/chips';
 
 @Component({
-  selector: "app-edit-country",
-  templateUrl: "./edit-country.component.html",
-  styleUrls: ["./edit-country.component.css"],
+  selector: 'app-edit-country',
+  templateUrl: './edit-country.component.html',
+  styleUrls: ['./edit-country.component.css'],
 })
 export class EditCountryComponent implements OnInit, AfterViewInit {
   // Defines countryForm
   countryForm = new FormGroup({
     // name
-    name: new FormControl("", [Validators.required]),
+    name: new FormControl('', [Validators.required]),
     // airport
-    airports: new FormControl("", [Validators.required]),
+    airports: new FormControl('', [Validators.required]),
     // text
-    accommodation_text: new FormControl("", [Validators.required]),
+    accommodation_text: new FormControl('', [Validators.required]),
     // image
     image: new FormControl(undefined, [Validators.required]),
   });
@@ -67,7 +67,7 @@ export class EditCountryComponent implements OnInit, AfterViewInit {
   isValid: boolean = false;
   // Defines errors
   errors = {
-    errorMessage: "",
+    errorMessage: '',
   };
   // Defines toBeDelected
   toBeDelected: any;
@@ -93,8 +93,8 @@ export class EditCountryComponent implements OnInit, AfterViewInit {
     private sanitizer: DomSanitizer
   ) {
     this.dialogConfiguration();
-    this.headercolor = "rgb(45, 146, 171)";
-    this.footercolor = "rgb(45, 146, 171)";
+    this.headercolor = 'rgb(45, 146, 171)';
+    this.footercolor = 'rgb(45, 146, 171)';
   }
 
   ngOnInit(): void {
@@ -131,7 +131,7 @@ export class EditCountryComponent implements OnInit, AfterViewInit {
       this.countryService.getOne(id).subscribe({
         next: (country) => {
           //convert image
-          let objectURL = "data:image/png;base64," + country.karte_bild;
+          let objectURL = 'data:image/png;base64,' + country.karte_bild;
           country.realImage = this.sanitizer.bypassSecurityTrustUrl(objectURL);
 
           this.country = country;
@@ -142,7 +142,7 @@ export class EditCountryComponent implements OnInit, AfterViewInit {
 
           this.highlights = this.country.highlights.map((hight) => {
             //convert image
-            let objectURLHigh = "data:image/png;base64," + hight.bild;
+            let objectURLHigh = 'data:image/png;base64,' + hight.bild;
             hight.realImage =
               this.sanitizer.bypassSecurityTrustUrl(objectURLHigh);
             return hight;
@@ -155,8 +155,8 @@ export class EditCountryComponent implements OnInit, AfterViewInit {
         },
         error: () =>
           this.toastrService.error(
-            "Die Daten konnten nicht geladen werden",
-            "Fehler"
+            'Die Daten konnten nicht geladen werden',
+            'Fehler'
           ),
         complete: () => {
           this.isImgSelected = true;
@@ -167,31 +167,15 @@ export class EditCountryComponent implements OnInit, AfterViewInit {
     });
   }
 
-  private setcurrentCountryForm(country: Country) {
-    this.airportsArray.clear();
-    country.flughafen?.forEach((x) => this.airportsArray.add(x));
-
-    this.countryForm.setValue({
-      name: country.name,
-      // The will be automaticaly added from the airportsArray
-      airports: "",
-      accommodation_text: country.unterkunft_text,
-      image: country.karte_bild,
-    });
-
-    this.footercolor = country.bodyFarbe;
-    this.headercolor = country.headerFarbe;
-  }
-
   updateCountry() {
     let currentImg =
       this.country.realImage.changingThisBreaksApplicationSecurity;
 
     let toUpdate = {
       id: this.country.id,
-      name: this.countryForm.get("name").value,
+      name: this.countryForm.get('name').value,
       flughafen: Array.from(this.airportsArray),
-      unterkunft_text: this.countryForm.get("accommodation_text").value,
+      unterkunft_text: this.countryForm.get('accommodation_text').value,
       image: this.isImgSelected ? this.fileInputByte : currentImg,
       bodyFarbe: this.footercolor,
       headerFarbe: this.headercolor,
@@ -207,16 +191,16 @@ export class EditCountryComponent implements OnInit, AfterViewInit {
         // notify if any object is missing
         if (this.countryInfos.length === 0) {
           this.toastrService.info(
-            "Es wurde keine Information über das Land hinzugefügt."
+            'Es wurde keine Information über das Land hinzugefügt.'
           );
         }
 
         if (this.highlights.length === 0) {
-          this.toastrService.info("Es wurde keines Highlight hinzugefügt.");
+          this.toastrService.info('Es wurde keines Highlight hinzugefügt.');
         }
 
         if (this.accommodations.length === 0) {
-          this.toastrService.info("Es wurde keine Unterkunft hinzugefügt.");
+          this.toastrService.info('Es wurde keine Unterkunft hinzugefügt.');
         }
 
         this.navigateToCountriesList();
@@ -261,27 +245,8 @@ export class EditCountryComponent implements OnInit, AfterViewInit {
     this.isFormValid();
   }
 
-  private onFormValuesChanged(): void {
-    this.countryForm.valueChanges.subscribe({
-      next: () => this.isFormValid(),
-    });
-  }
-
-  private isFormValid(): void {
-    if (
-      this.countryForm.get("name").valid &&
-      this.isImgSelected &&
-      this.airportsArray.size > 0 &&
-      this.countryForm.get("accommodation_text").valid
-    ) {
-      this.isValid = true;
-    } else {
-      this.isValid = false;
-    }
-  }
-
   navigateToCountriesList() {
-    this.router.navigate(["/countries"]);
+    this.router.navigate(['/countries']);
   }
 
   addHighlightDialog(dialogForm: any) {
@@ -334,13 +299,13 @@ export class EditCountryComponent implements OnInit, AfterViewInit {
     this.higlightService.getOne(highlight.id).subscribe({
       next: (response) => {
         this.highlightForm = response;
-        let objectURLHigh = "data:image/png;base64," + response.bild;
+        let objectURLHigh = 'data:image/png;base64,' + response.bild;
         this.highlightForm.realImage =
           this.sanitizer.bypassSecurityTrustUrl(objectURLHigh);
       },
       error: () => {
         this.toastrService.error(
-          "Die Information konnten nicht geladen werden"
+          'Die Information konnten nicht geladen werden'
         );
       },
       complete: () => this.dialog.open(dialogForm, this.dialogConfig),
@@ -355,7 +320,7 @@ export class EditCountryComponent implements OnInit, AfterViewInit {
         this.sharedDataService.changeCurrentHighlight(response),
       error: () => {
         this.toastrService.error(
-          "Die Information konnten nicht geladen werden"
+          'Die Information konnten nicht geladen werden'
         );
       },
       complete: () => this.dialog.open(dialogForm, this.dialogConfig),
@@ -436,7 +401,7 @@ export class EditCountryComponent implements OnInit, AfterViewInit {
         this.accommodationForm = response;
         this.attachedImages = [];
         this.accommodationForm.bilder.forEach((element) => {
-          let objectURLHigh = "data:image/png;base64," + element;
+          let objectURLHigh = 'data:image/png;base64,' + element;
           this.attachedImages.push(
             this.sanitizer.bypassSecurityTrustUrl(objectURLHigh)
           );
@@ -444,7 +409,7 @@ export class EditCountryComponent implements OnInit, AfterViewInit {
       },
       error: () =>
         this.toastrService.error(
-          "Die Informationen konnten nicht geladet werden"
+          'Die Informationen konnten nicht geladet werden'
         ),
       complete: () => this.dialog.open(dialogForm, this.dialogConfig),
     });
@@ -459,7 +424,7 @@ export class EditCountryComponent implements OnInit, AfterViewInit {
       },
       error: () => {
         this.toastrService.error(
-          "Die Informationen konnten nicht geladet werden"
+          'Die Informationen konnten nicht geladet werden'
         );
       },
       complete: () => this.dialog.open(dialogForm, this.dialogConfig),
@@ -540,28 +505,14 @@ export class EditCountryComponent implements OnInit, AfterViewInit {
       },
       error: () =>
         this.toastrService.error(
-          "Diese Information konnte nicht gelöscht werden",
-          "Fehler"
+          'Diese Information konnte nicht gelöscht werden',
+          'Fehler'
         ),
       complete: () =>
         this.toastrService.success(
           `${this.toBeDelected.titel} wurde erfolgreich gelöscht`
         ),
     });
-  }
-
-  private success() {
-    this.toastrService.success(
-      "Die Information wurde erfolgreich gespeichert."
-    );
-    this.ngOnInit();
-  }
-
-  private error() {
-    this.toastrService.error(
-      "Die Information konnte nicht geändert werden.",
-      "Fehler"
-    );
   }
 
   getDescription(description: string) {
@@ -580,5 +531,54 @@ export class EditCountryComponent implements OnInit, AfterViewInit {
 
   setFooterColor(color: string) {
     this.footercolor = color;
+  }
+
+  private setcurrentCountryForm(country: Country) {
+    this.airportsArray.clear();
+    country.flughafen?.forEach((x) => this.airportsArray.add(x));
+
+    this.countryForm.setValue({
+      name: country.name,
+      // The will be automaticaly added from the airportsArray
+      airports: '',
+      accommodation_text: country.unterkunft_text,
+      image: country.karte_bild,
+    });
+
+    this.footercolor = country.bodyFarbe;
+    this.headercolor = country.headerFarbe;
+  }
+
+  private onFormValuesChanged(): void {
+    this.countryForm.valueChanges.subscribe({
+      next: () => this.isFormValid(),
+    });
+  }
+
+  private isFormValid(): void {
+    if (
+      this.countryForm.get('name').valid &&
+      this.isImgSelected &&
+      this.airportsArray.size > 0 &&
+      this.countryForm.get('accommodation_text').valid
+    ) {
+      this.isValid = true;
+    } else {
+      this.isValid = false;
+    }
+  }
+
+  private success() {
+    this.toastrService.success(
+      'Die Information wurde erfolgreich gespeichert.'
+    );
+    this.ngOnInit();
+  }
+
+  private error() {
+    this.toastrService.error(
+      'Die Information konnte nicht geändert werden.',
+      'Fehler'
+    );
   }
 }

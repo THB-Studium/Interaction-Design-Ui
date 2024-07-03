@@ -6,8 +6,24 @@ import { LearnMoreComponent } from "../../pages/learn-more/learn-more.component"
 import { AboutusComponent } from "src/app/pages/aboutus/aboutus.component";
 
 export const AuthLayoutRoutes: Routes = [
-  { path: "learn-more/:landId", component: LearnMoreComponent },
-  { path: "login", component: LoginComponent },
-  { path: "logout", component: LogoutComponent },
-  { path: "aboutus", component: AboutusComponent },
+  {
+    path: "learn-more/:landId",
+    title: 'Land',
+    component: LearnMoreComponent
+  },
+  {
+    path: "login",
+    title: 'Login',
+    component: LoginComponent
+  },
+  {
+    path: "logout",
+    title: 'Logout',
+    component: LogoutComponent
+  },
+  {
+    path: "aboutus",
+    title: 'About Us',
+    component: AboutusComponent
+  },
 ];

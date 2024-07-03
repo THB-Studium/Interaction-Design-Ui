@@ -45,7 +45,6 @@ registerLocaleData(localeDe, localeDeExtra);
     ScrollToTopComponent,
   ],
   providers: [
-    // { provide: HTTP_INTERCEPTORS, useClass: AppHttpInterceptor, multi: true },
     {provide: LocationStrategy, useClass: HashLocationStrategy},
     {provide: LOCALE_ID, useValue: 'de'},
   ],

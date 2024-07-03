@@ -6,31 +6,16 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 import {ClipboardModule} from 'ngx-clipboard';
 
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatInputModule} from '@angular/material/input';
-import {MatSelectModule} from '@angular/material/select';
-import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
-import {MatMenuModule} from '@angular/material/menu';
 import {MatStepperModule} from '@angular/material/stepper';
-import {MatCheckboxModule} from '@angular/material/checkbox';
-import {MatCardModule} from '@angular/material/card';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatBadgeModule} from '@angular/material/badge';
-import {MatTooltipModule} from '@angular/material/tooltip';
-import {MatTableModule} from '@angular/material/table';
-import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatSortModule} from '@angular/material/sort';
-import {MatDialogModule} from '@angular/material/dialog';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
-import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatGridListModule} from '@angular/material/grid-list';
 import {MatToolbarModule} from '@angular/material/toolbar';
-import {MatProgressBarModule} from '@angular/material/progress-bar';
-import {MatListModule} from '@angular/material/list';
 import {MatExpansionModule} from '@angular/material/expansion';
-import {MatChipsModule} from '@angular/material/chips';
 import {ColorPickerModule} from 'ngx-color-picker';
 
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
@@ -47,6 +32,21 @@ import {FeedbackComponent} from 'src/app/pages/feedback/feedback.component';
 import {TravelerComponent} from '../../pages/traveler/traveler.component';
 import {TripofferComponent} from 'src/app/pages/tripoffer/tripoffer.component';
 import {UserProfileComponent} from '../../pages/user-profile/user-profile.component';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
+import {MatSelectModule} from '@angular/material/select';
+import {MatButtonModule} from '@angular/material/button';
+import {MatMenuModule} from '@angular/material/menu';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatCardModule} from '@angular/material/card';
+import {MatTooltipModule} from '@angular/material/tooltip';
+import {MatTableModule} from '@angular/material/table';
+import {MatPaginatorModule} from '@angular/material/paginator';
+import {MatDialogModule} from '@angular/material/dialog';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
+import {MatListModule} from '@angular/material/list';
+import {MatChipsModule} from '@angular/material/chips';
 
 @NgModule({
   imports: [
@@ -98,7 +98,6 @@ import {UserProfileComponent} from '../../pages/user-profile/user-profile.compon
     UserProfileComponent
   ],
   providers: [
-    //{ provide: HTTP_INTERCEPTORS, useClass: AppHttpInterceptor, multi: true },
     {provide: LocationStrategy, useClass: HashLocationStrategy}
   ],
 })

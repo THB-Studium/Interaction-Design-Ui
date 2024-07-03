@@ -1,25 +1,19 @@
-import {
-  AfterViewInit,
-  Component,
-  OnInit,
-  Output,
-  EventEmitter
-} from "@angular/core";
-import { FormControl, FormGroup, Validators } from "@angular/forms";
-import { MatChipInputEvent } from "@angular/material/chips";
-import { ActivatedRoute } from "@angular/router";
+import {AfterViewInit, Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {ActivatedRoute} from '@angular/router';
 
-import { SharedDataService } from "src/app/services/sharedData/shared-data.service";
+import {SharedDataService} from 'src/app/services/sharedData/shared-data.service';
 
-import { Country } from "src/app/models/country";
-import { CountryService } from "src/app/services/country/country.service";
-import { ToastrService } from "ngx-toastr";
-import { DomSanitizer } from "@angular/platform-browser";
+import {Country} from 'src/app/models/country';
+import {CountryService} from 'src/app/services/country/country.service';
+import {ToastrService} from 'ngx-toastr';
+import {DomSanitizer} from '@angular/platform-browser';
+import {MatChipInputEvent} from '@angular/material/chips';
 
 @Component({
-  selector: "app-country-form",
-  templateUrl: "./country-form.component.html",
-  styleUrls: ["./country-form.component.css"],
+  selector: 'app-country-form',
+  templateUrl: './country-form.component.html',
+  styleUrls: ['./country-form.component.css'],
 })
 export class CountryFormComponent implements OnInit, AfterViewInit {
   // Defines notifyFormIsValid. Notify the parent when the form is valid
@@ -28,13 +22,13 @@ export class CountryFormComponent implements OnInit, AfterViewInit {
   // Defines country
   countryForm = new FormGroup({
     // name
-    name: new FormControl("", [Validators.required]),
+    name: new FormControl('', [Validators.required]),
     // airport
-    airports: new FormControl("", [Validators.required]),
+    airports: new FormControl('', [Validators.required]),
     // text
-    accommodation_text: new FormControl("", [Validators.required]),
+    accommodation_text: new FormControl('', [Validators.required]),
     // image
-    image: new FormControl("")
+    image: new FormControl('')
   });
 
   // Defines currentCountry. Contains complet current country information.
@@ -74,9 +68,9 @@ export class CountryFormComponent implements OnInit, AfterViewInit {
     this.initForm();
     this.currentCountry = {
       id: null,
-      name: "",
+      name: '',
       flughafen: [],
-      unterkunft_text: "",
+      unterkunft_text: '',
       karte_bild: null,
       highlights: [],
       landInfo: [],
@@ -90,50 +84,8 @@ export class CountryFormComponent implements OnInit, AfterViewInit {
     this.onFormValuesChanged();
   }
 
-  private initForm() {
-    this.activatedRoute.params.subscribe((param) => {
-      if (param.id) {
-        // it is an edit
-        this.countryService.getOne(param.id).subscribe({
-          next: (country) => {
-            //convert image
-            let objectURL = "data:image/png;base64," + country.karte_bild;
-            country.realImage =
-              this.sanitizer.bypassSecurityTrustUrl(objectURL);
-            this.currentCountry = country;
-          },
-          error: () =>
-            this.toastrService.error(
-              "Die Daten konnten nicht geladen werden",
-              "Fehler"
-            ),
-          complete: () => this.setCountryForm(this.currentCountry),
-        });
-      } else {
-        this.currentCountry = null;
-      }
-    });
-  }
-
-  private setCountryForm(country: Country) {
-    this.airportsArray.clear();
-    country.flughafen?.forEach((value) => this.airportsArray.add(value));
-
-    this.countryForm.setValue({
-      name: country.name,
-      accommodation_text: country.unterkunft_text,
-      airports: "",
-      image: ""
-    });
-
-    this.headercolor = country.headerFarbe;
-    this.footercolor = country.bodyFarbe;
-    // Since there is already an attached image, set the img selected to true
-    this.isImgSelected = true;
-  }
-
   // Adds new selected airport into the list of airports
-  addAirportFromInput(event: MatChipInputEvent) {
+  addAirportFromInput(event: MatChipInputEvent): void {
     if (event.value) {
       this.airportsArray.add(event.value);
       event.chipInput!.clear();
@@ -166,11 +118,61 @@ export class CountryFormComponent implements OnInit, AfterViewInit {
         this.fileInputByte = reader.result;
       };
       this.selectedFileName = name[0];
-      this.countryForm.get("image").setErrors(null);
+      this.countryForm.get('image').setErrors(null);
     } else {
       this.isImgSelected = false;
-      this.countryForm.get("image").setErrors({ valid: false });
+      this.countryForm.get('image').setErrors({valid: false});
     }
+  }
+
+  setHeaderColor(color: string) {
+    this.currentCountry.headerFarbe = color;
+  }
+
+  setFooterColor(color: string) {
+    this.currentCountry.bodyFarbe = color;
+  }
+
+  private initForm() {
+    this.activatedRoute.params.subscribe((param) => {
+      if (param.id) {
+        // it is an edit
+        this.countryService.getOne(param.id).subscribe({
+          next: (country) => {
+            //convert image
+            let objectURL = 'data:image/png;base64,' + country.karte_bild;
+            country.realImage =
+              this.sanitizer.bypassSecurityTrustUrl(objectURL);
+            this.currentCountry = country;
+          },
+          error: () =>
+            this.toastrService.error(
+              'Die Daten konnten nicht geladen werden',
+              'Fehler'
+            ),
+          complete: () => this.setCountryForm(this.currentCountry),
+        });
+      } else {
+        this.currentCountry = null;
+      }
+    });
+  }
+
+  private setCountryForm(country: Country) {
+    this.airportsArray.clear();
+    country.flughafen?.forEach((value) => this.airportsArray.add(value));
+
+    this.countryForm.setValue({
+      name: country.name,
+      accommodation_text: country.unterkunft_text,
+      airports: '',
+      image: ''
+    });
+
+    this.headercolor = country.headerFarbe;
+    this.footercolor = country.bodyFarbe;
+    // Since there is already an attached image, set the img selected to true
+    this.isImgSelected = true;
   }
 
   private onFormValuesChanged(): void {
@@ -181,10 +183,10 @@ export class CountryFormComponent implements OnInit, AfterViewInit {
 
   private isFormValid(): void {
     if (
-      this.countryForm.get("name").valid &&
+      this.countryForm.get('name').valid &&
       this.isImgSelected &&
       this.airportsArray.size > 0 &&
-      this.countryForm.get("accommodation_text").valid
+      this.countryForm.get('accommodation_text').valid
     ) {
       var id = null;
       if (!this.isAnAdd) {
@@ -193,9 +195,9 @@ export class CountryFormComponent implements OnInit, AfterViewInit {
 
       this.currentCountry = {
         id: id,
-        name: this.countryForm.get("name").value,
+        name: this.countryForm.get('name').value,
         flughafen: Array.from(this.airportsArray),
-        unterkunft_text: this.countryForm.get("accommodation_text").value,
+        unterkunft_text: this.countryForm.get('accommodation_text').value,
         karte_bild: this.fileInputByte,
         highlights: this.currentCountry.highlights
           ? this.currentCountry.highlights
@@ -216,13 +218,5 @@ export class CountryFormComponent implements OnInit, AfterViewInit {
     } else {
       this.notifyFormIsValid.emit(false);
     }
-  }
-
-  setHeaderColor(color: string) {
-    this.currentCountry.headerFarbe = color;
-  }
-
-  setFooterColor(color: string) {
-    this.currentCountry.bodyFarbe = color;
   }
 }

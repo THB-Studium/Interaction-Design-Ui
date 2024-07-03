@@ -1,6 +1,5 @@
 import {formatDate} from '@angular/common';
 import {Component, OnInit} from '@angular/core';
-import {MatDialog} from '@angular/material/dialog';
 import {Router} from '@angular/router';
 import {ToastrService} from 'ngx-toastr';
 import {CurrentOffersListFormComponent} from 'src/app/components/forms/current-offers-list-form/current-offers-list-form.component';
@@ -9,6 +8,7 @@ import {Slide} from 'src/app/models/slide';
 import {TripOffer} from 'src/app/models/tripOffer';
 import {TripOfferService} from 'src/app/services/trip-offer/trip-offer.service';
 import {SlideList} from 'src/app/shared/datas/slideList';
+import {MatDialog} from '@angular/material/dialog';
 
 @Component({
   selector: 'app-home-layout',

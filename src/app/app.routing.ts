@@ -20,6 +20,7 @@ const routes: Routes = [
     children: [
       {
         path: '',
+        title: 'Admin Dashboard - ',
         canActivate: [AuthorizationGuard],
         loadChildren: () =>
           import('src/app/layouts/admin-layout/admin-layout.module').then(
@@ -30,6 +31,7 @@ const routes: Routes = [
   },
   {
     path: '',
+    title: 'Authetication - ',
     component: AuthLayoutComponent,
     children: [
       {
@@ -43,6 +45,7 @@ const routes: Routes = [
   },
   {
     path: '',
+    title: 'Client - ',
     component: HomeLayoutComponent,
     children: [
       {

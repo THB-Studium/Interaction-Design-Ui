@@ -1,31 +1,31 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
-import { Router } from "@angular/router";
-import { FormControl } from "@angular/forms";
-import { MatDialog } from "@angular/material/dialog";
-import { ReplaySubject, Subject } from "rxjs";
-import { debounceTime, delay, filter, takeUntil, tap, map } from 'rxjs/operators';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
+import {FormControl} from '@angular/forms';
+import {ReplaySubject, Subject} from 'rxjs';
+import {debounceTime, delay, filter, map, takeUntil, tap} from 'rxjs/operators';
 
-import { CountryService } from "src/app/services/country/country.service";
-import { BookingFormComponent } from "../booking-form/booking-form.component";
+import {CountryService} from 'src/app/services/country/country.service';
+import {BookingFormComponent} from '../booking-form/booking-form.component';
 
-import { TripOffer } from "src/app/models/tripOffer";
-import { TripOfferService } from "src/app/services/trip-offer/trip-offer.service";
+import {TripOffer} from 'src/app/models/tripOffer';
+import {TripOfferService} from 'src/app/services/trip-offer/trip-offer.service';
+import {MatDialog} from '@angular/material/dialog';
 
 @Component({
-  selector: "app-current-offers-list-form",
-  templateUrl: "./current-offers-list-form.component.html",
-  styleUrls: ["./current-offers-list-form.component.css"],
+  selector: 'app-current-offers-list-form',
+  templateUrl: './current-offers-list-form.component.html',
+  styleUrls: ['./current-offers-list-form.component.css'],
 })
 export class CurrentOffersListFormComponent implements OnInit, OnDestroy {
   offersFilteringCtrl: FormControl = new FormControl();
   public searching = false;
-  protected _onDestroy = new Subject<void>();
   // Defines selectedOffer
   public selectedOffer: FormControl;
   filteredOffers: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
   // Defines currentOffers
   currentOffers: TripOffer[];
   selectedTripOffer: TripOffer;
+  protected _onDestroy = new Subject<void>();
 
   constructor(
     private router: Router,
@@ -59,8 +59,8 @@ export class CurrentOffersListFormComponent implements OnInit, OnDestroy {
           next: (result) => country = result,
           complete: () => {
             const dialog = this.dialog.open(BookingFormComponent, {
-              disableClose : true,
-              autoFocus : true
+              disableClose: true,
+              autoFocus: true
             });
             // Set needed values
             dialog.componentInstance.land = country;
@@ -87,11 +87,11 @@ export class CurrentOffersListFormComponent implements OnInit, OnDestroy {
         delay(500),
         takeUntil(this._onDestroy)
       ).subscribe({
-        next: (x) => {
-          this.searching = false;
+      next: (x) => {
+        this.searching = false;
         this.filteredOffers.next(x);
-        },
-        error: () => this.searching = false
-       });
+      },
+      error: () => this.searching = false
+    });
   }
 }

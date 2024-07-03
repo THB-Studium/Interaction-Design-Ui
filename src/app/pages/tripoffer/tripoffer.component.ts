@@ -1,36 +1,36 @@
-import { Component, OnInit, AfterViewInit, ViewChild } from "@angular/core";
-import { Router, ActivatedRoute } from "@angular/router";
+import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
 
-import { MatPaginator } from "@angular/material/paginator";
-import { MatSort } from "@angular/material/sort";
-import { MatTableDataSource } from "@angular/material/table";
-import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
+import {MatSort} from '@angular/material/sort';
 
-import { Calendar } from "src/app/variables/calendar";
-import { TripOffer } from "src/app/models/tripOffer";
-import { SharedDataService } from "src/app/services/sharedData/shared-data.service";
-import { ToastrService } from "ngx-toastr";
-import { TripOfferService } from "src/app/services/trip-offer/trip-offer.service";
-import { DomSanitizer } from "@angular/platform-browser";
+import {Calendar} from 'src/app/variables/calendar';
+import {TripOffer} from 'src/app/models/tripOffer';
+import {SharedDataService} from 'src/app/services/sharedData/shared-data.service';
+import {ToastrService} from 'ngx-toastr';
+import {TripOfferService} from 'src/app/services/trip-offer/trip-offer.service';
+import {DomSanitizer} from '@angular/platform-browser';
+import {MatPaginator} from '@angular/material/paginator';
+import {MatTableDataSource} from '@angular/material/table';
+import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 
 @Component({
-  selector: "app-tripoffer",
-  templateUrl: "./tripoffer.component.html",
-  styleUrls: ["./tripoffer.component.css"],
+  selector: 'app-tripoffer',
+  templateUrl: './tripoffer.component.html',
+  styleUrls: ['./tripoffer.component.css'],
 })
 export class TripofferComponent implements OnInit, AfterViewInit {
   // Defines paginator
-  @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
+  @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
   // Defines sort
-  @ViewChild(MatSort, { static: false }) sort: MatSort;
+  @ViewChild(MatSort, {static: false}) sort: MatSort;
   // Defines displayedColumns
   displayedColumns: string[] = [
-    "img",
-    "title",
-    "date",
-    "place",
-    "freeplace",
-    "action",
+    'img',
+    'title',
+    'date',
+    'place',
+    'freeplace',
+    'action',
   ];
   // Defines dataSource
   dataSource: MatTableDataSource<TripOffer>;
@@ -40,7 +40,7 @@ export class TripofferComponent implements OnInit, AfterViewInit {
   toolTipDuration = 300;
   // Defines errors
   errors = {
-    errorMessage: "",
+    errorMessage: '',
   };
   // Defines currentTripOffer
   currentTripOffer: TripOffer;
@@ -62,20 +62,20 @@ export class TripofferComponent implements OnInit, AfterViewInit {
   ) {
     this.dialogConfiguration();
     this.currentTripOffer = {
-      id: "",
-      titel: "",
-      anmeldungsFrist: "",
-      startDatum: "",
-      endDatum: "",
+      id: '',
+      titel: '',
+      anmeldungsFrist: '',
+      startDatum: '',
+      endDatum: '',
       startbild: null,
       plaetze: 0,
       freiPlaetze: 0,
       interessiert: 0,
       leistungen: [],
       mitreiseberechtigt: [],
-      hinweise: "",
-      sonstigeHinweise: "",
-      landId: "",
+      hinweise: '',
+      sonstigeHinweise: '',
+      landId: '',
       buchungsklassenReadListTO: null,
       erwartungenReadListTO: null,
       erwartungen: null,
@@ -87,8 +87,8 @@ export class TripofferComponent implements OnInit, AfterViewInit {
     // Datasource initialization. This is needed to set paginator and items size
     this.dataSource = new MatTableDataSource([
       {
-        id: "",
-        titel: "",
+        id: '',
+        titel: '',
         anmeldungsFrist: null,
         startDatum: null,
         endDatum: null,
@@ -98,9 +98,9 @@ export class TripofferComponent implements OnInit, AfterViewInit {
         interessiert: 0,
         leistungen: [],
         mitreiseberechtigt: [],
-        hinweise: "",
-        sonstigeHinweise: "",
-        landId: "",
+        hinweise: '',
+        sonstigeHinweise: '',
+        landId: '',
         buchungsklassenReadListTO: null,
         erwartungenReadListTO: null,
         erwartungen: null,
@@ -133,8 +133,12 @@ export class TripofferComponent implements OnInit, AfterViewInit {
   // Sorts the by date ascending
   sortByTitle(tripOfferList: TripOffer[]): void {
     tripOfferList.sort((x, y) => {
-      if (x.titel > y.titel) return 1;
-      if (x.titel < y.titel) return -1;
+      if (x.titel > y.titel) {
+        return 1;
+      }
+      if (x.titel < y.titel) {
+        return -1;
+      }
       return 0;
     });
   }
@@ -143,30 +147,6 @@ export class TripofferComponent implements OnInit, AfterViewInit {
   dialogConfiguration() {
     this.dialogConfig.disableClose = true;
     this.dialogConfig.autoFocus = true;
-  }
-
-  private getTripoffers() {
-    this.tripOfferService.getAll().subscribe({
-      next: (offers) => {
-        this.tripOfferList = offers;
-        this.sortByTitle(this.tripOfferList);
-        this.dataSource.data = this.tripOfferList.map((tripOffer) => {
-          //convert image
-          let objectURL = "data:image/png;base64," + tripOffer.startbild;
-          tripOffer.realImage =
-            this.sanitizer.bypassSecurityTrustUrl(objectURL);
-          return tripOffer;
-        });
-      },
-      error: (error) => {
-        this.handleError(error);
-        this.toastrService.error(
-          "Die Liste von Angeboten konnte nicht gelesen werden.",
-          "Fehler"
-        );
-      },
-      complete: () => this.loading = false
-    });
   }
 
   // Handle the event that has been emitted by the child. Notify if the form is valid or not.
@@ -216,7 +196,7 @@ export class TripofferComponent implements OnInit, AfterViewInit {
               this.sortByTitle(this.tripOfferList);
               this.dataSource.data = this.tripOfferList.map((tripOffer) => {
                 //convert image
-                let objectURL = "data:image/png;base64," + tripOffer.startbild;
+                let objectURL = 'data:image/png;base64,' + tripOffer.startbild;
                 tripOffer.realImage =
                   this.sanitizer.bypassSecurityTrustUrl(objectURL);
                 return tripOffer;
@@ -226,7 +206,7 @@ export class TripofferComponent implements OnInit, AfterViewInit {
               this.handleError(err);
               this.toastrService.error(
                 `${this.currentTripOffer.titel} konnte nicht hinzugefuegt werden.`,
-                "Fehler"
+                'Fehler'
               );
             },
             complete: () => {
@@ -277,7 +257,7 @@ export class TripofferComponent implements OnInit, AfterViewInit {
         this.handleError(err);
         this.toastrService.error(
           `${this.currentTripOffer.titel} konnte nicht entfernt werden.`,
-          "Fehler"
+          'Fehler'
         );
       },
       complete: () => {
@@ -292,25 +272,49 @@ export class TripofferComponent implements OnInit, AfterViewInit {
     this.router.navigate(['tripoffer/view', row.id]);
   }
 
-  // On error
-  private handleError(error: any) {
-    if (error?.message) {
-      this.errors.errorMessage = error?.message;
-    }
-  }
-
   // Sets the status of the form to not valid
   resetFormStatus() {
     this.valid = false;
   }
 
   convertDateToString(date: string) {
-    if (date && date.includes("-")) {
-      const day = parseInt(date.split("-")[2]);
-      const month = parseInt(date.split("-")[1]);
-      const year = parseInt(date.split("-")[0]);
+    if (date && date.includes('-')) {
+      const day = parseInt(date.split('-')[2]);
+      const month = parseInt(date.split('-')[1]);
+      const year = parseInt(date.split('-')[0]);
       return `${day} ${Calendar.months[month - 1]} ${year}`;
     }
     return "";
+  }
+
+  private getTripoffers() {
+    this.tripOfferService.getAll().subscribe({
+      next: (offers) => {
+        this.tripOfferList = offers;
+        this.sortByTitle(this.tripOfferList);
+        this.dataSource.data = this.tripOfferList.map((tripOffer) => {
+          //convert image
+          let objectURL = 'data:image/png;base64,' + tripOffer.startbild;
+          tripOffer.realImage =
+            this.sanitizer.bypassSecurityTrustUrl(objectURL);
+          return tripOffer;
+        });
+      },
+      error: (error) => {
+        this.handleError(error);
+        this.toastrService.error(
+          'Die Liste von Angeboten konnte nicht gelesen werden.',
+          'Fehler'
+        );
+      },
+      complete: () => this.loading = false
+    });
+  }
+
+  // On error
+  private handleError(error: any) {
+    if (error?.message) {
+      this.errors.errorMessage = error?.message;
+    }
   }
 }

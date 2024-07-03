@@ -1,18 +1,18 @@
-import {Component, OnInit} from "@angular/core";
-import { formatDate, Location } from "@angular/common";
-import { Router } from "@angular/router";
-import { CurrentOffersListFormComponent } from "../forms/current-offers-list-form/current-offers-list-form.component";
-import { MatDialog } from "@angular/material/dialog";
+import {Component, OnInit} from '@angular/core';
+import {formatDate, Location} from '@angular/common';
+import {Router} from '@angular/router';
+import {CurrentOffersListFormComponent} from '../forms/current-offers-list-form/current-offers-list-form.component';
 
-import { ToastrService } from "ngx-toastr";
-import { TripOfferService } from "src/app/services/trip-offer/trip-offer.service";
+import {ToastrService} from 'ngx-toastr';
+import {TripOfferService} from 'src/app/services/trip-offer/trip-offer.service';
 
-import { TripOffer } from "src/app/models/tripOffer";
+import {TripOffer} from 'src/app/models/tripOffer';
+import {MatDialog} from '@angular/material/dialog';
 
 @Component({
-  selector: "app-navbar-guest",
-  templateUrl: "./navbar-guest.component.html",
-  styleUrls: ["./navbar-guest.component.css"],
+  selector: 'app-navbar-guest',
+  templateUrl: './navbar-guest.component.html',
+  styleUrls: ['./navbar-guest.component.css'],
 })
 export class NavbarGuestComponent implements OnInit {
 
@@ -50,14 +50,14 @@ export class NavbarGuestComponent implements OnInit {
     this.tripofferService.getAll().subscribe({
       next: (result: TripOffer[]) => {
         // only current and valid offers are needed
-        const today = formatDate(new Date(), "yyyy-MM-dd", "en_US");
+        const today = formatDate(new Date(), 'yyyy-MM-dd', 'en_US');
         this.currentOffers = result.filter(
           (x) => x.endDatum > today && x.landId != null
         );
       },
       error: () => {
         this.toastrService.info(
-          "Die Liste von Reiseangebote konnten nicht geladen werden."
+          'Die Liste von Reiseangebote konnten nicht geladen werden.'
         );
         // hide the loader on error
         this.loading = false;

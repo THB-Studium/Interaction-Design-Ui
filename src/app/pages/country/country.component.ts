@@ -1,29 +1,29 @@
-import { Component, OnInit, AfterViewInit, ViewChild } from "@angular/core";
-import { Router, ActivatedRoute } from "@angular/router";
+import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
 
-import { MatPaginator } from "@angular/material/paginator";
-import { MatSort } from "@angular/material/sort";
-import { MatTableDataSource } from "@angular/material/table";
-import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
+import {MatSort} from '@angular/material/sort';
 
-import { CountryService } from "src/app/services/country/country.service";
-import { ToastrService } from "ngx-toastr";
-import { SharedDataService } from "src/app/services/sharedData/shared-data.service";
+import {CountryService} from 'src/app/services/country/country.service';
+import {ToastrService} from 'ngx-toastr';
+import {SharedDataService} from 'src/app/services/sharedData/shared-data.service';
 
-import { Country } from "src/app/models/country";
+import {Country} from 'src/app/models/country';
+import {MatPaginator} from '@angular/material/paginator';
+import {MatTableDataSource} from '@angular/material/table';
+import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 
 @Component({
-  selector: "app-country",
-  templateUrl: "./country.component.html",
-  styleUrls: ["./country.component.css"],
+  selector: 'app-country',
+  templateUrl: './country.component.html',
+  styleUrls: ['./country.component.css'],
 })
 export class CountryComponent implements OnInit, AfterViewInit {
   // Defines paginator
-  @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
+  @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
   // Defines sort
-  @ViewChild(MatSort, { static: false }) sort: MatSort;
+  @ViewChild(MatSort, {static: false}) sort: MatSort;
   // Defines displayedColumns
-  displayedColumns: string[] = ["name", "airports", "action"];
+  displayedColumns: string[] = ['name', 'airports', 'action'];
   // Defines dataSource
   dataSource: MatTableDataSource<Country>;
   // Defines countriesList
@@ -32,7 +32,7 @@ export class CountryComponent implements OnInit, AfterViewInit {
   toolTipDuration = 300;
   // Defines errors
   errors = {
-    errorMessage: "",
+    errorMessage: '',
   };
   // Defines currentCountry
   currentCountry: Country;
@@ -61,13 +61,13 @@ export class CountryComponent implements OnInit, AfterViewInit {
       {
         flughafen: [],
         highlights: [],
-        id: "",
+        id: '',
         karte_bild: null,
         landInfo: null,
-        name: "",
+        name: '',
         unterkunft: [],
-        unterkunft_text: "",
-        realImage: "",
+        unterkunft_text: '',
+        realImage: '',
         bodyFarbe: '',
         headerFarbe: ''
       },
@@ -102,27 +102,13 @@ export class CountryComponent implements OnInit, AfterViewInit {
   // Sorts by name ascending
   sortByName(countries: Country[]): void {
     countries.sort((x, y) => {
-      if (x.name > y.name) return 1;
-      if (x.name < y.name) return -1;
+      if (x.name > y.name) {
+        return 1;
+      }
+      if (x.name < y.name) {
+        return -1;
+      }
       return 0;
-    });
-  }
-
-  private getCountries() {
-    this.countryService.getAll().subscribe({
-      next: (countries) => {
-        this.countriesList = countries;
-        this.sortByName(this.countriesList);
-        this.dataSource.data = this.countriesList;
-      },
-      error: (err) => {
-        this.handleError(err);
-        this.toastrService.error(
-          `Die Länder konnten nicht geladen werden.`,
-          "Fehler"
-        );
-      },
-      complete: () => this.loading = false
     });
   }
 
@@ -157,13 +143,13 @@ export class CountryComponent implements OnInit, AfterViewInit {
         this.countriesList.push(resp);
         this.sortByName(this.countriesList);
         this.dataSource.data = this.countriesList;
-        this.router.navigate(["/countries/edit/", resp.id]);
+        this.router.navigate(['/countries/edit/', resp.id]);
       },
       error: (err) => {
         this.handleError(err);
         this.toastrService.error(
           `Das Land konnte nicht gespeichert werden.`,
-          "Fehler"
+          'Fehler'
         );
       },
       complete: () => {
@@ -180,7 +166,7 @@ export class CountryComponent implements OnInit, AfterViewInit {
   editCountry(country: Country) {
     this.sharedDataService.isAddBtnClicked = false;
     this.sharedDataService.changeCurrentCountry(country);
-    this.router.navigate([`edit/${country.id}`], { relativeTo: this.route });
+    this.router.navigate([`edit/${country.id}`], {relativeTo: this.route});
   }
 
   deleteCountryDialog(country: Country, dialogForm: any) {
@@ -206,7 +192,7 @@ export class CountryComponent implements OnInit, AfterViewInit {
         this.handleError(err);
         this.toastrService.error(
           `${this.currentCountry.name} konnte nicht entfernt werden.`,
-          "Fehler"
+          'Fehler'
         );
       },
       complete: () => {
@@ -219,6 +205,24 @@ export class CountryComponent implements OnInit, AfterViewInit {
 
   getDescription(description: string) {
     return description && description.length > 14 ? `${description.substring(0, 15)}...` : description;
+  }
+
+  private getCountries() {
+    this.countryService.getAll().subscribe({
+      next: (countries) => {
+        this.countriesList = countries;
+        this.sortByName(this.countriesList);
+        this.dataSource.data = this.countriesList;
+      },
+      error: (err) => {
+        this.handleError(err);
+        this.toastrService.error(
+          `Die Länder konnten nicht geladen werden.`,
+          'Fehler'
+        );
+      },
+      complete: () => this.loading = false
+    });
   }
 
   // On error

@@ -14,18 +14,69 @@ import {TripofferComponent} from 'src/app/pages/tripoffer/tripoffer.component';
 import {UserProfileComponent} from '../../pages/user-profile/user-profile.component';
 
 export const AdminLayoutRoutes: Routes = [
-  {path: 'bookings', component: BookingComponent},
+  {
+    path: 'bookings',
+    title: 'Booking',
+    component: BookingComponent
+  },
+
   //#region country
-  {path: 'countries', component: CountryComponent},
-  {path: 'countries/edit/:id', component: EditCountryComponent},
+  {
+    path: 'countries',
+    title: 'Country',
+    component: CountryComponent
+  },
+
+  {
+    path: 'countries/edit/:id',
+    title: 'Edit Country',
+    component: EditCountryComponent
+  },
+
   //#endregion country
-  {path: 'feedbacks', component: FeedbackComponent},
-  {path: 'startpage', component: HomeComponent},
-  {path: 'travelers', component: TravelerComponent},
-  {path: 'tripoffers', component: TripofferComponent},
-  {path: 'tripoffers/edit/:id', component: EditTripofferComponent},
-  {path: 'tripoffer/view/:landId', component: LearnMoreComponent},
-  {path: 'users', component: AdminComponent},
-  {path: 'user-profile', component: UserProfileComponent},
-  {path: 'verwaltung', component: DashboardComponent},
+  {
+    path: 'feedbacks',
+    title: 'Feedback',
+    component: FeedbackComponent
+  },
+  {
+    path: 'startpage',
+    title: 'Home',
+    component: HomeComponent
+  },
+  {
+    path: 'travelers',
+    title: 'Traveler',
+    component: TravelerComponent
+  },
+  {
+    path: 'tripoffers',
+    title: 'Trip Offer',
+    component: TripofferComponent
+  },
+  {
+    path: 'tripoffers/edit/:id',
+    title: 'Edit Trip Offer',
+    component: EditTripofferComponent
+  },
+  {
+    path: 'tripoffer/view/:landId',
+    title: 'View Trip Offer',
+    component: LearnMoreComponent
+  },
+  {
+    path: 'users',
+    title: 'Admin',
+    component: AdminComponent
+  },
+  {
+    path: 'user-profile',
+    title: 'User Profile',
+    component: UserProfileComponent
+  },
+  {
+    path: 'verwaltung',
+    title: 'Verwaltung',
+    component: DashboardComponent
+  },
 ];

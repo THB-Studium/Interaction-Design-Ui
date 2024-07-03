@@ -1,40 +1,40 @@
-import { Component, OnInit, AfterViewInit, ViewChild } from "@angular/core";
-import { FormControl } from "@angular/forms";
-import { MatPaginator } from "@angular/material/paginator";
-import { MatSort } from "@angular/material/sort";
-import { MatTableDataSource } from "@angular/material/table";
-import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
-import { formatDate } from "@angular/common";
+import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import {FormControl} from '@angular/forms';
+import {MatSort} from '@angular/material/sort';
+import {formatDate} from '@angular/common';
 
-import { BookingService } from "src/app/services/booking/booking.service";
-import { BookingClassService } from "src/app/services/booking-class/booking-class.service";
-import { CountryService } from "src/app/services/country/country.service";
-import { SharedDataService } from "src/app/services/sharedData/shared-data.service";
-import { ToastrService } from "ngx-toastr";
-import { TravelerService } from "src/app/services/traveler/traveler.service";
-import { TripOfferService } from "src/app/services/trip-offer/trip-offer.service";
+import {BookingService} from 'src/app/services/booking/booking.service';
+import {BookingClassService} from 'src/app/services/booking-class/booking-class.service';
+import {CountryService} from 'src/app/services/country/country.service';
+import {SharedDataService} from 'src/app/services/sharedData/shared-data.service';
+import {ToastrService} from 'ngx-toastr';
+import {TravelerService} from 'src/app/services/traveler/traveler.service';
+import {TripOfferService} from 'src/app/services/trip-offer/trip-offer.service';
 
-import { Booking } from "src/app/models/booking";
-import { BookingClass } from "src/app/models/bookingClass";
-import { Country } from "src/app/models/country";
-import { Calendar } from "src/app/variables/calendar";
-import { Traveler } from "src/app/models/traveler";
-import { TripOffer } from "src/app/models/tripOffer";
+import {Booking} from 'src/app/models/booking';
+import {BookingClass} from 'src/app/models/bookingClass';
+import {Country} from 'src/app/models/country';
+import {Calendar} from 'src/app/variables/calendar';
+import {Traveler} from 'src/app/models/traveler';
+import {TripOffer} from 'src/app/models/tripOffer';
 
-import { BookingFormComponent } from "src/app/components/forms/booking-form/booking-form.component";
+import {BookingFormComponent} from 'src/app/components/forms/booking-form/booking-form.component';
+import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
+import {MatPaginator} from '@angular/material/paginator';
+import {MatTableDataSource} from '@angular/material/table';
 
 @Component({
-  selector: "app-booking",
-  templateUrl: "./booking.component.html",
-  styleUrls: ["./booking.component.css"],
+  selector: 'app-booking',
+  templateUrl: './booking.component.html',
+  styleUrls: ['./booking.component.css'],
 })
 export class BookingComponent implements OnInit, AfterViewInit {
   // Defines paginator
-  @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
+  @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
   // Defines sort
-  @ViewChild(MatSort, { static: false }) sort: MatSort;
+  @ViewChild(MatSort, {static: false}) sort: MatSort;
   // Defines displayedColumns
-  displayedColumns: string[] = ["date", "airport", "paymentmethod", "action"];
+  displayedColumns: string[] = ['date', 'airport', 'paymentmethod', 'action'];
   // Defines selectedOffer
   public selectedOffer: FormControl;
   // Defines dataSource
@@ -45,7 +45,7 @@ export class BookingComponent implements OnInit, AfterViewInit {
   toolTipDuration = 300;
   // Defines errors
   errors = {
-    errorMessage: "",
+    errorMessage: '',
   };
   // Defines currentBooking
   currentBooking: Booking;
@@ -89,16 +89,16 @@ export class BookingComponent implements OnInit, AfterViewInit {
     // Datasource initialization. This is needed to set paginator and items size
     this.dataSource = new MatTableDataSource([
       {
-        id: "",
-        buchungsklasseId: "",
-        datum: "",
-        flughafen: "",
-        handGepaeck: "",
-        koffer: "",
+        id: '',
+        buchungsklasseId: '',
+        datum: '',
+        flughafen: '',
+        handGepaeck: '',
+        koffer: '',
         mitReisender: null,
         reisender: null,
         zahlungMethod: null,
-        reiseAngebotId: "",
+        reiseAngebotId: '',
       },
     ]);
 
@@ -129,8 +129,12 @@ export class BookingComponent implements OnInit, AfterViewInit {
   // Sorts the by date descending
   sortByDate(bookingList: Booking[]): void {
     bookingList.sort((x, y) => {
-      if (x.datum < y.datum) return 1;
-      if (x.datum > y.datum) return -1;
+      if (x.datum < y.datum) {
+        return 1;
+      }
+      if (x.datum > y.datum) {
+        return -1;
+      }
       return 0;
     });
   }
@@ -141,31 +145,6 @@ export class BookingComponent implements OnInit, AfterViewInit {
     this.dialogConfig.autoFocus = true;
   }
 
-  // Gets the booking list as promise
-  private getBookingList(): Promise<Booking[]> {
-    return new Promise((resolve) => {
-      this.bookingService.getAll().subscribe({
-        next: (bookings: Booking[]) => resolve(bookings),
-        error: (error) => {
-          this.handleError(error);
-          this.toastrService.error(
-            "Die Liste konnte nicht gelesen werden.",
-            "Fehler"
-          );
-        },
-      });
-    });
-  }
-
-  // Populates rows into the table
-  private setDataSource(bookings: Booking[]): void {
-    this.bookingList = bookings;
-    this.sortByDate(this.bookingList);
-    this.dataSource.data = this.bookingList;
-    // set loading flag
-    this.loading = false;
-  }
-
   addBookingDialog(dialogForm: any) {
     // The template need it to validate the input
     this.selectedOffer.setValue('');
@@ -173,7 +152,7 @@ export class BookingComponent implements OnInit, AfterViewInit {
     this.tripofferService.getAll().subscribe({
       next: (result: TripOffer[]) => {
         // only current and valid offers are needed
-        const today = formatDate(new Date(), "yyyy-MM-dd", "en_US");
+        const today = formatDate(new Date(), 'yyyy-MM-dd', 'en_US');
         this.currentOffers = result.filter(x => x.endDatum > today && x.landId != null);
       },
       error: () => {
@@ -194,8 +173,8 @@ export class BookingComponent implements OnInit, AfterViewInit {
           next: (result) => country = result,
           complete: () => {
             const dialog = this.dialog.open(BookingFormComponent, {
-              disableClose : true,
-              autoFocus : true
+              disableClose: true,
+              autoFocus: true
             });
             // Set needed values
             dialog.componentInstance.land = country;
@@ -225,14 +204,14 @@ export class BookingComponent implements OnInit, AfterViewInit {
             },
             error: () =>
               this.toastrService.error(
-                "Die Buchung konnte nicht gespeichert werden",
-                "Fehler"
+                'Die Buchung konnte nicht gespeichert werden',
+                'Fehler'
               ),
             complete: () =>
-              this.toastrService.success("Die Buchung wurde gespeichert"),
+              this.toastrService.success('Die Buchung wurde gespeichert'),
           });
         } else {
-          console.log(booking)
+          console.log(booking);
           // for the update just id for traveler and cotraveler are needed
           const toUpdate = {
             id: booking.id,
@@ -260,12 +239,12 @@ export class BookingComponent implements OnInit, AfterViewInit {
             },
             error: () => {
               this.toastrService.error(
-                "Die Buchung konnte nicht gespeichert werden",
-                "Fehler"
+                'Die Buchung konnte nicht gespeichert werden',
+                'Fehler'
               );
             },
             complete: () =>
-              this.toastrService.success("Die Buchung wurde gespeichert"),
+              this.toastrService.success('Die Buchung wurde gespeichert'),
           });
         }
       })
@@ -277,22 +256,22 @@ export class BookingComponent implements OnInit, AfterViewInit {
     this.tripofferService.getOne(booking.reiseAngebotId).subscribe({
       next: (tripoffer) => (this.tripoffer = tripoffer),
       error: () =>
-        this.toastrService.error("Etwas ist schief gelaufen.", "Fehler"),
+        this.toastrService.error('Etwas ist schief gelaufen.', 'Fehler'),
       complete: () => {
         // Get country information
         const countryId = this.tripoffer.landId;
         this.countryService.getOne(countryId).subscribe({
           next: (country) => (this.country = country),
           error: () =>
-            this.toastrService.error("Etwas ist schief gelaufen.", "Fehler"),
+            this.toastrService.error('Etwas ist schief gelaufen.', 'Fehler'),
           complete: () => {
             // get the traveler information
             this.travelerService.getOne(booking.reisenderId).subscribe({
               next: (traveler) => (this.traveler = traveler),
               error: () => {
                 this.toastrService.error(
-                  "Etwas ist schief gelaufen.",
-                  "Fehler"
+                  'Etwas ist schief gelaufen.',
+                  'Fehler'
                 );
               },
               complete: () => {
@@ -301,8 +280,8 @@ export class BookingComponent implements OnInit, AfterViewInit {
                     next: (traveler) => (this.cotraveler = traveler),
                     error: () => {
                       this.toastrService.error(
-                        "Etwas ist schief gelaufen.",
-                        "Fehler"
+                        'Etwas ist schief gelaufen.',
+                        'Fehler'
                       );
                     },
                   });
@@ -313,8 +292,8 @@ export class BookingComponent implements OnInit, AfterViewInit {
                   next: (bc) => (this.bookingclass = bc),
                   error: () => {
                     this.toastrService.error(
-                      "Etwas ist schief gelaufen.",
-                      "Fehler"
+                      'Etwas ist schief gelaufen.',
+                      'Fehler'
                     );
                   },
                   complete: () =>
@@ -355,20 +334,13 @@ export class BookingComponent implements OnInit, AfterViewInit {
       },
       error: () => {
         this.toastrService.error(
-          "Die Buchung konnte nicht gelöscht werden.",
-          "Fehler"
+          'Die Buchung konnte nicht gelöscht werden.',
+          'Fehler'
         );
       },
       complete: () =>
-        this.toastrService.success("Die Buchung wurde erfolgreich gelöscht."),
+        this.toastrService.success('Die Buchung wurde erfolgreich gelöscht.'),
     });
-  }
-
-  // On error
-  private handleError(error: any) {
-    if (error?.message) {
-      this.errors.errorMessage = error?.message;
-    }
   }
 
   // Sets the status of the form to not valid
@@ -382,16 +354,48 @@ export class BookingComponent implements OnInit, AfterViewInit {
 
   /** Converts object of type date to string */
   convertDateToString(date: string) {
-    if (date && date.includes("-")) {
-      const day = parseInt(date.split("-")[2]);
-      const month = parseInt(date.split("-")[1]);
-      const year = parseInt(date.split("-")[0]);
+    if (date && date.includes('-')) {
+      const day = parseInt(date.split('-')[2]);
+      const month = parseInt(date.split('-')[1]);
+      const year = parseInt(date.split('-')[0]);
       return `${day} ${Calendar.months[month - 1]} ${year}`;
     }
-    return "";
+    return '';
   }
 
   getPhoneNumber(phone: string): string {
     return phone ? `${phone}` : "";
+  }
+
+  // Gets the booking list as promise
+  private getBookingList(): Promise<Booking[]> {
+    return new Promise((resolve) => {
+      this.bookingService.getAll().subscribe({
+        next: (bookings: Booking[]) => resolve(bookings),
+        error: (error) => {
+          this.handleError(error);
+          this.toastrService.error(
+            'Die Liste konnte nicht gelesen werden.',
+            'Fehler'
+          );
+        },
+      });
+    });
+  }
+
+  // Populates rows into the table
+  private setDataSource(bookings: Booking[]): void {
+    this.bookingList = bookings;
+    this.sortByDate(this.bookingList);
+    this.dataSource.data = this.bookingList;
+    // set loading flag
+    this.loading = false;
+  }
+
+  // On error
+  private handleError(error: any) {
+    if (error?.message) {
+      this.errors.errorMessage = error?.message;
+    }
   }
 }
