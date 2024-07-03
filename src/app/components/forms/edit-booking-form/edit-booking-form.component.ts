@@ -44,7 +44,7 @@ export class EditBookingFormComponent
   @Output() notifyFormIsValid = new EventEmitter<boolean>(false);
 
   // Defines bookingForm
-  bookingForm = new FormGroup({
+  bookingForm: FormGroup = new FormGroup({
     // tripoffer
     tripoffer: new FormControl("", [Validators.required]),
     // airport
@@ -164,7 +164,7 @@ export class EditBookingFormComponent
   ngAfterViewInit(): void {
     this.onFormValuesChanged();
     // on tripoffer value changes, we read and save the attached airports
-    this.bookingForm.get("tripoffer").valueChanges.subscribe((tripoffer) => {
+    this.bookingForm.get("tripoffer").valueChanges.subscribe((tripoffer: TripOffer): void => {
       this.initAttachedInformation(tripoffer.id);
     });
 

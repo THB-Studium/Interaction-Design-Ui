@@ -22,5 +22,5 @@ export class TripOffer {
   public buchungsklassen: Array<BookingClass>;
   public landId: string;
   public realImage?: any;
-  public isfavorite? = false;
+  public isfavorite?: boolean = false;
 }

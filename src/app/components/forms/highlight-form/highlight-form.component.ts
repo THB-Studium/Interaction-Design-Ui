@@ -92,11 +92,11 @@ export class HighlightFormComponent implements OnInit, AfterViewInit {
     }
   }
 
-  setFormDefaultValue(highlight: Highlight) {
+  setFormDefaultValue(highlight: Highlight): void {
     this.highlightForm.setValue({
       name: highlight.name,
       description: highlight.description,
-      img: highlight.bild,
+      img: highlight.bild.name,
     });
   }
 

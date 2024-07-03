@@ -99,13 +99,13 @@ export class ExpectationFormComponent implements OnInit, AfterViewInit {
 
   private setFormDefaultValue(expectation: Expectation): void {
     this.expectationForm.setValue({
-      adventure: expectation.abenteuer,
-      comfort: expectation.konfort,
-      deceleration: expectation.entschleunigung,
-      road: expectation.road,
-      safety: expectation.sicherheit,
-      sun_beach: expectation.sonne_strand,
-      sustainability: expectation.nachhaltigkeit
+      adventure: expectation.abenteuer.toString(),
+      comfort: expectation.konfort.toString(),
+      deceleration: expectation.entschleunigung.toString(),
+      road: expectation.road.toString(),
+      safety: expectation.sicherheit.toString(),
+      sun_beach: expectation.sonne_strand.toString(),
+      sustainability: expectation.nachhaltigkeit.toString()
     });
   }
 
@@ -119,13 +119,13 @@ export class ExpectationFormComponent implements OnInit, AfterViewInit {
 
         this.currentExpectation = {
           id: id,
-          abenteuer: this.expectationForm.get("adventure").value,
-          konfort: this.expectationForm.get("comfort").value,
-          entschleunigung: this.expectationForm.get("deceleration").value,
-          road: this.expectationForm.get("road").value,
-          sicherheit: this.expectationForm.get("safety").value,
-          sonne_strand: this.expectationForm.get("sun_beach").value,
-          nachhaltigkeit: this.expectationForm.get("sustainability").value,
+          abenteuer: +this.expectationForm.get("adventure").value,
+          konfort: +this.expectationForm.get("comfort").value,
+          entschleunigung: +this.expectationForm.get("deceleration").value,
+          road: +this.expectationForm.get("road").value,
+          sicherheit: +this.expectationForm.get("safety").value,
+          sonne_strand: +this.expectationForm.get("sun_beach").value,
+          nachhaltigkeit: +this.expectationForm.get("sustainability").value,
           reiseAngebotId: this.currentReiseAngebotId,
         };
         // check whether the form is valid or not

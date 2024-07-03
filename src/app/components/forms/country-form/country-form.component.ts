@@ -122,7 +122,7 @@ export class CountryFormComponent implements OnInit, AfterViewInit {
     this.countryForm.setValue({
       name: country.name,
       accommodation_text: country.unterkunft_text,
-      airports: [],
+      airports: "",
       image: ""
     });
 

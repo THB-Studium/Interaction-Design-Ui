@@ -80,7 +80,7 @@ export class BookingclassFormComponent implements OnInit, AfterViewInit {
     this.bookingclassForm.setValue({
       title: bookinclass.type,
       description: bookinclass.description? bookinclass.description:"",
-      price: bookinclass.preis,
+      price: bookinclass.preis.toString(),
     });
   }
 
@@ -96,7 +96,7 @@ export class BookingclassFormComponent implements OnInit, AfterViewInit {
           id: id,
           type: this.bookingclassForm.get("title").value,
           description: this.bookingclassForm.get("description").value,
-          preis: this.bookingclassForm.get("price").value,
+          preis: +this.bookingclassForm.get("price").value,
           reiseAngebotId: this.currentTripofferId,
         };
         // check whether the form is valid or not

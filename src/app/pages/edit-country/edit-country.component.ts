@@ -32,7 +32,7 @@ export class EditCountryComponent implements OnInit, AfterViewInit {
     // text
     accommodation_text: new FormControl("", [Validators.required]),
     // image
-    image: new FormControl("", [Validators.required]),
+    image: new FormControl(undefined, [Validators.required]),
   });
   // Defines airportsArray
   airportsArray = new Set([]);

@@ -164,28 +164,19 @@ export class EditTripofferComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.expectationForm.valueChanges.subscribe(() => {
-      // if one of the value is bigger than 100, then disable the savee button
-      if (
-        this.expectationForm.value.adventure > 100 || this.expectationForm.value.adventure < 0 || 
-        this.expectationForm.value.adventure === null ||
-        this.expectationForm.value.comfort > 100 ||  this.expectationForm.value.comfort < 0 ||
-        this.expectationForm.value.comfort === null ||
-        this.expectationForm.value.deceleration > 100 || this.expectationForm.value.deceleration < 0 ||
-        this.expectationForm.value.deceleration === null ||
-        this.expectationForm.value.safety > 100 || this.expectationForm.value.safety < 0 ||
-        this.expectationForm.value.safety === null ||
-        this.expectationForm.value.road > 100 || this.expectationForm.value.road < 0 ||
-        this.expectationForm.value.road === null ||
-        this.expectationForm.value.sustainability > 100 || this.expectationForm.value.sustainability < 0 ||
-        this.expectationForm.value.sustainability === null ||
-        this.expectationForm.value.sun_beach > 100 || this.expectationForm.value.sun_beach < 0 ||
-        this.expectationForm.value.sun_beach === null
-      ) {
-        this.isValid = false;
-      } else {
-        this.isValid = true;
-      }
+    this.expectationForm.valueChanges.subscribe((): void => {
+
+      // if one of the value of the properties is bigger than 100, then disable the save button
+      const isAdventureValid: boolean = this.expectationForm.value.adventure !== null && this.expectationForm.controls.adventure.valid
+      const isComfortValid: boolean = this.expectationForm.value.comfort !== null && this.expectationForm.controls.comfort.valid
+      const isDecelerationValid: boolean = this.expectationForm.value.deceleration !== null && this.expectationForm.controls.deceleration.valid
+      const isSafetyValid: boolean = this.expectationForm.value.safety !== null && this.expectationForm.controls.safety.valid
+      const isRoadValid: boolean = this.expectationForm.value.road !== null && this.expectationForm.controls.road.valid
+      const isSustainabilityValid: boolean = this.expectationForm.value.sustainability !== null && this.expectationForm.controls.sustainability.valid
+      const isSunBeachValid: boolean = this.expectationForm.value.sun_beach !== null && this.expectationForm.controls.sun_beach.valid
+
+      this.isValid =
+        isAdventureValid && isComfortValid && isDecelerationValid && isSafetyValid && isRoadValid && isSustainabilityValid && isSunBeachValid;
     });
 
     this.sharedDataService.currentBookingclass.subscribe(
@@ -232,13 +223,13 @@ export class EditTripofferComponent implements OnInit, AfterViewInit {
   private initExpectationForm(expectation: Expectation): void {
     this.currentExpectation = expectation;
     this.expectationForm.setValue({
-      adventure: expectation?.abenteuer ?? 0,
-      comfort: expectation?.konfort ?? 0,
-      deceleration: expectation?.entschleunigung ?? 0,
-      road: expectation?.road ?? 0,
-      safety: expectation?.sicherheit ?? 0,
-      sun_beach: expectation?.sonne_strand ?? 0,
-      sustainability: expectation?.nachhaltigkeit ?? 0,
+      adventure: expectation?.abenteuer.toString() ?? '0',
+      comfort: expectation?.konfort.toString() ?? '0',
+      deceleration: expectation?.entschleunigung.toString() ?? '0',
+      road: expectation?.road.toString() ?? '0',
+      safety: expectation?.sicherheit.toString() ?? '0',
+      sun_beach: expectation?.sonne_strand.toString() ?? '0',
+      sustainability: expectation?.nachhaltigkeit.toString() ?? '0',
     });
   }
 
@@ -259,7 +250,7 @@ export class EditTripofferComponent implements OnInit, AfterViewInit {
       startdate: tripoffer.startDatum,
       enddate: tripoffer.endDatum,
       deadline: tripoffer.anmeldungsFrist,
-      totalplace: tripoffer.plaetze,
+      totalplace: tripoffer.plaetze.toString(),
       // The values will be loaded from the service array
       services: "",
       // The values will be loaded from the authorization array
@@ -389,13 +380,13 @@ export class EditTripofferComponent implements OnInit, AfterViewInit {
     return new Promise((resolve) => {
       // set the current value of the expectation to be saved
       const tobesaved: Expectation = {
-        abenteuer: this.expectationForm.value.adventure,
-        konfort: this.expectationForm.value.comfort,
-        entschleunigung: this.expectationForm.value.deceleration,
-        sicherheit: this.expectationForm.value.safety,
-        road: this.expectationForm.value.road,
-        nachhaltigkeit: this.expectationForm.value.sustainability,
-        sonne_strand: this.expectationForm.value.sun_beach,
+        abenteuer: +this.expectationForm.value.adventure,
+        konfort: +this.expectationForm.value.comfort,
+        entschleunigung: +this.expectationForm.value.deceleration,
+        sicherheit: +this.expectationForm.value.safety,
+        road: +this.expectationForm.value.road,
+        nachhaltigkeit: +this.expectationForm.value.sustainability,
+        sonne_strand: +this.expectationForm.value.sun_beach,
         reiseAngebotId: this.currentTripoffer.id,
         id: this.currentExpectation?.id,
       };
