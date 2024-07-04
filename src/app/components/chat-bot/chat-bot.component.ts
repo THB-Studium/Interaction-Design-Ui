@@ -28,7 +28,7 @@ export class ChatBotComponent implements OnInit {
         "oneTimeRating":true
       };
 
-      let script = document.getElementsByTagName("script").item(0);
+      let script: HTMLScriptElement = document.getElementsByTagName("script").item(0);
       if (!!script) {
         script = document.createElement("script");
       }
@@ -36,7 +36,7 @@ export class ChatBotComponent implements OnInit {
       script.async = true;
       script.src = credentials.sourceURL;
 
-      const head = document.getElementsByTagName("head").item(0);
+      const head: HTMLHeadElement = document.getElementsByTagName("head").item(0);
       head.appendChild(script);
 
       win.kommunicate = m; m._globals = chatbotSettings;

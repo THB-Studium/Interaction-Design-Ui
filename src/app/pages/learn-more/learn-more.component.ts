@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import { ActivatedRoute, RouterLinkActive, RouterLink } from '@angular/router';
+import {ActivatedRoute, RouterLink, RouterLinkActive} from '@angular/router';
 import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
 
 import {BookingFormComponent} from 'src/app/components/forms/booking-form/booking-form.component';
@@ -13,35 +13,35 @@ import {TripOfferService} from 'src/app/services/trip-offer/trip-offer.service';
 import {BookingClass} from '../../models/bookingClass';
 import {Country} from '../../models/country';
 import {TripOffer} from '../../models/tripOffer';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import {MatDialog} from '@angular/material/dialog';
-import { MatExpansionModule } from '@angular/material/expansion';
-import { StarsComponent } from '../../components/stars/stars.component';
-import { MatCardModule } from '@angular/material/card';
-import { MatButtonModule } from '@angular/material/button';
-import { SpinnerComponent } from '../../components/spinner/spinner.component';
-import { NgIf, NgStyle, NgFor, UpperCasePipe, DatePipe } from '@angular/common';
+import {MatExpansionModule} from '@angular/material/expansion';
+import {StarsComponent} from '../../components/stars/stars.component';
+import {MatCardModule} from '@angular/material/card';
+import {MatButtonModule} from '@angular/material/button';
+import {SpinnerComponent} from '../../components/spinner/spinner.component';
+import {DatePipe, NgFor, NgIf, NgStyle, UpperCasePipe} from '@angular/common';
 
 @Component({
-    selector: 'app-learn-more',
-    templateUrl: './learn-more.component.html',
-    styleUrls: ['./learn-more.component.css'],
-    standalone: true,
-    imports: [
-        NgIf,
-        SpinnerComponent,
-        RouterLinkActive,
-        RouterLink,
-        MatButtonModule,
-        NgStyle,
-        NgFor,
-        MatCardModule,
-        MatTableModule,
-        StarsComponent,
-        MatExpansionModule,
-        UpperCasePipe,
-        DatePipe,
-    ],
+  selector: 'app-learn-more',
+  templateUrl: './learn-more.component.html',
+  styleUrls: ['./learn-more.component.css'],
+  standalone: true,
+  imports: [
+    NgIf,
+    SpinnerComponent,
+    RouterLinkActive,
+    RouterLink,
+    MatButtonModule,
+    NgStyle,
+    NgFor,
+    MatCardModule,
+    MatTableModule,
+    StarsComponent,
+    MatExpansionModule,
+    UpperCasePipe,
+    DatePipe,
+  ],
 })
 export class LearnMoreComponent implements OnInit {
   countries: Array<any> = [];

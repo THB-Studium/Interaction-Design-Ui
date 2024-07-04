@@ -12,41 +12,40 @@ import {HomeLayoutComponent} from './layouts/home-layout/home-layout.component';
 
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {NgxWebstorageModule} from 'ngx-webstorage';
-
-import {AppRoutingModule} from './app.routing';
-import {ComponentsModule} from './components/components.module';
 import localeDe from '@angular/common/locales/de';
 import localeDeExtra from '@angular/common/locales/extra/de';
 import {HashLocationStrategy, LocationStrategy, registerLocaleData} from '@angular/common';
 import {ScrollToTopComponent} from './components/scroll-to-top/scroll-to-top.component';
+import {routes} from './app.routes';
+import {ChatBotComponent} from './components/chat-bot/chat-bot.component';
 
 registerLocaleData(localeDe, localeDeExtra);
 
 @NgModule({
-    imports: [
-        BrowserAnimationsModule,
-        FormsModule,
-        HttpClientModule,
-        ComponentsModule,
-        NgbModule,
-        RouterModule,
-        AppRoutingModule,
-        ToastrModule.forRoot({
-            positionClass: 'toast-bottom-right',
-            preventDuplicates: true,
-        }),
-        NgxWebstorageModule.forRoot(),
-        AdminLayoutComponent,
-        AuthLayoutComponent,
-        HomeLayoutComponent,
-        ScrollToTopComponent,
-    ],
-    declarations: [AppComponent],
-    providers: [
-        { provide: LocationStrategy, useClass: HashLocationStrategy },
-        { provide: LOCALE_ID, useValue: 'de' },
-    ],
-    bootstrap: [AppComponent],
+  imports: [
+    BrowserAnimationsModule,
+    FormsModule,
+    HttpClientModule,
+    NgbModule,
+    RouterModule.forRoot(routes, {useHash: false}),
+    ToastrModule.forRoot({
+      positionClass: 'toast-bottom-right',
+      preventDuplicates: true,
+    }),
+    NgxWebstorageModule.forRoot(),
+    AdminLayoutComponent,
+    AuthLayoutComponent,
+    HomeLayoutComponent,
+    ScrollToTopComponent,
+    ChatBotComponent,
+  ],
+  exports: [ChatBotComponent],
+  declarations: [AppComponent],
+  providers: [
+    {provide: LocationStrategy, useClass: HashLocationStrategy},
+    {provide: LOCALE_ID, useValue: 'de'},
+  ],
+  bootstrap: [AppComponent],
 })
 export class AppModule {
 }

@@ -87,14 +87,14 @@
             <div class="form-group col-md-12">
               <mat-form-field class="col-md-12" appearance="standard">
                 <mat-label>Flughäfen</mat-label>
-                <mat-chip-list #airportsList aria-label="Flughäfen" multiple required>
-                  <mat-chip *ngFor="let airport of airportsArray" [selected]="airport" [value]="airport"
+                <mat-chip-grid #airportsList aria-label="Flughäfen"  required>
+                  <mat-chip-option *ngFor="let airport of airportsArray" [selected]="airport" [value]="airport"
                     (removed)="removeAirport(airport)">
                     {{airport}}
-                  </mat-chip>
+                  </mat-chip-option>
                   <input placeholder="Neuer Flughafen und Enter drücken..." formControlName="airports"
                     [matChipInputFor]="airportsList" (matChipInputTokenEnd)="addAirportFromInput($event)">
-                </mat-chip-list>
+                </mat-chip-grid>
                 <mat-hint>Für mehr Eingaben, drücken sie die Taste Enter, um eine neue Eingabe zu erfassen.</mat-hint>
                 <mat-error *ngIf="countryForm.get('airports').invalid">
                   Die Eingabe ist <strong>erforderlich</strong>.
