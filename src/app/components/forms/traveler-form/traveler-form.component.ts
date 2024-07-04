@@ -5,18 +5,37 @@ import {
   Output,
   EventEmitter,
 } from "@angular/core";
-import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { FormControl, FormGroup, Validators, FormsModule, ReactiveFormsModule } from "@angular/forms";
 
 import { SharedDataService } from "src/app/services/sharedData/shared-data.service";
 
 import { Traveler } from "src/app/models/traveler";
 import { Pattern } from "src/app/variables/pattern";
-import { formatDate } from "@angular/common";
+import { formatDate, NgIf, NgFor } from "@angular/common";
+import { MatOptionModule } from "@angular/material/core";
+import { MatSelectModule } from "@angular/material/select";
+import { MatButtonModule } from "@angular/material/button";
+import { MatDatepickerModule } from "@angular/material/datepicker";
+import { MatInputModule } from "@angular/material/input";
+import { MatFormFieldModule } from "@angular/material/form-field";
 
 @Component({
-  selector: "app-traveler-form",
-  templateUrl: "./traveler-form.component.html",
-  styleUrls: ["./traveler-form.component.css"],
+    selector: "app-traveler-form",
+    templateUrl: "./traveler-form.component.html",
+    styleUrls: ["./traveler-form.component.css"],
+    standalone: true,
+    imports: [
+        FormsModule,
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        NgIf,
+        MatDatepickerModule,
+        MatButtonModule,
+        MatSelectModule,
+        MatOptionModule,
+        NgFor,
+    ],
 })
 export class TravelerFormComponent implements OnInit, AfterViewInit {
   // Defines notifyTravelerFormValid. Notify the parent when the form is valid

@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {formatDate, Location} from '@angular/common';
-import {Router} from '@angular/router';
+import { formatDate, Location, NgIf } from '@angular/common';
+import { Router, RouterLinkActive, RouterLink } from '@angular/router';
 import {CurrentOffersListFormComponent} from '../forms/current-offers-list-form/current-offers-list-form.component';
 
 import {ToastrService} from 'ngx-toastr';
@@ -8,11 +8,19 @@ import {TripOfferService} from 'src/app/services/trip-offer/trip-offer.service';
 
 import {TripOffer} from 'src/app/models/tripOffer';
 import {MatDialog} from '@angular/material/dialog';
+import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-  selector: 'app-navbar-guest',
-  templateUrl: './navbar-guest.component.html',
-  styleUrls: ['./navbar-guest.component.css'],
+    selector: 'app-navbar-guest',
+    templateUrl: './navbar-guest.component.html',
+    styleUrls: ['./navbar-guest.component.css'],
+    standalone: true,
+    imports: [
+        RouterLinkActive,
+        RouterLink,
+        NgbCollapse,
+        NgIf,
+    ],
 })
 export class NavbarGuestComponent implements OnInit {
 

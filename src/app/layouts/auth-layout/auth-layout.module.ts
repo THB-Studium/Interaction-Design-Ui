@@ -31,56 +31,54 @@ import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatDialogModule} from '@angular/material/dialog';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    RouterModule.forChild(AuthLayoutRoutes),
-    FormsModule,
-    NgbModule,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatSelectModule,
-    MatButtonModule,
-    MatIconModule,
-    MatMenuModule,
-    MatStepperModule,
-    MatCheckboxModule,
-    MatCardModule,
-    MatDividerModule,
-    MatBadgeModule,
-    MatTooltipModule,
-    MatTableModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatDialogModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
-    ComponentsModule,
-    MatExpansionModule,
-  ],
-  declarations: [
-    LearnMoreComponent,
-    LoginComponent,
-    RegisterComponent,
-    AboutusComponent,
-  ],
-  providers: [
-    {provide: LocationStrategy, useClass: HashLocationStrategy},
-    {
-      provide: MAT_DATE_FORMATS,
-      useValue: {
-        parse: {
-          dateInput: 'YYYY-MM-DD',
+    imports: [
+        CommonModule,
+        RouterModule.forChild(AuthLayoutRoutes),
+        FormsModule,
+        NgbModule,
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatSelectModule,
+        MatButtonModule,
+        MatIconModule,
+        MatMenuModule,
+        MatStepperModule,
+        MatCheckboxModule,
+        MatCardModule,
+        MatDividerModule,
+        MatBadgeModule,
+        MatTooltipModule,
+        MatTableModule,
+        MatPaginatorModule,
+        MatSortModule,
+        MatDialogModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
+        ComponentsModule,
+        MatExpansionModule,
+        LearnMoreComponent,
+        LoginComponent,
+        RegisterComponent,
+        AboutusComponent,
+    ],
+    providers: [
+        { provide: LocationStrategy, useClass: HashLocationStrategy },
+        {
+            provide: MAT_DATE_FORMATS,
+            useValue: {
+                parse: {
+                    dateInput: 'YYYY-MM-DD',
+                },
+                display: {
+                    dateInput: 'DD MMM, YYYY',
+                    monthYearLabel: 'MMMM YYYY',
+                    dateA11yLabel: 'LL',
+                    monthYearA11yLabel: 'MMMM YYYY',
+                },
+            },
         },
-        display: {
-          dateInput: 'DD MMM, YYYY',
-          monthYearLabel: 'MMMM YYYY',
-          dateA11yLabel: 'LL',
-          monthYearA11yLabel: 'MMMM YYYY',
-        },
-      },
-    },
-  ],
+    ],
 })
 export class AuthLayoutModule {
 }

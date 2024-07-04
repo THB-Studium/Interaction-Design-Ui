@@ -22,27 +22,27 @@ import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatDialogModule} from '@angular/material/dialog';
 
 @NgModule({
-  declarations: [HomeComponent],
-  imports: [
-    CommonModule,
-    RouterModule.forChild(HomeLayoutRoutes),
-    FormsModule,
-    NgbModule,
-    ReactiveFormsModule,
-    ComponentsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    MatIconModule,
-    MatCardModule,
-    MatDividerModule,
-    MatBadgeModule,
-    MatTooltipModule,
-    MatPaginatorModule,
-    MatDialogModule,
-    MatExpansionModule
-  ],
-  providers: [{provide: LocationStrategy, useClass: HashLocationStrategy}],
+    imports: [
+        CommonModule,
+        RouterModule.forChild(HomeLayoutRoutes),
+        FormsModule,
+        NgbModule,
+        ReactiveFormsModule,
+        ComponentsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatButtonModule,
+        MatIconModule,
+        MatCardModule,
+        MatDividerModule,
+        MatBadgeModule,
+        MatTooltipModule,
+        MatPaginatorModule,
+        MatDialogModule,
+        MatExpansionModule,
+        HomeComponent
+    ],
+    providers: [{ provide: LocationStrategy, useClass: HashLocationStrategy }],
 })
 export class HomeLayoutModule {
 }

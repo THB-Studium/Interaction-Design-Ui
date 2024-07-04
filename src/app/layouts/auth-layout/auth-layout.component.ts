@@ -1,12 +1,22 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
-import { Router } from "@angular/router";
+import { Router, RouterOutlet } from "@angular/router";
 
 import { SharedDataService } from "../../services/sharedData/shared-data.service";
+import { FooterComponent } from "../../components/footer/footer.component";
+import { NavbarGuestComponent } from "../../components/navbar-guest/navbar-guest.component";
+import { NgStyle } from "@angular/common";
 
 @Component({
-  selector: "app-auth-layout",
-  templateUrl: "./auth-layout.component.html",
-  styleUrls: ["./auth-layout.component.scss"],
+    selector: "app-auth-layout",
+    templateUrl: "./auth-layout.component.html",
+    styleUrls: ["./auth-layout.component.scss"],
+    standalone: true,
+    imports: [
+        NgStyle,
+        NavbarGuestComponent,
+        RouterOutlet,
+        FooterComponent,
+    ],
 })
 export class AuthLayoutComponent implements OnInit, OnDestroy {
   headerBgColor: string;

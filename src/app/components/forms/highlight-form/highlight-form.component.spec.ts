@@ -8,8 +8,8 @@ describe('HighlightFormComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ HighlightFormComponent ]
-    })
+    imports: [HighlightFormComponent]
+})
     .compileComponents();
   });
 

@@ -8,8 +8,8 @@ describe('CurrentOffersListFormComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CurrentOffersListFormComponent ]
-    })
+    imports: [CurrentOffersListFormComponent]
+})
     .compileComponents();
   });
 

@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 
-import {MatSort} from '@angular/material/sort';
+import { MatSort, MatSortModule } from '@angular/material/sort';
 
 import {ToastrService} from 'ngx-toastr';
 import {TravelerService} from 'src/app/services/traveler/traveler.service';
@@ -8,14 +8,45 @@ import {SharedDataService} from 'src/app/services/sharedData/shared-data.service
 
 import {Traveler} from 'src/app/models/traveler';
 import {Calendar} from 'src/app/variables/calendar';
-import {MatPaginator} from '@angular/material/paginator';
-import {MatTableDataSource} from '@angular/material/table';
-import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatDialog, MatDialogConfig, MatDialogModule } from '@angular/material/dialog';
+import { FormsModule } from '@angular/forms';
+import { TravelerFormComponent } from '../../components/forms/traveler-form/traveler-form.component';
+import { MatDividerModule } from '@angular/material/divider';
+import { NgbDropdown, NgbDropdownToggle, NgbDropdownMenu } from '@ng-bootstrap/ng-bootstrap';
+import { SpinnerComponent } from '../../components/spinner/spinner.component';
+import { NgIf } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatButtonModule } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 @Component({
-  selector: 'app-traveler',
-  templateUrl: './traveler.component.html',
-  styleUrls: ['./traveler.component.css'],
+    selector: 'app-traveler',
+    templateUrl: './traveler.component.html',
+    styleUrls: ['./traveler.component.css'],
+    standalone: true,
+    imports: [
+        MatFormFieldModule,
+        MatInputModule,
+        MatButtonModule,
+        MatTooltipModule,
+        MatIconModule,
+        NgIf,
+        SpinnerComponent,
+        MatTableModule,
+        MatSortModule,
+        NgbDropdown,
+        NgbDropdownToggle,
+        NgbDropdownMenu,
+        MatPaginatorModule,
+        MatDialogModule,
+        MatDividerModule,
+        TravelerFormComponent,
+        FormsModule,
+    ],
 })
 export class TravelerComponent implements OnInit, AfterViewInit {
   // Defines paginator

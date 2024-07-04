@@ -8,8 +8,8 @@ describe('AuthLayoutComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AuthLayoutComponent ]
-    })
+    imports: [AuthLayoutComponent]
+})
     .compileComponents();
   }));
 

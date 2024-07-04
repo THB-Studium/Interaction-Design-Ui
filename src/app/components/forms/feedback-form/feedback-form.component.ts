@@ -1,12 +1,33 @@
 import { Component, OnInit } from "@angular/core";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators, FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { ToastrService } from "ngx-toastr";
 import { FeedbackService } from "src/app/services/feedback/feedback.service";
+import { MatButtonModule } from "@angular/material/button";
+import { MatIconModule } from "@angular/material/icon";
+import { NgIf } from "@angular/common";
+import { MatInputModule } from "@angular/material/input";
+import { MatToolbarModule } from "@angular/material/toolbar";
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatDividerModule } from "@angular/material/divider";
+import { MatDialogModule } from "@angular/material/dialog";
 
 @Component({
-  selector: "app-feedback-form",
-  templateUrl: "./feedback-form.component.html",
-  styleUrls: ["./feedback-form.component.css"],
+    selector: "app-feedback-form",
+    templateUrl: "./feedback-form.component.html",
+    styleUrls: ["./feedback-form.component.css"],
+    standalone: true,
+    imports: [
+        MatDialogModule,
+        MatDividerModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatToolbarModule,
+        MatInputModule,
+        NgIf,
+        MatIconModule,
+        MatButtonModule,
+    ],
 })
 export class FeedbackFormComponent implements OnInit {
   feedbackForm: FormGroup;

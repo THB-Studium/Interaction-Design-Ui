@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import { FormControl, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {ActivatedRoute} from '@angular/router';
 
 import {SharedDataService} from 'src/app/services/sharedData/shared-data.service';
@@ -8,12 +8,29 @@ import {Country} from 'src/app/models/country';
 import {CountryService} from 'src/app/services/country/country.service';
 import {ToastrService} from 'ngx-toastr';
 import {DomSanitizer} from '@angular/platform-browser';
-import {MatChipInputEvent} from '@angular/material/chips';
+import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
+import { ColorPickerModule } from 'ngx-color-picker';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { NgIf, NgFor } from '@angular/common';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 @Component({
-  selector: 'app-country-form',
-  templateUrl: './country-form.component.html',
-  styleUrls: ['./country-form.component.css'],
+    selector: 'app-country-form',
+    templateUrl: './country-form.component.html',
+    styleUrls: ['./country-form.component.css'],
+    standalone: true,
+    imports: [
+        FormsModule,
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        NgIf,
+        MatToolbarModule,
+        MatChipsModule,
+        NgFor,
+        ColorPickerModule,
+    ],
 })
 export class CountryFormComponent implements OnInit, AfterViewInit {
   // Defines notifyFormIsValid. Notify the parent when the form is valid

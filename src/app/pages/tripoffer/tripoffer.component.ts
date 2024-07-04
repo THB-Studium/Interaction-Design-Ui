@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 
-import {MatSort} from '@angular/material/sort';
+import { MatSort, MatSortModule } from '@angular/material/sort';
 
 import {Calendar} from 'src/app/variables/calendar';
 import {TripOffer} from 'src/app/models/tripOffer';
@@ -9,14 +9,43 @@ import {SharedDataService} from 'src/app/services/sharedData/shared-data.service
 import {ToastrService} from 'ngx-toastr';
 import {TripOfferService} from 'src/app/services/trip-offer/trip-offer.service';
 import {DomSanitizer} from '@angular/platform-browser';
-import {MatPaginator} from '@angular/material/paginator';
-import {MatTableDataSource} from '@angular/material/table';
-import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatDialog, MatDialogConfig, MatDialogModule } from '@angular/material/dialog';
+import { TripofferFormComponent } from '../../components/forms/tripoffer-form/tripoffer-form.component';
+import { MatDividerModule } from '@angular/material/divider';
+import { NgbDropdown, NgbDropdownToggle, NgbDropdownMenu } from '@ng-bootstrap/ng-bootstrap';
+import { SpinnerComponent } from '../../components/spinner/spinner.component';
+import { NgIf } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatButtonModule } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 @Component({
-  selector: 'app-tripoffer',
-  templateUrl: './tripoffer.component.html',
-  styleUrls: ['./tripoffer.component.css'],
+    selector: 'app-tripoffer',
+    templateUrl: './tripoffer.component.html',
+    styleUrls: ['./tripoffer.component.css'],
+    standalone: true,
+    imports: [
+        MatFormFieldModule,
+        MatInputModule,
+        MatButtonModule,
+        MatTooltipModule,
+        MatIconModule,
+        NgIf,
+        SpinnerComponent,
+        MatTableModule,
+        MatSortModule,
+        NgbDropdown,
+        NgbDropdownToggle,
+        NgbDropdownMenu,
+        MatPaginatorModule,
+        MatDialogModule,
+        MatDividerModule,
+        TripofferFormComponent,
+    ],
 })
 export class TripofferComponent implements OnInit, AfterViewInit {
   // Defines paginator

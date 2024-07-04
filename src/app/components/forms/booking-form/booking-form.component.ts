@@ -3,9 +3,9 @@ import {
   OnInit,
   Input,
 } from "@angular/core";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators, FormsModule, ReactiveFormsModule } from "@angular/forms";
 
-import { formatDate } from "@angular/common";
+import { formatDate, NgIf, NgFor, DatePipe } from "@angular/common";
 
 import { ToastrService } from "ngx-toastr";
 import { BookingClassService } from "src/app/services/booking-class/booking-class.service";
@@ -16,11 +16,43 @@ import { TripOffer } from "src/app/models/tripOffer";
 import { PaymentMethod } from "src/app/enums/paymentMethod";
 import { BookingService } from "src/app/services/booking/booking.service";
 import { Pattern } from "src/app/variables/pattern";
+import { MatExpansionModule } from "@angular/material/expansion";
+import { MatCheckboxModule } from "@angular/material/checkbox";
+import { MatButtonModule } from "@angular/material/button";
+import { MatOptionModule } from "@angular/material/core";
+import { MatSelectModule } from "@angular/material/select";
+import { MatDatepickerModule } from "@angular/material/datepicker";
+import { MatInputModule } from "@angular/material/input";
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatStepperModule } from "@angular/material/stepper";
+import { MatDividerModule } from "@angular/material/divider";
+import { MatIconModule } from "@angular/material/icon";
+import { MatDialogModule } from "@angular/material/dialog";
 
 @Component({
-  selector: "app-booking-form",
-  templateUrl: "./booking-form.component.html",
-  styleUrls: ["./booking-form.component.css"],
+    selector: "app-booking-form",
+    templateUrl: "./booking-form.component.html",
+    styleUrls: ["./booking-form.component.css"],
+    standalone: true,
+    imports: [
+        MatDialogModule,
+        MatIconModule,
+        MatDividerModule,
+        MatStepperModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        NgIf,
+        MatDatepickerModule,
+        MatSelectModule,
+        MatOptionModule,
+        MatButtonModule,
+        NgFor,
+        MatCheckboxModule,
+        MatExpansionModule,
+        DatePipe,
+    ],
 })
 export class BookingFormComponent implements OnInit {
 

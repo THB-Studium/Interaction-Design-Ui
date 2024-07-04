@@ -17,11 +17,27 @@ import {Country} from '../../models/country';
 import {SharedDataService} from '../../services/sharedData/shared-data.service';
 import {FeedbackFormComponent} from '../../components/forms/feedback-form/feedback-form.component';
 import {MatDialog} from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatButtonModule } from '@angular/material/button';
+import { SpinnerComponent } from '../../components/spinner/spinner.component';
+import { NgIf, NgFor, UpperCasePipe, DatePipe } from '@angular/common';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css'],
+    selector: 'app-home',
+    templateUrl: './home.component.html',
+    styleUrls: ['./home.component.css'],
+    standalone: true,
+    imports: [
+        NgIf,
+        SpinnerComponent,
+        NgFor,
+        MatButtonModule,
+        MatTooltipModule,
+        MatIconModule,
+        UpperCasePipe,
+        DatePipe,
+    ],
 })
 export class HomeComponent implements OnInit {
   slideList: Array<Slide> = [];

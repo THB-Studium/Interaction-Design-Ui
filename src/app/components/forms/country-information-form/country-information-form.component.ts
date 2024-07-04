@@ -5,17 +5,22 @@ import {
   Output,
   EventEmitter,
 } from "@angular/core";
-import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { FormControl, FormGroup, Validators, FormsModule, ReactiveFormsModule } from "@angular/forms";
 
 import { SharedDataService } from "src/app/services/sharedData/shared-data.service";
 import { ToastrService } from "ngx-toastr";
 
 import { CountryInformation } from "src/app/models/countryInformation";
+import { NgIf } from "@angular/common";
+import { MatInputModule } from "@angular/material/input";
+import { MatFormFieldModule } from "@angular/material/form-field";
 
 @Component({
-  selector: 'app-country-information-form',
-  templateUrl: './country-information-form.component.html',
-  styleUrls: ['./country-information-form.component.css']
+    selector: 'app-country-information-form',
+    templateUrl: './country-information-form.component.html',
+    styleUrls: ['./country-information-form.component.css'],
+    standalone: true,
+    imports: [FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, NgIf]
 })
 export class CountryInformationFormComponent implements OnInit, AfterViewInit {
 

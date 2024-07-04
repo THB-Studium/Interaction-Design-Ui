@@ -6,11 +6,15 @@ import { AdminService } from 'src/app/services/admin/admin.service';
 import { SharedDataService } from 'src/app/services/sharedData/shared-data.service';
 
 import { ROUTES } from '../sidebar/sidebar.component';
+import { RouterLinkActive, RouterLink } from '@angular/router';
+import { NgbDropdown, NgbDropdownToggle, NgbDropdownMenu } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-  selector: 'app-navbar',
-  templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.scss']
+    selector: 'app-navbar',
+    templateUrl: './navbar.component.html',
+    styleUrls: ['./navbar.component.scss'],
+    standalone: true,
+    imports: [NgbDropdown, NgbDropdownToggle, NgbDropdownMenu, RouterLinkActive, RouterLink]
 })
 export class NavbarComponent implements OnInit {
 

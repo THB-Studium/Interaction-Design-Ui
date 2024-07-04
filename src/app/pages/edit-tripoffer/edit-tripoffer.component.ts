@@ -1,8 +1,8 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import { FormControl, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {DomSanitizer} from '@angular/platform-browser';
-import {formatDate} from '@angular/common';
+import { formatDate, NgIf, NgFor } from '@angular/common';
 
 import {BookingClassService} from 'src/app/services/booking-class/booking-class.service';
 import {CountryService} from 'src/app/services/country/country.service';
@@ -15,13 +15,48 @@ import {BookingClass} from 'src/app/models/bookingClass';
 import {Country} from 'src/app/models/country';
 import {Expectation} from 'src/app/models/expectation';
 import {TripOffer} from 'src/app/models/tripOffer';
-import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
-import {MatChipInputEvent} from '@angular/material/chips';
+import { MatDialog, MatDialogConfig, MatDialogModule } from '@angular/material/dialog';
+import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
+import { BookingclassFormComponent } from '../../components/forms/bookingclass-form/bookingclass-form.component';
+import { MatOptionModule } from '@angular/material/core';
+import { MatSelectModule } from '@angular/material/select';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { SpinnerComponent } from '../../components/spinner/spinner.component';
 
 @Component({
-  selector: 'app-edit-tripoffer',
-  templateUrl: './edit-tripoffer.component.html',
-  styleUrls: ['./edit-tripoffer.component.css'],
+    selector: 'app-edit-tripoffer',
+    templateUrl: './edit-tripoffer.component.html',
+    styleUrls: ['./edit-tripoffer.component.css'],
+    standalone: true,
+    imports: [
+        NgIf,
+        SpinnerComponent,
+        MatCardModule,
+        MatButtonModule,
+        MatTooltipModule,
+        MatIconModule,
+        MatDividerModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatToolbarModule,
+        MatDatepickerModule,
+        NgFor,
+        MatChipsModule,
+        MatSelectModule,
+        MatOptionModule,
+        MatDialogModule,
+        BookingclassFormComponent,
+    ],
 })
 export class EditTripofferComponent implements OnInit, AfterViewInit {
   // Defines dialogConfig

@@ -6,7 +6,7 @@ import {
   EventEmitter,
   OnDestroy,
 } from "@angular/core";
-import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { FormControl, FormGroup, Validators, FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { ReplaySubject, Subject } from "rxjs";
 import {
   debounceTime,
@@ -16,7 +16,7 @@ import {
   map,
   takeUntil,
 } from "rxjs/operators";
-import { formatDate } from "@angular/common";
+import { formatDate, NgIf, NgFor, AsyncPipe } from "@angular/common";
 
 import { SharedDataService } from "src/app/services/sharedData/shared-data.service";
 import { ToastrService } from "ngx-toastr";
@@ -31,11 +31,31 @@ import { Traveler } from "src/app/models/traveler";
 import { BookingClass } from "src/app/models/bookingClass";
 import { PaymentMethod } from "src/app/enums/paymentMethod";
 import { Calendar } from "src/app/variables/calendar";
+import { NgxMatSelectSearchModule } from "ngx-mat-select-search";
+import { MatOptionModule } from "@angular/material/core";
+import { MatSelectModule } from "@angular/material/select";
+import { MatDatepickerModule } from "@angular/material/datepicker";
+import { MatInputModule } from "@angular/material/input";
+import { MatFormFieldModule } from "@angular/material/form-field";
 
 @Component({
-  selector: "app-edit-booking-form",
-  templateUrl: "./edit-booking-form.component.html",
-  styleUrls: ["./edit-booking-form.component.css"],
+    selector: "app-edit-booking-form",
+    templateUrl: "./edit-booking-form.component.html",
+    styleUrls: ["./edit-booking-form.component.css"],
+    standalone: true,
+    imports: [
+        FormsModule,
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatDatepickerModule,
+        NgIf,
+        MatSelectModule,
+        MatOptionModule,
+        NgxMatSelectSearchModule,
+        NgFor,
+        AsyncPipe,
+    ],
 })
 export class EditBookingFormComponent
   implements OnInit, AfterViewInit, OnDestroy

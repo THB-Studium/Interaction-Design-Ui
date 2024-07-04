@@ -8,8 +8,8 @@ describe('ExpectationFormComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ExpectationFormComponent ]
-    })
+    imports: [ExpectationFormComponent]
+})
     .compileComponents();
   });
 

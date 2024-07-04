@@ -1,16 +1,38 @@
 import {AfterViewInit, Component, EventEmitter, OnInit, Output,} from '@angular/core';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {formatDate} from '@angular/common';
+import { FormControl, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { formatDate, NgIf, NgFor } from '@angular/common';
 
 import {SharedDataService} from 'src/app/services/sharedData/shared-data.service';
 
 import {TripOffer} from 'src/app/models/tripOffer';
-import {MatChipInputEvent} from '@angular/material/chips';
+import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 @Component({
-  selector: 'app-tripoffer-form',
-  templateUrl: './tripoffer-form.component.html',
-  styleUrls: ['./tripoffer-form.component.css'],
+    selector: 'app-tripoffer-form',
+    templateUrl: './tripoffer-form.component.html',
+    styleUrls: ['./tripoffer-form.component.css'],
+    standalone: true,
+    imports: [
+        FormsModule,
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        NgIf,
+        MatToolbarModule,
+        MatDatepickerModule,
+        MatButtonModule,
+        MatChipsModule,
+        NgFor,
+        MatIconModule,
+        MatDividerModule,
+    ],
 })
 export class TripofferFormComponent implements OnInit, AfterViewInit {
   // Defines notifyFormIsValid. Notify the parent when the form is valid

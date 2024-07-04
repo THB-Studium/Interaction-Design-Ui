@@ -8,8 +8,8 @@ describe('NavbarGuestComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ NavbarGuestComponent ]
-    })
+    imports: [NavbarGuestComponent]
+})
     .compileComponents();
   });
 

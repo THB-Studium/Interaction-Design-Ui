@@ -5,17 +5,30 @@ import {
   Output,
   EventEmitter,
 } from "@angular/core";
-import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { FormControl, FormGroup, Validators, FormsModule, ReactiveFormsModule } from "@angular/forms";
 
 import { SharedDataService } from "src/app/services/sharedData/shared-data.service";
 import { ToastrService } from "ngx-toastr";
 
 import { Highlight } from "src/app/models/highlight";
+import { MatToolbarModule } from "@angular/material/toolbar";
+import { NgIf } from "@angular/common";
+import { MatInputModule } from "@angular/material/input";
+import { MatFormFieldModule } from "@angular/material/form-field";
 
 @Component({
-  selector: "app-highlight-form",
-  templateUrl: "./highlight-form.component.html",
-  styleUrls: ["./highlight-form.component.css"],
+    selector: "app-highlight-form",
+    templateUrl: "./highlight-form.component.html",
+    styleUrls: ["./highlight-form.component.css"],
+    standalone: true,
+    imports: [
+        FormsModule,
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        NgIf,
+        MatToolbarModule,
+    ],
 })
 export class HighlightFormComponent implements OnInit, AfterViewInit {
   // Defines notifyFormIsValid. Notify the parent when the form is valid

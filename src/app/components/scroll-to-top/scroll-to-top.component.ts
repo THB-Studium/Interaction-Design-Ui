@@ -1,11 +1,13 @@
 import { Component, OnInit, Inject, HostListener } from "@angular/core";
-import { DOCUMENT, ViewportScroller } from "@angular/common";
+import { DOCUMENT, ViewportScroller, NgClass } from "@angular/common";
 import { Router } from "@angular/router";
 
 @Component({
-  selector: "app-scroll-to-top",
-  templateUrl: "./scroll-to-top.component.html",
-  styleUrls: ["./scroll-to-top.component.css"],
+    selector: "app-scroll-to-top",
+    templateUrl: "./scroll-to-top.component.html",
+    styleUrls: ["./scroll-to-top.component.css"],
+    standalone: true,
+    imports: [NgClass],
 })
 export class ScrollToTopComponent implements OnInit {
   windowScrolled: boolean;

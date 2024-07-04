@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { credentials } from "./core/credentials";
 
 @Component({
-  selector: 'app-chat-bot',
-  templateUrl: './chat-bot.component.html',
-  styleUrls: ['./chat-bot.component.css']
+    selector: 'app-chat-bot',
+    templateUrl: './chat-bot.component.html',
+    styleUrls: ['./chat-bot.component.css'],
+    standalone: true
 })
 export class ChatBotComponent implements OnInit {
 

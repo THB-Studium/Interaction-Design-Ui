@@ -1,21 +1,47 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 
-import {MatSort} from '@angular/material/sort';
+import { MatSort, MatSortModule } from '@angular/material/sort';
 
 import {CountryService} from 'src/app/services/country/country.service';
 import {ToastrService} from 'ngx-toastr';
 import {SharedDataService} from 'src/app/services/sharedData/shared-data.service';
 
 import {Country} from 'src/app/models/country';
-import {MatPaginator} from '@angular/material/paginator';
-import {MatTableDataSource} from '@angular/material/table';
-import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatDialog, MatDialogConfig, MatDialogModule } from '@angular/material/dialog';
+import { CountryFormComponent } from '../../components/forms/country-form/country-form.component';
+import { MatDividerModule } from '@angular/material/divider';
+import { SpinnerComponent } from '../../components/spinner/spinner.component';
+import { NgIf, NgFor } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatButtonModule } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 @Component({
-  selector: 'app-country',
-  templateUrl: './country.component.html',
-  styleUrls: ['./country.component.css'],
+    selector: 'app-country',
+    templateUrl: './country.component.html',
+    styleUrls: ['./country.component.css'],
+    standalone: true,
+    imports: [
+        MatFormFieldModule,
+        MatInputModule,
+        MatButtonModule,
+        MatTooltipModule,
+        MatIconModule,
+        NgIf,
+        SpinnerComponent,
+        MatTableModule,
+        MatSortModule,
+        NgFor,
+        MatPaginatorModule,
+        MatDialogModule,
+        MatDividerModule,
+        CountryFormComponent,
+    ],
 })
 export class CountryComponent implements OnInit, AfterViewInit {
   // Defines paginator

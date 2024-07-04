@@ -5,17 +5,30 @@ import {
   Output,
   EventEmitter,
 } from "@angular/core";
-import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { FormControl, FormGroup, Validators, FormsModule, ReactiveFormsModule } from "@angular/forms";
 
 import { SharedDataService } from "src/app/services/sharedData/shared-data.service";
 import { ToastrService } from "ngx-toastr";
 
 import { Accommodation } from "src/app/models/accommodation";
+import { MatToolbarModule } from "@angular/material/toolbar";
+import { NgIf } from "@angular/common";
+import { MatInputModule } from "@angular/material/input";
+import { MatFormFieldModule } from "@angular/material/form-field";
 
 @Component({
-  selector: "app-accommodation-form",
-  templateUrl: "./accommodation-form.component.html",
-  styleUrls: ["./accommodation-form.component.css"],
+    selector: "app-accommodation-form",
+    templateUrl: "./accommodation-form.component.html",
+    styleUrls: ["./accommodation-form.component.css"],
+    standalone: true,
+    imports: [
+        FormsModule,
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        NgIf,
+        MatToolbarModule,
+    ],
 })
 export class AccommodationFormComponent implements OnInit, AfterViewInit {
   // Defines notifyFormIsValid.

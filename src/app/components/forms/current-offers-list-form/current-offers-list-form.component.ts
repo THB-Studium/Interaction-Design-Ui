@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
-import {FormControl} from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {ReplaySubject, Subject} from 'rxjs';
 import {debounceTime, delay, filter, map, takeUntil, tap} from 'rxjs/operators';
 
@@ -9,12 +9,34 @@ import {BookingFormComponent} from '../booking-form/booking-form.component';
 
 import {TripOffer} from 'src/app/models/tripOffer';
 import {TripOfferService} from 'src/app/services/trip-offer/trip-offer.service';
-import {MatDialog} from '@angular/material/dialog';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
+import { NgFor, NgIf, AsyncPipe } from '@angular/common';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import { MatOptionModule } from '@angular/material/core';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatDividerModule } from '@angular/material/divider';
 
 @Component({
-  selector: 'app-current-offers-list-form',
-  templateUrl: './current-offers-list-form.component.html',
-  styleUrls: ['./current-offers-list-form.component.css'],
+    selector: 'app-current-offers-list-form',
+    templateUrl: './current-offers-list-form.component.html',
+    styleUrls: ['./current-offers-list-form.component.css'],
+    standalone: true,
+    imports: [
+        MatDialogModule,
+        MatDividerModule,
+        MatFormFieldModule,
+        MatSelectModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MatOptionModule,
+        NgxMatSelectSearchModule,
+        NgFor,
+        NgIf,
+        MatButtonModule,
+        AsyncPipe,
+    ],
 })
 export class CurrentOffersListFormComponent implements OnInit, OnDestroy {
   offersFilteringCtrl: FormControl = new FormControl();

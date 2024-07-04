@@ -1,10 +1,12 @@
 import { Component, OnInit } from "@angular/core";
-import { Router } from "@angular/router";
+import { Router, RouterLinkActive, RouterLink } from "@angular/router";
 
 import { ToastrService } from "ngx-toastr";
 import { TripOfferService } from "src/app/services/trip-offer/trip-offer.service";
 
 import { TripOffer } from "src/app/models/tripOffer";
+import { NgFor, NgIf } from "@angular/common";
+import { NgbDropdown, NgbDropdownToggle, NgbDropdownMenu, NgbCollapse } from "@ng-bootstrap/ng-bootstrap";
 
 declare interface RouteInfo {
   path: string;
@@ -64,9 +66,20 @@ export const ROUTES: RouteInfo[] = [
 ];
 
 @Component({
-  selector: "app-sidebar",
-  templateUrl: "./sidebar.component.html",
-  styleUrls: ["./sidebar.component.scss"],
+    selector: "app-sidebar",
+    templateUrl: "./sidebar.component.html",
+    styleUrls: ["./sidebar.component.scss"],
+    standalone: true,
+    imports: [
+        RouterLinkActive,
+        RouterLink,
+        NgbDropdown,
+        NgbDropdownToggle,
+        NgbDropdownMenu,
+        NgbCollapse,
+        NgFor,
+        NgIf,
+    ],
 })
 export class SidebarComponent implements OnInit {
   public menuItems: any[];

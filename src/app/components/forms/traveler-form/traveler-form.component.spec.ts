@@ -8,8 +8,8 @@ describe('TravelerFormComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TravelerFormComponent ]
-    })
+    imports: [TravelerFormComponent]
+})
     .compileComponents();
   });
 

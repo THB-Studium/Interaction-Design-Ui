@@ -23,32 +23,30 @@ import {ScrollToTopComponent} from './components/scroll-to-top/scroll-to-top.com
 registerLocaleData(localeDe, localeDeExtra);
 
 @NgModule({
-  imports: [
-    BrowserAnimationsModule,
-    FormsModule,
-    HttpClientModule,
-    ComponentsModule,
-    NgbModule,
-    RouterModule,
-    AppRoutingModule,
-    ToastrModule.forRoot({
-      positionClass: 'toast-bottom-right',
-      preventDuplicates: true,
-    }),
-    NgxWebstorageModule.forRoot(),
-  ],
-  declarations: [
-    AppComponent,
-    AdminLayoutComponent,
-    AuthLayoutComponent,
-    HomeLayoutComponent,
-    ScrollToTopComponent,
-  ],
-  providers: [
-    {provide: LocationStrategy, useClass: HashLocationStrategy},
-    {provide: LOCALE_ID, useValue: 'de'},
-  ],
-  bootstrap: [AppComponent],
+    imports: [
+        BrowserAnimationsModule,
+        FormsModule,
+        HttpClientModule,
+        ComponentsModule,
+        NgbModule,
+        RouterModule,
+        AppRoutingModule,
+        ToastrModule.forRoot({
+            positionClass: 'toast-bottom-right',
+            preventDuplicates: true,
+        }),
+        NgxWebstorageModule.forRoot(),
+        AdminLayoutComponent,
+        AuthLayoutComponent,
+        HomeLayoutComponent,
+        ScrollToTopComponent,
+    ],
+    declarations: [AppComponent],
+    providers: [
+        { provide: LocationStrategy, useClass: HashLocationStrategy },
+        { provide: LOCALE_ID, useValue: 'de' },
+    ],
+    bootstrap: [AppComponent],
 })
 export class AppModule {
 }

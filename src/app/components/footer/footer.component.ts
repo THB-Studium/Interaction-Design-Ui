@@ -1,14 +1,21 @@
 import { Component, OnInit, Inject, Input, HostListener } from "@angular/core";
-import { FormControl, Validators } from "@angular/forms";
-import { DOCUMENT, ViewportScroller } from "@angular/common";
+import { FormControl, Validators, FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { DOCUMENT, ViewportScroller, NgStyle, DatePipe } from "@angular/common";
 
 import { ToastrService } from "ngx-toastr";
 import { NewsLettersService } from "src/app/services/news-letters/news-letters.service";
 
 @Component({
-  selector: "app-footer",
-  templateUrl: "./footer.component.html",
-  styleUrls: ["./footer.component.scss"],
+    selector: "app-footer",
+    templateUrl: "./footer.component.html",
+    styleUrls: ["./footer.component.scss"],
+    standalone: true,
+    imports: [
+        FormsModule,
+        ReactiveFormsModule,
+        NgStyle,
+        DatePipe,
+    ],
 })
 export class FooterComponent implements OnInit {
   windowScrolled: boolean;

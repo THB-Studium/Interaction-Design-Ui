@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
-import {FormControl} from '@angular/forms';
-import {MatSort} from '@angular/material/sort';
-import {formatDate} from '@angular/common';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatSort, MatSortModule } from '@angular/material/sort';
+import { formatDate, NgIf, NgFor } from '@angular/common';
 
 import {BookingService} from 'src/app/services/booking/booking.service';
 import {BookingClassService} from 'src/app/services/booking-class/booking-class.service';
@@ -19,14 +19,47 @@ import {Traveler} from 'src/app/models/traveler';
 import {TripOffer} from 'src/app/models/tripOffer';
 
 import {BookingFormComponent} from 'src/app/components/forms/booking-form/booking-form.component';
-import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
-import {MatPaginator} from '@angular/material/paginator';
-import {MatTableDataSource} from '@angular/material/table';
+import { MatDialog, MatDialogConfig, MatDialogModule } from '@angular/material/dialog';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatCardModule } from '@angular/material/card';
+import { EditBookingFormComponent } from '../../components/forms/edit-booking-form/edit-booking-form.component';
+import { MatOptionModule } from '@angular/material/core';
+import { MatSelectModule } from '@angular/material/select';
+import { MatDividerModule } from '@angular/material/divider';
+import { SpinnerComponent } from '../../components/spinner/spinner.component';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatButtonModule } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 @Component({
-  selector: 'app-booking',
-  templateUrl: './booking.component.html',
-  styleUrls: ['./booking.component.css'],
+    selector: 'app-booking',
+    templateUrl: './booking.component.html',
+    styleUrls: ['./booking.component.css'],
+    standalone: true,
+    imports: [
+        MatFormFieldModule,
+        MatInputModule,
+        MatButtonModule,
+        MatTooltipModule,
+        MatIconModule,
+        NgIf,
+        SpinnerComponent,
+        MatTableModule,
+        MatSortModule,
+        MatPaginatorModule,
+        MatDialogModule,
+        MatDividerModule,
+        MatSelectModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MatOptionModule,
+        NgFor,
+        EditBookingFormComponent,
+        MatCardModule,
+    ],
 })
 export class BookingComponent implements OnInit, AfterViewInit {
   // Defines paginator

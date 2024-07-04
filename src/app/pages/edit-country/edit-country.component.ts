@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import { FormControl, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import {AccommodationService} from 'src/app/services/accommodation/accommodation.service';
 import {CountryService} from 'src/app/services/country/country.service';
@@ -14,13 +14,51 @@ import {Highlight} from 'src/app/models/highlight';
 import {Accommodation} from 'src/app/models/accommodation';
 import {CountryInformation} from 'src/app/models/countryInformation';
 import {DomSanitizer} from '@angular/platform-browser';
-import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
-import {MatChipInputEvent} from '@angular/material/chips';
+import { MatDialog, MatDialogConfig, MatDialogModule } from '@angular/material/dialog';
+import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
+import { CountryInformationFormComponent } from '../../components/forms/country-information-form/country-information-form.component';
+import { AccommodationFormComponent } from '../../components/forms/accommodation-form/accommodation-form.component';
+import { HighlightFormComponent } from '../../components/forms/highlight-form/highlight-form.component';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { ColorPickerModule } from 'ngx-color-picker';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { SpinnerComponent } from '../../components/spinner/spinner.component';
+import { NgIf, NgFor } from '@angular/common';
 
 @Component({
-  selector: 'app-edit-country',
-  templateUrl: './edit-country.component.html',
-  styleUrls: ['./edit-country.component.css'],
+    selector: 'app-edit-country',
+    templateUrl: './edit-country.component.html',
+    styleUrls: ['./edit-country.component.css'],
+    standalone: true,
+    imports: [
+        NgIf,
+        SpinnerComponent,
+        MatCardModule,
+        MatButtonModule,
+        MatTooltipModule,
+        MatIconModule,
+        MatDividerModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        ColorPickerModule,
+        MatToolbarModule,
+        NgFor,
+        MatChipsModule,
+        MatExpansionModule,
+        MatDialogModule,
+        HighlightFormComponent,
+        AccommodationFormComponent,
+        CountryInformationFormComponent,
+    ],
 })
 export class EditCountryComponent implements OnInit, AfterViewInit {
   // Defines countryForm

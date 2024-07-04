@@ -8,8 +8,8 @@ describe('FeedbackFormComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ FeedbackFormComponent ]
-    })
+    imports: [FeedbackFormComponent]
+})
     .compileComponents();
   });
 

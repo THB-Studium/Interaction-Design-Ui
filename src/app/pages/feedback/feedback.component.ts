@@ -1,20 +1,31 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 
 import {DomSanitizer} from '@angular/platform-browser';
-import {MatSort} from '@angular/material/sort';
+import { MatSort, MatSortModule } from '@angular/material/sort';
 
 import {FeedbackService} from 'src/app/services/feedback/feedback.service';
 import {ToastrService} from 'ngx-toastr';
 
 import {Feedback} from 'src/app/models/feedback';
-import {MatPaginator} from '@angular/material/paginator';
-import {MatTableDataSource} from '@angular/material/table';
-import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatDialog, MatDialogConfig, MatDialogModule } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatIconModule } from '@angular/material/icon';
+import { SpinnerComponent } from '../../components/spinner/spinner.component';
+import { NgIf } from '@angular/common';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 @Component({
-  selector: 'app-feedback',
-  templateUrl: './feedback.component.html',
-  styleUrls: ['./feedback.component.css']
+    selector: 'app-feedback',
+    templateUrl: './feedback.component.html',
+    styleUrls: ['./feedback.component.css'],
+    standalone: true,
+    imports: [MatFormFieldModule, MatInputModule, NgIf, SpinnerComponent, MatTableModule, MatSortModule, MatIconModule, MatTooltipModule, MatPaginatorModule, MatDialogModule, MatDividerModule, MatCardModule, MatButtonModule]
 })
 export class FeedbackComponent implements OnInit, AfterViewInit {
   // Defines paginator

@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { Router } from "@angular/router";
+import { Router, RouterLink } from "@angular/router";
 
 import { BookingService } from "src/app/services/booking/booking.service";
 import { CountryService } from "src/app/services/country/country.service";
@@ -13,7 +13,9 @@ import { Country } from "src/app/models/country";
 import { TripOffer } from "src/app/models/tripOffer";
 
 import { Calendar } from "src/app/variables/calendar";
-import { formatDate } from "@angular/common";
+import { formatDate, NgFor, NgIf } from "@angular/common";
+import { MatProgressBarModule } from "@angular/material/progress-bar";
+import { SpinnerComponent } from "../../components/spinner/spinner.component";
 
 interface CurrentOffer {
   name: string;
@@ -25,9 +27,17 @@ interface CurrentOffer {
   reservation: number;
 }
 @Component({
-  selector: "app-dashboard",
-  templateUrl: "./dashboard.component.html",
-  styleUrls: ["./dashboard.component.scss"],
+    selector: "app-dashboard",
+    templateUrl: "./dashboard.component.html",
+    styleUrls: ["./dashboard.component.scss"],
+    standalone: true,
+    imports: [
+        NgFor,
+        NgIf,
+        SpinnerComponent,
+        RouterLink,
+        MatProgressBarModule,
+    ],
 })
 export class DashboardComponent implements OnInit {
   public statistics = [

@@ -5,16 +5,31 @@ import {
   Output,
   EventEmitter,
 } from "@angular/core";
-import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { FormControl, FormGroup, Validators, FormsModule, ReactiveFormsModule } from "@angular/forms";
 
 import { SharedDataService } from "src/app/services/sharedData/shared-data.service";
 
 import { User } from "src/app/models/user";
+import { MatIconModule } from "@angular/material/icon";
+import { MatButtonModule } from "@angular/material/button";
+import { NgIf } from "@angular/common";
+import { MatInputModule } from "@angular/material/input";
+import { MatFormFieldModule } from "@angular/material/form-field";
 
 @Component({
-  selector: "app-admin-form",
-  templateUrl: "./admin-form.component.html",
-  styleUrls: ["./admin-form.component.css"],
+    selector: "app-admin-form",
+    templateUrl: "./admin-form.component.html",
+    styleUrls: ["./admin-form.component.css"],
+    standalone: true,
+    imports: [
+        FormsModule,
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        NgIf,
+        MatButtonModule,
+        MatIconModule,
+    ],
 })
 export class AdminFormComponent implements OnInit, AfterViewInit {
   // Defines notifyAdminFormValid. Notify the parent when the form is valid
