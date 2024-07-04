@@ -22,6 +22,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatButtonModule } from '@angular/material/button';
 import { SpinnerComponent } from '../../components/spinner/spinner.component';
 import { NgIf, NgFor, UpperCasePipe, DatePipe } from '@angular/common';
+import {RoutingPaths} from '../../shared/const';
 
 @Component({
     selector: 'app-home',
@@ -93,7 +94,7 @@ export class HomeComponent implements OnInit {
   }
 
   routeToLearnMore(gebotId: string): void {
-    this.router.navigate(['/learn-more', gebotId]).then(() => {
+    this.router.navigate(['/' + RoutingPaths.LEARN_MORE, gebotId]).then(() => {
     });
   }
 

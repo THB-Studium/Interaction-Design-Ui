@@ -1,6 +1,7 @@
 import {inject} from '@angular/core';
 import {ActivatedRouteSnapshot, CanActivateFn, Router, RouterStateSnapshot} from '@angular/router';
 import {TokenstorageService} from '../tokenstorage/tokenstorage.service';
+import {RoutingPaths} from '../../shared/const';
 
 export const isAuthenticated: CanActivateFn = (
   route: ActivatedRouteSnapshot,
@@ -9,5 +10,5 @@ export const isAuthenticated: CanActivateFn = (
   router: Router = inject(Router),
 ): Promise<boolean> | boolean => {
 
-  return tokenStorageStorage.getUser() || router.navigate(['/login'], {queryParams: {returnUrl: state.url}});
+  return tokenStorageStorage.getUser() || router.navigate(['/' + RoutingPaths.LOGIN], {queryParams: {returnUrl: state.url}});
 };

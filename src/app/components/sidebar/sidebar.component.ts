@@ -7,6 +7,7 @@ import { TripOfferService } from "src/app/services/trip-offer/trip-offer.service
 import { TripOffer } from "src/app/models/tripOffer";
 import { NgFor, NgIf } from "@angular/common";
 import { NgbDropdown, NgbDropdownToggle, NgbDropdownMenu, NgbCollapse } from "@ng-bootstrap/ng-bootstrap";
+import {RoutingPaths} from '../../shared/const';
 
 declare interface RouteInfo {
   path: string;
@@ -109,7 +110,7 @@ export class SidebarComponent implements OnInit {
       next: (result) => offers = result,
       error: () => {
         this.toastrService.info('Wählen sie eine aus der Liste aus.');
-        this.router.navigate(['/tripoffers']);
+        this.router.navigate([RoutingPaths.TRIP_OFFERS]);
       },
       complete: () => {
         this.currentOffers = [];
@@ -134,4 +135,6 @@ export class SidebarComponent implements OnInit {
     const idx = Math.floor(Math.random() * colors.length);
     return colors[idx];
   }
+
+  protected readonly RoutingPaths = RoutingPaths;
 }

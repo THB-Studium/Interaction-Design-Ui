@@ -16,6 +16,7 @@ import { Calendar } from "src/app/variables/calendar";
 import { formatDate, NgFor, NgIf } from "@angular/common";
 import { MatProgressBarModule } from "@angular/material/progress-bar";
 import { SpinnerComponent } from "../../components/spinner/spinner.component";
+import {RoutingPaths} from '../../shared/const';
 
 interface CurrentOffer {
   name: string;
@@ -265,4 +266,6 @@ export class DashboardComponent implements OnInit {
   navigateToUrl(url: string) {
     this.router.navigateByUrl(url);
   }
+
+  protected readonly RoutingPaths = RoutingPaths;
 }

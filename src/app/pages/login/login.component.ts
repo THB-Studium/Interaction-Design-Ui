@@ -12,6 +12,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatCardModule } from '@angular/material/card';
+import {RoutingPaths} from '../../shared/const';
 
 @Component({
     selector: 'app-login',
@@ -127,6 +128,6 @@ export class LoginComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   navigateToHome() {
-    this.router.navigate(['/home']);
+    this.router.navigate(['/' + RoutingPaths.HOME]);
   }
 }

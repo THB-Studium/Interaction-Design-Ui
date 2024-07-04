@@ -1,11 +1,12 @@
 import {Routes} from '@angular/router';
 import {isAuthenticated} from './services/authorization/authorization.guard';
+import {RoutingPaths} from './shared/const';
 
 
 export const routes: Routes = [
   // ::: DEFAULT :::
-  {path: '', redirectTo: 'home', pathMatch: 'full'},
-  {path: '**', pathMatch: 'full', redirectTo: 'home'},
+  {path: '', redirectTo: RoutingPaths.HOME, pathMatch: 'full'},
+  {path: '**', redirectTo: RoutingPaths.HOME},
 
   // ::: PRIVATE :::
   {
@@ -21,7 +22,6 @@ export const routes: Routes = [
   },
   {
     path: '',
-    title: 'Client - ',
     loadChildren: () => import('src/app/layouts/home-layout/home-layout.routing')
   }
 ];

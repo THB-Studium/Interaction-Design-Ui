@@ -22,6 +22,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import {RoutingPaths} from '../../shared/const';
 
 @Component({
     selector: 'app-tripoffer',
@@ -243,7 +244,7 @@ export class TripofferComponent implements OnInit, AfterViewInit {
                 `${this.currentTripOffer.titel} wurde erfolgreich hinzugefuegt.`
               );
 
-              this.router.navigate(['/tripoffers/edit', this.currentTripOffer.id]);
+              this.router.navigate(['/' + RoutingPaths.TRIP_OFFERS_EDIT, this.currentTripOffer.id]);
             },
           });
         },
@@ -298,7 +299,7 @@ export class TripofferComponent implements OnInit, AfterViewInit {
   }
 
   viewOffer(row: TripOffer) {
-    this.router.navigate(['tripoffer/view', row.id]);
+    this.router.navigate([RoutingPaths.TRIP_OFFERS_VIEW, row.id]);
   }
 
   // Sets the status of the form to not valid

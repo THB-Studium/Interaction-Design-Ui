@@ -17,12 +17,12 @@
           <div class=" dropdown-header noti-title">
             <h6 class="text-overflow m-0">Willkommen!</h6>
           </div>
-          <a routerLinkActive="active" [routerLink]="['/user-profile']" class="dropdown-item">
+          <a routerLinkActive="active" [routerLink]="['/' + RoutingPaths.USERS_PROFILE]" class="dropdown-item">
             <em class="ni ni-single-02 text-primary"></em>
             <span class="pl-2">Mein Profil</span>
           </a>
           <div class="dropdown-divider"></div>
-          <a [routerLink]="['/logout']" class="dropdown-item">
+          <a [routerLink]="['/' + RoutingPaths.LOGOUT]" class="dropdown-item">
             <em class="ni ni-user-run text-danger"></em>
             <span class="pl-2">Ausloggen</span>
           </a>

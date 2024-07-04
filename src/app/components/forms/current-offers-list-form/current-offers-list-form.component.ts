@@ -17,6 +17,7 @@ import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDividerModule } from '@angular/material/divider';
+import {RoutingPaths} from '../../../shared/const';
 
 @Component({
     selector: 'app-current-offers-list-form',
@@ -69,7 +70,7 @@ export class CurrentOffersListFormComponent implements OnInit, OnDestroy {
   }
 
   startBookingProcess() {
-    this.router.navigate(['learn-more', this.selectedOffer.value.id]);
+    this.router.navigate([RoutingPaths.LEARN_MORE, this.selectedOffer.value.id]);
     let country = null;
 
     this.tripOfferService.getOne(this.selectedOffer.value.id).subscribe({

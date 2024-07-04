@@ -3,7 +3,7 @@
   <app-spinner *ngIf="!loadFinished"></app-spinner>
   <!-- Body Contents -->
   <div *ngIf="loadFinished">
-    <a id="main-page-btn" routerLinkActive="active" [routerLink]="['/dashboard']">&lt; ZURÜCK ZUR MAINPAGE</a>
+    <a id="main-page-btn" routerLinkActive="active" [routerLink]="['/' + RoutingPaths.DASHBOARD]">&lt; ZURÜCK ZUR MAINPAGE</a>
     <!-- Rise Info und Map -->
     <div class="travel-info-header">
       <h2>{{currentTripOffer?.titel}}</h2>

@@ -31,6 +31,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { SpinnerComponent } from '../../components/spinner/spinner.component';
 import { NgIf, NgFor } from '@angular/common';
+import {RoutingPaths} from '../../shared/const';
 
 @Component({
     selector: 'app-edit-country',
@@ -284,7 +285,7 @@ export class EditCountryComponent implements OnInit, AfterViewInit {
   }
 
   navigateToCountriesList() {
-    this.router.navigate(['/countries']);
+    this.router.navigate(['/' + RoutingPaths.COUNTRY]);
   }
 
   addHighlightDialog(dialogForm: any) {

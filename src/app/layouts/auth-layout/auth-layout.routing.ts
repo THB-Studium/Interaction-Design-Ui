@@ -1,50 +1,39 @@
 import {Routes} from '@angular/router';
 import {HashLocationStrategy, LocationStrategy} from '@angular/common';
 import {MAT_DATE_FORMATS} from '@angular/material/core';
+import {DateFormat, PageNames, RoutingPaths} from '../../shared/const';
 
-
-const base_title_name: string = 'Authentication - ';
 
 const providers = [
   { provide: LocationStrategy, useClass: HashLocationStrategy },
   {
     provide: MAT_DATE_FORMATS,
-    useValue: {
-      parse: {
-        dateInput: 'YYYY-MM-DD',
-      },
-      display: {
-        dateInput: 'DD MMM, YYYY',
-        monthYearLabel: 'MMMM YYYY',
-        dateA11yLabel: 'LL',
-        monthYearA11yLabel: 'MMMM YYYY',
-      },
-    },
+    useValue: DateFormat.PARSE_AND_DISPLAY,
   },
 ]
 
 const aut_layout_routes: Routes = [
   {
-    path: 'learn-more/:landId',
-    title: base_title_name + 'Land',
-    loadComponent: () => import('../../pages/learn-more/learn-more.component')
-      .then(item => item.LearnMoreComponent)
-  },
-  {
-    path: 'login',
-    title: base_title_name + 'Login',
+    path: RoutingPaths.LOGIN,
+    title: PageNames.BASE_NAME + 'Login',
     loadComponent: () => import('../../pages/login/login.component')
       .then(item => item.LoginComponent)
   },
   {
-    path: 'logout',
-    title: base_title_name + 'Logout',
+    path: RoutingPaths.LOGOUT,
+    title: PageNames.BASE_NAME + 'Logout',
     loadComponent: () => import('src/app/pages/logout/logout.component')
       .then(item => item.LogoutComponent)
   },
   {
-    path: 'aboutus',
-    title: base_title_name + 'About Us',
+    path: RoutingPaths.LEARN_MORE_ITEM,
+    title: PageNames.BASE_NAME + 'Land',
+    loadComponent: () => import('../../pages/learn-more/learn-more.component')
+      .then(item => item.LearnMoreComponent)
+  },
+  {
+    path: RoutingPaths.ABOUT_US,
+    title: PageNames.BASE_NAME + 'About Us',
     loadComponent: () => import('src/app/pages/aboutus/aboutus.component')
       .then(item => item.AboutusComponent)
   }

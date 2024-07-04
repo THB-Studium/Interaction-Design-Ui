@@ -8,6 +8,7 @@ import { SharedDataService } from 'src/app/services/sharedData/shared-data.servi
 import { ROUTES } from '../sidebar/sidebar.component';
 import { RouterLinkActive, RouterLink } from '@angular/router';
 import { NgbDropdown, NgbDropdownToggle, NgbDropdownMenu } from '@ng-bootstrap/ng-bootstrap';
+import {RoutingPaths} from '../../shared/const';
 
 @Component({
     selector: 'app-navbar',
@@ -51,4 +52,6 @@ export class NavbarComponent implements OnInit {
       }
     });
   }
+
+  protected readonly RoutingPaths = RoutingPaths;
 }

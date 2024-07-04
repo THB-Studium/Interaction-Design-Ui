@@ -30,6 +30,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { SpinnerComponent } from '../../components/spinner/spinner.component';
+import {RoutingPaths} from '../../shared/const';
 
 @Component({
     selector: 'app-edit-tripoffer',
@@ -492,7 +493,7 @@ export class EditTripofferComponent implements OnInit, AfterViewInit {
 
   /**Navigate to the list of offers */
   navigateToTripoffersList() {
-    this.router.navigate(['/tripoffers']);
+    this.router.navigate(['/' + RoutingPaths.TRIP_OFFERS]);
   }
 
   /**This method will not compare the time*/

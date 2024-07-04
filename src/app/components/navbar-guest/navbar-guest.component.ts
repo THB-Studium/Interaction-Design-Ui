@@ -9,6 +9,7 @@ import {TripOfferService} from 'src/app/services/trip-offer/trip-offer.service';
 import {TripOffer} from 'src/app/models/tripOffer';
 import {MatDialog} from '@angular/material/dialog';
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
+import {RoutingPaths} from '../../shared/const';
 
 @Component({
     selector: 'app-navbar-guest',
@@ -81,4 +82,6 @@ export class NavbarGuestComponent implements OnInit {
       },
     });
   }
+
+  protected readonly RoutingPaths = RoutingPaths;
 }

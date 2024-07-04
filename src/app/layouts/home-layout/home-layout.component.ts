@@ -11,6 +11,7 @@ import {SlideList} from 'src/app/shared/datas/slideList';
 import {MatDialog} from '@angular/material/dialog';
 import { FooterComponent } from '../../components/footer/footer.component';
 import { NgbCollapse, NgbCarousel, NgbSlide } from '@ng-bootstrap/ng-bootstrap';
+import {RoutingPaths} from '../../shared/const';
 
 @Component({
     selector: 'app-home-layout',
@@ -88,4 +89,6 @@ export class HomeLayoutComponent implements OnInit {
     console.log(elem);
     elem.scrollIntoView({behavior: 'smooth', block: 'start'});
   }
+
+  protected readonly RoutingPaths = RoutingPaths;
 }

@@ -20,6 +20,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import {RoutingPaths} from '../../shared/const';
 
 @Component({
     selector: 'app-country',
@@ -169,7 +170,7 @@ export class CountryComponent implements OnInit, AfterViewInit {
         this.countriesList.push(resp);
         this.sortByName(this.countriesList);
         this.dataSource.data = this.countriesList;
-        this.router.navigate(['/countries/edit/', resp.id]);
+        this.router.navigate(['/' + RoutingPaths.COUNTRY_EDIT, resp.id]);
       },
       error: (err) => {
         this.handleError(err);

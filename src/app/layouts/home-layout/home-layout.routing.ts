@@ -1,17 +1,17 @@
 import {Routes} from '@angular/router';
 import {HashLocationStrategy, LocationStrategy} from '@angular/common';
+import {PageNames, RoutingPaths} from '../../shared/const';
 
 
-const base_title_name: string = 'Client - ';
 
 const providers = [
-  { provide: LocationStrategy, useClass: HashLocationStrategy }
+  {provide: LocationStrategy, useClass: HashLocationStrategy}
 ];
 
 const home_layout_routes: Routes = [
   {
-    path: 'home',
-    title: base_title_name + 'Home',
+    path: RoutingPaths.HOME,
+    title: PageNames.BASE_NAME + 'Home',
     loadComponent: () => import('src/app/pages/home/home.component').then(item => item.HomeComponent)
   }
 ];
